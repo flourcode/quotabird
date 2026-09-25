@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-16.0900**
+**Current build: 2026-10-16.1300**
 
 ## Naming: checks, not kills
 
@@ -1469,7 +1469,7 @@ structured data point to it.
 
 **2026-10-14.0900** — a small easter egg at the bottom of the About page only:
 *Why the bird?* / *If you carry a number, sooner or later the Quota Bird lands
-on your branch.* with the bird (white outline in dark mode). Keep it there and
+in your territory. Like Santa, but with quota.* with the bird (white outline in dark mode). Keep it there and
 nowhere else; the rest of the site stays plain and useful.
 
 **2026-10-14.1300** — from a review of Amazon and Google management ideas
