@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Federal Sales Pipeline Review Tool | Deal Check</title>
+<meta name="description" content="Five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal. Scored in your browser. No login, no CRM.">
+<link rel="canonical" href="https://quotabird.com/deal/">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://quotabird.com/deal/">
+<meta property="og:title" content="Deal Check: Before you commit it, prove it.">
+<meta property="og:description" content="Five questions to find the holes before your manager does. Five taps, no CRM, answers stay in your browser.">
+<meta property="og:site_name" content="QuotaBird">
+<meta property="og:image" content="https://quotabird.com/card-deal.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Deal Check: Before you commit it, prove it. Five questions: customer, money, power, path, now.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Deal Check: Before you commit it, prove it.">
+<meta name="twitter:description" content="Five questions to find the holes before your manager does.">
+<meta name="twitter:image" content="https://quotabird.com/card-deal.jpg">
+<meta name="twitter:image:alt" content="Deal Check: Before you commit it, prove it. Five questions: customer, money, power, path, now.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Deal Check",
+      "url": "https://quotabird.com/deal/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "description": "Score a federal pursuit in five questions before your pipeline review. Runs entirely in the browser; no account, no CRM, no customer data.",
+      "image": "https://quotabird.com/card-deal.jpg",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@id": "https://quotabird.com/#about"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://quotabird.com/#about",
+      "name": "Mark Flournoy",
+      "jobTitle": "Federal sales advisor",
+      "description": "Six years leading Federal Partner Sales at AWS; prior roles at F5, Red Hat, STEC and Virident; 20 years a Marine.",
+      "url": "https://quotabird.com/#about",
+      "knowsAbout": [
+        "Federal sales",
+        "Pipeline qualification",
+        "Pipeline coverage",
+        "Sales management cadence",
+        "Partner and channel sales",
+        "Federal go-to-market"
+      ],
+      "sameAs": [
+        "https://fedhoo.com",
+        "https://www.linkedin.com/in/markflournoy/"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does anything I enter leave my device?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your answers stay in your browser. The scoring is JavaScript running on this page: no account, no database, no CRM connection, no API call. The site counts page views with Google Analytics, and that is all it sends. It never sends your answers, and it never sends the part of the link where a shared verdict lives. If you press Share, your five answers go into the link so you can send the result to somebody, and that is the only time they leave the page."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why doesn't it ask for the customer or the dollar value?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because it doesn't need them, and asking would make the tool unusable for anyone whose employer restricts where pipeline detail can go. Qualification is about what you can prove, not who the customer is."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does it mean to prove a deal?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Proving a deal means trying to disprove your own forecast before somebody else does. If it survives the five questions, you have something you can defend. If it doesn't, you know exactly what evidence is missing. You are testing assumptions, not walking away from the customer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this rigorous enough to argue with?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It is a qualification heuristic, not a forecast model. Nobody has calibrated these weights against thousands of closed deals, and this tool has never seen your pipeline. What it does do is ask the same five questions every time, apply the same caps, and show its arithmetic, which is more consistency than most pipeline reviews manage. Use it to find the hole, not to set the number."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is the score calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each answer maps to a number (yes 92, sort of 50, no 8), weighted money 26, power 22, customer 20, path 16, now 16. Three caps apply when money, power or customer is a flat no, and no deal with any no can score above 74. Thresholds: healthy from 75, hopium from 55, at risk from 35, not a deal yet below. The number you see on the card is simpler: how many of the five you can defend, with a sort of counting as a half."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this AI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It's a fixed rubric: each answer maps to a number, the numbers are weighted, three caps apply, and thresholds produce the verdict. The weights are visible in the page source. A language model given five words would invent context, and confident wrong advice is worse than none."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do the four verdicts mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Healthy: it survived; bring the proof. Hopium: you believe it, you haven't proved it. At risk: something important is still an assumption. Not a deal yet: this is a conversation, not a deal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does Grill me do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It plays the manager. Three hard questions drawn from your weakest answer, one at a time, and you say honestly whether you can answer each one. If you cannot answer two of three about the money, that deal does not belong in commit yet. Better to learn that here than in the meeting."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<script src="../analytics.js" defer></script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar">
+    <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
+    <nav class="topnav" aria-label="Site">
+      <a class="toplink" href="/notes/">Field Notes</a>
+      <a class="toplink" href="/#about">About</a>
+      <a class="chip chip-ask" href="#ask">Ask Mark</a>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-group">For sellers</div><a href="/deal/" class="current">Deal Check<small>Before you put it in commit</small></a><a href="/territory/">Territory Check<small>Month one in a new patch</small></a><div class="menu-group">For managers</div><a href="/pipeline/">Pipeline Check<small>Quarterly, before the review</small></a><a href="/rep/">Rep Check<small>When a rep is worrying you</small></a><a href="/partner/">Partner Check<small>Before you renew the partnership</small></a><a href="/olr/">OLR Check<small>Review season</small></a><div class="menu-group">For anyone</div><a href="/brief/">Brief Check<small>Before a meeting where someone can say no</small></a><div class="menu-group">Your number</div><a href="/quota/">Quota Check<small>The day the number lands</small></a><a href="/discount/">Discount Check<small>When they ask you to sharpen the pencil</small></a><a href="/commission/">Commission Check<small>When it closes</small></a><div class="menu-group">QuotaBird</div><a href="/notes/">Field Notes<small>Short reads that deserve a second look</small></a><a href="/#about">About Mark<small>And how to reach him</small></a></div></details>
+    </nav>
+  </header>
+  <div id="screen" aria-live="polite">
+    <span class="overline tool-name">Deal Check</span>
+    <h1>Before you commit it, prove it.</h1>
+    <p class="dek">Five questions to separate proof from hopium before your manager does.</p>
+    <button class="btn btn-primary btn-lg btn-full" id="prep" type="button">Check my deal</button>
+    <p class="startnote">5 taps · about a minute · nothing stored</p>
+    <p class="pillars">Customer · Money · Power · Path · Now</p></div>
+</div>
+
+<section class="band" id="how" aria-labelledby="how-h">
+  <div class="band-inner">
+    <h2 id="how-h">The five questions, and what each one disproves</h2>
+    <p class="lede">Most federal pipeline dies for one of five reasons, and the seller usually knows which
+      one before the meeting starts. The point of naming them is to stop pretending otherwise.</p>
+    <h3>CUSTOMER: Has anyone said out loud that they want this?</h3>
+    <p>A requirement you inferred from a good meeting is not a requirement. What you are looking for is the
+      customer describing the problem in their own words, ideally in writing, and deciding something has to
+      change. If the only person who has articulated the need is you, we may be inventing it. Is there pull,
+      or are we pushing?</p>
+    <h3>MONEY: Where does the funding come from?</h3>
+    <p>Federal money has a name: an appropriation, a program line, an O&amp;M budget, a color of money with a
+      fiscal year attached. <strong>"They have budget"</strong> with no source is the most common thing a
+      seller believes and cannot defend. You can have a requirement, an enthusiastic customer and a contract
+      vehicle, and still no money that can be applied to the buy. The question your manager will ask is who
+      told you, and what is it called.</p>
+    <h3>POWER: Have you met anyone who can make it happen?</h3>
+    <p>Understanding the requirement and controlling the acquisition are different jobs, often different
+      people, sometimes different buildings. Sellers mistake access for influence and enthusiasm for
+      authority; a technical evaluator can love you and still not move a dollar. Progress means a program
+      manager, a contracting officer, or a budget holder, somebody who can cause something to happen when
+      it gets difficult.</p>
+    <h3>PATH: How would they actually buy it?</h3>
+    <p>Every federal purchase arrives through a mechanism: an existing contract, a GWAC or IDIQ, a task order,
+      a set-aside, a recompete, a sole-source justification. If nobody has named the vehicle and the
+      contracting office, the timeline is guesswork, because acquisition lead time is the timeline. Until
+      somebody can describe how a purchase order eventually appears, you have demand rather than a deal.</p>
+    <h3>NOW: What forces action this year?</h3>
+    <p>Agencies are very good at doing nothing for another year. A forcing function is specific: a contract
+      expiring, a product going end of life, a mandate with a date, an incident, or money that expires
+      September 30. "Q4" is not a compelling event, and neither is "my manager wants it this quarter."
+      What gets worse for them if they do nothing?</p>
+  </div>
+</section>
+
+<section class="band" id="why" aria-labelledby="why-h">
+  <div class="band-inner">
+    <h2 id="why-h">Why not BANT or MEDDIC?</h2>
+    <p class="lede">I've used both, and plenty of versions of both. They're useful when you are working a
+      deal. This is for the moment before that.</p>
+    <p>Over the years, most questionable deals I've seen eventually broke in one of the five places above.
+      So those are the five questions. They won't tell you how to sell the deal. They'll tell you where the
+      story stops matching the evidence.</p>
+    <p><strong>BANT</strong> gets you close, but its "need" is usually something the seller diagnosed, and
+      its "timeline" is a date in the CRM rather than a reason anything happens. It also leaves the biggest
+      federal question unanswered: how does the government actually buy this? That's what PATH is for.</p>
+    <p><strong>MEDDIC</strong> (or MEDDPICC, depending on who taught it to you) is more sophisticated, and
+      that is exactly why it solves a different problem. It is for developing and managing a complex
+      opportunity. A seller can spend forty-five minutes deciding whether somebody qualifies as an economic
+      buyer. These five are a cross-examination, not a worksheet. They run before that debate is worth
+      having.</p>
+    <p class="lede" style="margin-top:22px;">MEDDIC helps you work the deal. Deal Check helps you decide
+      whether you've earned the right to call it one.</p>
+  </div>
+</section>
+
+<section class="band" id="review" aria-labelledby="review-h">
+  <div class="band-inner">
+    <h2 id="review-h">What actually happens in a pipeline review</h2>
+    <p>A pipeline review is a manager testing whether the numbers on the board can survive a question. Deals fail the same handful of ways, and a manager who has sat through a few
+      hundred reviews knows every one of them by sight. The difference between a seller who survives the
+      review and one who does not is rarely deal quality. It is whether they walked in already knowing
+      which question they were going to get hit with.</p>
+    <h3>If you run the review</h3>
+    <p>Five questions, asked out loud, do more than a CRM field ever will. Run them on any deal and you get
+      a shared vocabulary instead of an argument: <strong>"I'm good on customer and path, I'm yellow on
+      money and power."</strong></p>
+    <ul>
+      <li>Ask the same five every time. The consistency is what makes the answers comparable.</li>
+      <li>Let the rep answer before you react. Sort of is an honest answer and should be safe to give.</li>
+      <li>Weakest link first. The worst answer is the one that determines the forecast, not the average.</li>
+      <li>Nothing gets typed into a system. Nobody has to explain later why the pipeline looked bad in writing.</li>
+    </ul>
+    <p>The tool at the top of this page is the same five questions with the arithmetic done for you. It
+      stores nothing and sends nothing, which means it can be used in a room where the CRM cannot. The
+      job is the same every week: get the hopium out of the pipeline before the review.</p>
+  </div>
+</section>
+
+<section class="band" id="about" aria-labelledby="about-h">
+  <div class="band-inner">
+    <div class="who">
+      <img src="../mark.jpg" alt="Mark Flournoy" width="120" height="120" loading="lazy" decoding="async"
+           onerror="this.remove();">
+        <h2 id="about-h">Hi, I'm Mark.</h2>
+        <p>I've spent a lot of years helping customers buy complicated technology. Six of them leading partner sales
+          teams at AWS. Before that F5, Red Hat, and a couple of storage companies you've probably forgotten. Before
+          all of that, 20 years as a Marine.</p>
+        <p>Along the way I've been the seller defending the deal, the partner trying to help, the manager asking
+          annoying questions, and the guy one level up explaining why the forecast moved again.</p>
+        <p>QuotaBird is where I put the things I've found useful. Most of the tools are free. Most take a few
+          minutes. None of them require you to adopt a new sales religion. Use whatever helps.</p>
+    </div>
+
+    <h3>A few things I see a lot</h3>
+    <p class="lede">Rarely just one of them. Usually a couple at the same time, quietly making each other worse.</p>
+    <p><strong>The pipeline looks better than it really is.</strong> Plenty of opportunities in the CRM, but once
+      you ask about budget, timing and who actually wants the thing, the number gets smaller fast.</p>
+    <p><strong>The partner likes you, but nothing is happening.</strong> Plenty of meetings, maybe a joint deck.
+      Nobody can point to the accounts where the two companies are actually trying to win something together.</p>
+    <p><strong>The team is busy, but there isn't much rhythm.</strong> The forecast call happens. The one-on-ones
+      happen. Nobody is sure what the team should do differently this week to make next quarter better.</p>
+    <p><strong>The number from above doesn't match what you see below.</strong> Leadership has a growth number.
+      Your team has a pipeline. You're the one who has to explain why they disagree without sounding like
+      you've already given up.</p>
+    <p>A team can be behind plan for a lot of reasons. One seller needs help getting in front of customers.
+      Another is doing fine and wants you to stay out of the way. Someone else thinks the year is already
+      gone. Sometimes the rep is fine and the territory, the comp plan or the pipeline they inherited isn't.
+      The useful part is figuring out which one you're dealing with before you fix the wrong one. That's what
+      the tools here do, one deal, one rep, one territory at a time. It's also most of what I do.</p>
+
+    <h3 id="ask">Need another set of eyes?</h3>
+    <p>Sometimes a calculator isn't enough. If you're stuck on a deal, an account, a partner, a territory, a QBR or
+      a federal problem, I'm happy to look at it with you. Here's exactly how it works:</p>
+    <ol class="steps">
+      <li><b>Pick a time.</b> Name, email and one line about what's going on. No deck required.</li>
+      <li><b>I read your line before we talk,</b> so we start in the middle instead of at the beginning.</li>
+      <li><b>Twenty minutes, free.</b> Then you decide whether there's anything more. No pitch, and no sales follow-ups.</li>
+    </ol>
+    <p class="lede">If I don't think I can help, I'll tell you.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary btn-lg" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=deal&amp;utm_content=ask" target="_blank" rel="noopener">Chat with Mark</a>
+      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
+    </div>
+    <p class="fine" style="margin-top:14px;">If it's something that takes more than a conversation, we can figure that out
+      too. I also build <a href="https://fedhoo.com" target="_blank" rel="noopener">fedhoo</a>, a federal market research tool.</p>
+  </div>
+</section>
+
+<section class="band" id="faq" aria-labelledby="faq-h">
+  <div class="band-inner">
+    <h2 id="faq-h">Questions</h2>
+    <details class="exp"><summary>Does anything I enter leave my device?</summary>
+      <div class="body">Your answers stay in your browser. The scoring is JavaScript running on this page:
+        no account, no database, no CRM connection, no API call. The site counts page views with Google
+        Analytics, and that is all it sends. It never sends your answers, and it never sends the part of
+        the link where a shared verdict lives. If you press Share, your five answers go into the link so
+        you can send the result to somebody, and that is the only time they leave the page.</div></details>
+    <details class="exp"><summary>Why doesn't it ask for the customer or the dollar value?</summary>
+      <div class="body">Because it doesn't need them, and asking would make the tool unusable for anyone whose
+        employer restricts where pipeline detail can go. Qualification is about what you can prove, not who the
+        customer is.</div></details>
+    <details class="exp"><summary>What does it mean to prove a deal?</summary>
+      <div class="body">Proving a deal means trying to disprove your own forecast before somebody
+        else does. If it survives the five questions, you have something you can defend. If it doesn't,
+        you know exactly what evidence is missing. You are testing assumptions, not walking away from
+        the customer.</div></details>
+    <details class="exp"><summary>Is this rigorous enough to argue with?</summary>
+      <div class="body">It is a qualification heuristic, not a forecast model. Nobody has calibrated these
+        weights against thousands of closed deals, and this tool has never seen your pipeline. What it
+        does do is ask the same five questions every time, apply the same caps, and show its arithmetic,
+        which is more consistency than most pipeline reviews manage. Use it to find the hole, not to set
+        the number.</div></details>
+    <details class="exp"><summary>How is the score calculated?</summary>
+      <div class="body">Each answer maps to a number (yes 92, sort of 50, no 8), weighted money 26, power 22,
+        customer 20, path 16, now 16. Three caps apply when money, power or customer is a flat no, and no deal
+        with any no can score above 74. Thresholds: healthy from 75, hopium from 55, at risk from 35,
+        not a deal yet below. The number you see on the card is simpler: how many of the five you can
+        defend, with a sort of counting as a half.</div></details>
+    <details class="exp"><summary>Is this AI?</summary>
+      <div class="body">No. It's a fixed rubric: each answer maps to a number, the numbers are weighted, three caps
+        apply, and thresholds produce the verdict. The weights are visible in the page source. A language model
+        given five words would invent context, and confident wrong advice is worse than none.</div></details>
+    <details class="exp"><summary>What do the four verdicts mean?</summary>
+      <div class="body"><strong>Healthy:</strong> it survived; bring the proof.
+        <strong>Hopium:</strong> you believe it, you haven't proved it.
+        <strong>At risk:</strong> something important is still an assumption.
+        <strong>Not a deal yet:</strong> this is a conversation, not a deal.</div></details>
+    <details class="exp"><summary>What does Grill me do?</summary>
+      <div class="body">It plays the manager. Three hard questions drawn from your weakest answer, one at a
+        time, and you say honestly whether you can answer each one. If you cannot answer two of three
+        about the money, that deal does not belong in commit yet. Better to learn that here than in
+        the meeting.</div></details>
+  </div>
+</section>
+
+<footer class="sitefoot">
+  <p>Deal Check is one of the free <a href="/">QuotaBird</a> tools by
+    <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
+  <p>Not affiliated with the U.S. government or Amazon.</p>
+</footer>
+<script>
+'use strict';
+
+const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const track = (n) => { if (typeof window.qbTrack === 'function') window.qbTrack(n); else (window.qbTrackQ = window.qbTrackQ || []).push(n); };
+const el = () => document.getElementById('screen');
+// Every screen change fades up. Re-trigger the animation by toggling the class.
+const show = (html) => { const e = el(); e.classList.remove('enter'); e.innerHTML = html; void e.offsetWidth; e.classList.add('enter'); focusScreen(e); };
+
+/* ── Five things ── */
+const P = [
+  { k:'customer', n:'CUSTOMER', short:'Do they actually want this?',
+    q:'Has the customer actually said they want to solve this?', w:20 },
+  { k:'money', n:'MONEY', short:'Is there actually funding?',
+    q:'Do you know where the money comes from?', w:26 },
+  { k:'power', n:'POWER', short:'Are you connected to someone who can make it happen?',
+    q:'Are you talking to someone who can make this happen?', w:22 },
+  { k:'path', n:'PATH', short:'Do you know how they buy?',
+    q:'Do you know how they will buy it?', w:16 },
+  { k:'now', n:'NOW', short:'Is something forcing action?',
+    q:'Is there a real reason this happens now?', w:16 },
+];
+const VAL = { yes:92, sort:50, no:8 };
+
+/* the three questions a manager asks when a pillar is soft */
+const GRILL = {
+  customer: ['What has the customer actually done that proves they intend to buy?',
+             'Who said they want this, and what exactly did they say?',
+             'What happens to them if they do nothing?'],
+  money: ['Who exactly has told you the money is available?',
+          'What budget does it come out of?',
+          'What happens to your date if the funding slips a quarter?'],
+  power: ['Who have you met who can actually move this forward?',
+          'Who signs, and have you ever been in a room with them?',
+          'Who inside is telling you things you did not have to ask for?'],
+  path: ['How would they award this, and through which contracting office?',
+         'What vehicle would it go through, and are you on it?',
+         'Who else can they buy this from more easily than you?'],
+  now: ['What is forcing them to act this year instead of next?',
+        'What is the next dated step in their process?',
+        'Who owns that date on their side?'],
+};
+
+const FIX = {
+  customer:'Get the customer to say the problem out loud, in their words.',
+  money:'Get one person at the customer to name the funding line this week.',
+  power:'Get one meeting above your current contact.',
+  path:'Ask which contracting office and vehicle they would use.',
+  now:'Find the deadline: expiring contract, end of life, mandate, or budget year.',
+};
+
+/* ── Sharing ── */
+const CODE = { yes:'y', sort:'s', no:'n' };
+const DECODE = { y:'yes', s:'sort', n:'no' };
+const encodeAnswers = () => P.map(p => CODE[answers[p.k]]).join('');
+function readHash() {
+  const h = (location.hash || '').replace('#', '').toLowerCase();
+  if (!/^[ysn]{5}$/.test(h)) return null;
+  const a = {};
+  P.forEach((p, i) => { a[p.k] = DECODE[h[i]]; });
+  return a;
+}
+function shareLink() {
+  const base = location.origin && location.origin !== 'null'
+    ? location.origin + location.pathname : 'https://quotabird.com/deal/';
+  return base + '#' + encodeAnswers();
+}
+
+/* ── The Ask ── */
+// Calendly prefill: a1 answers the first question on the booking form.
+// Multiples and words only. Never a name, never a dollar figure.
+function bookLink(medium, note) {
+  return 'https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=' + medium + '&utm_content=after_score&a1=' + encodeURIComponent(note);
+}
+function bookNote(s) { return `Deal Check: ${s.label.toLowerCase()}, ${s.provenText}, weakest ${s.weak.n.toLowerCase()}.`; }
+function dmText(s) {
+  const w = s.weak.n;
+  const v = s.label[0] + s.label.slice(1).toLowerCase();
+  return `Mark, just ran a deal through Deal Check. ${v}, ${s.provenText}, weakest is ${w.toLowerCase()}: ${GRILL[s.weak.k][0].toLowerCase()} `
+       + `I don't have a good answer yet. Worth 20 minutes?`;
+}
+function dmGrillText(s, missed) {
+  const w = s.weak.n;
+  return `Mark, ran a deal through Deal Check and could not answer ${missed} of your 3 ${w.toLowerCase()} questions. `
+       + `Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go do first?`;
+}
+// writeText returns a promise, so a synchronous try/catch misses permission
+// failures and the button lies about having copied. Every copy path goes
+// through this and reports what actually happened.
+// Copy runs synchronously inside the click, through a hidden textarea, so it
+// cannot lose the race with focus. The async clipboard API is the fallback,
+// not the other way round: navigator.clipboard.writeText rejects the moment
+// the document is not focused, which is exactly what opening LinkedIn does.
+function copyText(text) {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;';
+    document.body.appendChild(ta);
+    if (/iP(hone|ad|od)/.test(navigator.userAgent)) {   // iOS Safari needs a real range
+      ta.contentEditable = 'true'; ta.readOnly = false;
+      const r = document.createRange(); r.selectNodeContents(ta);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      ta.setSelectionRange(0, text.length);
+    } else { ta.select(); }
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    if (ok) return Promise.resolve();
+  } catch (e) {}
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+  return Promise.reject(new Error('no clipboard'));
+}
+// Button feedback is always short enough to fit the pill.
+function copyDM(btn, text) {
+  track('dm_copy');
+  copyText(text)
+    .then(() => {
+      btn.textContent = 'Copied ✓';
+      window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener');
+    })
+    .catch(() => { btn.textContent = "Couldn't copy"; selectPreview(btn); });
+}
+// Tapping the preview selects it, so a manual copy is one gesture.
+function selectPreview(near) {
+  const pv = (near && near.parentElement && near.parentElement.querySelector('.preview')) || document.querySelector('.preview');
+  if (!pv) return;
+  const r = document.createRange(); r.selectNodeContents(pv);
+  const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+}
+
+const DIAL = { yes:'●', sort:'◐', no:'○' };
+const dials = () => P.map(p => DIAL[answers[p.k]]).join(' ');
+function shareBlock(s) {
+  // Shapes rather than coloured squares: emoji colours belong to whatever
+  // platform renders them, and red-versus-green is invisible to a colourblind
+  // reader. These inherit the message's own text colour anywhere they land.
+  return `Deal Check · ${s.label}\n${s.meta}\n`
+       + `${dials()}\n`
+       + `${P.map(p => p.n).join(' · ')}\n\n`
+       + `${s.attack}\n`
+       + shareLink();
+}
+
+function score(a) {
+  const v = (k) => VAL[a[k]];
+  let total = Math.round(P.reduce((s,p) => s + v(p.k) * p.w, 0) / P.reduce((s,p) => s + p.w, 0));
+  const caps = [];
+  if (a.money === 'no') { caps.push("you can't say where the money comes from"); total = Math.min(total, 55); }
+  if (a.power === 'no') { caps.push("you haven't reached anyone who can act"); total = Math.min(total, 60); }
+  if (a.customer === 'no') { caps.push("the customer hasn't confirmed they intend to act"); total = Math.min(total, 45); }
+  // Invariant: a single flat NO anywhere keeps a deal out of HEALTHY. Without
+  // this, YES on everything but PATH scored 79 and read "nothing obvious to
+  // attack" while PATH showed NO on the same screen.
+  if (P.some(p => a[p.k] === 'no')) {
+    const named = P.filter(p => a[p.k] === 'no').map(p => p.n.toLowerCase()).join(' and ');
+    if (total > 74) caps.push(`you answered no on ${named}`);
+    total = Math.min(total, 74);
+  }
+  const label = total >= 75 ? ['HEALTHY','ready'] :
+                total >= 55 ? ['HOPIUM','proof'] :
+                total >= 35 ? ['AT RISK','prove'] : ['NOT A DEAL YET','dont'];
+  
+  const ranked = [...P].map(p => ({ ...p, v:v(p.k) }))
+    .sort((x,y) => x.v - y.v || (y.k === 'money') - (x.k === 'money'));
+  const weak = ranked[0];
+  const proven = P.reduce((n, p) => n + (a[p.k] === 'yes' ? 1 : a[p.k] === 'sort' ? .5 : 0), 0);
+  const provenText = (proven % 1 ? Math.floor(proven) + '½' : String(proven)) + ' of 5 proven';
+  const meta = provenText + '. Weakest: ' + weak.n.toLowerCase() + '.';
+  
+  const POWER_ATTACKS = [
+    "You are best friends with someone who can't spend a single dollar.",
+    "Your champion is a tour guide, not a buyer.",
+    "Your contact can say no, but they have zero power to say yes.",
+    "A technical evaluator can love you and still not move a dime.",
+    "You are confusing a fan club with purchasing authority."
+  ];
+
+  const ATTACK = {
+    customer:'You are the only person in the room who thinks this is a requirement.',
+    money:'Your boss is going to come after the money.',
+    power: POWER_ATTACKS[Math.floor(Math.random() * POWER_ATTACKS.length)],
+    path:'Nobody has said how this actually gets bought.',
+    now:'Nothing is forcing them to act, so nothing will.',
+  };
+  const SUB = {
+    HEALTHY:'It survived. Bring the proof.',
+    HOPIUM:"You believe it. You haven't proved it.",
+    'AT RISK':"Something important is still an assumption. Don't carry the date yet.",
+    'NOT A DEAL YET':'This is a conversation, not a deal.',
+  };
+  const moves = ranked.filter(r => a[r.k] !== 'yes').slice(0, 3).map(r => FIX[r.k]);
+  return { total, label:label[0], cls:label[1], weak, caps, ranked, moves,
+           attack: total >= 75 ? 'Nothing obvious to attack. Bring the proof anyway.' : ATTACK[weak.k],
+           sub: SUB[label[0]], proven, provenText, meta };
+}
+
+/* ── state ── */
+let answers = {}, grillStep = 0, grillOuch = 0, lastScore = null;
+// Clearing answers must also clear a shared hash, or a fresh run inherits someone else's verdict on reload.
+const clearHash = () => { try { history.replaceState(history.state, '', location.pathname); } catch {} };
+/* ── shared behaviors: history, focus, native share, menu ── */
+let restoring = false;
+// Each screen is a history entry, so the phone's back gesture steps back a screen instead of leaving.
+function nav(st) {
+  if (restoring) return;
+  const cur = history.state && history.state.sc;
+  const same = cur && JSON.stringify(cur) === JSON.stringify(st);
+  try { (same ? history.replaceState : history.pushState).call(history, { sc: st }, '', location.href); } catch {}
+}
+// Focus the new screen's heading so keyboard and screen-reader users land where the content is.
+function focusScreen(e) {
+  const f = e.querySelector('.question') || e.querySelector('.question-lg') || e.querySelector('.verdict') || e.querySelector('h1');
+  if (f) { f.setAttribute('tabindex', '-1'); try { f.focus({ preventScroll: true }); } catch {} }
+}
+// On a phone, Share opens the share sheet (Slack, Teams, Messages). Elsewhere it copies.
+function shareOut(btn, block, title) {
+  const lines = block.split('\n'); const url = lines[lines.length - 1]; const text = lines.slice(0, -1).join('\n').trim();
+  const touch = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+  const copy = () => copyText(block).then(() => { btn.textContent = 'Copied ✓'; }).catch(() => { btn.textContent = "Couldn't copy"; });
+  if (navigator.share && touch) {
+    navigator.share({ title, text, url }).then(() => { btn.textContent = 'Shared ✓'; }).catch((e) => { if (!e || e.name !== 'AbortError') copy(); });
+  } else copy();
+}
+document.addEventListener('click', (e) => { document.querySelectorAll('details.menu[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; }); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('details.menu[open]').forEach(d => { d.open = false; d.querySelector('summary').focus(); }); });
+
+
+/* ── screens ── */
+/* Sticky start: once the start button scrolls out of view, a copy rides at the bottom of the screen.
+   It disappears when the check starts and while the booking section is on screen. */
+function stickyStart() {
+  const screen = document.getElementById('screen'); if (!screen || !('IntersectionObserver' in window)) return;
+  const bar = document.createElement('div'); bar.className = 'startbar'; bar.hidden = true;
+  bar.innerHTML = '<button class="btn btn-primary btn-lg" type="button"></button>';
+  document.body.appendChild(bar);
+  const btn = bar.querySelector('button');
+  let prepOut = false, aboutIn = false;
+  const update = () => { const prep = document.getElementById('prep'); if (prep) btn.textContent = prep.textContent; bar.hidden = !(prep && prepOut && !aboutIn); };
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.target.id === 'prep') prepOut = !e.isIntersecting && e.boundingClientRect.top < 0; else aboutIn = e.isIntersecting; });
+    update();
+  });
+  const watch = () => { io.disconnect(); prepOut = false; const prep = document.getElementById('prep'), about = document.getElementById('about');
+    if (prep) io.observe(prep); if (about) io.observe(about); update(); };
+  new MutationObserver(watch).observe(screen, { childList: true });
+  watch();
+  btn.onclick = () => { window.scrollTo({ top: 0 }); const prep = document.getElementById('prep'); if (prep) prep.click(); };
+}
+
+function intro() { show(INTRO_HTML); document.getElementById('prep').onclick = () => ask(0); }
+function home() {
+  nav(['h']);
+  answers = {}; clearHash();
+  show(INTRO_HTML);
+  document.getElementById('prep').onclick = () => ask(0);
+  window.scrollTo({ top: 0 });
+}
+
+function ask(i) {
+  if (i === 0 && !answers.customer) track('start');
+  nav(['q', i]);
+  const p = P[i];
+  show(`
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${P.length}" aria-valuenow="${i + 1}">${P.map((_, j) => `<i class="${j <= i ? 'done' : ''}"></i>`).join('')}</div>
+    <span class="overline">${p.n} · question ${i + 1} of ${P.length}</span>
+    <div class="question">${esc(p.q)}</div>
+    <div class="choice-group" role="group" aria-label="${esc(p.q)}">
+      <button class="choice" data-v="yes" type="button">Yes</button>
+      <button class="choice" data-v="sort" type="button">Sort of</button>
+      <button class="choice" data-v="no" type="button">No</button>
+    </div>
+    ${i > 0 ? '<button class="btn btn-text" id="back" type="button">← Back</button>' : ''}`);
+  el().querySelectorAll('.choice').forEach(b => b.onclick = () => {
+    answers[p.k] = b.dataset.v;
+    if (i < P.length - 1) setTimeout(() => ask(i + 1), 120);
+    else setTimeout(result, 120);
+  });
+  const bk = document.getElementById('back');
+  if (bk) bk.onclick = () => history.back();
+  window.scrollTo({ top:0 });
+}
+
+function plainWhy(s) {
+  const soft = P.filter(p => answers[p.k] !== 'yes').map(p => p.n.toLowerCase());
+  const firm = P.filter(p => answers[p.k] === 'yes').map(p => p.n.toLowerCase());
+  const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+  const bits = [];
+  if (soft.length) bits.push(cap(`${soft.slice(0, 2).join(' and ')} ${soft.length > 1 ? "aren't" : "isn't"} proven yet`));
+  if (firm.length) bits.push(cap(`${firm[0]} is your strongest signal`));
+  let out = bits.join('. ') + '.';
+  if (s.caps.length) out += ` Score capped because ${s.caps[0]}.`;
+  return out;
+}
+
+function result(shared) {
+  const s = score(answers);
+  lastScore = s;
+  nav(['r']);
+  if (!restoring) track(shared ? 'verdict_shared' : 'verdict');   // a back/forward restore is not a new verdict
+
+  try { 
+    if (s.total >= 75) navigator.vibrate(50);
+    else if (s.total <= 35) navigator.vibrate([100, 50, 100, 50, 200]); 
+  } catch {}
+
+  const firstMove = s.moves[0] || 'Bring the proof you already have and defend the date.';
+  show(`
+    ${shared ? `<div class="banner">Someone sent you this verdict.
+      <button id="runMine" type="button">Run your own →</button></div>` : ''}
+    <div class="verdict verdict-${s.cls}">
+      <div class="verdict-word">${s.label}</div>
+      <div class="verdict-meta">${esc(s.meta)}</div>
+      <div class="verdict-attack">${esc(s.attack)}</div>
+      ${s.sub ? `<div class="verdict-sub">${esc(s.sub)}</div>` : ''}
+    </div>
+
+    <div class="list" aria-label="Your answers">
+      ${P.map(p => `<div class="list-item compact">
+        <span class="headline">${p.n}</span>
+        <span class="trailing${answers[p.k] === 'no' ? ' v-no' : ''}">${answers[p.k] === 'sort' ? 'Sort of' : answers[p.k] === 'yes' ? 'Yes' : 'No'}</span>
+      </div>`).join('')}
+    </div>
+
+    <div class="card">
+      <span class="overline">${s.total >= 75 ? 'They will still ask' : 'Be ready for'}</span>
+      <p class="lede">“${esc(GRILL[s.weak.k][0])}”</p>
+      <span class="overline" style="margin-top:16px;">Do this first</span>
+      <p class="lede">${esc(firstMove)}</p>
+    </div>
+
+    <button class="btn btn-primary btn-lg btn-full" id="grill" type="button" style="margin-top:20px;">Grill me</button>
+    <div class="btn-row center" style="margin-top:8px;">
+      <button class="btn btn-text" id="copy" type="button">Share</button>
+      <button class="btn btn-text" id="again" type="button">Start over</button>
+    </div>`);
+
+  document.getElementById('grill').onclick = () => { track('grill'); grillStep = 0; grillOuch = 0; grill(); };
+  document.getElementById('again').onclick = () => { answers = {}; clearHash(); ask(0); };
+  const rm = document.getElementById('runMine');
+  if (rm) rm.onclick = () => { answers = {}; clearHash(); ask(0); };
+  
+  document.getElementById('copy').onclick = (e) => {
+    const btn = e.currentTarget;
+    // Sharing is the one moment the verdict is allowed into the address bar.
+    try { history.replaceState(null, '', '#' + encodeAnswers()); } catch {}
+    track('share');
+    shareOut(btn, shareBlock(s), 'Deal Check');
+  };
+  
+  mountMark();
+  window.scrollTo({ top:0 });
+}
+
+/* ── boss mode ── */
+function grill() {
+  const qs = GRILL[lastScore.weak.k];
+  if (grillStep >= 3) return grillDone();
+  nav(['g', grillStep, grillOuch]);
+  show(`
+    <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="${grillStep + 1}">${[0,1,2].map(j => `<i class="${j <= grillStep ? 'done' : ''}"></i>`).join('')}</div>
+    <span class="overline">Your manager · question ${grillStep + 1} of 3</span>
+    <div class="question-lg">“${esc(qs[grillStep])}”</div>
+    <div class="choice-group" role="group" aria-label="Can you answer this?">
+      <button class="choice" data-v="ok" type="button">I can answer that</button>
+      <button class="choice" data-v="ouch" type="button">Ouch</button>
+    </div>`);
+  el().querySelectorAll('.choice').forEach(b => b.onclick = () => {
+    if (b.dataset.v === 'ouch') grillOuch++;
+    grillStep++;
+    setTimeout(grill, 120);
+  });
+  window.scrollTo({ top:0 });
+}
+
+function grillDone() {
+  nav(['gd', grillOuch]);
+  const w = lastScore.weak;
+  const verdict = grillOuch === 0 ? 'You would survive the review.'
+    : grillOuch === 1 ? 'You would mostly survive. One hole left.'
+    : 'You would not survive the review. Yet.';
+  const line = grillOuch === 0
+    ? 'Three for three. Go defend the date.'
+    : `You could not answer ${grillOuch} of 3. The one you cannot bluff is ${w.n.toLowerCase()}.`;
+  show(`
+    <span class="overline">Verdict</span>
+    <h1 style="margin-top:8px;">${esc(verdict)}</h1>
+    <p class="dek">${esc(line)}</p>
+    <div class="card"><span class="overline">Before the review</span>
+      <p class="lede">${esc(FIX[w.k])}</p></div>
+    <div class="btn-row center" style="margin-top:8px;">
+      <button class="btn btn-text" id="back2" type="button">← The verdict</button>
+    </div>`);
+  document.getElementById('back2').onclick = () => result(false);
+  mountMark(grillOuch ? dmGrillText(lastScore, grillOuch) : null);
+  window.scrollTo({ top:0 });
+}
+
+/* ── Mark Block ── */
+function mountMark(text) {
+  if (document.getElementById('markBlock')) return;
+  const w = document.createElement('div');
+  w.id = 'markBlock';
+  w.className = 'card';
+  w.style.marginTop = '24px';
+  const s = lastScore;
+  const dm = text || dmText(s);
+  w.innerHTML = `
+    <h3>Stuck on ${esc(s.weak.n.toLowerCase())}?</h3>
+    <p>I'm Mark. I've been the seller defending this deal and the manager poking holes in it.
+      Send me one line about it: no customer names, nothing confidential, just the part you can't
+      answer yet.</p>
+    <div class="preview mono" title="Tap to select">${esc(dm)}</div>
+    <button class="btn btn-primary btn-lg btn-full" id="dmBtn" type="button" style="margin-top:14px;">Copy this &amp; DM me</button>
+    <div class="btn-row center" style="margin-top:4px;">
+      <a class="btn btn-text" href="${bookLink('result', bookNote(s))}"
+         target="_blank" rel="noopener">Or book a call</a>
+    </div>
+    <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. I answer LinkedIn faster than email.</p>`;
+  el().appendChild(w);
+  const btn = document.getElementById('dmBtn');
+  if (btn) btn.onclick = () => copyDM(btn, dm);
+  w.querySelector('.preview').onclick = (e) => selectPreview(e.currentTarget.nextElementSibling);
+}
+
+/* Boot */
+window.QB_BUILD = '2026-10-03.1300'; // console check for what's deployed
+const INTRO_HTML = el().innerHTML;
+try { history.replaceState({ sc: ['h'] }, '', location.href); } catch {}
+const fromHash = readHash();
+if (fromHash) { Object.assign(answers, fromHash); result(true); }
+// A shared link opened in a tab that already has the site.
+window.addEventListener('hashchange', () => { const h = readHash(); if (h) { answers = {}; Object.assign(answers, h); result(true); } });
+window.addEventListener('popstate', (e) => {
+  const st = e.state && e.state.sc; restoring = true;
+  const complete = P.every(p => answers[p.k]);
+  try {
+    if (!st || st[0] === 'h') intro();
+    else if (st[0] === 'q') ask(st[1]);
+    else if (st[0] === 'r' && complete) result(false);
+    else if (st[0] === 'g' && lastScore) { grillStep = st[1]; grillOuch = st[2]; grill(); }
+    else if (st[0] === 'gd' && lastScore) { grillStep = 3; grillOuch = st[1]; grillDone(); }
+    else intro();
+  } finally { restoring = false; }
+});
+const prepBtn = document.getElementById('prep');
+if (prepBtn) prepBtn.onclick = () => ask(0);
+{ const lh = document.getElementById('logoHome'); if (lh) lh.onclick = home; }
+stickyStart();
+</script>
+</body>
+</html>

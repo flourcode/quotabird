@@ -1,0 +1,14 @@
+# AWS Amplify Hosting. No build step: the repo is the site.
+# The build phase only removes files that belong in the repo but not on the web.
+version: 1
+frontend:
+  phases:
+    build:
+      commands:
+        - rm -rf preview partials logo-src HANDOFF.md home.src.html make-card.py make-tools.py amplify.yml
+  artifacts:
+    baseDirectory: /
+    files:
+      - '**/*'
+  cache:
+    paths: []

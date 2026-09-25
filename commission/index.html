@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Commission Check: Your Take-Home on a Deal</title>
+<meta name="description" content="Deal size and commission rate in, what you actually take home out, after a realistic withholding estimate. Free, in your browser, nothing stored.">
+<link rel="canonical" href="https://quotabird.com/commission/">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://quotabird.com/commission/">
+<meta property="og:title" content="Commission Check: It closed. What do I actually take home?">
+<meta property="og:description" content="It closed. Here is roughly what you actually take home.">
+<meta property="og:site_name" content="QuotaBird">
+<meta property="og:image" content="https://quotabird.com/card-commission.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Commission Check: It closed. What do I actually take home?">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Commission Check: It closed. What do I actually take home?">
+<meta name="twitter:description" content="It closed. Here is roughly what you actually take home.">
+<meta name="twitter:image" content="https://quotabird.com/card-commission.jpg">
+<meta name="twitter:image:alt" content="Commission Check: It closed. What do I actually take home?">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Commission Check",
+      "url": "https://quotabird.com/commission/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "description": "Deal size and commission rate in, what you actually take home out, after a realistic withholding estimate. Free, in your browser, nothing stored.",
+      "image": "https://quotabird.com/card-commission.jpg",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "QuotaBird",
+        "url": "https://quotabird.com/"
+      },
+      "author": {
+        "@id": "https://quotabird.com/#about"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does anything I enter leave my device?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tax advice?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The withholding percentages are planning estimates. Your actual rate depends on your state, filing status and total income for the year. For anything that matters, ask an accountant."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What about accelerators and clawbacks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Enter the rate that applies to this deal. If your plan has accelerators above quota, use the accelerated rate; if it has clawbacks, remember the take-home is provisional until the clawback window closes."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<script src="../analytics.js" defer></script>
+</head>
+<body class="wide-page">
+
+<div class="wrap wide">
+  <header class="appbar">
+    <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
+    <nav class="topnav" aria-label="Site">
+      <a class="toplink" href="/notes/">Field Notes</a>
+      <a class="toplink" href="/#about">About</a>
+      <a class="chip chip-ask" href="#ask">Ask Mark</a>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check<small>Before you put it in commit</small></a><a href="/territory/">Territory Check<small>Month one in a new patch</small></a><div class="menu-group">For managers</div><a href="/pipeline/">Pipeline Check<small>Quarterly, before the review</small></a><a href="/rep/">Rep Check<small>When a rep is worrying you</small></a><a href="/partner/">Partner Check<small>Before you renew the partnership</small></a><a href="/olr/">OLR Check<small>Review season</small></a><div class="menu-group">For anyone</div><a href="/brief/">Brief Check<small>Before a meeting where someone can say no</small></a><div class="menu-group">Your number</div><a href="/quota/">Quota Check<small>The day the number lands</small></a><a href="/discount/">Discount Check<small>When they ask you to sharpen the pencil</small></a><a href="/commission/" class="current">Commission Check<small>When it closes</small></a><div class="menu-group">QuotaBird</div><a href="/notes/">Field Notes<small>Short reads that deserve a second look</small></a><a href="/#about">About Mark<small>And how to reach him</small></a></div></details>
+    </nav>
+  </header>
+  <div id="screen" class="calc-screen">
+    <span class="overline tool-name">Commission Check</span>
+    <h1>It closed. What do I actually take home?</h1>
+    <p class="dek">Deal size, your rate, and how you're paid. A planning estimate of the check after withholding, not tax advice. <span id="exnote">These are example numbers; type yours over them.</span></p>
+    <div class="calc">
+      <form class="calc-in" id="f" autocomplete="off" novalidate>
+        <label class="tf"><span class="tf-label">Deal size</span><input id="deal" type="text" inputmode="decimal" autocomplete="off" value="$500K"></label>
+        <label class="tf"><span class="tf-label">Your commission rate</span><input id="rate" type="text" inputmode="decimal" autocomplete="off" value="8%"></label>
+        <div class="tf"><span class="tf-label">How you are paid</span><div class="chips" style="margin-top:6px;"><button class="chip on" data-choice="profile" data-v="w2" type="button">W-2 (~30%)</button><button class="chip" data-choice="profile" data-v="high" type="button">High bracket (~40%)</button><button class="chip" data-choice="profile" data-v="1099" type="button">1099 (~20%)</button></div></div>
+      </form>
+      <div class="calc-out" id="out" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sumbar" id="sumbar" hidden aria-hidden="true"></div>
+
+<section class="band" id="how">
+  <div class="band-inner">
+    <h2>Why the check is smaller than the math</h2>
+    <p class="lede">Gross commission is the number in the plan. Take-home is the number in your account. They are further apart than most sellers expect the first time.</p>
+    <p>A standard W-2 payout typically has about 30% withheld between federal, state and payroll taxes; a high-bracket earner is closer to 40%; a 1099 contractor has nothing withheld and should set aside roughly 20% or more themselves. These are planning estimates. Your actual rate depends on your state, your filing status and what else you earned this year, and supplemental wages are often withheld at a flat rate that gets reconciled at tax time.</p>
+    <p>Use it to plan, not to argue with payroll. And once you know what a deal pays, the more useful question is whether the plan behind it is sane: <a href="/quota/">Quota Check</a>.</p>
+  </div>
+</section>
+
+<section class="band" id="about" aria-labelledby="about-h">
+  <div class="band-inner">
+    <div class="who">
+      <img src="../mark.jpg" alt="Mark Flournoy" width="120" height="120" loading="lazy" decoding="async"
+           onerror="this.remove();">
+        <h2 id="about-h">Hi, I'm Mark.</h2>
+        <p>I've spent a lot of years helping customers buy complicated technology. Six of them leading partner sales
+          teams at AWS. Before that F5, Red Hat, and a couple of storage companies you've probably forgotten. Before
+          all of that, 20 years as a Marine.</p>
+        <p>Along the way I've been the seller defending the deal, the partner trying to help, the manager asking
+          annoying questions, and the guy one level up explaining why the forecast moved again.</p>
+        <p>QuotaBird is where I put the things I've found useful. Most of the tools are free. Most take a few
+          minutes. None of them require you to adopt a new sales religion. Use whatever helps.</p>
+    </div>
+
+    <h3>A few things I see a lot</h3>
+    <p class="lede">Rarely just one of them. Usually a couple at the same time, quietly making each other worse.</p>
+    <p><strong>The pipeline looks better than it really is.</strong> Plenty of opportunities in the CRM, but once
+      you ask about budget, timing and who actually wants the thing, the number gets smaller fast.</p>
+    <p><strong>The partner likes you, but nothing is happening.</strong> Plenty of meetings, maybe a joint deck.
+      Nobody can point to the accounts where the two companies are actually trying to win something together.</p>
+    <p><strong>The team is busy, but there isn't much rhythm.</strong> The forecast call happens. The one-on-ones
+      happen. Nobody is sure what the team should do differently this week to make next quarter better.</p>
+    <p><strong>The number from above doesn't match what you see below.</strong> Leadership has a growth number.
+      Your team has a pipeline. You're the one who has to explain why they disagree without sounding like
+      you've already given up.</p>
+    <p>A team can be behind plan for a lot of reasons. One seller needs help getting in front of customers.
+      Another is doing fine and wants you to stay out of the way. Someone else thinks the year is already
+      gone. Sometimes the rep is fine and the territory, the comp plan or the pipeline they inherited isn't.
+      The useful part is figuring out which one you're dealing with before you fix the wrong one. That's what
+      the tools here do, one deal, one rep, one territory at a time. It's also most of what I do.</p>
+
+    <h3 id="ask">Need another set of eyes?</h3>
+    <p>Sometimes a calculator isn't enough. If you're stuck on a deal, an account, a partner, a territory, a QBR or
+      a federal problem, I'm happy to look at it with you. Here's exactly how it works:</p>
+    <ol class="steps">
+      <li><b>Pick a time.</b> Name, email and one line about what's going on. No deck required.</li>
+      <li><b>I read your line before we talk,</b> so we start in the middle instead of at the beginning.</li>
+      <li><b>Twenty minutes, free.</b> Then you decide whether there's anything more. No pitch, and no sales follow-ups.</li>
+    </ol>
+    <p class="lede">If I don't think I can help, I'll tell you.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary btn-lg" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=commission&amp;utm_content=ask" target="_blank" rel="noopener">Chat with Mark</a>
+      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
+    </div>
+    <p class="fine" style="margin-top:14px;">If it's something that takes more than a conversation, we can figure that out
+      too. I also build <a href="https://fedhoo.com" target="_blank" rel="noopener">fedhoo</a>, a federal market research tool.</p>
+  </div>
+</section>
+
+<section class="band" id="faq" aria-labelledby="faq-h">
+  <div class="band-inner">
+    <h2 id="faq-h">Questions</h2>
+    <details class="exp"><summary>Does anything I enter leave my device?</summary>
+      <div class="body">No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.</div></details>
+    <details class="exp"><summary>Is this tax advice?</summary>
+      <div class="body">No. The withholding percentages are planning estimates. Your actual rate depends on your state, filing status and total income for the year. For anything that matters, ask an accountant.</div></details>
+    <details class="exp"><summary>What about accelerators and clawbacks?</summary>
+      <div class="body">Enter the rate that applies to this deal. If your plan has accelerators above quota, use the accelerated rate; if it has clawbacks, remember the take-home is provisional until the clawback window closes.</div></details>
+  </div>
+</section>
+
+<footer class="sitefoot">
+  <p>Commission Check is one of the free <a href="/">QuotaBird</a> tools by
+    <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
+  <p>Not affiliated with the U.S. government or Amazon.</p>
+</footer>
+<script src="../calc.js"></script>
+<script>
+'use strict';
+window.QB_BUILD = '2026-10-06.0900';
+CalcTool({
+  slug: 'commission', name: 'Commission Check', url: 'https://quotabird.com/commission/',
+  fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'profile', kind: 'choice', example: 'w2' }],
+  compute(v) {
+    if (!(v.deal > 0 && v.rate > 0)) return null;
+    const money = (n) => n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3).toLocaleString() + 'K' : '$' + Math.round(n).toLocaleString();
+    const tax = { w2: .30, high: .40, '1099': .20 }[v.profile] ?? .30;
+    const gross = v.deal * v.rate, withheld = gross * tax, net = gross - withheld;
+    return { label: 'Take-home', cls: 'ready', big: money(net), attack: `You keep about ${Math.round((1 - tax) * 100)} cents of every commission dollar on this deal.`,
+      sub: 'A planning estimate, not tax advice.', rows: [['Gross commission', money(gross)], ['Withheld, about', money(withheld), 'v-no'], ['Take-home, about', money(net)]], keep: 1 - tax };
+  },
+  handoff: { overline: 'Is the plan sane?', text: 'Now that you know what a deal pays, check the number it has to cover.', href: '/quota/', label: 'Check my quota' },
+  mark: { title: () => 'Questions about the plan?', body: "I'm Mark. Comp plans are where sellers find out what the company actually wants. If yours doesn't add up, send me one line. No company name, no dollar figures." },
+  dm: (s) => `Mark, ran a deal through Commission Check. I keep about ${Math.round(s.keep * 100)}% of gross. The question is whether the plan behind it is sane. Worth 20 minutes?`,
+  bookNote: (s) => `Commission Check: keeps about ${Math.round(s.keep * 100)}% of gross.`,
+});
+</script>
+</body>
+</html>

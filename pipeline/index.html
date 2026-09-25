@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pipeline Coverage Calculator | Pipeline Check</title>
+<meta name="description" content="Free pipeline coverage calculator. 3X is a rule of thumb; your win rate says what you actually need. No login, nothing stored.">
+<link rel="canonical" href="https://quotabird.com/pipeline/">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://quotabird.com/pipeline/">
+<meta property="og:title" content="Pipeline Check: 3X is a rule of thumb. Your win rate may disagree.">
+<meta property="og:description" content="Coverage against your target and your own win rate, not a benchmark. One minute, nothing stored.">
+<meta property="og:site_name" content="QuotaBird">
+<meta property="og:image" content="https://quotabird.com/card-pipeline.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Pipeline Check: 3X is a rule of thumb. Your win rate may disagree. Target, coverage, win rate.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pipeline Check: 3X is a rule of thumb. Your win rate may disagree.">
+<meta name="twitter:description" content="Coverage against your target and your own win rate, not a benchmark.">
+<meta name="twitter:image" content="https://quotabird.com/card-pipeline.jpg">
+<meta name="twitter:image:alt" content="Pipeline Check: 3X is a rule of thumb. Your win rate may disagree.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Pipeline Check",
+      "url": "https://quotabird.com/pipeline/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "description": "Pipeline coverage against a revenue target and the user's own win rate. Runs entirely in the browser; no account, nothing stored.",
+      "image": "https://quotabird.com/card-pipeline.jpg",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Deal Check",
+        "url": "https://quotabird.com/"
+      },
+      "author": {
+        "@id": "https://quotabird.com/#about"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Where does 3X pipeline coverage come from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "3X assumes you close about a third of the qualified pipeline that is due in the period. It is a win rate in disguise. If your qualified win rate is 20%, you need 5X. If it is 50%, you need 2X. The benchmark is only right for teams that happen to win a third of what they qualify."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does anything I enter leave my device?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers, and never the part of the link where a shared result lives. If you press Share, your inputs go into the link so you can send it to somebody, and that is the only time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is the verdict calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Required pipeline is the number still to find ÷ your qualified win rate, or × 3 if you leave win rate blank. The verdict is your pipeline as a share of that: covered at 100% or more, hopium from 75%, at risk from 50%, short below. Opportunities are the gap ÷ your average deal size, rounded up."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What counts as qualified pipeline?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pipeline you expect to close in the period and can defend: the customer has said they want it, the money has a name, you have reached someone who can act, you know how they buy, and something forces action now. That is what Deal Check tests one deal at a time."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<script src="../analytics.js" defer></script>
+</head>
+<body class="wide-page">
+
+<div class="wrap wide">
+  <header class="appbar">
+    <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
+    <nav class="topnav" aria-label="Site">
+      <a class="toplink" href="/notes/">Field Notes</a>
+      <a class="toplink" href="/#about">About</a>
+      <a class="chip chip-ask" href="#ask">Ask Mark</a>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check<small>Before you put it in commit</small></a><a href="/territory/">Territory Check<small>Month one in a new patch</small></a><div class="menu-group">For managers</div><a href="/pipeline/" class="current">Pipeline Check<small>Quarterly, before the review</small></a><a href="/rep/">Rep Check<small>When a rep is worrying you</small></a><a href="/partner/">Partner Check<small>Before you renew the partnership</small></a><a href="/olr/">OLR Check<small>Review season</small></a><div class="menu-group">For anyone</div><a href="/brief/">Brief Check<small>Before a meeting where someone can say no</small></a><div class="menu-group">Your number</div><a href="/quota/">Quota Check<small>The day the number lands</small></a><a href="/discount/">Discount Check<small>When they ask you to sharpen the pencil</small></a><a href="/commission/">Commission Check<small>When it closes</small></a><div class="menu-group">QuotaBird</div><a href="/notes/">Field Notes<small>Short reads that deserve a second look</small></a><a href="/#about">About Mark<small>And how to reach him</small></a></div></details>
+    </nav>
+  </header>
+  <div id="screen" class="calc-screen">
+    <span class="overline tool-name">Pipeline Check</span>
+    <h1>3X is a rule of thumb. Your win rate may disagree.</h1>
+    <p class="dek">Change any number and everything updates. <span id="exnote">These are example numbers; type yours over them.</span></p>
+
+    <div class="calc">
+      <form class="calc-in" id="f" autocomplete="off" novalidate>
+        <label class="tf"><span class="tf-label">Target for the year</span>
+          <input id="goal" type="text" inputmode="decimal" value="$10M"></label>
+        <label class="tf"><span class="tf-label">Qualified pipeline expected to close this year</span>
+          <input id="pipe" type="text" inputmode="decimal" value="$32M"></label>
+        <label class="tf"><span class="tf-label">Your qualified win rate</span>
+          <input id="win" type="text" inputmode="decimal" value="25%"></label>
+        <div class="chips" style="margin:-4px 0 14px;" aria-label="Win rate presets">
+          <button class="chip" data-win="20" type="button">Federal ~20%</button>
+          <button class="chip" data-win="25" type="button">SaaS ~25%</button>
+          <button class="chip" data-win="33" type="button">A third (3X)</button>
+        </div>
+        <div class="tf-grid">
+          <label class="tf"><span class="tf-label">Average deal size</span>
+            <input id="size" type="text" inputmode="decimal" value="$500K"></label>
+          <label class="tf"><span class="tf-label">Sellers on quota</span>
+            <input id="reps" type="text" inputmode="numeric" value="8"></label>
+        </div>
+        <label class="tf"><span class="tf-label">Already closed this year <small>(optional)</small></span>
+          <input id="closed" type="text" inputmode="decimal" placeholder="$0"></label>
+        <div class="chips" style="margin-top:0;" aria-label="Year end">
+          <button class="chip on" data-ye="cy" type="button">Year ends Dec 31</button>
+          <button class="chip" data-ye="fy" type="button">Sep 30</button>
+          <button class="chip" id="justMe" type="button">Just me</button>
+        </div>
+      </form>
+
+      <div class="calc-out" id="out" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sumbar" id="sumbar" hidden aria-hidden="true"></div>
+
+<section class="band" id="threex" aria-labelledby="threex-h">
+  <div class="band-inner">
+    <h2 id="threex-h">What 3X actually assumes</h2>
+    <p class="lede">Three times the number in qualified pipeline is the coverage rule most sales
+      organisations plan to. Almost nobody asks where it came from.</p>
+    <p>It came from a win rate. If a third of the qualified pipeline due in a period closes, 3X covers the
+      number exactly. So 3X is <strong>a 33% win rate written down without saying
+      so.</strong> A team that wins 20% of what it qualifies needs 5X. A team that wins half needs 2X. Planning
+      to 3X with a 20% win rate is hopium with a spreadsheet.</p>
+    <p>The other assumption is the word <em>qualified</em>. Coverage counts pipeline that would survive a
+      hard question about the customer, the money, the person you're talking to, the path to a purchase
+      order and the reason it happens now. Everything else in the CRM is a conversation. That's why the
+      verdict above ends by sending you to <a href="/deal/">Deal Check</a>: the multiple is only as good as
+      the deals inside it.</p>
+    <h3>Where the rest realistically comes from</h3>
+    <p>A gap is not an instruction to prospect harder. It's a question about sources, and there are four:
+      <strong>new accounts</strong> and new buying centers, <strong>existing customers</strong> and adjacent
+      requirements, <strong>partners</strong> who own relationships and vehicles you don't, and
+      <strong>executive plays</strong> that open doors a rep can't. The useful planning conversation is which
+      of the four you're over-relying on, and which one you've never seriously worked.</p>
+  </div>
+</section>
+
+<section class="band" id="about" aria-labelledby="about-h">
+  <div class="band-inner">
+    <div class="who">
+      <img src="../mark.jpg" alt="Mark Flournoy" width="120" height="120" loading="lazy" decoding="async"
+           onerror="this.remove();">
+        <h2 id="about-h">Hi, I'm Mark.</h2>
+        <p>I've spent a lot of years helping customers buy complicated technology. Six of them leading partner sales
+          teams at AWS. Before that F5, Red Hat, and a couple of storage companies you've probably forgotten. Before
+          all of that, 20 years as a Marine.</p>
+        <p>Along the way I've been the seller defending the deal, the partner trying to help, the manager asking
+          annoying questions, and the guy one level up explaining why the forecast moved again.</p>
+        <p>QuotaBird is where I put the things I've found useful. Most of the tools are free. Most take a few
+          minutes. None of them require you to adopt a new sales religion. Use whatever helps.</p>
+    </div>
+
+    <h3>A few things I see a lot</h3>
+    <p class="lede">Rarely just one of them. Usually a couple at the same time, quietly making each other worse.</p>
+    <p><strong>The pipeline looks better than it really is.</strong> Plenty of opportunities in the CRM, but once
+      you ask about budget, timing and who actually wants the thing, the number gets smaller fast.</p>
+    <p><strong>The partner likes you, but nothing is happening.</strong> Plenty of meetings, maybe a joint deck.
+      Nobody can point to the accounts where the two companies are actually trying to win something together.</p>
+    <p><strong>The team is busy, but there isn't much rhythm.</strong> The forecast call happens. The one-on-ones
+      happen. Nobody is sure what the team should do differently this week to make next quarter better.</p>
+    <p><strong>The number from above doesn't match what you see below.</strong> Leadership has a growth number.
+      Your team has a pipeline. You're the one who has to explain why they disagree without sounding like
+      you've already given up.</p>
+    <p>A team can be behind plan for a lot of reasons. One seller needs help getting in front of customers.
+      Another is doing fine and wants you to stay out of the way. Someone else thinks the year is already
+      gone. Sometimes the rep is fine and the territory, the comp plan or the pipeline they inherited isn't.
+      The useful part is figuring out which one you're dealing with before you fix the wrong one. That's what
+      the tools here do, one deal, one rep, one territory at a time. It's also most of what I do.</p>
+
+    <h3 id="ask">Need another set of eyes?</h3>
+    <p>Sometimes a calculator isn't enough. If you're stuck on a deal, an account, a partner, a territory, a QBR or
+      a federal problem, I'm happy to look at it with you. Here's exactly how it works:</p>
+    <ol class="steps">
+      <li><b>Pick a time.</b> Name, email and one line about what's going on. No deck required.</li>
+      <li><b>I read your line before we talk,</b> so we start in the middle instead of at the beginning.</li>
+      <li><b>Twenty minutes, free.</b> Then you decide whether there's anything more. No pitch, and no sales follow-ups.</li>
+    </ol>
+    <p class="lede">If I don't think I can help, I'll tell you.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary btn-lg" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=pipeline&amp;utm_content=ask" target="_blank" rel="noopener">Chat with Mark</a>
+      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
+    </div>
+    <p class="fine" style="margin-top:14px;">If it's something that takes more than a conversation, we can figure that out
+      too. I also build <a href="https://fedhoo.com" target="_blank" rel="noopener">fedhoo</a>, a federal market research tool.</p>
+  </div>
+</section>
+
+<section class="band" id="faq" aria-labelledby="faq-h">
+  <div class="band-inner">
+    <h2 id="faq-h">Questions</h2>
+    <details class="exp"><summary>Where does 3X pipeline coverage come from?</summary>
+      <div class="body">3X assumes you close about a third of the qualified pipeline that is due in the period.
+        It is a win rate in disguise. If your qualified win rate is 20%, you need 5X. If it is 50%, you need
+        2X. The benchmark is only right for teams that happen to win a third of what they qualify.</div></details>
+    <details class="exp"><summary>Does anything I enter leave my device?</summary>
+      <div class="body">No. The arithmetic runs in your browser. No account, no CRM connection, no API call.
+        The site counts page views with Google Analytics and never sends your numbers, and never the part of
+        the link where a shared result lives. If you press Share, your inputs go into the link so you can
+        send it to somebody, and that is the only time.</div></details>
+    <details class="exp"><summary>How is the verdict calculated?</summary>
+      <div class="body">Required pipeline is the number still to find ÷ your qualified win rate, or × 3 if you
+        leave win rate blank. The verdict is your pipeline as a share of that: covered at 100% or more, hopium
+        from 75%, at risk from 50%, short below. Opportunities are the gap ÷ your average
+        deal size, rounded up.</div></details>
+    <details class="exp"><summary>What counts as qualified pipeline?</summary>
+      <div class="body">Pipeline you expect to close in the period and can defend: the customer has said they
+        want it, the money has a name, you have reached someone who can act, you know how they buy, and
+        something forces action now. That is what <a href="/deal/">Deal Check</a> tests one deal at a time.</div></details>
+  </div>
+</section>
+
+<footer class="sitefoot">
+  <p>Pipeline Check is one of the free <a href="/">QuotaBird</a> tools by
+    <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
+  <p>Not affiliated with the U.S. government or Amazon.</p>
+</footer>
+<script>
+'use strict';
+window.QB_BUILD = '2026-10-03.1300';
+const track = (n) => { if (typeof window.qbTrack === 'function') window.qbTrack(n); else (window.qbTrackQ = window.qbTrackQ || []).push(n); };
+const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const $ = (id) => document.getElementById(id);
+const TARGET = 3;
+
+/* ── parsing and formatting ── */
+function parseMoney(raw) {
+  if (!raw) return 0;
+  let s = String(raw).toLowerCase().replace(/[\s,$_]/g, ''), mult = 1;
+  if (/b$/.test(s)) { mult = 1e9; s = s.slice(0, -1); }
+  else if (/m$/.test(s)) { mult = 1e6; s = s.slice(0, -1); }
+  else if (/k$/.test(s)) { mult = 1e3; s = s.slice(0, -1); }
+  const n = parseFloat(s);
+  return (!isFinite(n) || n < 0) ? 0 : n * mult;
+}
+function parseRate(raw) {
+  let n = parseFloat(String(raw || '').replace(/[^0-9.]/g, ''));
+  if (!isFinite(n) || n <= 0) return 0;
+  if (n > 1) n = n / 100;
+  return (n > 0 && n < 1) ? n : 0;
+}
+const parseCount = (raw) => { const n = parseInt(String(raw || '').replace(/[^0-9]/g, ''), 10); return (!isFinite(n) || n <= 0) ? 0 : n; };
+function money(n) {
+  if (!isFinite(n) || n <= 0) return '$0';
+  if (n >= 1e9) return '$' + (n / 1e9).toFixed(2).replace(/\.?0+$/, '') + 'B';
+  if (n >= 1e6) return '$' + (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+  if (n >= 1e3) return '$' + Math.round(n / 1e3) + 'K';
+  return '$' + Math.round(n);
+}
+const X = (n) => n.toFixed(1) + 'X';
+const pct = (r) => Math.round(r * 100) + '%';
+
+/* ── calendar: months fill themselves ── */
+function calendar(yearEnd) {
+  const now = new Date(), y = now.getFullYear();
+  let start, end;
+  if (yearEnd === 'fy') {
+    const e = new Date(y, 8, 30, 23, 59, 59);
+    end = now <= e ? e : new Date(y + 1, 8, 30, 23, 59, 59);
+    start = new Date(end.getFullYear() - 1, 9, 1);
+  } else { start = new Date(y, 0, 1); end = new Date(y, 11, 31, 23, 59, 59); }
+  const monthsIn = Math.max(0.1, Math.round((now - start) / (end - start) * 120) / 10);
+  const daysLeft = Math.max(0, Math.ceil((end - now) / 864e5));
+  const fedEnd = now <= new Date(y, 8, 30, 23, 59, 59) ? new Date(y, 8, 30, 23, 59, 59) : new Date(y + 1, 8, 30, 23, 59, 59);
+  return { monthsIn, monthsLeft: Math.max(0.1, Math.round((12 - monthsIn) * 10) / 10), daysLeft, fedDays: Math.max(0, Math.ceil((fedEnd - now) / 864e5)) };
+}
+
+/* ── the model ── */
+let yearEnd = 'cy';
+function read() {
+  return { goal: parseMoney($('goal').value), pipe: parseMoney($('pipe').value), win: parseRate($('win').value),
+           size: parseMoney($('size').value), reps: parseCount($('reps').value), closed: parseMoney($('closed').value), yearEnd };
+}
+function compute(i) {
+  if (i.goal <= 0 || i.pipe <= 0) return null;
+  const cal = calendar(i.yearEnd);
+  const closed = Math.min(i.closed, i.goal);
+  const base = i.goal - closed;
+  if (base <= 0) return { done: true, closed, goal: i.goal };
+  const cov = i.pipe / base;
+  const req3 = base * TARGET, gap3 = Math.max(0, req3 - i.pipe);
+  let covNeed = i.win > 0 ? 1 / i.win : TARGET;
+  if (Math.abs(covNeed - TARGET) < .05) covNeed = TARGET;   // a third is 3X, exactly
+  const need = base * covNeed, gap = Math.max(0, need - i.pipe);
+  const ratio = i.pipe / need;
+  const deals = (i.size > 0 && gap > 0) ? Math.ceil(gap / i.size) : 0;
+  const perRep = (i.reps > 0 && gap > 0) ? gap / i.reps : 0;
+  const runNow = closed > 0 ? closed / cal.monthsIn : 0, runNeed = base / cal.monthsLeft;
+  const pace = runNow > 0 ? runNeed / runNow : 0;
+  const tier = ratio >= 1 ? ['COVERED', 'ready'] : ratio >= .75 ? ['HOPIUM', 'proof'] : ratio >= .5 ? ['AT RISK', 'prove'] : ['SHORT', 'dont'];
+  const threeOK = cov >= TARGET;
+  // The light bulb: what 3X says versus what the win rate says, in one sentence.
+  let flip;
+  if (!i.win) flip = threeOK ? 'Covered at 3X. Add your win rate to find out if 3X is your number.' : `At 3X you're ${money(gap3)} short. Add your win rate to see the real number.`;
+  else if (Math.abs(covNeed - TARGET) < .05) flip = `Your ${pct(i.win)} win rate is the 3X assumption. ${threeOK ? 'Covered.' : money(gap) + ' short.'}`;
+  else if (threeOK && ratio < 1) flip = `3X says you're covered. Your ${pct(i.win)} win rate says you're ${money(gap)} short.`;
+  else if (!threeOK && ratio >= 1) flip = `3X says you're ${money(gap3)} short. Your ${pct(i.win)} win rate says you're covered.`;
+  else if (ratio < 1) flip = `3X says ${money(gap3)} short. Your ${pct(i.win)} win rate says ${money(gap)}.`;
+  else flip = `Covered either way: at 3X and at your ${pct(i.win)} win rate.`;
+  const SUB = {
+    COVERED: 'Coverage only counts if the deals are real. Check a few before you commit it.',
+    HOPIUM: "You believe it's covered. Your own conversion hasn't agreed yet.",
+    'AT RISK': "Half the pipeline you need isn't there. Where does it come from?",
+    'SHORT': `Don't forecast this yet. That's a creation problem, not a closing problem.`,
+  };
+  return Object.assign({}, i, { cal, closed, base, cov, req3, gap3, covNeed, need, gap, ratio, deals, perRep, pace, threeOK, flip, label: tier[0], cls: tier[1], sub: SUB[tier[0]] });
+}
+
+/* ── the coverage bar: pipeline, the 3X line and your line on one scale ── */
+function bar(s) {
+  const top = Math.max(s.cov, s.covNeed, TARGET) * 1.12;
+  const at = (v) => Math.min(100, v / top * 100).toFixed(2) + '%';
+  const needLine = s.win && Math.abs(s.covNeed - TARGET) >= .05;
+  return `
+    <div class="cbar" role="img" aria-label="You have ${X(s.cov)}. 3X is the rule of thumb.${s.win ? ' Your win rate says ' + X(s.covNeed) + '.' : ''}">
+      <div class="cbar-track">
+        ${s.cov < s.covNeed ? `<div class="cbar-gap verdict-${s.cls}" style="left:${at(s.cov)};width:calc(${at(s.covNeed)} - ${at(s.cov)})"></div>` : ''}
+        <div class="cbar-fill" style="width:${at(s.cov)}"></div>
+        <div class="cbar-mark" style="left:${at(TARGET)}"><span>3X</span></div>
+        ${needLine ? `<div class="cbar-mark you" style="left:${at(s.covNeed)}"><span>You ${X(s.covNeed)}</span></div>` : ''}
+      </div>
+      <div class="cbar-legend"><span><i class="k-fill"></i>You have ${X(s.cov)}</span>${s.cov < s.covNeed ? `<span><i class="k-gap verdict-${s.cls}"></i>The gap</span>` : ''}</div>
+    </div>`;
+}
+
+/* ── sharing ── */
+function encodeInputs() {
+  const p = new URLSearchParams(), i = read();
+  if (i.goal) p.set('t', Math.round(i.goal)); if (i.pipe) p.set('p', Math.round(i.pipe)); if (i.win) p.set('w', Math.round(i.win * 100));
+  if (i.size) p.set('s', Math.round(i.size)); if (i.reps) p.set('n', i.reps); if (i.closed) p.set('c', Math.round(i.closed)); p.set('y', yearEnd);
+  return p.toString();
+}
+function readHash() {
+  const h = (location.hash || '').replace(/^#/, '');
+  if (!/^t=/.test(h)) return false;
+  const p = new URLSearchParams(h);
+  const set = (id, v, fmt) => { $(id).value = v ? fmt(v) : ''; };
+  set('goal', parseMoney(p.get('t')), money); set('pipe', parseMoney(p.get('p')), money);
+  set('win', parseRate(p.get('w')), pct); set('size', parseMoney(p.get('s')), money);
+  set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), money);
+  yearEnd = p.get('y') === 'fy' ? 'fy' : 'cy';
+  return true;
+}
+const shareLink = () => (location.origin && location.origin !== 'null' ? location.origin + location.pathname : 'https://quotabird.com/pipeline/') + '#' + encodeInputs();
+function shareBlock(s) {
+  return `Pipeline Check ${X(s.cov)} · ${s.label}\n${s.flip}\n`
+       + (s.deals ? `${s.deals} deals${s.perRep ? ' · ' + money(s.perRep) + ' per seller' : ''}\n` : '') + shareLink();
+}
+// The DM and the booking note carry multiples, never dollars.
+function dmText(s) {
+  return `Mark, ran my pipeline through Pipeline Check. I'm at ${X(s.cov)}${s.win ? ` and my ${pct(s.win)} win rate says I need ${X(s.covNeed)}` : ''}. I don't have a good answer for where the rest comes from. Worth 20 minutes?`;
+}
+const bookNote = (s) => `Pipeline Check: ${X(s.cov)} coverage, ${s.label.toLowerCase()}, needs ${X(s.covNeed)}${s.win ? ' at ' + pct(s.win) : ' at 3X'}${s.pace ? ', ' + s.pace.toFixed(1) + 'x current pace' : ''}.`;
+function copyText(text) {
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;';
+    document.body.appendChild(ta);
+    if (/iP(hone|ad|od)/.test(navigator.userAgent)) {
+      ta.contentEditable = 'true'; ta.readOnly = false;
+      const r = document.createRange(); r.selectNodeContents(ta);
+      const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); ta.setSelectionRange(0, text.length);
+    } else { ta.select(); }
+    const ok = document.execCommand('copy'); document.body.removeChild(ta);
+    if (ok) return Promise.resolve();
+  } catch (e) {}
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+  return Promise.reject(new Error('no clipboard'));
+}
+function shareOut(btn, block, title) {
+  const lines = block.split('\n'), url = lines[lines.length - 1], text = lines.slice(0, -1).join('\n').trim();
+  const touch = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+  const copy = () => copyText(block).then(() => { btn.textContent = 'Copied ✓'; }).catch(() => { btn.textContent = "Couldn't copy"; });
+  if (navigator.share && touch) navigator.share({ title, text, url }).then(() => { btn.textContent = 'Shared ✓'; }).catch((e) => { if (!e || e.name !== 'AbortError') copy(); });
+  else copy();
+}
+document.addEventListener('click', (e) => { document.querySelectorAll('details.menu[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; }); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('details.menu[open]').forEach(d => { d.open = false; d.querySelector('summary').focus(); }); });
+
+/* ── render ── */
+let shared = false, touched = false;
+function render() {
+  const s = compute(read());
+  const out = $('out');
+  document.querySelectorAll('[data-win]').forEach(b => b.classList.toggle('on', s && s.win && Math.round(s.win * 100) === +b.dataset.win));
+  document.querySelectorAll('[data-ye]').forEach(b => b.classList.toggle('on', b.dataset.ye === yearEnd));
+  $('justMe').classList.toggle('on', parseCount($('reps').value) === 1);
+  if (!s) { out.innerHTML = `<div class="empty">Put in your target and the pipeline you expect to close against it.</div>`; sumbar(null); return; }
+  if (s.done) { out.innerHTML = `<div class="verdict verdict-ready"><div class="verdict-word">Made it</div><div class="verdict-attack">You've closed ${money(s.closed)} against ${money(s.goal)}. Go protect next year.</div></div>`; sumbar(null); return; }
+  const cal = s.cal;
+  const clock = yearEnd === 'fy' ? `Your year ends in ${cal.daysLeft} days.` : `Your year has ${cal.daysLeft} days left. Your federal customers' money expires in ${cal.fedDays}.`;
+  const paceLine = s.pace ? (s.pace <= 1.15 ? " You're roughly on pace." : ` You need ${s.pace.toFixed(1)}× your current monthly rate${s.pace > 3 ? '. Nobody does that by trying harder.' : '.'}`) : '';
+  out.innerHTML = `
+    ${shared ? `<div class="banner">Someone sent you these numbers. Change any of them to run your own.</div>` : ''}
+    <div class="verdict verdict-${s.cls}" id="verdict">
+      <div class="verdict-number">${X(s.cov)}</div>
+      <div class="verdict-label">${s.label}</div>
+      <div class="verdict-attack">${esc(s.flip)}</div>
+      <div class="verdict-sub">${esc(s.sub)}</div>
+    </div>
+    ${bar(s)}
+    <div class="list" aria-label="The numbers">
+      <div class="list-item"><span class="headline">You have</span><span class="trailing strong">${money(s.pipe)}</span></div>
+      <div class="list-item"><span class="headline">3X says you need</span><span class="trailing">${money(s.req3)}${s.gap3 ? ' · ' + money(s.gap3) + ' short' : ' · covered'}</span></div>
+      ${s.win ? `<div class="list-item"><span class="headline">Your ${pct(s.win)} win rate says</span><span class="trailing">${money(s.need)}${s.gap ? ' · ' + money(s.gap) + ' short' : ' · covered'}</span></div>` : ''}
+      <div class="list-item"><span class="headline">The gap</span><span class="trailing strong${s.gap ? ' v-no' : ''}">${s.gap ? money(s.gap) + (s.deals ? ' · ' + s.deals + ' deals' : '') : 'None'}</span></div>
+      ${s.perRep ? `<div class="list-item"><span class="headline">${s.reps === 1 ? 'For you' : 'Per seller'}</span><span class="trailing strong">${money(s.perRep)}${s.deals && s.reps > 1 ? ' · ' + Math.ceil(s.deals / s.reps) + ' deals' : ''}</span></div>` : ''}
+    </div>
+    <p class="clock">${esc(clock + paceLine)}</p>
+    ${s.ratio < .5 ? `<div class="card card-accent">
+      <span class="overline">Before you go find ${money(s.gap)}</span>
+      <p class="lede">A gap this size is a creation problem. Can the territory even produce it?</p>
+      <a class="btn btn-tonal btn-full" href="/territory/" style="margin-top:14px;">Check my territory</a>
+    </div>` : `<div class="card card-accent">
+      <span class="overline">${s.ratio >= 1 ? 'Now the uncomfortable part' : 'Before you go find the rest'}</span>
+      <p class="lede">How much of the ${money(s.pipe)} you already have would pass a Deal Check?</p>
+      <a class="btn btn-tonal btn-full" href="/deal/" style="margin-top:14px;">Check a deal</a>
+    </div>`}
+    <div class="btn-row center" style="margin-top:8px;">
+      <button class="btn btn-text" id="copy" type="button">Share</button>
+    </div>
+    <div class="card" style="margin-top:20px;">
+      <h3>Stuck on where it comes from?</h3>
+      <p>I'm Mark. The math tells you how big the hole is; it doesn't tell you how to fill it, and "prospect harder"
+        is not a plan. Send me one line: no company name, no dollar figures, just the multiples.</p>
+      <div class="preview mono" title="Tap to select">${esc(dmText(s))}</div>
+      <button class="btn btn-primary btn-lg btn-full" id="dmBtn" type="button" style="margin-top:14px;">Copy this &amp; DM me</button>
+      <div class="btn-row center" style="margin-top:4px;">
+        <a class="btn btn-text" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=pipeline&utm_content=after_score&a1=${encodeURIComponent(bookNote(s))}" target="_blank" rel="noopener">Or book a call</a>
+      </div>
+      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. I answer LinkedIn faster than email.</p>
+    </div>`;
+  $('copy').onclick = (e) => { track('pipeline_share'); try { history.replaceState(null, '', '#' + encodeInputs()); } catch {} shareOut(e.currentTarget, shareBlock(s), 'Pipeline Check'); };
+  $('dmBtn').onclick = (e) => { const btn = e.currentTarget; track('pipeline_dm_copy');
+    copyText(dmText(s)).then(() => { btn.textContent = 'Copied ✓'; window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener'); }).catch(() => { btn.textContent = "Couldn't copy"; }); };
+  out.querySelector('.preview').onclick = (e) => { const r = document.createRange(); r.selectNodeContents(e.currentTarget); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+  sumbar(s);
+}
+
+/* ── the summary bar: on a phone, the answer stays visible while you type ── */
+let verdictVisible = true, lastS = null;
+function sumbar(s) {
+  lastS = s;
+  const b = $('sumbar');
+  if (!s || s.done) { b.hidden = true; return; }
+  b.className = 'sumbar verdict-' + s.cls;
+  b.innerHTML = `<b>${X(s.cov)}</b> ${s.cls === 'dont' ? '' : s.label.toLowerCase() + ' · '}${s.gap ? money(s.gap) + ' short' : 'covered'}${s.win ? ' at ' + pct(s.win) : ' at 3X'}`;
+  b.hidden = verdictVisible;
+}
+if ('IntersectionObserver' in window) {
+  // Show the strip only while the verdict is below the fold (you're up in the fields typing),
+  // never once you've scrolled past it into the reading.
+  const io = new IntersectionObserver((es) => {
+    const e = es[es.length - 1];
+    verdictVisible = e.isIntersecting || e.boundingClientRect.top < 0; sumbar(lastS);
+  }, { threshold: 0.15 });
+  const watch = () => { io.disconnect(); const v = $('verdict'); if (v) io.observe(v); };
+  new MutationObserver(watch).observe($('out'), { childList: true });
+}
+
+/* ── wiring ── */
+const onEdit = () => {
+  if (!touched) { touched = true; track('pipeline_edit'); $('exnote').textContent = ''; }
+  if (shared) { shared = false; try { history.replaceState(null, '', location.pathname); } catch {} }
+  render();
+};
+['goal','pipe','win','size','reps','closed'].forEach(id => $(id).addEventListener('input', onEdit));
+// Tidy money fields when you leave them: "10m" becomes "$10M".
+['goal','pipe','size','closed'].forEach(id => $(id).addEventListener('blur', () => { const v = parseMoney($(id).value); if (v) $(id).value = money(v); }));
+$('win').addEventListener('blur', () => { const v = parseRate($('win').value); if (v) $('win').value = pct(v); });
+// Selecting the whole field on focus makes typing over an example one step.
+document.querySelectorAll('.calc-in input').forEach(inp => inp.addEventListener('focus', () => { setTimeout(() => { try { inp.select(); } catch {} }, 0); }));
+document.querySelectorAll('[data-win]').forEach(b => b.onclick = () => { $('win').value = b.dataset.win + '%'; track('pipeline_winrate'); onEdit(); });
+document.querySelectorAll('[data-ye]').forEach(b => b.onclick = () => { yearEnd = b.dataset.ye; onEdit(); });
+$('justMe').onclick = () => { $('reps').value = '1'; onEdit(); };
+$('f').addEventListener('submit', (e) => e.preventDefault());
+if (readHash()) { shared = true; touched = true; $('exnote').textContent = ''; track('pipeline_verdict_shared'); }
+window.addEventListener('hashchange', () => { if (readHash()) { shared = true; render(); } });
+render();
+window.QB_TEST = { compute, read, calendar };
+</script>
+</body>
+</html>

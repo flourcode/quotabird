@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Not found | QuotaBird</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
+<meta name="color-scheme" content="light dark">
+<link rel="stylesheet" href="/site.css">
+<style>
+  .nf { text-align:center; padding:24px 0 8px; }
+  .nf picture img { width:min(240px, 60vw); height:auto; display:block; margin:0 auto 8px; animation:pop .6s var(--spring) both; }
+  .nf .code { font-size:clamp(96px, 28vw, 140px); line-height:1; font-weight:700; letter-spacing:-.05em; color:var(--ink); animation:pop .6s var(--spring) .08s both; }
+  .nf h1 { margin-top:12px; }
+  .nf .dek { margin-bottom:28px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="appbar">
+    <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="/logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
+    <nav class="topnav" aria-label="Site">
+      <a class="toplink" href="/notes/">Field Notes</a>
+      <a class="toplink" href="/#about">About</a>
+      <a class="chip chip-ask" href="/#ask">Ask Mark</a>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check<small>Before you put it in commit</small></a><a href="/territory/">Territory Check<small>Month one in a new patch</small></a><div class="menu-group">For managers</div><a href="/pipeline/">Pipeline Check<small>Quarterly, before the review</small></a><a href="/rep/">Rep Check<small>When a rep is worrying you</small></a><a href="/partner/">Partner Check<small>Before you renew the partnership</small></a><a href="/olr/">OLR Check<small>Review season</small></a><div class="menu-group">For anyone</div><a href="/brief/">Brief Check<small>Before a meeting where someone can say no</small></a><div class="menu-group">Your number</div><a href="/quota/">Quota Check<small>The day the number lands</small></a><a href="/discount/">Discount Check<small>When they ask you to sharpen the pencil</small></a><a href="/commission/">Commission Check<small>When it closes</small></a><div class="menu-group">QuotaBird</div><a href="/notes/">Field Notes<small>Short reads that deserve a second look</small></a><a href="/#about">About Mark<small>And how to reach him</small></a></div></details>
+    </nav>
+  </header>
+  <div id="screen" class="nf">
+    <picture><source srcset="/logo-x-dark.svg" media="(prefers-color-scheme: dark)"><img src="/logo-x.svg" alt="" width="187" height="200"></picture>
+    <div class="code">404</div>
+    <h1>Wrong turn.</h1>
+    <p class="dek">Nothing lives at this address.</p>
+    <a class="btn btn-primary btn-lg btn-full" href="/deal/">Check my deal</a>
+    <div class="btn-row center" style="margin-top:8px;"><a class="btn btn-text" href="/">All tools</a></div>
+  </div>
+</div>
+</body>
+</html>

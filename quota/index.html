@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quota Check: Is My Quota Crazy?</title>
+<meta name="description" content="Your quota against your on-target earnings. Multiples under 3 and over 10 both mean something. Free, in your browser, nothing stored.">
+<link rel="canonical" href="https://quotabird.com/quota/">
+<meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://quotabird.com/quota/">
+<meta property="og:title" content="Quota Check: Is my quota crazy?">
+<meta property="og:description" content="Is my quota crazy? Base, variable and quota in, a straight answer out.">
+<meta property="og:site_name" content="QuotaBird">
+<meta property="og:image" content="https://quotabird.com/card-quota.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Quota Check: Is my quota crazy?">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Quota Check: Is my quota crazy?">
+<meta name="twitter:description" content="Is my quota crazy? Base, variable and quota in, a straight answer out.">
+<meta name="twitter:image" content="https://quotabird.com/card-quota.jpg">
+<meta name="twitter:image:alt" content="Quota Check: Is my quota crazy?">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Quota Check",
+      "url": "https://quotabird.com/quota/",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "description": "Your quota against your on-target earnings. Multiples under 3 and over 10 both mean something. Free, in your browser, nothing stored.",
+      "image": "https://quotabird.com/card-quota.jpg",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "QuotaBird",
+        "url": "https://quotabird.com/"
+      },
+      "author": {
+        "@id": "https://quotabird.com/#about"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does anything I enter leave my device?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do the ranges come from?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Years of looking at comp plans at cloud providers, SaaS companies and their partners. They are typical ranges, not rules, and roles differ: an overlay or a ramp quota can be low and correct, and a strategic account role can be high and still fair."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if my variable is a bonus, not commission?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the target amount at 100% attainment either way. The tool cares about how much of your pay depends on the number, not what the plan calls it."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="../site.css">
+<script src="../analytics.js" defer></script>
+</head>
+<body class="wide-page">
+
+<div class="wrap wide">
+  <header class="appbar">
+    <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
+    <nav class="topnav" aria-label="Site">
+      <a class="toplink" href="/notes/">Field Notes</a>
+      <a class="toplink" href="/#about">About</a>
+      <a class="chip chip-ask" href="#ask">Ask Mark</a>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check<small>Before you put it in commit</small></a><a href="/territory/">Territory Check<small>Month one in a new patch</small></a><div class="menu-group">For managers</div><a href="/pipeline/">Pipeline Check<small>Quarterly, before the review</small></a><a href="/rep/">Rep Check<small>When a rep is worrying you</small></a><a href="/partner/">Partner Check<small>Before you renew the partnership</small></a><a href="/olr/">OLR Check<small>Review season</small></a><div class="menu-group">For anyone</div><a href="/brief/">Brief Check<small>Before a meeting where someone can say no</small></a><div class="menu-group">Your number</div><a href="/quota/" class="current">Quota Check<small>The day the number lands</small></a><a href="/discount/">Discount Check<small>When they ask you to sharpen the pencil</small></a><a href="/commission/">Commission Check<small>When it closes</small></a><div class="menu-group">QuotaBird</div><a href="/notes/">Field Notes<small>Short reads that deserve a second look</small></a><a href="/#about">About Mark<small>And how to reach him</small></a></div></details>
+    </nav>
+  </header>
+  <div id="screen" class="calc-screen">
+    <span class="overline tool-name">Quota Check</span>
+    <h1>Is my quota crazy?</h1>
+    <p class="dek">Base salary, target variable and the number they handed you. We'll tell you where the plan sits against what's normal, and what it asks of your patch. <span id="exnote">These are example numbers; type yours over them.</span></p>
+    <div class="calc">
+      <form class="calc-in" id="f" autocomplete="off" novalidate>
+        <label class="tf"><span class="tf-label">Base salary</span><input id="base" type="text" inputmode="decimal" autocomplete="off" value="$90K"></label>
+        <label class="tf"><span class="tf-label">Target variable at 100%</span><input id="variable" type="text" inputmode="decimal" autocomplete="off" value="$90K"></label>
+        <label class="tf"><span class="tf-label">Your quota for the year</span><input id="quota" type="text" inputmode="decimal" autocomplete="off" value="$1.2M"></label>
+        <label class="tf"><span class="tf-label">What you closed last year</span><input id="closed" type="text" inputmode="decimal" autocomplete="off" placeholder="$0 (optional)"></label>
+      </form>
+      <div class="calc-out" id="out" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<div class="sumbar" id="sumbar" hidden aria-hidden="true"></div>
+
+<section class="band" id="how">
+  <div class="band-inner">
+    <h2>What the multiple means</h2>
+    <p class="lede">Divide your quota by your on-target earnings. That one number tells you more about the plan than the plan will.</p>
+    <p>Somewhere between 4 and 6 is the usual range for mid-market SaaS and cloud reps: the company expects to pay you roughly a fifth of what you bring in. Below 3 is unusual, and usually means a ramp quota, an overlay role, or a plan with a catch in it. Six to eight is enterprise at a big CSP, and it needs a strong pipeline behind it. Eight to ten is strategic and named-account territory, where you'll need three to four times coverage and a patch that can produce it. Above ten, the plan is asking the territory for something it may not have.</p>
+    <p>The second number that matters is variable as a share of OTE. Under 40% and the quota matters less than it looks; over 60% and it's most of your pay, so treat it like one. And if you closed last year, the growth the new number implies is the honest measure of how much harder this year is.</p>
+    <p>None of this says the number is wrong. It says where it sits. Whether the patch can produce it is <a href="/territory/">Territory Check</a>, and how much pipeline it takes is <a href="/pipeline/">Pipeline Check</a>.</p>
+  </div>
+</section>
+
+<section class="band" id="about" aria-labelledby="about-h">
+  <div class="band-inner">
+    <div class="who">
+      <img src="../mark.jpg" alt="Mark Flournoy" width="120" height="120" loading="lazy" decoding="async"
+           onerror="this.remove();">
+        <h2 id="about-h">Hi, I'm Mark.</h2>
+        <p>I've spent a lot of years helping customers buy complicated technology. Six of them leading partner sales
+          teams at AWS. Before that F5, Red Hat, and a couple of storage companies you've probably forgotten. Before
+          all of that, 20 years as a Marine.</p>
+        <p>Along the way I've been the seller defending the deal, the partner trying to help, the manager asking
+          annoying questions, and the guy one level up explaining why the forecast moved again.</p>
+        <p>QuotaBird is where I put the things I've found useful. Most of the tools are free. Most take a few
+          minutes. None of them require you to adopt a new sales religion. Use whatever helps.</p>
+    </div>
+
+    <h3>A few things I see a lot</h3>
+    <p class="lede">Rarely just one of them. Usually a couple at the same time, quietly making each other worse.</p>
+    <p><strong>The pipeline looks better than it really is.</strong> Plenty of opportunities in the CRM, but once
+      you ask about budget, timing and who actually wants the thing, the number gets smaller fast.</p>
+    <p><strong>The partner likes you, but nothing is happening.</strong> Plenty of meetings, maybe a joint deck.
+      Nobody can point to the accounts where the two companies are actually trying to win something together.</p>
+    <p><strong>The team is busy, but there isn't much rhythm.</strong> The forecast call happens. The one-on-ones
+      happen. Nobody is sure what the team should do differently this week to make next quarter better.</p>
+    <p><strong>The number from above doesn't match what you see below.</strong> Leadership has a growth number.
+      Your team has a pipeline. You're the one who has to explain why they disagree without sounding like
+      you've already given up.</p>
+    <p>A team can be behind plan for a lot of reasons. One seller needs help getting in front of customers.
+      Another is doing fine and wants you to stay out of the way. Someone else thinks the year is already
+      gone. Sometimes the rep is fine and the territory, the comp plan or the pipeline they inherited isn't.
+      The useful part is figuring out which one you're dealing with before you fix the wrong one. That's what
+      the tools here do, one deal, one rep, one territory at a time. It's also most of what I do.</p>
+
+    <h3 id="ask">Need another set of eyes?</h3>
+    <p>Sometimes a calculator isn't enough. If you're stuck on a deal, an account, a partner, a territory, a QBR or
+      a federal problem, I'm happy to look at it with you. Here's exactly how it works:</p>
+    <ol class="steps">
+      <li><b>Pick a time.</b> Name, email and one line about what's going on. No deck required.</li>
+      <li><b>I read your line before we talk,</b> so we start in the middle instead of at the beginning.</li>
+      <li><b>Twenty minutes, free.</b> Then you decide whether there's anything more. No pitch, and no sales follow-ups.</li>
+    </ol>
+    <p class="lede">If I don't think I can help, I'll tell you.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary btn-lg" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=quota&amp;utm_content=ask" target="_blank" rel="noopener">Chat with Mark</a>
+      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
+    </div>
+    <p class="fine" style="margin-top:14px;">If it's something that takes more than a conversation, we can figure that out
+      too. I also build <a href="https://fedhoo.com" target="_blank" rel="noopener">fedhoo</a>, a federal market research tool.</p>
+  </div>
+</section>
+
+<section class="band" id="faq" aria-labelledby="faq-h">
+  <div class="band-inner">
+    <h2 id="faq-h">Questions</h2>
+    <details class="exp"><summary>Does anything I enter leave my device?</summary>
+      <div class="body">No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.</div></details>
+    <details class="exp"><summary>Where do the ranges come from?</summary>
+      <div class="body">Years of looking at comp plans at cloud providers, SaaS companies and their partners. They are typical ranges, not rules, and roles differ: an overlay or a ramp quota can be low and correct, and a strategic account role can be high and still fair.</div></details>
+    <details class="exp"><summary>What if my variable is a bonus, not commission?</summary>
+      <div class="body">Use the target amount at 100% attainment either way. The tool cares about how much of your pay depends on the number, not what the plan calls it.</div></details>
+  </div>
+</section>
+
+<footer class="sitefoot">
+  <p>Quota Check is one of the free <a href="/">QuotaBird</a> tools by
+    <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
+  <p>Not affiliated with the U.S. government or Amazon.</p>
+</footer>
+<script src="../calc.js"></script>
+<script>
+'use strict';
+window.QB_BUILD = '2026-10-06.0900';
+CalcTool({
+  slug: 'quota', name: 'Quota Check', url: 'https://quotabird.com/quota/',
+  fields: [{ id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],
+  compute(v) {
+    if (!(v.base > 0 && v.variable > 0 && v.quota > 0)) return null;
+    const ote = v.base + v.variable, mult = v.quota / ote, share = v.variable / ote, X = mult.toFixed(1) + '×';
+    const pct = (r) => Math.round(r * 100) + '%';
+    const money = (n) => n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n);
+    let t;
+    if (mult < 3) t = ['Low', 'proof', `Quota is ${X} OTE. That's unusually low: a ramp, an overlay, or a plan with a catch in it.`, 'Read the plan twice. Low multiples usually come with a condition.'];
+    else if (mult <= 4) t = ['Favorable', 'ready', `Quota is ${X} OTE, below the usual 4 to 6.`, 'Common in SMB, commercial and brand-new patches. Enjoy it while it lasts.'];
+    else if (mult <= 6) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the usual 4 to 6.`, "The number is fair. Whether the patch can produce it is a different question."];
+    else if (mult <= 8) t = ['A stretch', 'proof', `Quota is ${X} OTE, above the usual range.`, 'Normal for enterprise at a big CSP, and it needs a strong pipeline behind it.'];
+    else if (mult <= 10) t = ['Aggressive', 'prove', `Quota is ${X} OTE. Strategic and named-account territory.`, "You'll need 3 to 4X coverage and a patch that can produce it."];
+    else t = ['Crazy', 'dont', `Quota is ${X} OTE. The plan is asking the patch for something it may not have.`, 'Check the territory before you sign, and get the sizing in writing.'];
+    const growth = v.closed > 0 ? (v.quota - v.closed) / v.closed : null;
+    const rows = [['On-target earnings', money(ote)], ['Quota ÷ OTE', X], ['Variable share of OTE', pct(share)]];
+    if (growth != null) rows.push(['Growth over what you closed', (growth >= 0 ? '+' : '') + pct(growth), growth > .3 ? 'v-no' : '']);
+    const note = share < .4 ? 'Variable is under 40% of OTE. You are paid mostly to show up, and the quota matters less than it looks.' : share > .6 ? 'Variable is over 60% of OTE. The quota is most of your pay. Treat it like one.' : '';
+    return { label: t[0], cls: t[1], attack: t[2], sub: t[3], big: X, rows, note, mult, share, growth, ote, quota: v.quota };
+  },
+  handoff: (s) => ({ overline: 'Now the coverage math', text: `At 3X you'd need about ${(s.quota * 3 / 1e6).toFixed(1)}M of qualified pipeline to cover it. Your win rate will say more.`.replace('about ', 'about $'), href: `/pipeline/#t=${Math.round(s.quota)}&y=cy`, label: 'Check my pipeline' }),
+  mark: { title: () => 'Is the plan sane?', body: "I'm Mark. I've been handed the crazy number and handed one out by mistake. If the multiple is off, I can help you make the case. If it's fair, I can help you make the plan. One line, no company name, no dollar figures." },
+  dm: (s) => `Mark, ran my comp plan through Quota Check. Quota is ${s.big} OTE and variable is ${Math.round(s.share * 100)}% of OTE${s.growth != null ? ', ' + Math.round(s.growth * 100) + '% over what I closed last year' : ''}. Not sure it's sane. Worth 20 minutes?`,
+  bookNote: (s) => `Quota Check: ${s.big} OTE, variable ${Math.round(s.share * 100)}% of OTE, ${s.label.toLowerCase()}.`,
+});
+</script>
+</body>
+</html>
