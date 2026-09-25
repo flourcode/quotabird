@@ -171,7 +171,7 @@
         <label class="tf"><span class="tf-label">Qualified pipeline expected to close this year</span>
           <input id="pipe" type="text" inputmode="decimal" value="$32M"></label>
         <label class="tf"><span class="tf-label">Your qualified win rate</span>
-          <input id="win" type="text" inputmode="decimal" value="25%"></label>
+          <input id="win" type="text" inputmode="decimal" value="20%"></label>
         <div class="chips" style="margin:-4px 0 14px;" aria-label="Win rate presets">
           <button class="chip" data-win="20" type="button">Federal ~20%</button>
           <button class="chip" data-win="25" type="button">SaaS ~25%</button>
@@ -459,7 +459,8 @@ function readHash() {
   set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), fullMoney);
   yearEnd = p.get('y') === 'fy' ? 'fy' : 'cy';
   // Quota Check sends only a target: start from the 3X ballpark it quoted, so the page opens on a verdict
-  if (p.has('t') && !p.has('p')) { const t = parseMoney(p.get('t')); if (t > 0) { $('pipe').value = fullMoney(t * 3); fromQuota = true; } }
+  if (p.has('t') && !p.has('p')) { const t = parseMoney(p.get('t')); if (t > 0) {
+    $('pipe').value = fullMoney(t * 3); $('win').value = '20%'; $('size').value = '$500,000'; $('reps').value = '1'; $('closed').value = ''; fromQuota = true; } }
   return true;
 }
 const shareLink = () => (location.origin && location.origin !== 'null' ? location.origin + location.pathname : 'https://quotabird.com/') + '#' + encodeInputs();
@@ -512,7 +513,7 @@ function render() {
   const clock = yearEnd === 'fy' ? `Your year ends in ${cal.daysLeft} days.` : `Your year has ${cal.daysLeft} days left. Your federal customers' money expires in ${cal.fedDays}.`;
   const paceLine = s.pace ? (s.pace <= 1.15 ? " You're roughly on pace." : ` You need ${s.pace.toFixed(1)}× your current monthly rate${s.pace > 3 ? '. Nobody does that by trying harder.' : '.'}`) : '';
   out.innerHTML = `
-    ${shared ? `<div class="banner">Someone sent you these numbers. Change any of them to run your own.</div>` : fromQuota ? `<div class="banner">From Quota Check: at 3X, a ${money(s.goal)} number needs ${money(s.goal * 3)} of qualified pipeline. That's filled in. Now put in what you actually have, and your win rate.</div>` : ''}
+    ${shared ? `<div class="banner">Someone sent you these numbers. Change any of them to run your own.</div>` : fromQuota ? `<div class="banner">From Quota Check. Starting point filled in: ${money(s.goal * 3)} of pipeline (3X your number), a conservative 20% win rate, $500K deals, just you. Change anything that's wrong.</div>` : ''}
     <div class="verdict verdict-${s.cls}" id="verdict">
       <div class="verdict-number">${X(s.cov)}</div>
       <div class="verdict-label">${s.label}</div>

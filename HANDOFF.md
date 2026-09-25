@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-11.1500**
+**Current build: 2026-10-11.1700**
 
 ## Naming: checks, not kills
 
@@ -107,14 +107,17 @@ discount*, *It closed*.
 door is the tool that checks it. On a phone the order is hero, verdict card
 and coverage bar (`#out`), the fields, then the rows, clock, hand-off, share
 and Mark card (`#out2`); on desktop the fields sit left and the two output
-blocks stack on the right. The example (3.2X, Hopium, 3X says covered and
-25% says $8M short) is the light bulb and must be on the first screen of a
+blocks stack on the right. The example (3.2X, At risk, 3X says covered and
+20% says $18M short) is the light bulb and must be on the first screen of a
 375×667 phone; it is. The summary strip shows only while the fields are on
 screen and the verdict has scrolled off the top. A hash with a target but no
-pipeline (Quota Check's hand-off) fills the target, pre-fills the pipeline at
-the 3X ballpark Quota Check just quoted, and says so in a banner, so the page
-opens on *Covered at 3X. Add your win rate to find out if 3X is your number.*
-The first edit clears the banner. It is not treated as a shared verdict. The earlier home hero (a
+pipeline (Quota Check's hand-off) fills every field: the target, pipeline at the
+3X ballpark Quota Check just quoted, the conservative Federal 20% win rate,
+$500K deals and *just me*, and says exactly that in a banner, so the page
+opens on a real verdict (*3X says you're covered, your 20% win rate says
+you're $12M short*) and nobody has to know which fields to touch. The
+page's own example uses the same 20% default. The first edit clears the
+banner. It is not treated as a shared verdict. The earlier home hero (a
 live Deal Check question, then a photo byline) was replaced by this; Deal
 Check still accepts a 1-to-4 letter hash as a check in progress.
 
@@ -1320,3 +1323,5 @@ meeting with balanced two-column menu.
 **2026-10-11.1300** — Quota Check hand-off pre-fills the pipeline at 3X with a banner, so the home calculator opens on a verdict instead of empty fields.
 
 **2026-10-11.1500** — a covered pipeline now hands off to Risk Check (the shape), Hopium/At risk to Deal Check, Short to Territory Check. Audit of all hand-offs: no other carries numbers; Quota → Pipeline is the only calculator-to-calculator path.
+
+**2026-10-11.1700** — Quota → Pipeline hand-off fills every field (3X pipeline, Federal 20%, $500K deals, just me) with a banner saying so; Federal 20% is the win-rate default on the home example too.
