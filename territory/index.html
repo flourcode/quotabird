@@ -106,7 +106,7 @@
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/#about">About</a>
       <a class="chip chip-ask" href="#ask">Ask Mark</a>
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check<small>Before you put it in commit</small></a><a href="/territory/" class="current">Territory Check<small>Month one in a new patch</small></a><div class="menu-group">For managers</div><a href="/pipeline/">Pipeline Check<small>Quarterly, before the review</small></a><a href="/rep/">Rep Check<small>When a rep is worrying you</small></a><a href="/partner/">Partner Check<small>Before you renew the partnership</small></a><a href="/olr/">OLR Check<small>Review season</small></a><div class="menu-group">For anyone</div><a href="/brief/">Brief Check<small>Before a meeting where someone can say no</small></a><div class="menu-group">Your number</div><a href="/quota/">Quota Check<small>The day the number lands</small></a><a href="/discount/">Discount Check<small>When they ask you to sharpen the pencil</small></a><a href="/commission/">Commission Check<small>When it closes</small></a><div class="menu-group">QuotaBird</div><a href="/notes/">Field Notes<small>Short reads that deserve a second look</small></a><a href="/#about">About Mark<small>And how to reach him</small></a></div></details>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/" class="current">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/pipeline/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/#about">About Mark</a></div></div></details>
     </nav>
   </header>
   <div id="screen">
@@ -155,7 +155,7 @@
       <img src="../mark.jpg" alt="Mark Flournoy" width="120" height="120" loading="lazy" decoding="async"
            onerror="this.remove();">
         <h2 id="about-h">Hi, I'm Mark.</h2>
-        <p>I've spent a lot of years helping customers buy complicated technology. Six of them leading partner sales
+        <p>I've spent a lot of years helping customers buy complicated technology. For six of them I led partner sales
           teams at AWS. Before that F5, Red Hat, and a couple of storage companies you've probably forgotten. Before
           all of that, 20 years as a Marine.</p>
         <p>Along the way I've been the seller defending the deal, the partner trying to help, the manager asking
@@ -166,6 +166,8 @@
 
     <h3>A few things I see a lot</h3>
     <p class="lede">Rarely just one of them. Usually a couple at the same time, quietly making each other worse.</p>
+    <p><strong>The forecast call has become the job.</strong> Your manager wants a status on everything by noon,
+      the CRM wants a next step on every line, and the customer is the last person you talk to each day.</p>
     <p><strong>The pipeline looks better than it really is.</strong> Plenty of opportunities in the CRM, but once
       you ask about budget, timing and who actually wants the thing, the number gets smaller fast.</p>
     <p><strong>The partner likes you, but nothing is happening.</strong> Plenty of meetings, maybe a joint deck.
@@ -214,6 +216,7 @@
 </section>
 
 <footer class="sitefoot">
+  <p class="foot-nav"><a href="/">Tools</a><a href="/notes/">Field Notes</a><a href="/#about">About</a><a href="#ask">Ask Mark</a></p>
   <p>Territory Check is one of the free <a href="/">QuotaBird</a> tools by
     <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
@@ -221,7 +224,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-06.0900';
+window.QB_BUILD = '2026-10-07.1100';
 CheckTool({
   slug: 'territory', name: 'Territory Check', url: 'https://quotabird.com/territory/',
   questions: [

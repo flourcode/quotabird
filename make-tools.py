@@ -3,28 +3,30 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-06.0900'
+BUILD = '2026-10-07.1100'
 TOOLS = [
     ('For sellers', '/deal/', 'Deal Check', 'Before you put it in commit'),
+    ('For sellers', '/quota/', 'Quota Check', 'The day the number lands'),
     ('For sellers', '/territory/', 'Territory Check', 'Month one in a new patch'),
+    ('For sellers', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
+    ('For sellers', '/commission/', 'Commission Check', 'When it closes'),
     ('For managers', '/pipeline/', 'Pipeline Check', 'Quarterly, before the review'),
     ('For managers', '/rep/', 'Rep Check', 'When a rep is worrying you'),
     ('For managers', '/partner/', 'Partner Check', 'Before you renew the partnership'),
     ('For managers', '/olr/', 'OLR Check', 'Review season'),
-    ('For anyone', '/brief/', 'Brief Check', 'Before a meeting where someone can say no'),
-    ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
-    ('Your number', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
-    ('Your number', '/commission/', 'Commission Check', 'When it closes'),
-    ('QuotaBird', '/notes/', 'Field Notes', 'Short reads that deserve a second look'),
-    ('QuotaBird', '/#about', 'About Mark', 'And how to reach him'),
+    ('Any meeting', '/brief/', 'Brief Check', 'When someone in the room can say no'),
 ]
 
 def menu(current):
-    out, last = [], None
+    groups, last = [], None
     for g, h, n, d in TOOLS:
-        if g != last: out.append(f'<div class="menu-group">{g}</div>'); last = g
-        out.append(f'<a href="{h}"{" class=\"current\"" if h == current else ""}>{n}<small>{d}</small></a>')
-    return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{"".join(out)}</div></details>'
+        if g == 'QuotaBird': continue
+        if g != last: groups.append([g, []]); last = g
+        groups[-1][1].append(f'<a href="{h}"{" class=\"current\"" if h == current else ""}>{n}</a>')
+    cols = ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in groups)
+    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/#about">About Mark</a></div>'
+    return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{cols}{foot}</div></details>'
+
 
 
 def page(t):
@@ -319,7 +321,7 @@ PARTNER = dict(
   handoff: (s) => s.total >= 55
     ? { overline: 'Is there a deal inside this partnership?', text: 'Run it through Deal Check. A real partner deal survives the same five questions any deal does.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'How much of your number is leaning on them?', text: 'If this partner is in your coverage math, the math is wrong. Pipeline Check shows you by how much.', href: '/pipeline/', label: 'Check my pipeline' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I ran partner sales at AWS for six years and sat on the other side of the table before that. I have seen every version of the partnership that looks great in the QBR and produces nothing. Send me one line. No partner names." },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I led partner sales teams at AWS for six years and sat on the other side of the table before that. I have seen every version of the partnership that looks great in the QBR and produces nothing. Send me one line. No partner names." },
   dm: (s) => `Mark, ran a partner through Partner Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure what to do with it. Worth 20 minutes?`,
 });''',
 )
@@ -1074,6 +1076,9 @@ def chrome(path):
     if 'rel="preload" href="/inter.woff2"' not in s:
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
+    ask = '/#ask' if path == '404.html' else '#ask'
+    if 'class="foot-nav"' not in s:
+        s = s.replace('<footer class="sitefoot">', f'<footer class="sitefoot">\n  <p class="foot-nav"><a href="/">Tools</a><a href="/notes/">Field Notes</a><a href="/#about">About</a><a href="{ask}">Ask Mark</a></p>', 1)
     if path != '404.html':
         mark = MARK_SRC.replace('{ROOT}', root_of(path)).replace('{UTM}', utm_of(path))
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)

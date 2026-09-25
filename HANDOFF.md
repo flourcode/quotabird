@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-06.0900**
+**Current build: 2026-10-07.1100**
 
 ## Naming: checks, not kills
 
@@ -91,20 +91,42 @@ and Pipeline pages and the 404), then rebuilds every FAQ's structured data.
 Edit the header in `header()`, the About in `partials/mark.html`, a note in
 `NOTES`; never edit those parts inside a page.
 
+**Who it's for, in the copy.** Jaded, overworked sellers and sales managers:
+making the number, managing up to a boss who wants the forecast by noon,
+keeping cranky customers happy. The home dek says exactly that. Doorways
+and the Tools menu use the same three groups: *For sellers* (Deal, Quota,
+Territory, Discount, Commission), *For managers* (Pipeline, Rep, Partner,
+OLR), *Any meeting* (Brief). The About's situations open with the one every
+seller recognises: the forecast call has become the job.
+
+**Mark's AWS role, worded precisely:** he *led partner sales teams at AWS*.
+Never "led partner sales at AWS" or "ran partner sales"; the difference
+matters to him and to anyone who was there.
+
 **Nav.** Header: bird + *QuotaBird* (home), *Field Notes* and *About* as
 text links on screens 700px and wider, an *Ask Mark* chip that jumps to the
 *Need another set of eyes?* heading on the current page, and the *Tools*
-menu, which also carries Field Notes and About for phones. No Services, no
+menu: a compact two-column list of the ten tools in three groups, no
+subtitles, with Home / Field Notes / About in a small row underneath
+(307px tall on a phone; it was over 550). Every footer also carries
+Tools · Field Notes · About · Ask Mark. No Services, no
 Solutions, no Consulting.
 
 **Every screen asks one easy question.** From the October 2026 UX review
 (three videos, consolidated): the tools already ask easy questions, so the
 work went into the questions the site asks about Mark. Six changes, keep them:
-- *Show the payoff before the ask.* The home hero shows a real Deal Check
-  result (Hopium, 3½ of 5 proven, weakest: money, and the question they'll
-  ask), taken verbatim from the tool. If Deal Check's copy changes, update it.
-- *Trust at the top.* A byline under the home hero: photo and "Built by Mark
-  Flournoy, six years leading partner sales at AWS", linking to the About.
+- *The hero is the tool.* The home page shows Deal Check's first question,
+  live, with Yes / Sort of / No under it (`.live`). Each answer links to
+  `/deal/#y`, `#s` or `#n`; Deal Check reads a 1-to-4 letter hash as a check
+  in progress and picks up at question 2 with the answer kept. All three
+  answers sit above the fold on a 375×667 phone; keep them there. Under it,
+  *Five taps later*: a real Deal Check result (Hopium, 3½ of 5 proven,
+  weakest: money, and the question they'll ask), verbatim from the tool. If
+  Deal Check's first question or its copy changes, update both.
+- *Trust at the top, as a clause, not a face.* The photo byline was tried and
+  removed: on a small phone it pushed the value below the fold. Credibility
+  is one clause in the dek ("back when I carried a number and led partner
+  sales teams at AWS"); the photo lives in the About.
 - *Specific cost under every start button*: "5 taps · about a minute ·
   nothing stored" (home: "Free · no login · nothing stored"). No "one
   minute" in the deks; the note says it once, precisely.
@@ -1170,3 +1192,15 @@ generated from the page list.
 **2026-10-06.1000** — 404 bird keeps the X eye (`logo-x.svg`).
 
 **2026-10-06.1100** — bird re-traced with heavier smoothing: smooth curves at any size, all versions (round eye, X eye, dark) and every icon and card re-rendered.
+
+**2026-10-07.0900** — mobile-first pass for the target reader: home dek
+rewritten (the number, the boss, the customer), doorways grouped by role,
+Tools menu compacted to two columns in three groups with no subtitles,
+footer nav on every page, a fifth situation in the About (the forecast
+call has become the job), AWS role worded as "led partner sales teams".
+
+**2026-10-07.1100** — home hero rebuilt around instant value: Deal Check's
+first question live in the hero (answers land on /deal/ at question 2),
+the byline photo removed and credibility folded into the dek, the two
+buttons removed (the doorways and menu cover the rest), hero spacing
+tightened so all three answers show above the fold on a 375×667 phone.

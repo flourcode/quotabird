@@ -43,7 +43,7 @@
       "@id": "https://quotabird.com/#about",
       "name": "Mark Flournoy",
       "url": "https://quotabird.com/#about",
-      "description": "Six years leading partner sales teams at AWS; prior roles at F5, Red Hat, STEC and Virident; 20 years a Marine.",
+      "description": "Led partner sales teams at AWS for six years; prior roles at F5, Red Hat, STEC and Virident; 20 years a Marine.",
       "knowsAbout": ["Federal sales", "Pipeline qualification", "Pipeline coverage", "Sales management", "Partner and channel sales", "Federal go-to-market"],
       "sameAs": ["https://fedhoo.com", "https://www.linkedin.com/in/markflournoy/"]
     },
@@ -63,17 +63,21 @@
   <header class="appbar"></header>
   <div id="screen" class="home-hero">
     <h1>Carrying a number is hard enough.</h1>
-    <p class="dek">Quick reality checks for people who carry a quota: the deal, the pipeline, the territory, the comp
-      plan, the room you're about to walk into. No certification. No methodology to memorize. Just a few things
-      I've found useful after a lot of years in the room.</p>
-    <a class="byline" href="#about"><img src="mark.jpg" alt="" width="32" height="32">Built by Mark Flournoy, six years leading partner sales at AWS.</a>
-    <div class="hero-ctas">
-      <a class="btn btn-primary btn-lg" href="/deal/">Check my deal</a>
-      <a class="btn btn-lg" href="/pipeline/">Check my pipeline</a>
+    <p class="dek">You have a number, a boss who wants the forecast by noon, and a customer who stopped answering.
+      These are the quick checks I wish I'd had back when I carried a number and led partner sales teams at AWS.</p>
+    <div class="live" aria-label="Deal Check, question 1 of 5">
+      <div class="progress" aria-hidden="true"><i class="done"></i><i></i><i></i><i></i><i></i></div>
+      <span class="overline">Deal Check · question 1 of 5</span>
+      <div class="question">Has the customer actually said they want to solve this?</div>
+      <div class="choice-group" role="group" aria-label="Has the customer actually said they want to solve this?">
+        <a class="choice" href="/deal/#y">Yes</a>
+        <a class="choice" href="/deal/#s">Sort of</a>
+        <a class="choice" href="/deal/#n">No</a>
+      </div>
+      <p class="startnote">Four more questions, then a verdict. About a minute. Nothing stored.</p>
     </div>
-    <p class="startnote">Free · no login · nothing stored</p>
     <div class="sample" aria-label="An example Deal Check result">
-      <span class="overline">What five taps get you</span>
+      <span class="overline">Five taps later</span>
       <div class="verdict verdict-proof">
         <div class="verdict-word">Hopium</div>
         <div class="verdict-meta">3½ of 5 proven. Weakest: money.</div>
@@ -88,18 +92,21 @@
 <section class="band" id="working" aria-labelledby="working-h">
   <div class="band-inner">
     <h2 id="working-h">What are you working on?</h2>
-    <p class="lede">Quick reality checks for people who carry a number. Each takes about a minute.</p>
+    <p class="lede">Pick the day you're having.</p>
     <div class="doors">
+      <span class="overline">For sellers</span>
       <a class="door" href="/deal/"><span><b>I have a deal.</b><span class="q">Is it real, or are we filling in the blanks ourselves?</span></span><span class="to">Deal Check</span></a>
-      <a class="door" href="/pipeline/"><span><b>I have a target.</b><span class="q">Do I actually have enough pipeline to cover it?</span></span><span class="to">Pipeline Check</span></a>
       <a class="door" href="/quota/"><span><b>I just got my quota.</b><span class="q">Is it crazy, or just a stretch?</span></span><span class="to">Quota Check</span></a>
-      <a class="door" href="/brief/"><span><b>I have a meeting.</b><span class="q">What are they going to attack when I put the slide up?</span></span><span class="to">Brief Check</span></a>
       <a class="door" href="/territory/"><span><b>I have a territory.</b><span class="q">Can it make the number, or is nobody going to grow here?</span></span><span class="to">Territory Check</span></a>
-      <a class="door" href="/partner/"><span><b>I have a partner.</b><span class="q">Are they selling with me, or sitting on my slide?</span></span><span class="to">Partner Check</span></a>
-      <a class="door" href="/rep/"><span><b>I have a rep who's worrying me.</b><span class="q">Is it the rep, or what they inherited?</span></span><span class="to">Rep Check</span></a>
-      <a class="door" href="/olr/"><span><b>It's review season.</b><span class="q">Will my case for them survive the room?</span></span><span class="to">OLR Check</span></a>
       <a class="door" href="/discount/"><span><b>They want a discount.</b><span class="q">What does it actually cost me?</span></span><span class="to">Discount Check</span></a>
       <a class="door" href="/commission/"><span><b>It closed.</b><span class="q">What do I actually take home?</span></span><span class="to">Commission Check</span></a>
+      <span class="overline">For managers</span>
+      <a class="door" href="/pipeline/"><span><b>I have a target.</b><span class="q">Do I actually have enough pipeline to cover it?</span></span><span class="to">Pipeline Check</span></a>
+      <a class="door" href="/rep/"><span><b>I have a rep who's worrying me.</b><span class="q">Is it the rep, or what they inherited?</span></span><span class="to">Rep Check</span></a>
+      <a class="door" href="/partner/"><span><b>I have a partner.</b><span class="q">Are they selling with me, or sitting on my slide?</span></span><span class="to">Partner Check</span></a>
+      <a class="door" href="/olr/"><span><b>It's review season.</b><span class="q">Will my case for them survive the room?</span></span><span class="to">OLR Check</span></a>
+      <span class="overline">Any meeting</span>
+      <a class="door" href="/brief/"><span><b>I have a meeting.</b><span class="q">What are they going to attack when I put the slide up?</span></span><span class="to">Brief Check</span></a>
     </div>
   </div>
 </section>
@@ -107,11 +114,11 @@
 <section class="band" id="how" aria-labelledby="how-h">
   <div class="band-inner">
     <h2 id="how-h">How these work</h2>
-    <p class="lede">Every tool here is five questions or a few numbers. Each takes about a minute, runs in your
-      browser, and stores nothing.</p>
-    <p>None of them need an account. None of them are AI. The calculators do the arithmetic you would do on a napkin, without the napkin. They're the questions a good VP asks in a review,
-      asked before the VP does, with a straight answer at the end and one thing to go do. They grew out of
-      <a href="/deal/">Deal Check</a>, which is still the one to start with.</p>
+    <p class="lede">Five questions or a few numbers. About a minute. Nothing typed into a system your boss can see.</p>
+    <p>No account, no AI, no certification, no methodology to memorize. Each check asks the questions a good VP asks
+      in a review, before the VP does, and ends with a straight answer and one thing to go do. The calculators do the
+      napkin math without the napkin. They grew out of <a href="/deal/">Deal Check</a>, which is still the one to
+      start with.</p>
     <p>More are coming. They're free. Use whatever helps.</p>
   </div>
 </section>
