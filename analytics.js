@@ -1,7 +1,7 @@
 /* QuotaBird analytics.
    Paste your Google Analytics 4 measurement ID below (it looks like G-XXXXXXXXXX).
    Leave it empty and nothing loads. Both pages include this file. */
-var GA_ID = 'G-BF2DSESJGX';
+var GA_ID = 'G-BG9NR9GXQZ';
 
 (function () {
   if (!GA_ID) { window.qbTrack = function () {}; window.qbTrackQ = []; return; }
