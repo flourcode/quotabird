@@ -458,6 +458,8 @@ function readHash() {
   set('win', parseRate(p.get('w')), pct); set('size', parseMoney(p.get('s')), fullMoney);
   set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), fullMoney);
   yearEnd = p.get('y') === 'fy' ? 'fy' : 'cy';
+  // Quota Check sends only a target: start from the 3X ballpark it quoted, so the page opens on a verdict
+  if (p.has('t') && !p.has('p')) { const t = parseMoney(p.get('t')); if (t > 0) { $('pipe').value = fullMoney(t * 3); fromQuota = true; } }
   return true;
 }
 const shareLink = () => (location.origin && location.origin !== 'null' ? location.origin + location.pathname : 'https://quotabird.com/') + '#' + encodeInputs();
@@ -497,7 +499,7 @@ document.addEventListener('click', (e) => { document.querySelectorAll('details.m
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('details.menu[open]').forEach(d => { d.open = false; d.querySelector('summary').focus(); }); });
 
 /* ── render ── */
-let shared = false, touched = false;
+let shared = false, touched = false, fromQuota = false;
 function render() {
   const s = compute(read());
   const out = $('out');
@@ -510,7 +512,7 @@ function render() {
   const clock = yearEnd === 'fy' ? `Your year ends in ${cal.daysLeft} days.` : `Your year has ${cal.daysLeft} days left. Your federal customers' money expires in ${cal.fedDays}.`;
   const paceLine = s.pace ? (s.pace <= 1.15 ? " You're roughly on pace." : ` You need ${s.pace.toFixed(1)}× your current monthly rate${s.pace > 3 ? '. Nobody does that by trying harder.' : '.'}`) : '';
   out.innerHTML = `
-    ${shared ? `<div class="banner">Someone sent you these numbers. Change any of them to run your own.</div>` : ''}
+    ${shared ? `<div class="banner">Someone sent you these numbers. Change any of them to run your own.</div>` : fromQuota ? `<div class="banner">From Quota Check: at 3X, a ${money(s.goal)} number needs ${money(s.goal * 3)} of qualified pipeline. That's filled in. Now put in what you actually have, and your win rate.</div>` : ''}
     <div class="verdict verdict-${s.cls}" id="verdict">
       <div class="verdict-number">${X(s.cov)}</div>
       <div class="verdict-label">${s.label}</div>
@@ -531,10 +533,14 @@ function render() {
       <span class="overline">Before you go find ${money(s.gap)}</span>
       <p class="lede">A gap this size is a creation problem. Can the territory even produce it?</p>
       <a class="btn btn-tonal btn-full" href="/territory/" style="margin-top:14px;">Check my territory</a>
+    </div>` : s.ratio >= 1 ? `<div class="card card-accent">
+      <span class="overline">Now the shape of it</span>
+      <p class="lede">Coverage is the size. Is the ${money(s.pipe)} spread out, moving, and on the customer's calendar? Risk Check tells you.</p>
+      <a class="btn btn-tonal btn-full" href="/risk/" style="margin-top:14px;">Check my risk</a>
     </div>` : `<div class="card card-accent">
-      <span class="overline">${s.ratio >= 1 ? 'Now the uncomfortable part' : 'Before you go find the rest'}</span>
+      <span class="overline">Before you go find the rest</span>
       <p class="lede">How much of the ${money(s.pipe)} you already have would pass a Deal Check?</p>
-      <a class="btn btn-tonal btn-full" href="/deal/" style="margin-top:14px;">Check a deal</a>
+      <a class="btn btn-tonal btn-full" href="/deal/" style="margin-top:14px;">Check my deal</a>
     </div>`}
     <div class="btn-row center" style="margin-top:8px;">
       <button class="btn btn-text" id="copy" type="button">Share</button>
@@ -581,7 +587,7 @@ if ('IntersectionObserver' in window) {
 /* ── wiring ── */
 const onEdit = () => {
   if (!touched) { touched = true; track('pipeline_edit'); $('exnote').textContent = ''; }
-  if (shared) { shared = false; try { history.replaceState(null, '', location.pathname); } catch {} }
+  if (shared || fromQuota) { shared = false; fromQuota = false; try { history.replaceState(null, '', location.pathname); } catch {} }
   render();
 };
 ['goal','pipe','win','size','reps','closed'].forEach(id => $(id).addEventListener('input', onEdit));

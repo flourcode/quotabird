@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-11.1100**
+**Current build: 2026-10-11.1500**
 
 ## Naming: checks, not kills
 
@@ -111,8 +111,10 @@ blocks stack on the right. The example (3.2X, Hopium, 3X says covered and
 25% says $8M short) is the light bulb and must be on the first screen of a
 375×667 phone; it is. The summary strip shows only while the fields are on
 screen and the verdict has scrolled off the top. A hash with a target but no
-pipeline (Quota Check's hand-off) fills the target and asks for the
-pipeline; it is not treated as a shared verdict. The earlier home hero (a
+pipeline (Quota Check's hand-off) fills the target, pre-fills the pipeline at
+the 3X ballpark Quota Check just quoted, and says so in a banner, so the page
+opens on *Covered at 3X. Add your win rate to find out if 3X is your number.*
+The first edit clears the banner. It is not treated as a shared verdict. The earlier home hero (a
 live Deal Check question, then a photo byline) was replaced by this; Deal
 Check still accepts a 1-to-4 letter hash as a check in progress.
 
@@ -923,9 +925,9 @@ family.
 
 **Hand-offs follow the verdict, and they form a loop.** Deal is the front
 door and has no outbound hand-off; the other four all point somewhere that
-makes sense for the verdict they just gave: Pipeline → Deal ("how much of
-this survives?"), or → Territory when the gap is a creation problem (ratio
-under .5); Partner → Deal for *Real* and *All talk*, → Pipeline ("how much of
+makes sense for the verdict they just gave: Pipeline → Risk Check when covered ("now the shape of it"), → Deal Check
+for Hopium and At risk ("how much of this survives?"), → Territory when
+the gap is a creation problem (ratio under .5); Partner → Deal for *Real* and *All talk*, → Pipeline ("how much of
 your number is leaning on them?") for *Neighbors* and *Logo swap*; Territory →
 Pipeline for *Workable* and *Thin*, → Rep ("their version of this question,
 and its first question is the patch") for *A stretch* and *Nobody could*;
@@ -1314,3 +1316,7 @@ menu and doorways regrouped into Your deal / Your number / Your team / Any
 meeting with balanced two-column menu.
 
 **2026-10-11.1100** — analytics rebuilt on the standard Google tag after a Defender false positive; runtime script injection, the global click listener and the inline onerror removed.
+
+**2026-10-11.1300** — Quota Check hand-off pre-fills the pipeline at 3X with a banner, so the home calculator opens on a verdict instead of empty fields.
+
+**2026-10-11.1500** — a covered pipeline now hands off to Risk Check (the shape), Hopium/At risk to Deal Check, Short to Territory Check. Audit of all hand-offs: no other carries numbers; Quota → Pipeline is the only calculator-to-calculator path.
