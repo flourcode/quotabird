@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-13.1100'
+BUILD = '2026-10-13.1500'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -31,7 +31,7 @@ def menu(current):
         (left if n < total / 2 else right).append((g, items)); n += len(items)
     col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in gs) + '</div>'
     foot = '<div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div>'
-    kit = '<a class="menu-kit" href="/kit/"><span class="pill">Free</span>The Manager\'s Field Kit (PDF)</a>'
+    kit = '<a class="menu-kit" href="/kit/"><span class="pill">Free</span>The Sales Manager\'s Field Kit (PDF)</a>'
     return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{kit}{col(left)}{col(right)}{foot}</div></details>'
 
 
@@ -1547,179 +1547,94 @@ print('math', len(MATH))
 # No travel theme, no methodology, no email gate. Print CSS turns it into a clean PDF.
 KIT_BODY = '''
   <nav class="kit-toc" aria-label="Contents">
-    <a href="#k-first">First 30 days</a><a href="#k-rhythm">The weekly rhythm</a><a href="#k-forecast">The forecast call</a>
+    <a href="#k-first">Inherited a team</a><a href="#k-rhythm">1:1 vs forecast</a><a href="#k-forecast">The forecast call</a>
     <a href="#k-pipeline">Pipeline</a><a href="#k-boss">Your boss</a><a href="#k-rep">A struggling rep</a>
-    <a href="#k-review">Review season</a><a href="#k-mistakes">Mistakes I've made</a><a href="#k-lines">Lines that work</a><a href="#k-sheets">Worksheets</a>
+    <a href="#k-review">Review season</a><a href="#k-mistakes">Learned the hard way</a><a href="#k-lines">Lines worth stealing</a><a href="#k-alone">Leave them alone</a>
   </nav>
 
   <section class="kit-ch" id="k-start">
-    <h2>Before you start</h2>
-    <p>I've taken over a few sales teams that were on fire when I got there. Some I put out. A couple I made worse
-      before I made them better. This is what I'd want on paper the first week, if I had to do it again.</p>
-    <p>It isn't a methodology. It's the handful of things that held up, and a few worksheets I'd actually use.
-      Read the chapter that matches your week and skip the rest.</p>
+    <p>I've taken over teams that were doing great, teams that were struggling, and a few that were already on fire
+      when I got there. Some I fixed. A couple I made worse before I made them better.</p>
+    <p>This isn't a management methodology, and there's no certification at the end. It's the stuff that kept being
+      useful: figuring out whether the problem is the rep or the patch, getting an honest forecast, knowing whether
+      there's really enough pipeline, helping a rep who's struggling, defending your people in review season, and
+      keeping your own boss out of surprise mode.</p>
+    <p>Don't read it front to back. <strong>Find the problem you have this week and start there.</strong> Each chapter
+      ends with the worksheet that goes with it.</p>
   </section>
 
   <section class="kit-ch" id="k-first">
-    <h2>The first 30 days</h2>
-    <p>The mistake I made the first time was deciding who was good and who wasn't by the end of week two. I was
-      wrong about two of the five. Now I look at the patch before I look at the person.</p>
-    <p>If three people have failed in the same territory, I don't have three bad reps. So for each rep I size the
-      territory first: account quality, the installed base, the quota, the comp plan, who had it before and how they
-      did. Some patches can't make the number with anyone in them, and it's better to know that in October than in June.</p>
-    <p>Then the person, in roughly this order. Do customers want to spend time with them? Is there pipeline that
-      exists only because they're there? When they're in front of a customer, can they sell? Are they still trying?
-      The third one is the one I used to skip, and it's the one that tells you whether you're coaching or managing.</p>
-    <p>The best hour I spend in the first month is sitting with each rep and going through five of their real deals.
-      I learn more listening to how they talk about the customer than from any dashboard.</p>
-    <p>And the rep I'd have written off first is often the one who skips the internal meetings and has customers
-      calling back. The one with the spotless CRM and no customer pull is the one I watch.</p>
-    <p class="kit-note"><strong>My rough month:</strong> week one, meet everybody and ask what they'd change. Week two,
-      size every patch and write down the ones that can't work. Week three, sit in deals. Week four, tell my boss
-      what I found, patches first.</p>
+    <h2>1. You inherited a team. Don't grade everybody yet.</h2>
+    <p>My first mistake as a new manager was deciding pretty quickly who was good and who wasn't. I was wrong. Now I
+      look at the patch before the person.</p>
+    <p>Before I decide a rep has a performance problem, I want to know whether the territory is any good, what's
+      installed already, whether the quota is remotely reasonable, what the last rep did there, what the comp plan
+      rewards, and whether there are enough customers who can actually buy what we sell.</p>
+    <p>If three good people have failed in the same patch, I probably don't have three bad salespeople. I have a bad
+      patch.</p>
+    <p>Then I look at the rep. Not the CRM first. The rep. Do customers want to spend time with them? Have they
+      created anything that wouldn't exist without them? Can they sell when they're actually in the room? Are they
+      still trying?</p>
+    <p>One of the most useful things I ever did with a new team was sit with each rep and go through five real deals.
+      You learn a lot from how somebody talks about a customer. And every once in a while, the rep who drives you nuts
+      internally turns out to be the one customers keep calling back. That matters.</p>
+    <p class="kit-note"><strong>My first month.</strong> Week 1: meet everybody, ask what they'd change. Week 2: size the
+      patches. Week 3: sit in deals and customer calls. Week 4: tell your boss what you found. Patches first, people
+      second.</p>
+    <div class="sheet">
+      <h3>Worksheet: Rep diagnostic</h3>
+      <p class="sheet-meta">Rep ____________________ &nbsp; Date __________ &nbsp; <span class="sheet-tool">Online: quotabird.com/rep</span></p>
+      <div class="mtable"><table class="ws"><thead><tr><th>In this order</th><th>Yes / Sort of / No</th><th>Notes</th></tr></thead><tbody>
+        <tr><td>Patch: could a good rep make this number here?</td><td></td><td></td></tr>
+        <tr><td>Customers: do they want time with this rep?</td><td></td><td></td></tr>
+        <tr><td>Pipeline: is there pipeline only this rep created?</td><td></td><td></td></tr>
+        <tr><td>Craft: can they sell in the room?</td><td></td><td></td></tr>
+        <tr><td>Will: are they still trying to win?</td><td></td><td></td></tr>
+      </tbody></table></div>
+      <p class="sheet-foot">Patch is no: fix the situation. Craft is no: coach. Will is no: manage. Both no in a fair patch: see chapter 6.</p>
+    </div>
   </section>
 
   <section class="kit-ch" id="k-rhythm">
-    <h2>The weekly rhythm</h2>
-    <p>Two meetings carry most of the week: a one-on-one that's about the rep, and a forecast call that's about the
-      number. When I let them blur together, my one-on-ones turned into status updates and people stopped telling
-      me anything useful.</p>
-    <p>My one-on-ones run thirty minutes. The rep's list goes first, including whatever I'm doing that's in their
-      way. Then one deal, looked at properly. Then one thing I saw them do and one thing to try next time. I close by
-      reading back what I said I'd do, and then I do it before the next one. That last part built more trust than
-      anything clever I ever said.</p>
-    <p>The forecast call runs forty-five minutes and covers the number only. Commit first, a minute a deal unless
-      something changed. Best case second. Everything else goes in a note. When the call runs past an hour, it's
-      turned into a pipeline review nobody prepared for, and I'd rather stop and schedule the real one.</p>
-    <p>Once a month I skip the deal in the one-on-one and ask what they'd do differently if they ran the team. You
-      hear things nobody says in a group.</p>
-  </section>
-
-  <section class="kit-ch" id="k-forecast">
-    <h2>The forecast call</h2>
-    <p>To me, commit means the customer could tell you today how the money gets to you and when. Short of that it's
-      best case, however sure the rep sounds. Most of the shaky deals I've inherited broke in one of five places, so
-      those are the five I ask about:</p>
-    <div class="mtable"><table><thead><tr><th>Question</th><th>What I'm really asking</th></tr></thead><tbody>
-      <tr><td>Customer</td><td>Has the customer said, in their words, that they want to solve this?</td></tr>
-      <tr><td>Money</td><td>Does the money have a name: a budget line, a program, a fiscal year?</td></tr>
-      <tr><td>Power</td><td>Have we met the person who can make it happen, not just the one who likes us?</td></tr>
-      <tr><td>Path</td><td>Do we know how they'll actually buy it: the vehicle, the contracting office, the approvals?</td></tr>
-      <tr><td>Now</td><td>What makes it happen this period instead of next?</td></tr>
-    </tbody></table></div>
-    <p>The most useful question I know in a forecast call is "who told you that?" A rep who can name a person and a
-      date has a deal. A rep who says the customer is really excited has a feeling, and I've forecast a few feelings.
-      They don't close.</p>
-    <p>When I need to move a deal, I don't argue with the rep's read. I ask which of the five they'd defend to my
-      boss, and we forecast that. Nobody loses face, and the number gets honest. On federal deals, path is where
-      things slip most, so I want the contract vehicle and the lead time before anything stays in commit.</p>
-  </section>
-
-  <section class="kit-ch" id="k-pipeline">
-    <h2>Pipeline: enough, and sturdy enough</h2>
-    <p>There are two questions and most reviews only ask the first. Is there enough pipeline? And would what's there
-      survive a bad week?</p>
-    <p>For the first, coverage is one divided by your win rate. The 3X everybody quotes is a 33% win rate that nobody
-      says out loud. At 20% you need 5X. At 25%, 4X. I use the team's qualified win rate from the last four quarters,
-      and I only count qualified pipeline that's due this period against it.</p>
-    <div class="mtable kit-small"><table><thead><tr><th>Qualified win rate</th><th>Coverage needed</th></tr></thead><tbody>
-      <tr><td>15%</td><td>6.7X</td></tr><tr><td>20%</td><td>5.0X</td></tr><tr><td>25%</td><td>4.0X</td></tr>
-      <tr><td>33%</td><td>3.0X</td></tr><tr><td>40%</td><td>2.5X</td></tr>
-    </tbody></table></div>
-    <p>For the second, I've seen teams at 4X miss the year. The pipeline was two big deals that hadn't moved since
-      spring. So I ask five more things. Would we still make it if the biggest deal slipped a quarter? Has every
-      commit deal changed stage in sixty days? Does every one have a next step on the customer's calendar, not just
-      ours? Is at least half of it due before the last month? Did we create a quarter of it this quarter?</p>
-    <p>One habit that helped: I write the forecast without the biggest deal. That's the plan I'm actually running.
-      And the day before a review I move anything that hasn't changed stage in sixty days back a stage. The reps who
-      argue are the ones with information.</p>
-  </section>
-
-  <section class="kit-ch" id="k-boss">
-    <h2>Your boss</h2>
-    <p>In my experience the boss doesn't want more information. They want fewer surprises. I send one page a week,
-      same shape every time: the number (commit, best case, the gap), what changed and why, the one thing most likely
-      to cost us the number and what I'm doing about it, and one ask with a date, or "nothing this week."</p>
-    <p>I lead with the bad news. A boss who hears it from me early, with a plan attached, starts trusting my
-      forecast. A boss who finds it in the CRM starts checking my work.</p>
-    <p>When the number from above doesn't match what I can see from below, I don't fight the target. I show the
-      arithmetic: the patches, the coverage at our real win rate, and what it would take to close the gap. The most
-      expensive sentence I ever said to a boss was "we'll find a way." I spent the whole year defending it.</p>
-  </section>
-
-  <section class="kit-ch" id="k-rep">
-    <h2>When a rep is struggling</h2>
-    <p>Before I write anybody up, I try to figure out which of four problems I've got. From the dashboard they all
-      look the same.</p>
-    <div class="mtable"><table><thead><tr><th>What it is</th><th>What it looks like</th><th>What I do</th></tr></thead><tbody>
-      <tr><td>The situation</td><td>Good rep, bad patch, number or plan</td><td>Fix the territory, the quota or the plan. A write-up fixes none of those.</td></tr>
-      <tr><td>A skill gap</td><td>Working hard, not converting</td><td>Coach it, one deal at a time, sitting in the room.</td></tr>
-      <tr><td>An effort gap</td><td>Can sell, isn't</td><td>Expectations in writing, with dates, and an honest talk about whether they still want this.</td></tr>
-      <tr><td>The wrong rep</td><td>Can't, and has stopped trying, in a fair patch</td><td>Start the process. Waiting doesn't make it kinder.</td></tr>
-    </tbody></table></div>
-    <p>I check the situation first, every time. I once spent six months coaching a rep whose territory couldn't have
-      produced the number for anybody. That's six months I'd like back, and so would he.</p>
-    <p>The quickest way I've found to tell skill from effort is to watch them with a customer. Good in the room and
-      thin pipeline is usually effort. Working hard and the room goes flat is usually skill.</p>
-  </section>
-
-  <section class="kit-ch" id="k-review">
-    <h2>Review season</h2>
-    <p>In calibration, the room can't see your rep's year. All it can test is your case. I've watched good reps with
-      thin cases lose to average reps whose managers brought receipts.</p>
-    <p>So I bring five things. Three results from the year, each with a number. For the biggest one, what wouldn't have
-      happened without them. Why it was work at their level and not good work a level down. One real example for each
-      behavior I'm going to claim. And the harder thing I'd give them next year, with a reason I'm sure they can carry it.</p>
-    <p>Before the room, I check myself. How much of my opinion comes from the last sixty days? Would I think the same if
-      they weren't in my meetings every week? Take away their best win, then their worst month. Does my view hold?</p>
-    <p>I say the weakest part of the case first. Once the room sees you name your own soft spot, they stop hunting for
-      it. And I keep a running note per rep from January on: date, what happened, the number. November goes a lot
-      easier.</p>
-  </section>
-
-  <section class="kit-ch" id="k-mistakes">
-    <h2>Mistakes I've made so you don't have to</h2>
-    <ul class="kit-list">
-      <li><strong>Managing the dashboard.</strong> The fields got cleaner. The pipeline didn't get bigger.</li>
-      <li><strong>Saving deals myself.</strong> It worked once. After that the rep waited for me.</li>
-      <li><strong>Reporting the average.</strong> Two reps at 6X and two at 1X isn't a team at 3.5X. It's two problems.</li>
-      <li><strong>Forecasting confidence.</strong> Some people sound sure about everything. That's a personality, not a close date.</li>
-      <li><strong>Sitting on bad news.</strong> I waited until I had a fix. My boss would have rather had the news Monday and the fix Friday.</li>
-      <li><strong>Giving everybody the same one-on-one.</strong> My best rep and my newest rep needed different things from the same thirty minutes.</li>
-      <li><strong>Approving the discount.</strong> The deal's real problem was power. The discount fixed price, which wasn't the problem.</li>
-    </ul>
-  </section>
-
-  <section class="kit-ch" id="k-lines">
-    <h2>Lines that have worked for me</h2>
-    <div class="mtable"><table><thead><tr><th>When</th><th>What I say</th></tr></thead><tbody>
-      <tr><td>A rep is sure about a shaky deal</td><td>"Walk me through who told you that, and when."</td></tr>
-      <tr><td>Moving a deal out of commit</td><td>"Which of the five would you defend to my boss? Let's forecast that."</td></tr>
-      <tr><td>A rep is missing and I don't know why</td><td>"Before we talk about the number, what's in your way?"</td></tr>
-      <tr><td>A number from above I can't see</td><td>"I can commit to this with what I have. Here's what it would take to get to that."</td></tr>
-      <tr><td>Bad news for my boss</td><td>"Heads up before it hits the CRM: this is at risk, here's why, here's what I'm doing."</td></tr>
-      <tr><td>A rep wants a discount to close</td><td>"What does the customer give us for it? A date, more scope, a reference?"</td></tr>
-      <tr><td>Starting a hard talk</td><td>"Here's what good looks like in thirty days. Let's talk about getting there."</td></tr>
-      <tr><td>I don't know the answer</td><td>"I don't know. I'll find out by Thursday." Then I find out by Thursday.</td></tr>
-    </tbody></table></div>
-  </section>
-
-  <section class="kit-ch kit-sheets" id="k-sheets">
-    <h2>Worksheets</h2>
-    <p class="kit-screen-only">These print one to a page. Fill them in by hand.</p>
-
+    <h2>2. Keep the 1:1 and the forecast call separate</h2>
+    <p>These are not the same meeting. A 1:1 is about the person. A forecast call is about the number. Whenever I mixed
+      them together, both got worse.</p>
+    <p>My 1:1 was usually thirty minutes, and the rep went first. What are they working on? What's getting in their
+      way? What am <em>I</em> doing that's getting in their way? Then we look at one real deal properly.</p>
+    <p>I finish with one thing I saw them do well, one thing I'd try differently, and anything I said I'd do. Then I
+      write my commitment down, and I do it. That last part built more trust than any management technique I ever
+      learned.</p>
+    <p>Once a month I'd ask, "If you were running this team, what would you change?" You'll hear things nobody says in
+      the staff meeting.</p>
     <div class="sheet">
-      <h3>One-on-one</h3>
+      <h3>Worksheet: One-on-one</h3>
       <p class="sheet-meta">Rep ____________________ &nbsp; Date __________</p>
       <p class="sheet-label">Their list: what's in their way, including me</p><div class="lines l3"></div>
       <p class="sheet-label">One deal: customer, money, power, path, now</p><div class="lines l3"></div>
-      <p class="sheet-label">One thing I saw them do, one thing to try</p><div class="lines l2"></div>
+      <p class="sheet-label">One thing they did well, one thing to try</p><div class="lines l2"></div>
       <p class="sheet-label">What I said I'd do, and by when</p><div class="lines l2"></div>
     </div>
+  </section>
 
+  <section class="kit-ch" id="k-forecast">
+    <h2>3. The forecast call is not story time</h2>
+    <p>To me, commit means the customer could explain how the money gets from them to us, and roughly when. Anything
+      short of that is some flavor of hope. Most shaky deals eventually break in one of five places:</p>
+    <div class="mtable"><table><thead><tr><th>Where it breaks</th><th>What I'm really asking</th></tr></thead><tbody>
+      <tr><td>Customer</td><td>Do they actually want to solve this?</td></tr>
+      <tr><td>Money</td><td>Is there real money attached to it?</td></tr>
+      <tr><td>Power</td><td>Are we connected to somebody who can make it happen?</td></tr>
+      <tr><td>Path</td><td>Do we know how they actually buy?</td></tr>
+      <tr><td>Now</td><td>Why does anything happen this period?</td></tr>
+    </tbody></table></div>
+    <p>The best forecast question I know is still <strong>"Who told you that?"</strong> Not "what do you think," not "how
+      confident are you." Who told you, and when? A named customer and a date beats enthusiasm every time. I've
+      forecast plenty of enthusiasm. It has a terrible close rate.</p>
+    <p>When a rep and I disagree, I don't need to win the argument. I ask which of the five they'd defend to my boss,
+      and we forecast that. Nobody has to lose face. The forecast just gets better.</p>
     <div class="sheet">
-      <h3>Deal inspection</h3>
-      <p class="sheet-meta">Deal ____________________ &nbsp; Rep ______________ &nbsp; Date __________</p>
+      <h3>Worksheet: Deal inspection</h3>
+      <p class="sheet-meta">Deal ____________________ &nbsp; Rep ______________ &nbsp; <span class="sheet-tool">Online: quotabird.com/deal</span></p>
       <div class="mtable"><table class="ws"><thead><tr><th>Question</th><th>Yes / Sort of / No</th><th>Who said so, and when</th></tr></thead><tbody>
         <tr><td>Customer: have they said they want to solve this?</td><td></td><td></td></tr>
         <tr><td>Money: does it have a name and a fiscal year?</td><td></td><td></td></tr>
@@ -1729,61 +1644,159 @@ KIT_BODY = '''
       </tbody></table></div>
       <p class="sheet-foot">I only call it commit with five answers I'd defend to my boss.</p>
     </div>
+  </section>
 
+  <section class="kit-ch" id="k-pipeline">
+    <h2>4. Pipeline has two jobs</h2>
+    <p>Managers usually ask whether there's enough pipeline. I'd ask one more question: is it sturdy enough to survive a
+      bad week? Those are different questions.</p>
+    <p><strong>Enough.</strong> The 3X rule everybody repeats assumes roughly a 33% win rate. The math is simple:
+      coverage needed is one divided by your win rate. Use your own team's qualified win rate, not somebody else's
+      benchmark.</p>
+    <div class="mtable kit-small"><table><thead><tr><th>Win rate</th><th>Coverage needed</th></tr></thead><tbody>
+      <tr><td>15%</td><td>6.7X</td></tr><tr><td>20%</td><td>5.0X</td></tr><tr><td>25%</td><td>4.0X</td></tr>
+      <tr><td>33%</td><td>3.0X</td></tr><tr><td>40%</td><td>2.5X</td></tr>
+    </tbody></table></div>
+    <p><strong>Sturdy.</strong> A team can have 4X coverage and still be in trouble. So I also ask what happens if our
+      biggest deal slips, whether the commit deals are actually moving, whether each one has a next step the customer
+      owns, how much is back-loaded into the last month, and whether we're creating new pipeline or just aging the old
+      stuff.</p>
+    <p>One habit I like: run the forecast once without your biggest deal. That's the plan I'd want to manage.</p>
     <div class="sheet">
-      <h3>Rep diagnostic</h3>
-      <p class="sheet-meta">Rep ____________________ &nbsp; Date __________</p>
-      <div class="mtable"><table class="ws"><thead><tr><th>In this order</th><th>Yes / Sort of / No</th><th>Notes</th></tr></thead><tbody>
-        <tr><td>Patch: could a good rep make this number here?</td><td></td><td></td></tr>
-        <tr><td>Customers: do they want time with this rep?</td><td></td><td></td></tr>
-        <tr><td>Pipeline: is there pipeline only this rep created?</td><td></td><td></td></tr>
-        <tr><td>Craft: can they sell in the room?</td><td></td><td></td></tr>
-        <tr><td>Will: are they still trying to win?</td><td></td><td></td></tr>
-      </tbody></table></div>
-      <p class="sheet-foot">Patch no: fix the situation. Craft no: coach. Will no: manage. Both no in a fair patch: the wrong rep.</p>
-    </div>
-
-    <div class="sheet">
-      <h3>Team pipeline</h3>
-      <p class="sheet-meta">Quarter __________ &nbsp; Date __________</p>
-      <div class="mtable"><table class="ws wide"><thead><tr><th>Rep</th><th>Number</th><th>Qualified pipeline</th><th>Win rate</th><th>Coverage needed (1 ÷ win rate)</th><th>Coverage now</th><th>Biggest deal as % of number</th></tr></thead><tbody>
+      <h3>Worksheet: Team pipeline</h3>
+      <p class="sheet-meta">Quarter __________ &nbsp; Date __________ &nbsp; <span class="sheet-tool">Online: quotabird.com</span></p>
+      <div class="mtable"><table class="ws wide"><thead><tr><th>Rep</th><th>Number</th><th>Qualified pipeline</th><th>Win rate</th><th>Coverage needed (1 ÷ win rate)</th><th>Coverage now</th><th>Biggest deal</th></tr></thead><tbody>
         <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
       </tbody></table></div>
-      <p class="sheet-foot">Anyone whose biggest deal is over a third of their number is one slip from missing.</p>
+      <p class="sheet-foot">If one deal is carrying a big chunk of the number, know exactly what happens if it moves.</p>
     </div>
+  </section>
 
+  <section class="kit-ch" id="k-boss">
+    <h2>5. Your boss mostly wants fewer surprises</h2>
+    <p>I spent too much time early in management trying to give my boss more information. Usually they didn't need
+      more information. They needed fewer surprises.</p>
+    <p>My update fits on one page: the number (commit, best case, gap), what changed and why, what worries me, what I'm
+      doing about it, and one ask with a date. Or "nothing this week." And I lead with the bad news. "Heads up before
+      this shows up in the CRM" beats letting your boss discover it.</p>
+    <p>I learned another one the expensive way. When somebody above me handed me a number I couldn't see, I used to
+      say, "We'll find a way." Sometimes we did. Sometimes I spent the rest of the year explaining that sentence. Now
+      I'd say, "Here's what I can commit to with what we have. Here's what would have to be true to get to your
+      number." Then I show the math.</p>
     <div class="sheet">
-      <h3>Calibration case</h3>
-      <p class="sheet-meta">Rep ____________________ &nbsp; Level ______ &nbsp; Date __________</p>
-      <p class="sheet-label">Three results, each with a number</p><div class="lines l3"></div>
-      <p class="sheet-label">Without them, what wouldn't have happened?</p><div class="lines l2"></div>
-      <p class="sheet-label">Why this was their level, not the one below</p><div class="lines l2"></div>
-      <p class="sheet-label">One example per behavior I'll claim</p><div class="lines l2"></div>
-      <p class="sheet-label">The harder thing next year, and why I'm sure</p><div class="lines l2"></div>
+      <h3>Worksheet: The five-minute boss update</h3>
+      <p class="sheet-meta">Week of __________</p>
+      <div class="mtable"><table class="ws"><tbody>
+        <tr><td>Commit</td><td></td></tr><tr><td>Best case</td><td></td></tr><tr><td>Gap</td><td></td></tr>
+      </tbody></table></div>
+      <p class="sheet-label">What changed, and why</p><div class="lines l2"></div>
+      <p class="sheet-label">Biggest risk</p><div class="lines l2"></div>
+      <p class="sheet-label">What I'm doing about it</p><div class="lines l2"></div>
+      <p class="sheet-label">What I need from you, and by when</p><div class="lines l1"></div>
+    </div>
+  </section>
+
+  <section class="kit-ch" id="k-rep">
+    <h2>6. A struggling rep is a diagnosis before it's a verdict</h2>
+    <p>Four very different problems can produce the same ugly dashboard.</p>
+    <div class="mtable"><table><thead><tr><th>Problem</th><th>What it looks like</th><th>What I do</th></tr></thead><tbody>
+      <tr><td>Bad situation</td><td>Good rep. Bad territory, quota, accounts or plan.</td><td>Fix the situation.</td></tr>
+      <tr><td>Skill</td><td>They're working, customers engage, deals just aren't converting.</td><td>Coach. Sit in the room.</td></tr>
+      <tr><td>Effort</td><td>They know how to sell. They're just not doing enough of it.</td><td>Set expectations clearly, in writing, with dates.</td></tr>
+      <tr><td>Wrong fit</td><td>Fair patch, enough support, and neither the skill nor the effort is there.</td><td>Now it's a performance conversation, not a coaching conversation.</td></tr>
+    </tbody></table></div>
+    <p>I want to rule out the first three before I convince myself it's the fourth. I once spent months coaching
+      somebody whose territory couldn't have produced the number for almost anyone. I'd like those months back. So
+      would the rep.</p>
+    <p class="sheet-tool">The rep diagnostic is in chapter 1. Online: quotabird.com/rep</p>
+  </section>
+
+  <section class="kit-ch" id="k-review">
+    <h2>7. Review season: bring receipts</h2>
+    <p>The calibration room didn't see your rep's whole year. It saw whatever case you brought into the room. That
+      took me too long to appreciate.</p>
+    <p>I keep a running note during the year: date, what happened, result. Nothing elaborate. Then review season isn't
+      an archaeological dig through email and Slack.</p>
+    <p>For each rep I want three meaningful results (with numbers where numbers make sense), what happened because this
+      person was there, why the work was at their level, specific examples behind any behavior I'm going to claim, and
+      the harder thing I'd trust them with next.</p>
+    <p>Then I do one uncomfortable thing: I say the weakest part of my case first. It saves the room the trouble of
+      finding it, and it makes everything else I say more credible.</p>
+    <p>I also check myself. Am I overweighting the last sixty days? Would I see this person differently if I didn't
+      personally like working with them? Take away their biggest win: does my view hold? Take away their worst month:
+      same question.</p>
+    <div class="sheet">
+      <h3>Worksheet: Talent review prep</h3>
+      <p class="sheet-meta">Rep ____________________ &nbsp; Level ______ &nbsp; <span class="sheet-tool">Online: quotabird.com/olr</span></p>
+      <p class="sheet-label">Three results, with numbers where they make sense</p><div class="lines l2"></div>
+      <p class="sheet-label">What happened because this person was there</p><div class="lines l1"></div>
+      <p class="sheet-label">Why the work was at their level</p><div class="lines l1"></div>
+      <p class="sheet-label">Examples behind each behavior I'll claim</p><div class="lines l2"></div>
+      <p class="sheet-label">The harder thing I'd trust them with next</p><div class="lines l1"></div>
       <p class="sheet-label">The weakest part of this case, said first</p><div class="lines l1"></div>
     </div>
+  </section>
+
+  <section class="kit-ch" id="k-mistakes">
+    <h2>8. Things I learned the expensive way</h2>
+    <ul class="kit-list">
+      <li><strong>Managing the dashboard.</strong> The CRM got cleaner. The pipeline didn't get bigger.</li>
+      <li><strong>Saving the deal myself.</strong> Worked great once. Then the rep learned to wait for me.</li>
+      <li><strong>Managing the average.</strong> Two reps at 6X and two at 1X is not a healthy team at 3.5X.</li>
+      <li><strong>Forecasting confidence.</strong> Some people sound certain about everything. That's a personality trait, not deal evidence.</li>
+      <li><strong>Waiting to deliver bad news.</strong> I wanted the fix before I told my boss. They'd have preferred the news Monday and the fix Friday.</li>
+      <li><strong>Giving everyone the same 1:1.</strong> My best seller and my newest seller needed completely different things from those thirty minutes.</li>
+      <li><strong>Discounting the wrong problem.</strong> I approved a discount when the real issue was access to power. We solved a price problem the customer didn't have.</li>
+      <li><strong>Talking too much on customer calls.</strong> I thought I was helping the rep. Mostly I was teaching the customer to look at me instead of them.</li>
+      <li><strong>Being the answer machine.</strong> Eventually everybody brought me problems and nobody brought me decisions.</li>
+    </ul>
+  </section>
+
+  <section class="kit-ch" id="k-lines">
+    <h2>9. A few lines worth stealing</h2>
+    <div class="mtable"><table><thead><tr><th>When</th><th>What I say</th></tr></thead><tbody>
+      <tr><td>A shaky deal</td><td>"Who told you that, and when?"</td></tr>
+      <tr><td>Moving something out of commit</td><td>"Which part would you defend to my boss?"</td></tr>
+      <tr><td>A rep is missing</td><td>"Forget the number for a minute. What's getting in your way?"</td></tr>
+      <tr><td>The target from above doesn't match reality</td><td>"Here's what I can commit to with what I have. Here's what has to change to get to that."</td></tr>
+      <tr><td>Bad news</td><td>"Heads up before this lands in the CRM."</td></tr>
+      <tr><td>A discount request</td><td>"What are we getting for it?"</td></tr>
+      <tr><td>A hard performance conversation</td><td>"Here's what good looks like thirty days from now."</td></tr>
+      <tr><td>You don't know</td><td>"I don't know. I'll find out by Thursday." Then find out by Thursday.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="kit-ch" id="k-alone">
+    <h2>10. When to leave the rep alone</h2>
+    <p>Managers can hurt good sellers by managing them too much. I've done it.</p>
+    <p>I leave them alone when customers call them back, when they create their own pipeline, when they know their
+      deals better than I do, when they tell me bad news before I find it, when they ask for help when they actually
+      need it, and when they make the number often enough that the system clearly works.</p>
+    <p>My job isn't to turn my best rep into me. It's to make sure they have a fair patch, get the stuff that slows
+      them down out of the way, help when they ask, and keep the rest of the company from improving them to death.</p>
   </section>
 '''
 KIT_CTA = '''
   <section class="kit-cta" aria-labelledby="kit-cta-h">
-    <h2 id="kit-cta-h">If the kit isn't enough</h2>
-    <p>I'm Mark. I carried a number, managed the people who did, and led partner sales teams at AWS. If you're sitting in
-      one of these right now and want a second set of eyes, I'm glad to talk. Twenty minutes, free, no deck, no pitch.</p>
+    <h2 id="kit-cta-h">Sometimes another set of eyes helps</h2>
+    <p>I'm Mark. I carried a number, managed people who did, and led partner sales teams at AWS. I still like this stuff.
+      If you're staring at a deal, a forecast, a rep problem or a number that doesn't make sense, I'm happy to talk.</p>
+    <p class="kit-cta-terms">Twenty minutes. Free. No deck. No pitch.</p>
     <div class="btn-row kit-cta-row">
       <a class="btn btn-primary btn-lg" id="kitBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=kit&amp;utm_content=kit_cta" target="_blank" rel="noopener">Chat with Mark</a>
       <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
     </div>
-    <p class="fine">If I don't think I can help, I'll tell you.</p>
+    <p class="fine">And if I don't think I can help, I'll tell you.</p>
   </section>
 '''
 _kit_url = 'https://quotabird.com/kit/'
-_kit_desc = "A free, printable field kit for sales managers: the first 30 days with an inherited team, one-on-ones, the forecast call, pipeline, your boss, review season, and five worksheets."
-_kit_ld = json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": "The Manager's Field Kit", "description": _kit_desc, "url": _kit_url, "isAccessibleForFree": True,
+_kit_desc = "A free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, your boss, a struggling rep, review season, and the worksheets that go with them."
+_kit_ld = json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": "The Sales Manager's Field Kit", "description": _kit_desc, "url": _kit_url, "isAccessibleForFree": True,
                       "dateModified": BUILD[:10], "image": "https://quotabird.com/card.jpg", "author": {"@type": "Person", "@id": "https://quotabird.com/#about", "name": "Mark Flournoy"},
                       "publisher": {"@type": "Organization", "name": "QuotaBird", "url": "https://quotabird.com/"}}, indent=2)
-_kit = note_head("The Manager's Field Kit", _kit_desc, _kit_url).replace("| QuotaBird</title>", "| Free Printable | QuotaBird</title>") + f'''<script type="application/ld+json">
+_kit = note_head("The Sales Manager's Field Kit", _kit_desc, _kit_url).replace("| QuotaBird</title>", "| Free Printable | QuotaBird</title>") + f'''<script type="application/ld+json">
 {_kit_ld}
 </script>
 </head>
@@ -1794,8 +1807,8 @@ _kit = note_head("The Manager's Field Kit", _kit_desc, _kit_url).replace("| Quot
 </div>
 <article class="note kit">
   <span class="overline">Free printable</span>
-  <h1>The Manager's Field Kit</h1>
-  <p class="dek">What I'd want on paper the week I inherited a sales team. Ten short chapters and five worksheets.</p>
+  <h1>The Sales Manager's Field Kit</h1>
+  <p class="dek">Stuff I wish somebody had handed me the first time I ran a team.</p>
   <div class="kit-promo kit-hero">
     <div class="kit-thumb" aria-hidden="true">
       <img class="kt-back" src="/kit/preview-2.jpg" alt="" width="480" height="622" decoding="async">
@@ -1803,7 +1816,7 @@ _kit = note_head("The Manager's Field Kit", _kit_desc, _kit_url).replace("| Quot
     </div>
     <div class="kit-promo-body">
       <span class="pill">Free printable</span>
-      <p class="kit-hero-meta">12 pages, letter size. Ten short chapters and five worksheets. No email required.</p>
+      <p class="kit-hero-meta">8 pages, letter or A4. Ten short chapters and six worksheets. No email required.</p>
       <div class="kit-promo-actions">
         <a class="btn btn-primary btn-lg btn-icon" id="kitBookDl" href="/kit/managers-field-kit.pdf" download>Download the PDF<svg aria-hidden="true" viewBox="0 -960 960 960" width="20" height="20"><path fill="currentColor" d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg></a>
         <button class="btn btn-text" id="kitPrint" type="button">Print this page</button>
@@ -1814,7 +1827,7 @@ _kit = note_head("The Manager's Field Kit", _kit_desc, _kit_url).replace("| Quot
 {KIT_CTA}
 </article>
 
-''' + NOTE_TAIL.replace('Field Notes are part of', "The Manager's Field Kit is part of").replace('</script>\n</body>', """document.getElementById('kitPrint').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('kit_print'); window.print(); });
+''' + NOTE_TAIL.replace('Field Notes are part of', "The Sales Manager's Field Kit is part of").replace('</script>\n</body>', """document.getElementById('kitPrint').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('kit_print'); window.print(); });
 document.getElementById('kitBook').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('kit_book'); });
 </script>
 </body>""")
@@ -1945,7 +1958,7 @@ for g, items in groups:
     for h, n, d in items:
         desc = DESC[h].split(': ', 1)[1]; lines.append(f'- [{n}]({site}{h}): {desc[0].upper() + desc[1:]} ({d[0].lower() + d[1:]}.)')
     lines.append('')
-lines += ['## Free printable', '', f"- [The Manager's Field Kit]({site}/kit/): a free, printable field kit for sales managers: the first 30 days with an inherited team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, and five worksheets.", '', '## Sales Math Library', ''] + [f'- [{p["title"]}]({site}/math/{p["slug"]}/): {p["answer"]}' for p in MATH] + ['', '## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
+lines += ['## Free printable', '', f"- [The Sales Manager's Field Kit]({site}/kit/): a free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, when to leave a rep alone, and six worksheets.", '', '## Sales Math Library', ''] + [f'- [{p["title"]}]({site}/math/{p["slug"]}/): {p["answer"]}' for p in MATH] + ['', '## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
 open('llms.txt', 'w').write('\n'.join(lines))
 entries = []
 for g, h, n, d in TOOLS:

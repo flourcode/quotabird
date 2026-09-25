@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-13.1100**
+**Current build: 2026-10-13.1500**
 
 ## Naming: checks, not kills
 
@@ -235,7 +235,7 @@ inline event handlers. The site has no executables and references only its
 own domain, LinkedIn, Calendly, fedhoo, Google Tag Manager, schema.org and
 sitemaps.org.
 
-**The Manager's Field Kit (`/kit/`).** A free printable, no email gate:
+**The Sales Manager's Field Kit (`/kit/`).** A free printable, no email gate:
 ten short chapters (first 30 days, the weekly rhythm, the forecast call,
 pipeline, your boss, a struggling rep, review season, mistakes, lines that
 work) and five worksheets, in Mark's plain voice: a retired sales guy who
@@ -250,11 +250,11 @@ the "About 12 pages" note. Events: `kit_print`, `kit_book`. Linked from the
 menu, the footer, the home page and `llms.txt`.
 
 **The kit is a real PDF, promoted by one card.** `kit/managers-field-kit.pdf`
-(12 pages, Letter, about 300 KB) is rendered from `/kit/` with the print
-stylesheet; `kit/preview-1.jpg` and `preview-2.jpg` are its page 1 and page 8
+(8 pages, Letter or A4) is rendered from `/kit/` with the print
+stylesheet; `kit/preview-1.jpg` and `preview-2.jpg` are its page 1 and page 4
 (the deal-inspection worksheet) at 480px. **When the kit's words change,
 re-render all three**: open `/kit/` in Chrome, Print, Save as PDF, Letter,
-default margins, background graphics on; then export pages 1 and 8 as
+default margins, background graphics on; then export pages 1 and 4 as
 images. The promo card (`partials/kit-card.html`: stacked page preview,
 *Free printable* pill, one sentence, filled *Download the PDF* with the
 `download` attribute, *What's inside*) is injected above *Made by Mark* on
@@ -1394,3 +1394,22 @@ meeting with balanced two-column menu.
 **2026-10-13.0900** — The Manager's Field Kit at /kit/: free printable, plain voice, 12-page print layout, Chat with Mark CTA.
 
 **2026-10-13.1100** — kit as a real PDF with page previews; promo card on home and manager pages; kit in the header and at the top of the Tools menu.
+
+**2026-10-13.1300** — kit rewritten from review: retitled *The Sales Manager's
+Field Kit*; each worksheet now follows its chapter (rep diagnostic, 1:1, deal
+inspection, team pipeline, a new five-minute boss update, talent review prep);
+new chapter 10 *When to leave the rep alone*; two new expensive lessons;
+"start the process" softened to a performance conversation; the "a third of
+the number" rule softened; closing card rewritten (*Sometimes another set of
+eyes helps*). The review suggested "led AWS's Federal Partner Vertical team"
+and "I'm retired now" for the closing card; Mark's approved wording ("led
+partner sales teams at AWS") was kept pending his confirmation. 14 pages.
+
+**2026-10-13.1500** — kit print layout tightened from 14 pages to 8. Worksheets
+no longer force a page break before and after; they flow right after their
+chapter and only move to a new page when they won't fit (`break-inside:avoid`),
+so a sheet never splits. Print type 11pt at 1.36 line height, compact table
+and worksheet padding, 12mm page margins, and a three-line closing card in
+print. Every page is at least half full on Letter and A4. **If you add text,
+re-render and check for a near-empty last page**: the kit is right at 8
+pages, and one extra paragraph can spill a line onto a ninth.
