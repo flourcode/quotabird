@@ -236,10 +236,10 @@
       nav(['gd', grillOuch, shark]);
       const s = lastScore, w = s.weak;
       const L = cfg.grillLines || {};
-      const verdict = grillOuch === 0 ? (L.clean || 'You would survive.') : grillOuch === 1 ? (L.one || 'You would mostly survive. One hole left.') : (L.bad || 'You would not survive.');
+      const verdict = grillOuch === 0 ? (L.clean || 'You would survive.') : grillOuch === 1 ? (L.one || 'You would mostly survive. One hole left.') : (L.bad || 'You wouldn\'t survive.');
       const who = shark ? cfg.sharks[shark].name : (cfg.grillBy || 'The room');
       const line = grillOuch === 0 ? (L.cleanSub || `Three ${w.n.toLowerCase()} questions, three answers. Bring the proof anyway.`)
-                 : `You could not answer ${grillOuch} of 3 from ${who.startsWith('The ') ? who[0].toLowerCase() + who.slice(1) : who}. The one you cannot bluff is ${w.n.toLowerCase()}.`;
+                 : `You couldn't answer ${grillOuch} of 3 from ${who.startsWith('The ') ? who[0].toLowerCase() + who.slice(1) : who}. The one you can't bluff is ${w.n.toLowerCase()}.`;
       show(`
     <span class="overline">Verdict</span>
     <h1 style="margin-top:8px;">${esc(verdict)}</h1>

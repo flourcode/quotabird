@@ -180,6 +180,9 @@ h3 { font-size:19px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 .kit-hero-meta { font-size:16px !important; color:var(--ink-2) !important; margin:12px 0 16px !important; }
 .menu-kit { grid-column:1 / -1; display:flex !important; align-items:center; gap:10px; font-weight:600; background:var(--bg-2); border-radius:12px; margin-bottom:4px; }
 .menu-kit .pill { font-size:12px; padding:5px 10px; }
+.leader-band { padding-top:0; }
+.kit-next { margin:26px 0 8px; padding:16px 20px; border:1px solid var(--line); border-radius:var(--r-lg); }
+.kit-next p { margin:4px 0 0; font-size:17px; }
 
 /* ── The Manager's Field Kit ── */
 .kit-start { background:var(--bg-2); border-radius:var(--r-lg); padding:14px 18px 10px; margin:18px 0 6px; }
@@ -223,7 +226,7 @@ h3 { font-size:19px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 @media print {
   @page { margin:12mm 14mm; }
   body { background:#fff !important; color:#000 !important; }
-  .appbar, .sitefoot, .kit-hero, .kit-band, .kit-toc, .kit-cta .btn-row, .kit-screen-only, .startbar, .sumbar { display:none !important; }
+  .appbar, .sitefoot, .kit-hero, .kit-band, .kit-next, .kit-toc, .kit-cta .btn-row, .kit-screen-only, .startbar, .sumbar { display:none !important; }
   .note.kit { max-width:none; padding:0; }
   .kit h1 { font-size:30px; margin-top:0; }
   .kit p, .kit li, .kit td { color:#000 !important; font-size:11pt !important; line-height:1.36 !important; }
@@ -253,8 +256,9 @@ h3 { font-size:19px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
   .lines.l1 { height:24pt; } .lines.l2 { height:48pt; } .lines.l3 { height:72pt; }
   .kit-note, .kit-cta { background:none; border:1px solid #bbb; }
   a { color:#000 !important; text-decoration:none; }
-  .kit-cta { padding:6pt 11pt !important; margin-top:6pt !important; }
-  .kit-cta h2 { font-size:12pt !important; margin:0 0 1pt !important; }
+  .kit-cta { padding:4pt 10pt !important; margin-top:3pt !important; }
+  .kit-cta h2 { font-size:11pt !important; margin:0 !important; line-height:1.25 !important; }
+  .kit-cta p { font-size:10pt !important; line-height:1.3 !important; }
   .kit-cta p:not(.kit-cta-terms):not(.kit-cta-job) { display:none !important; }
   .kit-cta .kit-cta-job { margin:0 0 1pt !important; }
   .kit-start { background:none; border:1px solid #bbb; padding:5pt 10pt; margin:6pt 0 2pt; columns:2; column-gap:18pt; }
@@ -262,7 +266,7 @@ h3 { font-size:19px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
   .kit-start li { padding:1pt 0; border:0; font-size:10pt; break-inside:avoid; }
   .kit-start a { text-decoration:none; }
   .kit-cta .kit-cta-terms { margin:0 !important; display:inline; }
-  .kit-cta::after { content:"  \00B7  mark@quotabird.com  \00B7  quotabird.com/about"; display:inline; font-weight:600; font-size:11pt; }
+  .kit-cta::after { content:"  \00B7  mark@quotabird.com  \00B7  quotabird.com/about"; display:inline; font-weight:600; font-size:10pt; }
 }
 
 /* ── Sales Math Library ── */

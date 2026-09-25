@@ -58,7 +58,13 @@ CARDS = {
     foot='Any doc, deck or QBR. Nothing uploaded. Nothing stored.', url='quotabird.com/brief',
     pillars=['POINT', 'RECEIPTS', 'ALTERNATIVE', 'HOLE', 'ASK']),
 }
-if (sys.argv[1] if len(sys.argv) > 1 else '') == 'kit':
+KITCARDS = {
+  'seller': dict(out='card-seller.jpg', dir='seller', title=["The Seller's", 'Field Kit'], sub=['Useful things for the weeks when', 'the deal, the number, or both', 'are giving you trouble.'], foot='4 pages. No email.', url='quotabird.com/seller'),
+  'kit': dict(out='card-kit.jpg', dir='kit', title=["The Manager's", 'Field Kit'], sub=['Useful things for the weeks when', 'the number, the team, or both', 'are giving you trouble.'], foot='8 pages. No email.', url='quotabird.com/kit'),
+  'leader': dict(out='card-leader.jpg', dir='leader', title=['The Leadership', 'Field Kit'], sub=['For managers who want to', 'become the person other leaders', 'call when something matters.'], foot='3 pages. No email.', url='quotabird.com/leader'),
+}
+if (sys.argv[1] if len(sys.argv) > 1 else '') in KITCARDS:
+    K = KITCARDS[sys.argv[1]]
     # The kit's card shows the pages themselves: text left, the two page previews stacked right.
     from PIL import ImageFilter
     W, H, M = 1200, 630, 72
@@ -70,7 +76,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'kit':
         return ImageFont.truetype(buf, size)
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     # pages, right side
-    ph = 500; front = Image.open('kit/preview-1.jpg').convert('RGB'); back = Image.open('kit/preview-2.jpg').convert('RGB')
+    ph = 500; front = Image.open(K['dir'] + '/preview-1.jpg').convert('RGB'); back = Image.open(K['dir'] + '/preview-2.jpg').convert('RGB')
     pw = int(front.width * ph / front.height); front = front.resize((pw, ph), Image.LANCZOS); back = back.resize((pw, ph), Image.LANCZOS)
     px, py = W - M - pw - 24, (H - ph) // 2 - 6
     def shadowed(page, angle, x, y, blur=14, alpha=70):
@@ -88,16 +94,16 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'kit':
     pf = font(700, 22); pt = 'FREE PRINTABLE'; ptw = int(d.textlength(pt, font=pf))
     d.rounded_rectangle((M, M + 84, M + ptw + 36, M + 84 + 44), radius=22, fill=SOFT); d.text((M + 18, M + 94), pt, font=pf, fill=ONSOFT)
     hf = font(800, 64); y = M + 150
-    for line in ["The Manager's", 'Field Kit']:
+    for line in K['title']:
         d.text((M - 2, y), line, font=hf, fill=INK); y += 74
     sf = font(400, 27); y += 18
-    for line in ['Useful things for the weeks when', 'the number, the team, or both', 'are giving you trouble.']:
+    for line in K['sub']:
         d.text((M, y), line, font=sf, fill=VAR); y += 38
     fy = H - M - 20
-    d.text((M, fy), '8 pages. No email.', font=font(400, 24), fill=VAR)
-    uf = font(700, 26); d.text((M + int(d.textlength('8 pages. No email.', font=font(400, 24))) + 22, fy - 2), 'quotabird.com/kit', font=uf, fill=ACC)
-    im.save('card-kit.jpg', quality=90, optimize=True)
-    print('card-kit.jpg', os.path.getsize('card-kit.jpg'), 'bytes'); sys.exit(0)
+    d.text((M, fy), K['foot'], font=font(400, 24), fill=VAR)
+    uf = font(700, 26); d.text((M + int(d.textlength(K['foot'], font=font(400, 24))) + 22, fy - 2), K['url'], font=uf, fill=ACC)
+    im.save(K['out'], quality=90, optimize=True)
+    print(K['out'], os.path.getsize(K['out']), 'bytes'); sys.exit(0)
 
 C = CARDS[sys.argv[1] if len(sys.argv) > 1 else 'home']
 HEADLINE, DEK, FOOT, URL, PILLARS = C['headline'], C['dek'], C['foot'], C['url'], C['pillars']

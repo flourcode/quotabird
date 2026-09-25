@@ -13,7 +13,7 @@ window.qbTrack = function (name) { try { gtag('event', name); } catch (e) {} };
 
 /* Two more counts, attached to the specific elements: the Ask Mark chip and hand-off cards. */
 document.addEventListener('DOMContentLoaded', function () {
-  document.querySelectorAll('a[href$=".pdf"]').forEach(function (a) { a.addEventListener('click', function () { window.qbTrack('kit_download'); }); });
+  document.querySelectorAll('a[href$=".pdf"]').forEach(function (a) { a.addEventListener('click', function () { var h = a.getAttribute('href') || ''; window.qbTrack(h.indexOf('leader') >= 0 ? 'leader_download' : h.indexOf('seller') >= 0 ? 'seller_download' : 'kit_download'); }); });
   document.querySelectorAll('a.chip-ask, .madeby-links a[href*="#ask"]').forEach(function (a) { a.addEventListener('click', function () { window.qbTrack('ask_mark_click'); }); });
   var out = document.getElementById('out2') || document.getElementById('out') || document.getElementById('screen');
   if (out) out.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.card-accent a')) window.qbTrack('related_tool_click'); });

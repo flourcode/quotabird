@@ -8,7 +8,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 - [Deal Check](https://quotabird.com/deal/): Five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal. (before you put it in commit.)
 - [Account Check](https://quotabird.com/account/): Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. One minute, nothing stored. (when you only know one person there.)
-- [Competition Check](https://quotabird.com/competition/): Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. One minute, nothing stored. (when you are not sure you are ahead.)
+- [Competition Check](https://quotabird.com/competition/): Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. One minute, nothing stored. (when you're not sure you're ahead.)
 
 ## Your number
 
@@ -20,7 +20,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 ## Your team
 
 - [Pipeline Check](https://quotabird.com/): Target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. (quarterly, before the review.)
-- [Risk Check](https://quotabird.com/risk/): Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored. (when coverage looks fine and you do not trust it.)
+- [Risk Check](https://quotabird.com/risk/): Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored. (when coverage looks fine and you don't trust it.)
 - [Rep Check](https://quotabird.com/rep/): Is it the rep, the patch, a skill gap or an effort gap? Five questions for sales managers. No names, nothing stored. (when a rep is worrying you.)
 - [Partner Check](https://quotabird.com/partner/): Five questions that separate a partner who sells with you from a logo on a slide. For partner managers. One minute, nothing stored. (before you renew the partnership.)
 - [OLR Check](https://quotabird.com/olr/): Five questions that test the case you're making for a rep in OLR, then the room grills you. No names, no ratings, nothing stored. (review season.)
@@ -32,13 +32,15 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 ## Free printable
 
 - [The Manager's Field Kit](https://quotabird.com/kit/): a free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, managing high performers, and six worksheets.
+- [The Seller's Field Kit](https://quotabird.com/seller/): a free, printable field kit for sellers: is it a real deal, pipeline math, one deal carrying the quarter, single-threaded accounts, discounts, quiet deals, falling behind, and keeping your manager informed.
+- [The Leadership Field Kit](https://quotabird.com/leader/): a free, printable field kit for managers who want their influence to travel beyond their team: what to be known for, a point of view, receipts, templates others can borrow, the right rooms, and developing the people behind you.
 
 ## Sales Math Library
 
 - [How much pipeline do you actually need?](https://quotabird.com/math/pipeline-coverage/): Required pipeline coverage is 1 ÷ your qualified win rate. A 3X coverage ratio assumes a 33% win rate; at 20% you need 5X, at 25% you need 4X.
 - [What your quota-to-OTE ratio really says](https://quotabird.com/math/quota-to-ote/): Quota ÷ OTE equals your variable share of OTE divided by your commission rate at 100% attainment. SaaS new-bookings plans cluster around 4×; cloud consumption plans, paid at a fraction of a percent, run far higher by design.
 - [What a discount really costs you and the company](https://quotabird.com/math/discount-math/): A discount cuts your commission by exactly the discount percentage, and cuts gross margin to 1 − (1 − margin) ÷ (1 − discount). A 15% discount on a 40% margin leaves about 29%, not 25%.
-- [Why your commission check is smaller than the math](https://quotabird.com/math/commission-take-home/): US employers may withhold federal income tax on separately paid commissions at a flat 22% (37% on supplemental wages above $1 million in a year), plus 7.65% Social Security and Medicare, before any state tax. That is withholding, not the tax you finally owe.
+- [Why your commission check is smaller than the math](https://quotabird.com/math/commission-take-home/): US employers may withhold federal income tax on separately paid commissions at a flat 22% (37% on supplemental wages above $1 million in a year), plus 7.65% Social Security and Medicare, before any state tax. That's withholding, not the tax you finally owe.
 
 ## Field Notes
 
@@ -46,7 +48,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 - [Why I don't start with BANT or MEDDIC](https://quotabird.com/notes/why-not-bant-or-meddic/): They're useful when you're working a deal. The trouble is the moment before that.
 - [If three people failed in the same patch](https://quotabird.com/notes/three-people-same-patch/): You probably don't have three bad reps.
 - [Your quota went up 30%. Did your territory?](https://quotabird.com/notes/quota-went-up-did-your-territory/): The number moved. Ask what else did.
-- [They asked for 15% off. What are you buying with it?](https://quotabird.com/notes/fifteen-percent-off/): A discount is a purchase. Make sure you get something for it.
+- [They asked for 15% off. What are you buying with it?](https://quotabird.com/notes/fifteen-percent-off/): A discount is a purchase. The only question is what you got for it.
 - [Your best rep hates internal meetings. Is that a problem?](https://quotabird.com/notes/best-rep-hates-meetings/): Probably not the one you think.
 
 ## About

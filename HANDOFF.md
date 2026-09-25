@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-14.1500**
+**Current build: 2026-10-16.0900**
 
 ## Naming: checks, not kills
 
@@ -293,6 +293,27 @@ files update. The catalog validates against the ARD schema; every entry is a
 `text/html` page with a `urn:air:quotabird.com:tools:<slug>-check` URN. They
 exist because Google's page audit checks for them; they cost nothing and
 describe the site accurately.
+
+**Voice rules (from the October 2026 read-through of all 30 pages).** The
+site should sound like one veteran seller talking, not a manual:
+- **Contractions, always**: don't, isn't, can't, it's, you're. The oldest tool
+  pages were written "do not / is not" (Territory and Partner were 100%
+  formal); that is the single biggest tell of machine-written or corporate
+  copy, and it's gone. Every page now sits between 0 and 12% formal, the same
+  as the kits.
+- **Rarely "X isn't Y. It's Z."** One or two on the site is speech; more is a
+  template. Say the thing directly.
+- **No lecturing**: no "make sure", "you should", "you must", "always", "never"
+  (the privacy promise "never sends your answers" is a promise, not a lecture).
+  First person ("I'd", "what I do") in the kits; plain second person on the
+  tools is fine.
+- **Headings are specific and plain**, never the same template on five pages.
+- **No AI vocabulary** (leverage, robust, navigate, journey, unlock...) and no
+  dashes. A quick check: search the built pages for those words and for "do not",
+  "is not", "make sure" and "you should".
+- Editing copy that lives inside the tool configs (JavaScript inside Python
+  strings) needs an escaped apostrophe: `\\'` in the source. Run a syntax
+  check on every page after copy edits.
 
 **The ask is soft on purpose.** The three-tier rate card is gone. The About
 section ends *Need another set of eyes? 20 minutes. Free. No deck required.*
@@ -819,6 +840,9 @@ Set these in the Amplify console; they cannot live in the repo.
   { "source": "/olr", "status": "301", "target": "/olr/" },
   { "source": "/notes", "status": "301", "target": "/notes/" },
   { "source": "/kit", "status": "301", "target": "/kit/" },
+  { "source": "/leader", "status": "301", "target": "/leader/" },
+  { "source": "/seller", "status": "301", "target": "/seller/" },
+  { "source": "/kits", "status": "301", "target": "/kits/" },
   { "source": "/math", "status": "301", "target": "/math/" },
   { "source": "/pipeline", "status": "301", "target": "/" },
   { "source": "/pipeline/<*>", "status": "301", "target": "/" },
@@ -1463,3 +1487,48 @@ page's booking section (*Or email me*, after Chat with Mark and LinkedIn),
 the kit's closing card (on screen and in print, on the same line as the
 terms), and the Person structured data. Not added to every page's footer or
 the result cards, which keep "I answer LinkedIn faster than email."
+
+**2026-10-15.0900** — **The Leader's Field Kit** at `/leader/`: the sibling of
+the Manager's kit, for managers who want to become the person other managers
+call (the thesis: *become useful enough that your name comes up when you're
+not in the room*). Six chapters (known for, point of view, receipts, build
+something others can borrow, the right rooms, people behind you) and two
+worksheets (*My point of view*, *A year from now*), 3 pages on Letter and A4.
+Written from general observations; **no invented stories about Mark's
+career** (add real ones by editing `LEADER_BODY`). Its own PDF
+(`leader/leader-field-kit.pdf`), previews (pages 1 and 3), share card
+(`card-leader.jpg`, `python3 make-card.py leader`) and download card
+(`partials/leader-card.html`, on About and Field Notes, next to the
+Manager's card). Both kits are rows at the top of the Tools menu; the
+Manager's kit ends with a pointer to the Leader's. Downloads count as
+`leader_download`; the Manager's stay `kit_download`. `LEADER_PAGES` in
+`make-tools.py` holds the page count shown on the page; update it after any
+re-render. The paid monthly-session idea from the same review is not on the
+site; it goes on the About page only once Mark decides format and price.
+
+**2026-10-15.1100** — **Three Field Kits, one ladder.** A manager is already a
+leader, so the kits climb by reach, not title: *The Seller's Field Kit*
+(`/seller/`, carry the number, 4 pages: is it a real deal, pipeline math, one
+deal carrying the quarter, single-threaded, discounts, a quiet deal, behind
+the number, don't make your manager guess; five worksheets that map to Deal,
+Pipeline and Account Check), *The Manager's Field Kit* (`/kit/`, run the
+team, 8 pages), and *The Leadership Field Kit* (`/leader/`, influence beyond
+your team, 3 pages; renamed from *Leader's*, new opening, "Recognition
+usually follows usefulness", a closing note on reputation lag, and chapters
+2 and 3 swapped so the point-of-view worksheet starts cleanly on page 2).
+`/kits/` shows all three as a ladder; the header, footer and Tools menu link
+there instead of to one kit. Download cards: the Seller's on the seller
+tools, the Manager's on home and the manager tools, Manager's + Leadership
+on About and Field Notes. Each kit points to the next rung. Downloads count
+as `seller_download`, `kit_download`, `leader_download`. The printed closing
+card is a little more compact for all three. **Page counts on the kit pages
+come from `SELLER_PAGES` / `LEADER_PAGES` and the Manager's hero text; update
+them after any re-render.**
+
+**2026-10-16.0900** — full-site voice pass: every negative contracted (57
+strings in the generator plus the Deal and home pages), escaped correctly for
+the JavaScript they live in and syntax-checked page by page; the five
+identical *The five questions, and what each one disproves* headings each got
+their own words; the stiff "isn't X. It's Y." lines rewritten; *honestly*,
+*make sure* and *you should* tics removed. All thirteen tools run end to end;
+kits unchanged at 4, 8 and 3 pages; previews and share cards refreshed.
