@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-14.0900'
+BUILD = '2026-10-14.1500'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -1611,6 +1611,9 @@ KIT_BODY = '''
       learned.</p>
     <p>Once a month I'd ask, "If you were running this team, what would you change?" You'll hear things nobody says in
       the staff meeting.</p>
+    <p>If people only bring you good news, you don't have a good team. You have a good-news reporting system. I want the
+      rep who says "this deal is slipping" on Monday, not the one who keeps it green until Friday because they're
+      afraid of the meeting.</p>
     <div class="sheet">
       <h3>Worksheet: One-on-one</h3>
       <p class="sheet-meta">Rep ____________________ &nbsp; Date __________</p>
@@ -1637,6 +1640,8 @@ KIT_BODY = '''
       forecast plenty of enthusiasm. It has a terrible close rate.</p>
     <p>When a rep and I disagree, I don't need to win the argument. I ask which of the five they'd defend to my boss,
       and we forecast that. Nobody has to lose face. The forecast just gets better.</p>
+    <p>One question I ask a lot: what changed? Deals move because something changed with the customer, not because
+      another week passed in the CRM.</p>
     <div class="sheet">
       <h3>Worksheet: Deal inspection</h3>
       <p class="sheet-meta">Deal ____________________ &nbsp; Rep ______________ &nbsp; <span class="sheet-tool">Online: quotabird.com/deal</span></p>
@@ -1712,7 +1717,8 @@ KIT_BODY = '''
       <tr><td>Effort</td><td>They know how to sell. They're just not doing enough of it.</td><td>Set expectations clearly, in writing, with dates.</td></tr>
       <tr><td>Wrong fit</td><td>Fair patch, enough support, and neither the skill nor the effort is there.</td><td>Now it's a performance conversation, not a coaching conversation.</td></tr>
     </tbody></table></div>
-    <p>I want to rule out the first three before I convince myself it's the fourth. I once spent months coaching
+    <p>Before I call it a performance problem, I make sure the rep knows what good looks like. Not eventually. Next
+      Tuesday. I want to rule out the first three before I convince myself it's the fourth. I once spent months coaching
       somebody whose territory couldn't have produced the number for almost anyone. I'd like those months back. So
       would the rep.</p>
     <p class="sheet-tool">The rep diagnostic is in chapter 1. Online: quotabird.com/rep</p>
@@ -1797,7 +1803,7 @@ KIT_CTA = '''
       <a class="btn btn-primary btn-lg" id="kitBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=kit&amp;utm_content=kit_cta" target="_blank" rel="noopener">Chat with Mark</a>
       <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
     </div>
-    <p class="fine">And if I don't think I can help, I'll tell you.</p>
+    <p class="fine">Or email me: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>. And if I don't think I can help, I'll tell you.</p>
   </section>
 '''
 _kit_url = 'https://quotabird.com/kit/'
@@ -1903,7 +1909,7 @@ def header(path):
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
       {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/')) else '/' + path.split('/')[0] + '/')}
-      <a class="toplink" href="/kit/">Free kit</a>
+      <a class="toplink" href="/kit/">Field Kit</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
       <a class="chip chip-ask" href="{ask}">Ask Mark</a>
@@ -1917,7 +1923,7 @@ def chrome(path):
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
     ask = '#ask' if path == 'about/index.html' else '/about/#ask'
     if 'class="foot-nav"' not in s:
-        s = s.replace('<footer class="sitefoot">', f'<footer class="sitefoot">\n  <p class="foot-nav"><a href="/">Tools</a><a href="/kit/">Free kit</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>', 1)
+        s = s.replace('<footer class="sitefoot">', f'<footer class="sitefoot">\n  <p class="foot-nav"><a href="/">Tools</a><a href="/kit/">Field Kit</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>', 1)
     if path != '404.html':
         # the full story lives on the About page; every other page gets the short "Made by Mark" card
         src = MARK_SRC if path == 'about/index.html' else MADEBY_SRC

@@ -45,6 +45,7 @@
       "url": "https://quotabird.com/#about",
       "description": "Led partner sales teams at AWS for six years; prior roles at F5, Red Hat, STEC and Virident; 20 years a Marine.",
       "knowsAbout": ["Federal sales", "Pipeline qualification", "Pipeline coverage", "Sales management", "Partner and channel sales", "Federal go-to-market"],
+      "email": "mark@quotabird.com",
       "sameAs": ["https://fedhoo.com", "https://www.linkedin.com/in/markflournoy/"]
     },
     {
@@ -430,6 +431,7 @@ function render() {
       ${s.perRep ? `<div class="list-item"><span class="headline">${s.reps === 1 ? 'For you' : 'Per seller'}</span><span class="trailing strong">${money(s.perRep)}${s.deals && s.reps > 1 ? ' · ' + Math.ceil(s.deals / s.reps) + ' deals' : ''}</span></div>` : ''}
     </div>
     <p class="clock">${esc(clock + paceLine)}</p>
+    ${s.win > .10 ? `<div class="breakit"><span>Before you defend it, try to break it.</span><button class="btn btn-tonal" id="stress" type="button">Try 5 points lower</button></div>` : ''}
     ${s.ratio < .5 ? `<div class="card card-accent">
       <span class="overline">Before you go find ${money(s.gap)}</span>
       <p class="lede">A gap this size is a creation problem. Can the territory even produce it?</p>
@@ -457,6 +459,7 @@ function render() {
       </div>
       <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. I answer LinkedIn faster than email.</p>
     </div>`;
+  { const st = $('stress'); if (st) st.onclick = () => { const w = Math.max(.05, Math.round((s.win - .05) * 100) / 100); $('win').value = pct(w); track('pipeline_stress'); onEdit(); }; }
   $('copy').onclick = (e) => { track('pipeline_share'); try { history.replaceState(null, '', '#' + encodeInputs()); } catch {} shareOut(e.currentTarget, shareBlock(s), 'Pipeline Check'); };
   $('dmBtn').onclick = (e) => { const btn = e.currentTarget; track('pipeline_dm_copy');
     copyText(dmText(s)).then(() => { btn.textContent = 'Copied ✓'; window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener'); }).catch(() => { btn.textContent = "Couldn't copy"; }); };

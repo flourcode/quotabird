@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-14.0900**
+**Current build: 2026-10-14.1500**
 
 ## Naming: checks, not kills
 
@@ -1447,3 +1447,19 @@ structured data point to it.
 *Why the bird?* / *If you carry a number, sooner or later the Quota Bird lands
 on your branch.* with the bird (white outline in dark mode). Keep it there and
 nowhere else; the rest of the site stays plain and useful.
+
+**2026-10-14.1300** — from a review of Amazon and Google management ideas
+(borrow the behavior, not the vocabulary): three lines added to the kit (the
+good-news reporting system, chapter 2; "what changed?", chapter 3; what good
+looks like by next Tuesday, chapter 6), still 8 pages. Pipeline Check has a
+*Try 5 points lower* button under the result ("Before you defend it, try to
+break it."), shown when the win rate is above 10%; each tap drops it five
+points (`pipeline_stress` event). Not taken: a sixth "what changed?" question
+on every tool (breaks the one-minute promise; Deal Check's *Pressure test*
+already does the disconfirming), and any Amazon or Google vocabulary.
+
+**2026-10-14.1500** — Mark's email, `mark@quotabird.com`, added: the About
+page's booking section (*Or email me*, after Chat with Mark and LinkedIn),
+the kit's closing card (on screen and in print, on the same line as the
+terms), and the Person structured data. Not added to every page's footer or
+the result cards, which keep "I answer LinkedIn faster than email."

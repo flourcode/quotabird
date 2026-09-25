@@ -148,6 +148,9 @@ h3 { font-size:19px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 .note h3 { font-size:20px; margin-top:30px; }
 .note .card p { font-size:17px; }
 
+/* ── Pipeline Check: try to break it ── */
+.breakit { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px 14px; margin:0 2px 16px; font-size:15px; color:var(--ink-2); }
+
 /* ── Why the bird? (About page only) ── */
 .bird-egg .band-inner { display:flex; align-items:center; gap:16px; }
 .bird-egg picture { flex:0 0 48px; }
@@ -259,7 +262,7 @@ h3 { font-size:19px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
   .kit-start li { padding:1pt 0; border:0; font-size:10pt; break-inside:avoid; }
   .kit-start a { text-decoration:none; }
   .kit-cta .kit-cta-terms { margin:0 !important; display:inline; }
-  .kit-cta::after { content:"  \00B7  Mark Flournoy  \00B7  quotabird.com/about"; display:inline; font-weight:600; font-size:11pt; }
+  .kit-cta::after { content:"  \00B7  mark@quotabird.com  \00B7  quotabird.com/about"; display:inline; font-weight:600; font-size:11pt; }
 }
 
 /* ── Sales Math Library ── */
