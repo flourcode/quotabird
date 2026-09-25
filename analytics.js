@@ -25,3 +25,10 @@ var GA_ID = 'G-BG9NR9GXQZ';
   window.qbTrack = function (name) { try { gtag('event', name); } catch (e) {} };
   (window.qbTrackQ || []).forEach(window.qbTrack); window.qbTrackQ = [];
 })();
+
+/* Tool behaviour, no inputs: a hand-off card tapped, or Ask Mark. Event names only. */
+document.addEventListener('click', function (e) {
+  var t = e.target.closest ? e.target.closest('a') : null; if (!t) return;
+  if (t.closest('.card-accent')) window.qbTrack('related_tool_click');
+  else if (t.classList.contains('chip-ask') || (t.getAttribute('href') || '').indexOf('#ask') >= 0) window.qbTrack('ask_mark_click');
+});

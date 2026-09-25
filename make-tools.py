@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-08.0900'
+BUILD = '2026-10-09.1100'
 TOOLS = [
     ('For sellers', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('For sellers', '/quota/', 'Quota Check', 'The day the number lands'),
@@ -24,7 +24,7 @@ def menu(current):
         if g != last: groups.append([g, []]); last = g
         groups[-1][1].append(f'<a href="{h}"{" class=\"current\"" if h == current else ""}>{n}</a>')
     cols = ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in groups)
-    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/#about">About Mark</a></div>'
+    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div>'
     return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{cols}{foot}</div></details>'
 
 
@@ -141,7 +141,7 @@ REP = dict(
     desc='Is it the rep, the patch, a skill gap or an effort gap? Five questions for sales managers. No names, nothing stored.',
     ogdesc='Before you write them up, figure out what you inherited. Five questions, one minute, no names.',
     h1='Before you write them up, figure out what you inherited.',
-    dek='Five questions that separate a rep problem from a territory, skill or effort problem wearing a performance costume. For managers. No names.',
+    dek='Answer five questions about the rep and find out whether it\'s the rep, the patch, a skill gap or an effort gap.',
     cta='Check my rep',
     questions=[
         dict(k='patch', n='PATCH', q='Could a good rep make this number in this territory, on this plan?'),
@@ -250,7 +250,7 @@ PARTNER = dict(
     desc='Five questions that separate a partner who sells with you from a logo on a slide. For partner managers. One minute, nothing stored.',
     ogdesc='Before you renew the partnership, test it. Five questions, one minute, no names.',
     h1='Before you renew the partnership, test it.',
-    dek='Five questions that separate a partner who sells with you from a logo on a slide. For partner managers and anyone who owns a co-sell number. No names.',
+    dek='Answer five questions and find out whether this partner sells with you or just sits on your slide.',
     cta='Check my partner',
     questions=[
         dict(k='sourced', n='SOURCED', q="Have they brought you an opportunity you didn't find yourself?"),
@@ -333,7 +333,7 @@ TERRITORY = dict(
     desc='Can the patch make the number, or are you being asked to grow where nobody could? Five questions for sellers. Nothing stored.',
     ogdesc='Before you sign up for the number, test the territory. Five questions, one minute, no account names.',
     h1='Before you sign up for the number, test the territory.',
-    dek='Five questions that tell you whether the patch can make the number, or whether you are being asked to grow where nobody could. For sellers. No account names.',
+    dek='Answer five questions and find out whether this patch can make the number.',
     cta='Check my territory',
     questions=[
         dict(k='spend', n='SPEND', q='Is there enough addressable spend in the territory to make the number twice over?'),
@@ -415,7 +415,7 @@ OLR = dict(
     desc="Five questions that test the case you're making for a rep in OLR, then the room grills you. No names, no ratings, nothing stored.",
     ogdesc='Before you walk into OLR, test your case. Five questions, then the room grills you. No names, no ratings.',
     h1='Before you walk into OLR, test your case.',
-    dek='Five questions that separate a case the room will accept from a story it will take apart. For managers with a rep to defend in calibration. No names, no ratings.',
+    dek='Answer five questions about your case and find out whether it survives the room.',
     cta='Check my case',
     questions=[
         dict(k='receipts', n='RECEIPTS', q='Can you name three things they delivered this year, each with a number on it?'),
@@ -461,7 +461,7 @@ OLR = dict(
         ('Does it predict a rating?', 'No, and it never will. It grades the quality of your case: ready, not yet, a story, or no receipts. Your organization already has machinery for the rating. What it does not have is a rehearsal.'),
         ('What is OLR?', "Organization and Leadership Review: Amazon's annual talent review, where managers propose an evaluation for each of their people and then defend it in calibration with other managers, alongside promotion and development decisions. OLR Check is the rehearsal for the defending part."),
         ('Is this only for Amazon?', 'OLR is Amazon\'s name for it, and that is where most of the people who use these tools have sat. But every calibration room asks the same five things, whatever the company calls it. Read "leadership principle" as your organization\'s behavioral standard and the tool works the same.'),
-        ('What does Grill me do?', 'It plays the room. Three hard questions about your weakest answer, one at a time, and you say honestly whether you can answer each. If you cannot answer two of three about ownership, that case is not ready, and better to learn that here than across the table.'),
+        ('What does Pressure test do?', 'It plays the room. Three hard questions about your weakest answer, one at a time, and you say honestly whether you can answer each. If you cannot answer two of three about ownership, that case is not ready, and better to learn that here than across the table.'),
         ('Why does it never ask the rep\'s name?', 'Because it does not need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, fix the case, and nothing about it is written down anywhere.'),
     ],
     config='''CheckTool({
@@ -495,7 +495,7 @@ OLR = dict(
     how: ['Give me the example for the first principle you are citing.', 'And the second one. Different example.', 'Which principle would you drop because you cannot back it, and why did it get in the draft?'],
     next: ['What harder problem have they already shown they can handle?', 'Where did they grow scope without being asked?', 'What feedback did they get this year, and what observable behavior changed?'],
   },
-  grillBy: 'The room', grillLabel: 'Grill my case', fixLabel: 'Before the room',
+  grillBy: 'The room', grillLabel: 'Pressure test', fixLabel: 'Before the room',
   grillLines: { clean: 'Your case would survive.', one: 'Your case would mostly survive. One hole left.', bad: 'Your case would not survive.', cleanSub: 'Three questions from the room, three answers. Say the weakest receipt first.' },
   fix: {
     receipts: 'Write the three things down, each with its number, before you write anything else. If you cannot get to three, the case is the problem, not the rep.',
@@ -527,7 +527,7 @@ BRIEF = dict(
     desc="Five questions about the doc, deck or QBR you're about to present, then the room grills you. Nothing uploaded, nothing stored.",
     ogdesc="What's the question you're hoping nobody asks? Brief Check finds it before the meeting does.",
     h1="What's the question you're hoping nobody asks?",
-    dek='Brief Check finds it before the meeting does. Five questions about the doc, the deck or the QBR you are about to present. Nothing uploaded.',
+    dek='Answer five questions about the doc, deck or QBR and find out before the meeting does.',
     cta='Check my brief',
     questions=[
         dict(k='point', n='POINT', q='Can you say in one sentence what you want them to decide, and why now?'),
@@ -573,7 +573,7 @@ BRIEF = dict(
         ('Does anything I enter leave my device?', 'No. The five answers are scored in your browser. No account, no upload, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.'),
         ('What counts as a brief?', 'Anything you are about to argue for in front of people who can say no: a narrative doc, a strategy deck, a QBR, an account plan, a proposal, an investment memo, a capture review, or a recommendation you will make out loud. If it has a point and an ask, it is a brief.'),
         ('Is this only for sales?', 'No. It started with sales reviews, and the sales leader is one of the sharks. But a six-pager in front of a VP dies exactly the way a QBR does: on the question the author hoped nobody would ask.'),
-        ('What does Grill me do?', 'It plays the room. Pick who is across the table, and it asks three of their questions about your weakest answer, one at a time. You say honestly whether you could answer. Better to find the hole here than in the meeting.'),
+        ('What does Pressure test do?', 'It plays the room. Pick who is across the table, and it asks three of their questions about your weakest answer, one at a time. You say honestly whether you could answer. Better to find the hole here than in the meeting.'),
     ],
     config='''CheckTool({
   slug: 'brief', name: 'Brief Check', url: 'https://quotabird.com/brief/',
@@ -614,7 +614,7 @@ BRIEF = dict(
     skeptic:   { name: 'The skeptic',          qs: { point: ["What's the real reason you want this?", "What problem does this solve that we didn't have last year?", "Whose idea was this, and what do they get?"], receipts: ['What evidence would change your mind?', "What's the best argument against this?", 'Who disagrees, and why are they wrong?'], alternative: ['What did the alternative look like before you wrote it to lose?', 'Why is doing nothing not the answer?', 'What would you recommend if this were someone else\\'s idea?'], hole: ["What's the sentence you hope nobody challenges?", "What's the assumption you haven't been able to prove?", 'What are you not telling this room?'], ask: ['What are you actually asking for?', "What's the smallest commitment that tests this?", 'What will you show us in ninety days?'] } },
   },
   sharkPrompt: "Who's across the table?",
-  grillBy: 'The room', grillLabel: 'Grill my brief', fixLabel: 'Before the meeting',
+  grillBy: 'The room', grillLabel: 'Pressure test', fixLabel: 'Before the meeting',
   grillLines: { clean: 'Your brief would survive.', one: 'Your brief would mostly survive. One hole left.', bad: 'Your brief would not survive.', cleanSub: 'Three questions, three answers. Lead with the hole anyway.' },
   fix: {
     point: 'Write the one sentence: what you want them to decide, and why now. Put it at the top. If it takes two sentences, you have two briefs.',
@@ -705,6 +705,52 @@ NOTES = [
     <p>Sit with them and go through five real opportunities. Listen to how they describe the customer. You'll learn
       more in ninety minutes than in a month of dashboards.</p>''',
          tool=('/rep/', 'Rep Check', 'asks the patch first and the person second, and tells you which problem you have.')),
+    dict(slug='quota-went-up-did-your-territory', title='Your quota went up 30%. Did your territory?',
+         dek='The number moved. Ask what else did.',
+         body='''    <p class="lede">The number moved. Before you decide whether you can make it, ask what else did.</p>
+    <p>A quota is a claim about a patch. When it goes up 30%, one of three things is true: the patch got bigger, the
+      patch got better, or somebody needed the spreadsheet to add up. The first two are fine. The third is the one
+      you want to know about in January, not in October.</p>
+    <p>So do the boring arithmetic first. Divide the new number by your on-target earnings. Somewhere between 4 and
+      6 is the range I've usually seen for mid-market cloud and SaaS reps; 6 to 8 is enterprise at a big provider;
+      above 10 the plan is asking the territory for something it may not have. Then divide the number by what you
+      actually closed last year. That's the growth the plan is assuming, and it is the honest measure of how much
+      harder this year is.</p>
+    <p>Then look at the patch the same way a stranger would. Has anyone ever made this number in it? What's the
+      addressable spend, and how much of it is already committed to somebody else? If the number went up and the
+      patch didn't, say so early, with the sizing, in writing. Nobody argues with a number that came with its
+      work shown.</p>''',
+         tool=('/quota/', 'Quota Check', 'does the arithmetic in ten seconds, and hands the number to the territory and pipeline checks.')),
+    dict(slug='fifteen-percent-off', title='They asked for 15% off. What are you buying with it?',
+         dek='A discount is a purchase. Make sure you get something for it.',
+         body='''    <p class="lede">Every point off the price buys something. The question is whether you got it.</p>
+    <p>Sellers think of a discount as a concession. I'd think of it as a purchase, because that's how the customer
+      thinks of it. Up to about 5% off is normal negotiation and nobody remembers it. Between 5 and 15% is real
+      money, and it should buy something specific: a signature date, a bigger scope, a multi-year term, a reference
+      you can use. Above 15% you're paying for a decision, so make sure a decision is what you're getting, this
+      quarter, in writing. Above 25%, in my experience, you're paying to be liked, and the customer will remember
+      the number rather than the gesture.</p>
+    <p>Two things worth knowing before the conversation. The discount comes out of your commission at exactly the
+      rate it comes out of revenue, so 15% off is a 15% pay cut on that deal. And it comes out of the company's
+      margin faster than that, because the cost of delivering the thing doesn't drop when the price does.</p>
+    <p>The last question is the one I'd ask first: is the objection the price, or the deal? A discount fixes exactly
+      one of those, and it isn't usually the one you have.</p>''',
+         tool=('/discount/', 'Discount Check', 'shows what the discount costs you and the company before you agree to it.')),
+    dict(slug='best-rep-hates-meetings', title='Your best rep hates internal meetings. Is that a problem?',
+         dek="Probably not the one you think.",
+         body='''    <p class="lede">Every team has one. Skips the pipeline call, answers Slack in bursts, CRM hygiene is a
+      disgrace, and customers call her back.</p>
+    <p>The manager's instinct is to fix the behavior. Before you do, ask which differences matter to selling and
+      which don't. Do customers choose to spend time with her? Is there pipeline that exists only because she's
+      here? When she's in front of a customer, can she sell? Is she still trying to win? If the answers are yes,
+      you don't have a performance problem. You have a visibility problem, and it's yours to solve, not hers.</p>
+    <p>Decide what visibility you actually need. Usually it's less than the process asks for: the five deals that
+      matter, a straight answer on where each one stands, and a heads-up before something moves in the forecast.
+      Get that, and let her sell. The polished rep with immaculate CRM hygiene and no customer pull is the one who
+      should worry you, and he's the one the dashboard likes.</p>
+    <p>None of this means standards don't apply. It means the standard is customers and pipeline, and the meeting
+      is a means to it. When the means starts costing you the end, it's the means that's wrong.</p>''',
+         tool=('/rep/', 'Rep Check', 'asks about the customers, the pipeline, the craft and the will before it asks about the calendar.')),
 ]
 
 def note_head(title, desc, url):
@@ -820,12 +866,12 @@ CALCS = [
   title='Quota Check: Is My Quota Crazy?',
   desc='Your quota against your on-target earnings. Multiples under 3 and over 10 both mean something. Free, in your browser, nothing stored.',
   ogdesc='Is my quota crazy? Base, variable and quota in, a straight answer out.',
-  h1='Is my quota crazy?', dek='Base salary, target variable and the number they handed you. We\'ll tell you where the plan sits against what\'s normal, and what it asks of your patch.',
+  h1='Is my quota crazy?', dek='Plug in your base, your variable and the number they handed you to find out.',
   fields=[dict(id='base',kind='money',label='Base salary',example='$90K'),dict(id='variable',kind='money',label='Target variable at 100%',example='$90K'),
           dict(id='quota',kind='money',label='Your quota for the year',example='$1.2M'),dict(id='closed',kind='money',label='What you closed last year',example='',placeholder='$0 (optional)')],
   card=dict(headline=['Is my quota crazy?',''],dek='Your number against your on-target earnings, and what it asks of your patch.',pillars=['OTE','MULTIPLE','VARIABLE','GROWTH']),
   bands=[('how','What the multiple means','''    <p class="lede">Divide your quota by your on-target earnings. That one number tells you more about the plan than the plan will.</p>
-    <p>Somewhere between 4 and 6 is the usual range for mid-market SaaS and cloud reps: the company expects to pay you roughly a fifth of what you bring in. Below 3 is unusual, and usually means a ramp quota, an overlay role, or a plan with a catch in it. Six to eight is enterprise at a big CSP, and it needs a strong pipeline behind it. Eight to ten is strategic and named-account territory, where you'll need three to four times coverage and a patch that can produce it. Above ten, the plan is asking the territory for something it may not have.</p>
+    <p>Somewhere between 4 and 6 is the range I've usually seen for mid-market SaaS and cloud reps: the company expects to pay you roughly a fifth of what you bring in. Below 3 is unusual, and usually means a ramp quota, an overlay role, or a plan with a catch in it. Six to eight is enterprise at a big CSP, and it needs a strong pipeline behind it. Eight to ten is strategic and named-account territory, where you'll need three to four times coverage and a patch that can produce it. Above ten, the plan is asking the territory for something it may not have.</p>
     <p>The second number that matters is variable as a share of OTE. Under 40% and the quota matters less than it looks; over 60% and it's most of your pay, so treat it like one. And if you closed last year, the growth the new number implies is the honest measure of how much harder this year is.</p>
     <p>None of this says the number is wrong. It says where it sits. Whether the patch can produce it is <a href="/territory/">Territory Check</a>, and how much pipeline it takes is <a href="/">Pipeline Check</a>.</p>''')],
   faq=[('Does anything I enter leave my device?','No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.'),
@@ -841,9 +887,9 @@ CALCS = [
     const money = (n) => n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n);
     let t;
     if (mult < 3) t = ['Low', 'proof', `Quota is ${X} OTE. That's unusually low: a ramp, an overlay, or a plan with a catch in it.`, 'Read the plan twice. Low multiples usually come with a condition.'];
-    else if (mult <= 4) t = ['Favorable', 'ready', `Quota is ${X} OTE, below the usual 4 to 6.`, 'Common in SMB, commercial and brand-new patches. Enjoy it while it lasts.'];
-    else if (mult <= 6) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the usual 4 to 6.`, "The number is fair. Whether the patch can produce it is a different question."];
-    else if (mult <= 8) t = ['A stretch', 'proof', `Quota is ${X} OTE, above the usual range.`, 'Normal for enterprise at a big CSP, and it needs a strong pipeline behind it.'];
+    else if (mult <= 4) t = ['Favorable', 'ready', `Quota is ${X} OTE, below the 4 to 6 I usually see.`, 'Common in SMB, commercial and brand-new patches. Enjoy it while it lasts.'];
+    else if (mult <= 6) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the 4 to 6 I usually see.`, "The number is fair. Whether the patch can produce it is a different question."];
+    else if (mult <= 8) t = ['A stretch', 'proof', `Quota is ${X} OTE, above the range I usually see.`, 'Normal for enterprise at a big CSP, and it needs a strong pipeline behind it.'];
     else if (mult <= 10) t = ['Aggressive', 'prove', `Quota is ${X} OTE. Strategic and named-account territory.`, "You'll need 3 to 4X coverage and a patch that can produce it."];
     else t = ['Crazy', 'dont', `Quota is ${X} OTE. The plan is asking the patch for something it may not have.`, 'Check the territory before you sign, and get the sizing in writing.'];
     const growth = v.closed > 0 ? (v.quota - v.closed) / v.closed : null;
@@ -861,12 +907,12 @@ CALCS = [
   title='Discount Check: What a Discount Costs You',
   desc='They want a discount. See what it costs in your commission and the company\'s margin before you say yes. Free, in your browser, nothing stored.',
   ogdesc='They want a discount. Here is exactly what it costs you before you sharpen the pencil.',
-  h1='They want a discount.', dek='List price, the discount they\'re asking for, your margin and your rate. We\'ll show what it costs you and what it costs the company, before you agree to anything.',
+  h1='They want a discount.', dek='Plug in the price and the discount to see what it costs you before you say yes.',
   fields=[dict(id='list',kind='money',label='Full list price',example='$500K'),dict(id='disc',kind='pct',label='Discount they want',example='15%'),
           dict(id='margin',kind='pct',label="Company gross margin",example='40%'),dict(id='rate',kind='pct',label='Your commission rate',example='8%')],
   card=dict(headline=['They want a discount.',''],dek='What it costs you in commission, and the company in margin, before you say yes.',pillars=['PRICE','DISCOUNT','MARGIN','YOUR CUT']),
   bands=[('how','A discount is a purchase','''    <p class="lede">Every point off the price buys something. The question is whether you got it.</p>
-    <p>Up to about 5% is normal negotiation. Nobody remembers it. Between 5 and 15% is meaningful, and it should buy something specific: a signature date, a larger scope, a reference, a multi-year term. Above 15% you are paying for a decision, so make sure a decision is what you're getting, this quarter, in writing. Above 25%, you're usually paying to be liked, and the customer will remember the number, not the gesture.</p>
+    <p>These are rough ranges from my own deals and the ones I've reviewed; yours may differ. Up to about 5% is normal negotiation. Nobody remembers it. Between 5 and 15% is meaningful, and it should buy something specific: a signature date, a larger scope, a reference, a multi-year term. Above 15% you are paying for a decision, so make sure a decision is what you're getting, this quarter, in writing. Above 25%, you're usually paying to be liked, and the customer will remember the number, not the gesture.</p>
     <p>Two things sellers forget. The discount comes out of your commission at exactly the same rate it comes out of revenue, so a 15% discount is a 15% pay cut on that deal. And it comes out of the company's margin much faster than 15%: cost of goods doesn't move, so every dollar off the price is a dollar off the margin.</p>
     <p>Before you discount at all, ask whether the objection is the price or the deal. A discount fixes exactly one of those. <a href="/deal/">Deal Check</a> tells you which one you have.</p>''')],
   faq=[('Does anything I enter leave my device?','No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.'),
@@ -883,7 +929,7 @@ CALCS = [
     const commFull = v.list * v.rate, commLost = given * v.rate, commAfter = commFull - commLost;
     const cogs = v.list * (1 - v.margin), newMargin = v.margin > 0 ? Math.max(0, 1 - cogs / discounted) : null;
     let t;
-    if (v.disc <= .05) t = ['Normal', 'ready', 'Inside normal negotiation range.'];
+    if (v.disc <= .05) t = ['Normal', 'ready', 'Inside what I would call normal negotiation range.'];
     else if (v.disc <= .15) t = ['Meaningful', 'proof', 'Get something specific for it: a signature date, a bigger scope, a reference.'];
     else if (v.disc <= .25) t = ['Expensive', 'prove', 'This much off should buy a decision this quarter, not a warmer feeling.'];
     else t = ['Giveaway', 'dont', "At this point you're paying to be liked, and they'll remember the number, not the gesture."];
@@ -902,28 +948,28 @@ CALCS = [
 });'''),
  dict(slug='commission', name='Commission Check',
   title='Commission Check: Your Take-Home on a Deal',
-  desc='Deal size and commission rate in, what you actually take home out, after a realistic withholding estimate. Free, in your browser, nothing stored.',
+  desc='Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes. Free, in your browser, nothing stored.',
   ogdesc='It closed. Here is roughly what you actually take home.',
-  h1='It closed. What do I actually take home?', dek='Deal size, your rate, and how you\'re paid. A planning estimate of the check after withholding, not tax advice.',
+  h1='It closed. What do I actually take home?', dek='Plug in the deal and your rate to find out, roughly, before the check lands.',
   fields=[dict(id='deal',kind='money',label='Deal size',example='$500K'),dict(id='rate',kind='pct',label='Your commission rate',example='8%'),
-          dict(id='profile',kind='choice',label='How you are paid',example='w2',options=[('w2','W-2 (~30%)'),('high','High bracket (~40%)'),('1099','1099 (~20%)')])],
+          dict(id='buffer',kind='pct',label='Set aside for taxes',example='30%',presets=[('W-2 ~30%','30%'),('High bracket ~40%','40%'),('1099 ~20%','20%')])],
   card=dict(headline=['It closed.','What do I take home?'],dek='A planning estimate of the check after withholding, in about ten seconds.',pillars=['DEAL','RATE','WITHHELD','TAKE-HOME']),
   bands=[('how','Why the check is smaller than the math','''    <p class="lede">Gross commission is the number in the plan. Take-home is the number in your account. They are further apart than most sellers expect the first time.</p>
-    <p>A standard W-2 payout typically has about 30% withheld between federal, state and payroll taxes; a high-bracket earner is closer to 40%; a 1099 contractor has nothing withheld and should set aside roughly 20% or more themselves. These are planning estimates. Your actual rate depends on your state, your filing status and what else you earned this year, and supplemental wages are often withheld at a flat rate that gets reconciled at tax time.</p>
+    <p>The percentage you set aside is a planning buffer, not a withholding rate. For commissions paid separately from salary, the IRS lets employers withhold federal income tax at a flat 22% (up to a million dollars a year), and payroll taxes and state withholding come on top of that, so a W-2 check often lands with roughly 30% gone. High earners tend to owe closer to 40% once the year is reconciled. A 1099 contractor has nothing withheld and should set aside 20% or more. Your real number depends on your state, your filing status and everything else you earned this year, which is why the field is editable.</p>
     <p>Use it to plan, not to argue with payroll. And once you know what a deal pays, the more useful question is whether the plan behind it is sane: <a href="/quota/">Quota Check</a>.</p>''')],
   faq=[('Does anything I enter leave my device?','No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.'),
-       ('Is this tax advice?','No. The withholding percentages are planning estimates. Your actual rate depends on your state, filing status and total income for the year. For anything that matters, ask an accountant.'),
+       ('Is this tax advice?','No. The percentage is a planning buffer you can change; it is not a withholding rate. Federal withholding on separately paid commissions is typically a flat 22%, with payroll and state taxes on top, and what you actually owe is settled at tax time. For anything that matters, ask an accountant.'),
        ('What about accelerators and clawbacks?','Enter the rate that applies to this deal. If your plan has accelerators above quota, use the accelerated rate; if it has clawbacks, remember the take-home is provisional until the clawback window closes.')],
   config='''CalcTool({
   slug: 'commission', name: 'Commission Check', url: 'https://quotabird.com/commission/',
-  fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'profile', kind: 'choice', example: 'w2' }],
+  fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'buffer', kind: 'pct' }],
   compute(v) {
     if (!(v.deal > 0 && v.rate > 0)) return null;
     const money = (n) => n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3).toLocaleString() + 'K' : '$' + Math.round(n).toLocaleString();
-    const tax = { w2: .30, high: .40, '1099': .20 }[v.profile] ?? .30;
-    const gross = v.deal * v.rate, withheld = gross * tax, net = gross - withheld;
-    return { label: 'Take-home', cls: 'ready', big: money(net), attack: `You keep about ${Math.round((1 - tax) * 100)} cents of every commission dollar on this deal.`,
-      sub: 'A planning estimate, not tax advice.', rows: [['Gross commission', money(gross)], ['Withheld, about', money(withheld), 'v-no'], ['Take-home, about', money(net)]], keep: 1 - tax };
+    const tax = v.buffer > 0 ? v.buffer : .30;
+    const gross = v.deal * v.rate, aside = gross * tax, net = gross - aside;
+    return { label: 'Take-home', cls: 'ready', big: money(net), attack: `Set aside ${Math.round(tax * 100)}% and you keep about ${Math.round((1 - tax) * 100)} cents of every commission dollar on this deal.`,
+      sub: 'A planning buffer, not tax advice. Change the percentage to yours.', rows: [['Gross commission', money(gross)], ['Set aside, about', money(aside), 'v-no'], ['Take-home, about', money(net)]], keep: 1 - tax };
   },
   handoff: { overline: 'Is the plan sane?', text: 'Now that you know what a deal pays, check the number it has to cover.', href: '/quota/', label: 'Check my quota' },
   mark: { title: () => 'Questions about the plan?', body: "I'm Mark. Comp plans are where sellers find out what the company actually wants. If yours doesn't add up, send me one line. No company name, no dollar figures." },
@@ -940,7 +986,10 @@ def calc_page(t):
         mode = 'numeric' if f['kind'] == 'count' else 'decimal'
         val = f' value="{f["example"]}"' if f.get('example') else ''
         ph = f' placeholder="{f["placeholder"]}"' if f.get('placeholder') else ''
-        return f'        <label class="tf"><span class="tf-label">{f["label"]}</span><input id="{f["id"]}" type="text" inputmode="{mode}" autocomplete="off"{val}{ph}></label>\n'
+        out = f'        <label class="tf"><span class="tf-label">{f["label"]}</span><input id="{f["id"]}" type="text" inputmode="{mode}" autocomplete="off"{val}{ph}></label>\n'
+        if f.get('presets'):
+            out += '        <div class="chips" style="margin:-6px 0 14px;">' + ''.join(f'<button class="chip" data-preset-for="{f["id"]}" data-v="{v}" type="button">{lab}</button>' for lab, v in f['presets']) + '</div>\n'
+        return out
     fields = ''.join(field(f) for f in t['fields'])
     faq_html = ''.join(f'''    <details class="exp"><summary>{q}</summary>
       <div class="body">{a}</div></details>
@@ -1007,11 +1056,14 @@ def calc_page(t):
   <div id="screen" class="calc-screen">
     <span class="overline tool-name">{t['name']}</span>
     <h1>{t['h1']}</h1>
-    <p class="dek">{t['dek']} <span id="exnote">These are example numbers; type yours over them.</span></p>
+    <p class="dek">{t['dek']}</p>
     <div class="calc">
-      <form class="calc-in" id="f" autocomplete="off" novalidate>
-{fields}      </form>
       <div class="calc-out" id="out" aria-live="polite"></div>
+      <form class="calc-in" id="f" autocomplete="off" novalidate>
+        <p class="startnote fields-note"><span id="exnote">Example numbers. Type yours over them.</span></p>
+{fields}      </form>
+      <div class="calc-out2" id="out2"></div>
+      <div class="useful" id="useful"><span>Useful?</span><button class="btn btn-text" data-u="yes" type="button">Yes</button><button class="btn btn-text" data-u="no" type="button">Not really</button></div>
     </div>
   </div>
 </div>
@@ -1048,9 +1100,29 @@ for t in CALCS:
     print('calc', t['slug'], len(html))
 
 
+
+# ────────────────────────────── ABOUT ──────────────────────────────
+os.makedirs('about', exist_ok=True)
+open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaBird, the situations he sees most, and how to reach him. Twenty minutes, free, no deck required.", 'https://quotabird.com/about/').replace('<meta property="og:type" content="article">', '<meta property="og:type" content="profile">') + '''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+  <div id="screen">
+    <span class="overline tool-name">QuotaBird</span>
+    <h1>About Mark</h1>
+    <p class="dek">Who's behind the tools, the situations I see most, and how to reach me.</p>
+  </div>
+</div>
+
+<section class="band" id="about"></section>
+
+''' + NOTE_TAIL.replace('Field Notes are part of', 'QuotaBird is'))
+
 # ────────────────────────────── SHARED CHROME ──────────────────────────────
 # Every page gets the same header and the same About section, from one source.
 MARK_SRC = open('partials/mark.html').read()
+MADEBY_SRC = open('partials/made-by.html').read()
 def root_of(path):
     if path == '404.html': return '/'
     return '../' * path.count('/')
@@ -1060,14 +1132,14 @@ def current_of(path):
     return '/' if path == 'index.html' else '/' + path.rsplit('/', 1)[0] + '/'
 def header(path):
     b = root_of(path)
-    ask = '/#ask' if path in ('404.html',) else '#ask'
+    ask = '#ask' if path == 'about/index.html' else '/about/#ask'
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      <a class="toplink" href="/notes/">Field Notes</a>
-      <a class="toplink" href="/#about">About</a>
-      <a class="chip chip-ask" href="{ask}">Ask Mark</a>
       {menu(current_of(path) if not path.startswith('notes/') else '/notes/')}
+      <a class="toplink" href="/notes/">Field Notes</a>
+      <a class="toplink" href="/about/">About</a>
+      <a class="chip chip-ask" href="{ask}">Ask Mark</a>
     </nav>
   </header>'''
 def chrome(path):
@@ -1076,14 +1148,16 @@ def chrome(path):
     if 'rel="preload" href="/inter.woff2"' not in s:
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
-    ask = '/#ask' if path == '404.html' else '#ask'
+    ask = '#ask' if path == 'about/index.html' else '/about/#ask'
     if 'class="foot-nav"' not in s:
-        s = s.replace('<footer class="sitefoot">', f'<footer class="sitefoot">\n  <p class="foot-nav"><a href="/">Tools</a><a href="/notes/">Field Notes</a><a href="/#about">About</a><a href="{ask}">Ask Mark</a></p>', 1)
+        s = s.replace('<footer class="sitefoot">', f'<footer class="sitefoot">\n  <p class="foot-nav"><a href="/">Tools</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>', 1)
     if path != '404.html':
-        mark = MARK_SRC.replace('{ROOT}', root_of(path)).replace('{UTM}', utm_of(path))
+        # the full story lives on the About page; every other page gets the short "Made by Mark" card
+        src = MARK_SRC if path == 'about/index.html' else MADEBY_SRC
+        mark = src.replace('{ROOT}', root_of(path)).replace('{UTM}', utm_of(path))
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
-PAGES = ['index.html', 'deal/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF)] \
+PAGES = ['index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF)] \
         + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['404.html']
 for _p in PAGES:
     chrome(_p)

@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>QuotaBird: You Sure That's Enough Pipeline? Free Coverage Check</title>
-<meta name="description" content="Put in your win rate and find out. A free pipeline coverage check for sellers and sales managers, plus nine more quick reality checks. A minute each, nothing stored.">
+<title>QuotaBird: Free Tools for Sellers and Sales Managers</title>
+<meta name="description" content="Free, practical tools for deals, pipeline, quota, territories, partners and sales reviews. Start with the pipeline check. No login. Nothing stored.">
 <link rel="canonical" href="https://quotabird.com/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -13,18 +13,18 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://quotabird.com/">
-<meta property="og:title" content="QuotaBird: You sure that's enough pipeline?">
+<meta property="og:title" content="QuotaBird: free tools for people who carry a number.">
 <meta property="og:description" content="Put in your win rate and find out. 3X is a rule of thumb; the number underneath it is yours.">
 <meta property="og:site_name" content="QuotaBird">
 <meta property="og:image" content="https://quotabird.com/card.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="QuotaBird: You sure that's enough pipeline?">
+<meta property="og:image:alt" content="QuotaBird: free tools for people who carry a number.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="QuotaBird: You sure that's enough pipeline?">
+<meta name="twitter:title" content="QuotaBird: free tools for people who carry a number.">
 <meta name="twitter:description" content="Put in your win rate and find out. 3X is a rule of thumb; the number underneath it is yours.">
 <meta name="twitter:image" content="https://quotabird.com/card.jpg">
-<meta name="twitter:image:alt" content="QuotaBird: You sure that's enough pipeline?">
+<meta name="twitter:image:alt" content="QuotaBird: free tools for people who carry a number.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
@@ -150,16 +150,17 @@
   <header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/" class="current">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div></div></details>
       <a class="toplink" href="/notes/">Field Notes</a>
-      <a class="toplink" href="/#about">About</a>
-      <a class="chip chip-ask" href="#ask">Ask Mark</a>
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/" class="current">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/#about">About Mark</a></div></div></details>
+      <a class="toplink" href="/about/">About</a>
+      <a class="chip chip-ask" href="/about/#ask">Ask Mark</a>
     </nav>
   </header>
   <div id="screen" class="calc-screen home-calc">
     <span class="overline tool-name">Pipeline Check</span>
     <h1>You sure that's enough pipeline?</h1>
-    <p class="dek">Put in your win rate and find out.</p>
+    <p class="dek">Plug in your own numbers to find out.
+      <a class="shelf" href="#working">One of ten quick checks ↓</a></p>
     <div class="calc">
       <div class="calc-out" id="out" aria-live="polite"></div>
       <form class="calc-in" id="f" autocomplete="off" novalidate>
@@ -190,6 +191,7 @@
         </div>
       </form>
       <div class="calc-out2" id="out2"></div>
+      <div class="useful" id="useful"><span>Useful?</span><button class="btn btn-text" data-u="yes" type="button">Yes</button><button class="btn btn-text" data-u="no" type="button">Not really</button></div>
     </div>
   </div>
 </div>
@@ -256,60 +258,20 @@
   <div class="band-inner">
     <h2 id="notes-h">Field Notes</h2>
     <p class="lede">Short reads on things everybody in tech sales says that deserve a second look.</p>
-    <div class="doors"><a class="door" href="/notes/3x-is-a-win-rate/"><span><b>3X is a win rate in disguise</b><span class="q">Everybody plans to it. Almost nobody asks where it came from.</span></span><span class="to">Read</span></a><a class="door" href="/notes/why-not-bant-or-meddic/"><span><b>Why I don't start with BANT or MEDDIC</b><span class="q">They're useful when you're working a deal. The trouble is the moment before that.</span></span><span class="to">Read</span></a><a class="door" href="/notes/three-people-same-patch/"><span><b>If three people failed in the same patch</b><span class="q">You probably don't have three bad reps.</span></span><span class="to">Read</span></a></div>
+    <div class="doors"><a class="door" href="/notes/3x-is-a-win-rate/"><span><b>3X is a win rate in disguise</b><span class="q">Everybody plans to it. Almost nobody asks where it came from.</span></span><span class="to">Read</span></a><a class="door" href="/notes/why-not-bant-or-meddic/"><span><b>Why I don't start with BANT or MEDDIC</b><span class="q">They're useful when you're working a deal. The trouble is the moment before that.</span></span><span class="to">Read</span></a><a class="door" href="/notes/three-people-same-patch/"><span><b>If three people failed in the same patch</b><span class="q">You probably don't have three bad reps.</span></span><span class="to">Read</span></a><a class="door" href="/notes/quota-went-up-did-your-territory/"><span><b>Your quota went up 30%. Did your territory?</b><span class="q">The number moved. Ask what else did.</span></span><span class="to">Read</span></a><a class="door" href="/notes/fifteen-percent-off/"><span><b>They asked for 15% off. What are you buying with it?</b><span class="q">A discount is a purchase. Make sure you get something for it.</span></span><span class="to">Read</span></a><a class="door" href="/notes/best-rep-hates-meetings/"><span><b>Your best rep hates internal meetings. Is that a problem?</b><span class="q">Probably not the one you think.</span></span><span class="to">Read</span></a></div>
     <p style="margin-top:14px;"><a href="/notes/">All field notes</a></p>
   </div>
 </section>
 
-<section class="band" id="about" aria-labelledby="about-h">
-  <div class="band-inner">
-    <div class="who">
-      <img src="mark.jpg" alt="Mark Flournoy" width="120" height="120" loading="lazy" decoding="async"
-           onerror="this.remove();">
-        <h2 id="about-h">Hi, I'm Mark.</h2>
-        <p>I've spent a lot of years helping customers buy complicated technology. For six of them I led partner sales
-          teams at AWS. Before that F5, Red Hat, and a couple of storage companies you've probably forgotten. Before
-          all of that, 20 years as a Marine.</p>
-        <p>Along the way I've been the seller defending the deal, the partner trying to help, the manager asking
-          annoying questions, and the guy one level up explaining why the forecast moved again.</p>
-        <p>QuotaBird is where I put the things I've found useful. Most of the tools are free. Most take a few
-          minutes. None of them require you to adopt a new sales religion. Use whatever helps.</p>
+<section class="band" id="about" aria-labelledby="madeby-h">
+  <div class="band-inner madeby">
+    <img src="mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async" onerror="this.remove();">
+    <div>
+      <h2 id="madeby-h">Made by Mark.</h2>
+      <p>I carried a number, managed the people who did, and led partner sales teams at AWS. I make these because
+        they're the things I wish we'd had. If a check isn't enough, I'm happy to look at the real thing with you.</p>
+      <p class="madeby-links"><a class="btn btn-primary" href="/about/#ask">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
-
-    <h3>A few things I see a lot</h3>
-    <p class="lede">Rarely just one of them. Usually a couple at the same time, quietly making each other worse.</p>
-    <p><strong>The forecast call has become the job.</strong> Your manager wants a status on everything by noon,
-      the CRM wants a next step on every line, and the customer is the last person you talk to each day.</p>
-    <p><strong>The pipeline looks better than it really is.</strong> Plenty of opportunities in the CRM, but once
-      you ask about budget, timing and who actually wants the thing, the number gets smaller fast.</p>
-    <p><strong>The partner likes you, but nothing is happening.</strong> Plenty of meetings, maybe a joint deck.
-      Nobody can point to the accounts where the two companies are actually trying to win something together.</p>
-    <p><strong>The team is busy, but there isn't much rhythm.</strong> The forecast call happens. The one-on-ones
-      happen. Nobody is sure what the team should do differently this week to make next quarter better.</p>
-    <p><strong>The number from above doesn't match what you see below.</strong> Leadership has a growth number.
-      Your team has a pipeline. You're the one who has to explain why they disagree without sounding like
-      you've already given up.</p>
-    <p>A team can be behind plan for a lot of reasons. One seller needs help getting in front of customers.
-      Another is doing fine and wants you to stay out of the way. Someone else thinks the year is already
-      gone. Sometimes the rep is fine and the territory, the comp plan or the pipeline they inherited isn't.
-      The useful part is figuring out which one you're dealing with before you fix the wrong one. That's what
-      the tools here do, one deal, one rep, one territory at a time. It's also most of what I do.</p>
-
-    <h3 id="ask">Need another set of eyes?</h3>
-    <p>Sometimes a calculator isn't enough. If you're stuck on a deal, an account, a partner, a territory, a QBR or
-      a federal problem, I'm happy to look at it with you. Here's exactly how it works:</p>
-    <ol class="steps">
-      <li><b>Pick a time.</b> Name, email and one line about what's going on. No deck required.</li>
-      <li><b>I read your line before we talk,</b> so we start in the middle instead of at the beginning.</li>
-      <li><b>Twenty minutes, free.</b> Then you decide whether there's anything more. No pitch, and no sales follow-ups.</li>
-    </ol>
-    <p class="lede">If I don't think I can help, I'll tell you.</p>
-    <div class="btn-row">
-      <a class="btn btn-primary btn-lg" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=home&amp;utm_content=ask" target="_blank" rel="noopener">Chat with Mark</a>
-      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
-    </div>
-    <p class="fine" style="margin-top:14px;">If it's something that takes more than a conversation, we can figure that out
-      too. I also build <a href="https://fedhoo.com" target="_blank" rel="noopener">fedhoo</a>, a federal market research tool.</p>
   </div>
 </section>
 
@@ -346,14 +308,14 @@
 </section>
 
 <footer class="sitefoot">
-  <p class="foot-nav"><a href="/">Tools</a><a href="/notes/">Field Notes</a><a href="/#about">About</a><a href="#ask">Ask Mark</a></p>
+  <p class="foot-nav"><a href="/">Tools</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/about/#ask">Ask Mark</a></p>
   <p>QuotaBird is a shelf of free tools by
     <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-08.0900';
+window.QB_BUILD = '2026-10-09.1100';
 const track = (n) => { if (typeof window.qbTrack === 'function') window.qbTrack(n); else (window.qbTrackQ = window.qbTrackQ || []).push(n); };
 const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const $ = (id) => document.getElementById(id);
@@ -611,6 +573,7 @@ document.querySelectorAll('[data-win]').forEach(b => b.onclick = () => { $('win'
 document.querySelectorAll('[data-ye]').forEach(b => b.onclick = () => { yearEnd = b.dataset.ye; onEdit(); });
 $('justMe').onclick = () => { $('reps').value = '1'; onEdit(); };
 $('f').addEventListener('submit', (e) => e.preventDefault());
+{ const u = $('useful'); u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track('pipeline_useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; }); }
 if (readHash()) { shared = /(^|&)p=/.test(location.hash); touched = true; $('exnote').textContent = ''; if (shared) track('pipeline_verdict_shared'); }   // a target alone (from Quota Check) is a hand-off, not a shared verdict
 window.addEventListener('hashchange', () => { if (readHash()) { shared = true; render(); } });
 render();

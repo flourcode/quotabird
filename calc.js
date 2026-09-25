@@ -60,7 +60,7 @@
     const shareBlock = (s) => `${cfg.name} · ${s.label}\n${s.attack}\n` + s.rows.map(r => `${r[0]}: ${r[1]}`).join('\n') + '\n' + shareLink();
     function render() {
       const s = cfg.compute(read()); lastS = s; const out = $('out');
-      if (!s) { out.innerHTML = `<div class="empty">${esc(cfg.emptyText || 'Fill in the numbers above.')}</div>`; strip(null); return; }
+      if (!s) { out.innerHTML = `<div class="empty">${esc(cfg.emptyText || 'Fill in the numbers below.')}</div>`; const o2 = $('out2'); if (o2) o2.innerHTML = ''; strip(null); return; }
       const h = typeof cfg.handoff === 'function' ? cfg.handoff(s) : cfg.handoff;
       out.innerHTML = `
     ${shared ? `<div class="banner">Someone sent you these numbers. Change any of them to run your own.</div>` : ''}
@@ -68,7 +68,9 @@
       ${s.big ? `<div class="verdict-number">${esc(s.big)}</div><div class="verdict-label">${esc(s.label)}</div>` : `<div class="verdict-word">${esc(s.label)}</div>`}
       <div class="verdict-attack">${esc(s.attack)}</div>
       ${s.sub ? `<div class="verdict-sub">${esc(s.sub)}</div>` : ''}
-    </div>
+    </div>`;
+      const out2 = $('out2') || out;
+      out2.innerHTML = `
     <div class="list" aria-label="The numbers">${s.rows.map(r => `<div class="list-item"><span class="headline">${esc(r[0])}</span><span class="trailing strong${r[2] ? ' ' + r[2] : ''}">${esc(r[1])}</span></div>`).join('')}</div>
     ${s.note ? `<p class="clock">${esc(s.note)}</p>` : ''}
     ${h ? `<div class="card card-accent"><span class="overline">${esc(h.overline)}</span><p class="lede">${esc(h.text)}</p><a class="btn btn-tonal btn-full" href="${h.href}" style="margin-top:14px;">${esc(h.label)}</a></div>` : ''}
@@ -83,15 +85,16 @@
     </div>`;
       $('copy').onclick = (e) => { track(cfg.slug + '_share'); try { history.replaceState(null, '', '#' + encode()); } catch {} shareOut(e.currentTarget, shareBlock(s), cfg.name); };
       $('dmBtn').onclick = (e) => { const btn = e.currentTarget; track(cfg.slug + '_dm_copy'); copyText(cfg.dm(s)).then(() => { btn.textContent = 'Copied ✓'; window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener'); }).catch(() => { btn.textContent = "Couldn't copy"; }); };
-      out.querySelector('.preview').onclick = (e) => { const r = document.createRange(); r.selectNodeContents(e.currentTarget); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+      out2.querySelector('.preview').onclick = (e) => { const r = document.createRange(); r.selectNodeContents(e.currentTarget); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); };
       strip(s);
     }
     /* the summary strip: on a phone the answer stays visible while you type */
-    let verdictVisible = true;
-    function strip(s) { const b = $('sumbar'); if (!b) return; if (!s) { b.hidden = true; return; } b.className = 'sumbar verdict-' + s.cls; b.innerHTML = `<b>${esc(s.big || s.label)}</b> ${esc(s.big ? s.label.toLowerCase() : s.stripText || '')}`; b.hidden = verdictVisible; }
+    let verdictVisible = true, formVisible = true;
+    function strip(s) { const b = $('sumbar'); if (!b) return; if (!s) { b.hidden = true; return; } b.className = 'sumbar verdict-' + s.cls; b.innerHTML = `<b>${esc(s.big || s.label)}</b> ${esc(s.big ? s.label.toLowerCase() : s.stripText || '')}`; b.hidden = verdictVisible || !formVisible; }
     if ('IntersectionObserver' in window && $('sumbar')) {
-      const io = new IntersectionObserver((es) => { const e = es[es.length - 1]; verdictVisible = e.isIntersecting || e.boundingClientRect.top < 0; strip(lastS); }, { threshold: 0.15 });
-      const watch = () => { io.disconnect(); const v = $('verdict'); if (v) io.observe(v); };
+      // the verdict sits above the fields; the strip carries it while you're down in the fields
+      const io = new IntersectionObserver((es) => { es.forEach(e => { if (e.target.id === 'verdict') verdictVisible = e.isIntersecting; else formVisible = e.isIntersecting; }); strip(lastS); }, { threshold: 0.1 });
+      const watch = () => { io.disconnect(); const v = $('verdict'); if (v) io.observe(v); const f = $('f'); if (f) io.observe(f); };
       new MutationObserver(watch).observe($('out'), { childList: true });
     }
     const onEdit = () => { if (!touched) { touched = true; track(cfg.slug + '_edit'); const n = $('exnote'); if (n) n.textContent = ''; } if (shared) { shared = false; try { history.replaceState(null, '', location.pathname); } catch {} } render(); };
@@ -99,6 +102,9 @@
       el.addEventListener('blur', () => { const v = parse[f.kind](el.value); if (v) el.value = fmt[f.kind](v); });
       el.addEventListener('focus', () => setTimeout(() => { try { el.select(); } catch {} }, 0)); });
     document.querySelectorAll('[data-choice]').forEach(b => b.onclick = () => { document.querySelectorAll(`[data-choice="${b.dataset.choice}"]`).forEach(x => x.classList.toggle('on', x === b)); onEdit(); });
+    // preset chips fill a field the user can still edit
+    document.querySelectorAll('[data-preset-for]').forEach(b => b.onclick = () => { const el = $(b.dataset.presetFor); el.value = b.dataset.v; el.dispatchEvent(new Event('input')); });
+    const u = $('useful'); if (u) u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track(cfg.slug + '_useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; });
     const form = $('f'); if (form) form.addEventListener('submit', (e) => e.preventDefault());
     if (readHash()) { shared = true; touched = true; const n = $('exnote'); if (n) n.textContent = ''; track(cfg.slug + '_verdict_shared'); }
     window.addEventListener('hashchange', () => { if (readHash()) { shared = true; render(); } });

@@ -130,7 +130,7 @@
         },
         {
           "@type": "Question",
-          "name": "What does Grill me do?",
+          "name": "What does Pressure test do?",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "It plays the manager. Three hard questions drawn from your weakest answer, one at a time, and you say honestly whether you can answer each one. If you cannot answer two of three about the money, that deal does not belong in commit yet. Better to learn that here than in the meeting."
@@ -150,10 +150,10 @@
   <header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/" class="current">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div></div></details>
       <a class="toplink" href="/notes/">Field Notes</a>
-      <a class="toplink" href="/#about">About</a>
-      <a class="chip chip-ask" href="#ask">Ask Mark</a>
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/" class="current">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/#about">About Mark</a></div></div></details>
+      <a class="toplink" href="/about/">About</a>
+      <a class="chip chip-ask" href="/about/#ask">Ask Mark</a>
     </nav>
   </header>
   <div id="screen" aria-live="polite">
@@ -244,55 +244,15 @@
   </div>
 </section>
 
-<section class="band" id="about" aria-labelledby="about-h">
-  <div class="band-inner">
-    <div class="who">
-      <img src="../mark.jpg" alt="Mark Flournoy" width="120" height="120" loading="lazy" decoding="async"
-           onerror="this.remove();">
-        <h2 id="about-h">Hi, I'm Mark.</h2>
-        <p>I've spent a lot of years helping customers buy complicated technology. For six of them I led partner sales
-          teams at AWS. Before that F5, Red Hat, and a couple of storage companies you've probably forgotten. Before
-          all of that, 20 years as a Marine.</p>
-        <p>Along the way I've been the seller defending the deal, the partner trying to help, the manager asking
-          annoying questions, and the guy one level up explaining why the forecast moved again.</p>
-        <p>QuotaBird is where I put the things I've found useful. Most of the tools are free. Most take a few
-          minutes. None of them require you to adopt a new sales religion. Use whatever helps.</p>
+<section class="band" id="about" aria-labelledby="madeby-h">
+  <div class="band-inner madeby">
+    <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async" onerror="this.remove();">
+    <div>
+      <h2 id="madeby-h">Made by Mark.</h2>
+      <p>I carried a number, managed the people who did, and led partner sales teams at AWS. I make these because
+        they're the things I wish we'd had. If a check isn't enough, I'm happy to look at the real thing with you.</p>
+      <p class="madeby-links"><a class="btn btn-primary" href="/about/#ask">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
-
-    <h3>A few things I see a lot</h3>
-    <p class="lede">Rarely just one of them. Usually a couple at the same time, quietly making each other worse.</p>
-    <p><strong>The forecast call has become the job.</strong> Your manager wants a status on everything by noon,
-      the CRM wants a next step on every line, and the customer is the last person you talk to each day.</p>
-    <p><strong>The pipeline looks better than it really is.</strong> Plenty of opportunities in the CRM, but once
-      you ask about budget, timing and who actually wants the thing, the number gets smaller fast.</p>
-    <p><strong>The partner likes you, but nothing is happening.</strong> Plenty of meetings, maybe a joint deck.
-      Nobody can point to the accounts where the two companies are actually trying to win something together.</p>
-    <p><strong>The team is busy, but there isn't much rhythm.</strong> The forecast call happens. The one-on-ones
-      happen. Nobody is sure what the team should do differently this week to make next quarter better.</p>
-    <p><strong>The number from above doesn't match what you see below.</strong> Leadership has a growth number.
-      Your team has a pipeline. You're the one who has to explain why they disagree without sounding like
-      you've already given up.</p>
-    <p>A team can be behind plan for a lot of reasons. One seller needs help getting in front of customers.
-      Another is doing fine and wants you to stay out of the way. Someone else thinks the year is already
-      gone. Sometimes the rep is fine and the territory, the comp plan or the pipeline they inherited isn't.
-      The useful part is figuring out which one you're dealing with before you fix the wrong one. That's what
-      the tools here do, one deal, one rep, one territory at a time. It's also most of what I do.</p>
-
-    <h3 id="ask">Need another set of eyes?</h3>
-    <p>Sometimes a calculator isn't enough. If you're stuck on a deal, an account, a partner, a territory, a QBR or
-      a federal problem, I'm happy to look at it with you. Here's exactly how it works:</p>
-    <ol class="steps">
-      <li><b>Pick a time.</b> Name, email and one line about what's going on. No deck required.</li>
-      <li><b>I read your line before we talk,</b> so we start in the middle instead of at the beginning.</li>
-      <li><b>Twenty minutes, free.</b> Then you decide whether there's anything more. No pitch, and no sales follow-ups.</li>
-    </ol>
-    <p class="lede">If I don't think I can help, I'll tell you.</p>
-    <div class="btn-row">
-      <a class="btn btn-primary btn-lg" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=deal&amp;utm_content=ask" target="_blank" rel="noopener">Chat with Mark</a>
-      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
-    </div>
-    <p class="fine" style="margin-top:14px;">If it's something that takes more than a conversation, we can figure that out
-      too. I also build <a href="https://fedhoo.com" target="_blank" rel="noopener">fedhoo</a>, a federal market research tool.</p>
   </div>
 </section>
 
@@ -335,7 +295,7 @@
         <strong>Hopium:</strong> you believe it, you haven't proved it.
         <strong>At risk:</strong> something important is still an assumption.
         <strong>Not a deal yet:</strong> this is a conversation, not a deal.</div></details>
-    <details class="exp"><summary>What does Grill me do?</summary>
+    <details class="exp"><summary>What does Pressure test do?</summary>
       <div class="body">It plays the manager. Three hard questions drawn from your weakest answer, one at a
         time, and you say honestly whether you can answer each one. If you cannot answer two of three
         about the money, that deal does not belong in commit yet. Better to learn that here than in
@@ -678,17 +638,19 @@ function result(shared) {
       <p class="lede">${esc(firstMove)}</p>
     </div>
 
-    <button class="btn btn-primary btn-lg btn-full" id="grill" type="button" style="margin-top:20px;">Grill me</button>
+    <button class="btn btn-primary btn-lg btn-full" id="grill" type="button" style="margin-top:20px;">Pressure test</button>
     <div class="btn-row center" style="margin-top:8px;">
       <button class="btn btn-text" id="copy" type="button">Share</button>
       <button class="btn btn-text" id="again" type="button">Start over</button>
-    </div>`);
+    </div>
+    <div class="useful" id="useful"><span>Useful?</span><button class="btn btn-text" data-u="yes" type="button">Yes</button><button class="btn btn-text" data-u="no" type="button">Not really</button></div>`);
 
   document.getElementById('grill').onclick = () => { track('grill'); grillStep = 0; grillOuch = 0; grill(); };
   document.getElementById('again').onclick = () => { answers = {}; clearHash(); ask(0); };
   const rm = document.getElementById('runMine');
   if (rm) rm.onclick = () => { answers = {}; clearHash(); ask(0); };
   
+  { const u = document.getElementById('useful'); if (u) u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track('useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; }); }
   document.getElementById('copy').onclick = (e) => {
     const btn = e.currentTarget;
     // Sharing is the one moment the verdict is allowed into the address bar.

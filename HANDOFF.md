@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-08.0900**
+**Current build: 2026-10-09.1100**
 
 ## Naming: checks, not kills
 
@@ -60,7 +60,12 @@ rebuilt from the old Fedmo tools page:
 - **Commission Check** (`/commission/`, *It closed. What do I take home?*):
   gross, withheld, net at ~30% (W-2), ~40% (high bracket) or ~20% (1099).
   Planning estimate, labelled not tax advice. Hands off to Quota Check.
-All three run on `calc.js` (`CalcTool({...})`), a sibling of `check.js`:
+All three open verdict-first, like the home page: the example result and
+its one-line reading sit under the hero, the fields come after, and the
+summary strip carries the answer while you're down in the fields. Every
+tool's intro is one sentence that says what to do ("Plug in your own numbers
+to find out.", "Answer five questions and find out whether…"); keep it to
+one. All three run on `calc.js` (`CalcTool({...})`), a sibling of `check.js`:
 fields with example values, live update on input, share links that carry the
 inputs, DMs and booking notes in percentages and multiples only. Configs
 live in `CALCS` in `make-tools.py`; the page template is `calc_page()`.
@@ -86,6 +91,7 @@ Check still accepts a 1-to-4 letter hash as a check in progress.
 | `/deal/` | **Deal Check**, formerly the home page |
 | `/quota/`, `/discount/`, `/commission/` | the calculators (Quota, Discount, Commission Check) |
 | `/brief/`, `/territory/`, `/partner/`, `/rep/`, `/olr/` | the generated five-question tools |
+| `/about/` | **About Mark**: the full story and the booking steps; every other page carries only the short *Made by Mark* card |
 | `/notes/` | **Field Notes**: short reads, each ending with the tool that does the math |
 | `partials/mark.html` | the About section every page carries (bio, situations, *Need another set of eyes?*) |
 | `home.src.html` | source for the home page; the script fills in the notes list |
@@ -154,6 +160,25 @@ The longest labels today are *Check my territory* (18), *Check my pipeline*,
 answer choice was measured in every screen state at 320px, 360px and
 desktop: none wraps or clips. Re-run that check (`btns.js` in the test
 scripts) after adding any button.
+
+**Review of 2026-10-08, what was taken and what wasn't.** Taken: Tools
+first in the nav (use the tools first, call if they're not enough); the long
+About block cut from every page and replaced by the short *Made by Mark*
+card (`partials/made-by.html`), with the full story and booking steps on
+`/about/`; *Grill me* renamed **Pressure test** on Deal, OLR and Brief (the
+analytics event stays `grill`); rules of thumb reworded as ranges Mark has
+seen, not the usual range; Commission Check's presets became an editable
+*Set aside for taxes* field (the IRS supplemental rate is a flat 22% federal
+plus payroll and state, so the old "withheld ~30%" was wrong as stated; the
+percentages are planning buffers now, and the copy says so); three more
+Field Notes (quota vs territory, 15% off, the rep who hates meetings), each
+ending at its tool; site-wide `related_tool_click` and `ask_mark_click`
+events plus a one-tap *Useful? Yes / Not really* after every verdict
+(`<slug>_useful_yes|no`); home metadata about QuotaBird, not pipeline, with
+a *One of ten quick checks ↓* link under the hero. Not taken: moving
+Pipeline Check off the home page (instant value on load was a deliberate
+choice, and the phone screenshot backs it); renaming OLR Check to Talent
+Review (the users are at Amazon); more bird decoration.
 
 **The ask is soft on purpose.** The three-tier rate card is gone. The About
 section ends *Need another set of eyes? 20 minutes. Free. No deck required.*
@@ -689,7 +714,7 @@ Set these in the Amplify console; they cannot live in the repo.
 ```
 
 3. **Search Console.** Verify quotabird.com and submit its sitemap.
-4. **Analytics**: paste the GA4 measurement ID into `GA_ID` in `analytics.js`.
+4. **Analytics**: the GA4 measurement ID (`G-BG9NR9GXQZ`) is in `GA_ID` in `analytics.js`.
 5. **Calendly**: the free call is described as 20 minutes everywhere; make
    sure the `chat-with-mark` event is 20 minutes, or change the copy.
 
@@ -1215,3 +1240,11 @@ bar above the fields on phones, the rest of the home page below;
 `/pipeline/` retired (redirect to `/`), every link and hand-off repointed,
 Quota Check's target hand-off lands on the home calculator; home share card
 redrawn.
+
+**2026-10-09.0900** — see *Review of 2026-10-08* above: nav order, About
+page + short Made-by card, Pressure test, softer ranges, Commission buffer,
+three notes, behaviour analytics and Useful?, home metadata.
+
+**2026-10-09.1100** — every calculator opens verdict-first (example result
+above the fields, rows and hand-off below); every tool intro cut to one
+sentence that says what to do; GA4 ID updated to G-BG9NR9GXQZ.

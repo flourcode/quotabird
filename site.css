@@ -143,6 +143,18 @@ h3 { font-size:19px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 .note h3 { font-size:20px; margin-top:30px; }
 .note .card p { font-size:17px; }
 
+/* ── Made by Mark, Useful?, shelf link ── */
+.madeby { display:flex; gap:18px; align-items:flex-start; }
+.madeby img { width:64px; height:64px; border-radius:var(--r-full); object-fit:cover; flex:0 0 64px; margin-top:4px; }
+.madeby h2 { font-size:22px; margin:0 0 6px; }
+.madeby p { margin:0 0 12px; }
+.madeby-links { display:flex; align-items:center; gap:14px; }
+@media (max-width:420px) { .madeby { flex-direction:column; gap:10px; } }
+.useful { display:flex; align-items:center; justify-content:center; gap:2px; margin:6px 0 10px; font-size:14px; color:var(--ink-2); }
+.useful span { margin-right:6px; }
+.useful .btn-text { min-height:36px; padding:6px 10px; font-size:14px; }
+.shelf { display:inline-block; margin-top:8px; font-size:15px; }
+
 /* ── Start, trust, booking ── */
 .live { max-width:480px; margin-top:4px; }
 .live .progress { margin:0 0 10px; }

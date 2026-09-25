@@ -91,7 +91,7 @@
         },
         {
           "@type": "Question",
-          "name": "What does Grill me do?",
+          "name": "What does Pressure test do?",
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "It plays the room. Three hard questions about your weakest answer, one at a time, and you say honestly whether you can answer each. If you cannot answer two of three about ownership, that case is not ready, and better to learn that here than across the table."
@@ -119,16 +119,16 @@
   <header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/" class="current">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div></div></details>
       <a class="toplink" href="/notes/">Field Notes</a>
-      <a class="toplink" href="/#about">About</a>
-      <a class="chip chip-ask" href="#ask">Ask Mark</a>
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/" class="current">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/#about">About Mark</a></div></div></details>
+      <a class="toplink" href="/about/">About</a>
+      <a class="chip chip-ask" href="/about/#ask">Ask Mark</a>
     </nav>
   </header>
   <div id="screen">
     <span class="overline tool-name">OLR Check</span>
     <h1>Before you walk into OLR, test your case.</h1>
-    <p class="dek">Five questions that separate a case the room will accept from a story it will take apart. For managers with a rep to defend in calibration. No names, no ratings.</p>
+    <p class="dek">Answer five questions about your case and find out whether it survives the room.</p>
     <button class="btn btn-primary btn-lg btn-full" id="prep" type="button">Check my case</button>
     <p class="startnote">5 taps · about a minute · nothing stored</p>
     <p class="pillars">Receipts · Ownership · Scope · How · Next</p></div>
@@ -176,55 +176,15 @@
   </div>
 </section>
 
-<section class="band" id="about" aria-labelledby="about-h">
-  <div class="band-inner">
-    <div class="who">
-      <img src="../mark.jpg" alt="Mark Flournoy" width="120" height="120" loading="lazy" decoding="async"
-           onerror="this.remove();">
-        <h2 id="about-h">Hi, I'm Mark.</h2>
-        <p>I've spent a lot of years helping customers buy complicated technology. For six of them I led partner sales
-          teams at AWS. Before that F5, Red Hat, and a couple of storage companies you've probably forgotten. Before
-          all of that, 20 years as a Marine.</p>
-        <p>Along the way I've been the seller defending the deal, the partner trying to help, the manager asking
-          annoying questions, and the guy one level up explaining why the forecast moved again.</p>
-        <p>QuotaBird is where I put the things I've found useful. Most of the tools are free. Most take a few
-          minutes. None of them require you to adopt a new sales religion. Use whatever helps.</p>
+<section class="band" id="about" aria-labelledby="madeby-h">
+  <div class="band-inner madeby">
+    <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async" onerror="this.remove();">
+    <div>
+      <h2 id="madeby-h">Made by Mark.</h2>
+      <p>I carried a number, managed the people who did, and led partner sales teams at AWS. I make these because
+        they're the things I wish we'd had. If a check isn't enough, I'm happy to look at the real thing with you.</p>
+      <p class="madeby-links"><a class="btn btn-primary" href="/about/#ask">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
-
-    <h3>A few things I see a lot</h3>
-    <p class="lede">Rarely just one of them. Usually a couple at the same time, quietly making each other worse.</p>
-    <p><strong>The forecast call has become the job.</strong> Your manager wants a status on everything by noon,
-      the CRM wants a next step on every line, and the customer is the last person you talk to each day.</p>
-    <p><strong>The pipeline looks better than it really is.</strong> Plenty of opportunities in the CRM, but once
-      you ask about budget, timing and who actually wants the thing, the number gets smaller fast.</p>
-    <p><strong>The partner likes you, but nothing is happening.</strong> Plenty of meetings, maybe a joint deck.
-      Nobody can point to the accounts where the two companies are actually trying to win something together.</p>
-    <p><strong>The team is busy, but there isn't much rhythm.</strong> The forecast call happens. The one-on-ones
-      happen. Nobody is sure what the team should do differently this week to make next quarter better.</p>
-    <p><strong>The number from above doesn't match what you see below.</strong> Leadership has a growth number.
-      Your team has a pipeline. You're the one who has to explain why they disagree without sounding like
-      you've already given up.</p>
-    <p>A team can be behind plan for a lot of reasons. One seller needs help getting in front of customers.
-      Another is doing fine and wants you to stay out of the way. Someone else thinks the year is already
-      gone. Sometimes the rep is fine and the territory, the comp plan or the pipeline they inherited isn't.
-      The useful part is figuring out which one you're dealing with before you fix the wrong one. That's what
-      the tools here do, one deal, one rep, one territory at a time. It's also most of what I do.</p>
-
-    <h3 id="ask">Need another set of eyes?</h3>
-    <p>Sometimes a calculator isn't enough. If you're stuck on a deal, an account, a partner, a territory, a QBR or
-      a federal problem, I'm happy to look at it with you. Here's exactly how it works:</p>
-    <ol class="steps">
-      <li><b>Pick a time.</b> Name, email and one line about what's going on. No deck required.</li>
-      <li><b>I read your line before we talk,</b> so we start in the middle instead of at the beginning.</li>
-      <li><b>Twenty minutes, free.</b> Then you decide whether there's anything more. No pitch, and no sales follow-ups.</li>
-    </ol>
-    <p class="lede">If I don't think I can help, I'll tell you.</p>
-    <div class="btn-row">
-      <a class="btn btn-primary btn-lg" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=olr&amp;utm_content=ask" target="_blank" rel="noopener">Chat with Mark</a>
-      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
-    </div>
-    <p class="fine" style="margin-top:14px;">If it's something that takes more than a conversation, we can figure that out
-      too. I also build <a href="https://fedhoo.com" target="_blank" rel="noopener">fedhoo</a>, a federal market research tool.</p>
   </div>
 </section>
 
@@ -239,7 +199,7 @@
       <div class="body">Organization and Leadership Review: Amazon's annual talent review, where managers propose an evaluation for each of their people and then defend it in calibration with other managers, alongside promotion and development decisions. OLR Check is the rehearsal for the defending part.</div></details>
     <details class="exp"><summary>Is this only for Amazon?</summary>
       <div class="body">OLR is Amazon's name for it, and that is where most of the people who use these tools have sat. But every calibration room asks the same five things, whatever the company calls it. Read "leadership principle" as your organization's behavioral standard and the tool works the same.</div></details>
-    <details class="exp"><summary>What does Grill me do?</summary>
+    <details class="exp"><summary>What does Pressure test do?</summary>
       <div class="body">It plays the room. Three hard questions about your weakest answer, one at a time, and you say honestly whether you can answer each. If you cannot answer two of three about ownership, that case is not ready, and better to learn that here than across the table.</div></details>
     <details class="exp"><summary>Why does it never ask the rep's name?</summary>
       <div class="body">Because it does not need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, fix the case, and nothing about it is written down anywhere.</div></details>
@@ -247,7 +207,7 @@
 </section>
 
 <footer class="sitefoot">
-  <p class="foot-nav"><a href="/">Tools</a><a href="/notes/">Field Notes</a><a href="/#about">About</a><a href="#ask">Ask Mark</a></p>
+  <p class="foot-nav"><a href="/">Tools</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/about/#ask">Ask Mark</a></p>
   <p>OLR Check is one of the free <a href="/">QuotaBird</a> tools by
     <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
@@ -255,7 +215,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-08.0900';
+window.QB_BUILD = '2026-10-09.1100';
 CheckTool({
   slug: 'olr', name: 'OLR Check', url: 'https://quotabird.com/olr/',
   questions: [
@@ -287,7 +247,7 @@ CheckTool({
     how: ['Give me the example for the first principle you are citing.', 'And the second one. Different example.', 'Which principle would you drop because you cannot back it, and why did it get in the draft?'],
     next: ['What harder problem have they already shown they can handle?', 'Where did they grow scope without being asked?', 'What feedback did they get this year, and what observable behavior changed?'],
   },
-  grillBy: 'The room', grillLabel: 'Grill my case', fixLabel: 'Before the room',
+  grillBy: 'The room', grillLabel: 'Pressure test', fixLabel: 'Before the room',
   grillLines: { clean: 'Your case would survive.', one: 'Your case would mostly survive. One hole left.', bad: 'Your case would not survive.', cleanSub: 'Three questions from the room, three answers. Say the weakest receipt first.' },
   fix: {
     receipts: 'Write the three things down, each with its number, before you write anything else. If you cannot get to three, the case is the problem, not the rep.',

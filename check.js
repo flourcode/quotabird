@@ -170,6 +170,7 @@
       <button class="btn btn-text" id="copy" type="button">Share</button>
       <button class="btn btn-text" id="again" type="button">Start over</button>
     </div>
+    <div class="useful" id="useful"><span>Useful?</span><button class="btn btn-text" data-u="yes" type="button">Yes</button><button class="btn btn-text" data-u="no" type="button">Not really</button></div>
     <div class="card" style="margin-top:24px;">
       <h3>${esc(cfg.mark.title(s))}</h3>
       <p>${esc(cfg.mark.body)}</p>
@@ -181,6 +182,7 @@
       <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. I answer LinkedIn faster than email.</p>
     </div>`);
       const rm = document.getElementById('runMine'); if (rm) rm.onclick = () => { answers = {}; clearHash(); ask(0); };
+      const u = document.getElementById('useful'); if (u) u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track(cfg.slug + '_useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; });
       const g = document.getElementById('grill'); if (g) g.onclick = () => { track(cfg.slug + '_grill'); grillStep = 0; grillOuch = 0; shark = null; if (cfg.sharks) pickShark(); else grill(); };
       document.getElementById('again').onclick = () => { answers = {}; clearHash(); ask(0); };
       document.getElementById('copy').onclick = (e) => {

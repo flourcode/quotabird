@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>QuotaBird: You Sure That's Enough Pipeline? Free Coverage Check</title>
-<meta name="description" content="Put in your win rate and find out. A free pipeline coverage check for sellers and sales managers, plus nine more quick reality checks. A minute each, nothing stored.">
+<title>QuotaBird: Free Tools for Sellers and Sales Managers</title>
+<meta name="description" content="Free, practical tools for deals, pipeline, quota, territories, partners and sales reviews. Start with the pipeline check. No login. Nothing stored.">
 <link rel="canonical" href="https://quotabird.com/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -12,18 +12,18 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://quotabird.com/">
-<meta property="og:title" content="QuotaBird: You sure that's enough pipeline?">
+<meta property="og:title" content="QuotaBird: free tools for people who carry a number.">
 <meta property="og:description" content="Put in your win rate and find out. 3X is a rule of thumb; the number underneath it is yours.">
 <meta property="og:site_name" content="QuotaBird">
 <meta property="og:image" content="https://quotabird.com/card.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="QuotaBird: You sure that's enough pipeline?">
+<meta property="og:image:alt" content="QuotaBird: free tools for people who carry a number.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="QuotaBird: You sure that's enough pipeline?">
+<meta name="twitter:title" content="QuotaBird: free tools for people who carry a number.">
 <meta name="twitter:description" content="Put in your win rate and find out. 3X is a rule of thumb; the number underneath it is yours.">
 <meta name="twitter:image" content="https://quotabird.com/card.jpg">
-<meta name="twitter:image:alt" content="QuotaBird: You sure that's enough pipeline?">
+<meta name="twitter:image:alt" content="QuotaBird: free tools for people who carry a number.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
@@ -69,7 +69,8 @@
   <div id="screen" class="calc-screen home-calc">
     <span class="overline tool-name">Pipeline Check</span>
     <h1>You sure that's enough pipeline?</h1>
-    <p class="dek">Put in your win rate and find out. 3X is a rule of thumb; the number underneath it is yours.</p>
+    <p class="dek">Plug in your own numbers to find out.
+      <a class="shelf" href="#working">One of ten quick checks ↓</a></p>
     <div class="calc">
       <div class="calc-out" id="out" aria-live="polite"></div>
       <form class="calc-in" id="f" autocomplete="off" novalidate>
@@ -100,6 +101,7 @@
         </div>
       </form>
       <div class="calc-out2" id="out2"></div>
+      <div class="useful" id="useful"><span>Useful?</span><button class="btn btn-text" data-u="yes" type="button">Yes</button><button class="btn btn-text" data-u="no" type="button">Not really</button></div>
     </div>
   </div>
 </div>
@@ -470,6 +472,7 @@ document.querySelectorAll('[data-win]').forEach(b => b.onclick = () => { $('win'
 document.querySelectorAll('[data-ye]').forEach(b => b.onclick = () => { yearEnd = b.dataset.ye; onEdit(); });
 $('justMe').onclick = () => { $('reps').value = '1'; onEdit(); };
 $('f').addEventListener('submit', (e) => e.preventDefault());
+{ const u = $('useful'); u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track('pipeline_useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; }); }
 if (readHash()) { shared = /(^|&)p=/.test(location.hash); touched = true; $('exnote').textContent = ''; if (shared) track('pipeline_verdict_shared'); }   // a target alone (from Quota Check) is a hand-off, not a shared verdict
 window.addEventListener('hashchange', () => { if (readHash()) { shared = true; render(); } });
 render();
