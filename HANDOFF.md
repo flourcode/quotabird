@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-09.1100**
+**Current build: 2026-10-09.1300**
 
 ## Naming: checks, not kills
 
@@ -122,7 +122,10 @@ text links on screens 700px and wider, an *Ask Mark* chip that jumps to the
 *Need another set of eyes?* heading on the current page, and the *Tools*
 menu: a compact two-column list of the ten tools in three groups, no
 subtitles, with Home / Field Notes / About in a small row underneath
-(307px tall on a phone; it was over 550). Every footer also carries
+(307px tall on a phone; it was over 550). Because Tools is the first
+item in the nav, the panel is not anchored to the chip's right edge: on
+phones it spans the screen under the header (`.menu { position:static }`,
+`left:16px; right:16px`), on wider screens it centres under the chip. Every footer also carries
 Tools · Field Notes · About · Ask Mark. No Services, no
 Solutions, no Consulting.
 
@@ -1248,3 +1251,5 @@ three notes, behaviour analytics and Useful?, home metadata.
 **2026-10-09.1100** — every calculator opens verdict-first (example result
 above the fields, rows and hand-off below); every tool intro cut to one
 sentence that says what to do; GA4 ID updated to G-BG9NR9GXQZ.
+
+**2026-10-09.1300** — Tools menu panel no longer clipped on phones (it spans the screen under the header; centred under the chip on desktop).
