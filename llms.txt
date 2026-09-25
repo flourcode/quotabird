@@ -29,6 +29,17 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 - [Brief Check](https://quotabird.com/brief/): Five questions about the doc, deck or QBR you're about to present, then the room grills you. Nothing uploaded, nothing stored. (when someone in the room can say no.)
 
+## Free printable
+
+- [The Manager's Field Kit](https://quotabird.com/kit/): a free, printable field kit for sales managers: the first 30 days with an inherited team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, and five worksheets.
+
+## Sales Math Library
+
+- [How much pipeline do you actually need?](https://quotabird.com/math/pipeline-coverage/): Required pipeline coverage is 1 ÷ your qualified win rate. A 3X coverage ratio assumes a 33% win rate; at 20% you need 5X, at 25% you need 4X.
+- [What your quota-to-OTE ratio really says](https://quotabird.com/math/quota-to-ote/): Quota ÷ OTE equals your variable share of OTE divided by your commission rate at 100% attainment. SaaS new-bookings plans cluster around 4×; cloud consumption plans, paid at a fraction of a percent, run far higher by design.
+- [What a discount really costs you and the company](https://quotabird.com/math/discount-math/): A discount cuts your commission by exactly the discount percentage, and cuts gross margin to 1 − (1 − margin) ÷ (1 − discount). A 15% discount on a 40% margin leaves about 29%, not 25%.
+- [Why your commission check is smaller than the math](https://quotabird.com/math/commission-take-home/): US employers may withhold federal income tax on separately paid commissions at a flat 22% (37% on supplemental wages above $1 million in a year), plus 7.65% Social Security and Medicare, before any state tax. That is withholding, not the tax you finally owe.
+
 ## Field Notes
 
 - [3X is a win rate in disguise](https://quotabird.com/notes/3x-is-a-win-rate/): Everybody plans to it. Almost nobody asks where it came from.

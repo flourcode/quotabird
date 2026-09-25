@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-12.0900'
+BUILD = '2026-10-13.1100'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -30,8 +30,9 @@ def menu(current):
     for g, items in groups:
         (left if n < total / 2 else right).append((g, items)); n += len(items)
     col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in gs) + '</div>'
-    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div>'
-    return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{col(left)}{col(right)}{foot}</div></details>'
+    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div>'
+    kit = '<a class="menu-kit" href="/kit/"><span class="pill">Free</span>The Manager\'s Field Kit (PDF)</a>'
+    return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{kit}{col(left)}{col(right)}{foot}</div></details>'
 
 
 
@@ -1268,6 +1269,8 @@ def calc_page(t):
       <div class="body">{a}</div></details>
 ''' for q, a in t['faq'])
     faq_ld = ',\n'.join(json.dumps({"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r'<[^>]+>', '', a)}}) for q, a in t['faq'])
+    _mlink = {'quota': 'quota-to-ote', 'discount': 'discount-math', 'commission': 'commission-take-home'}.get(t['slug'])
+    if _mlink: t = dict(t, bands=[(t['bands'][0][0], t['bands'][0][1], t['bands'][0][2] + f'\n    <p><a href="/math/{_mlink}/">The full math, with tables and sources →</a></p>')] + t['bands'][1:])
     bands = ''.join(f'''<section class="band" id="{i}">
   <div class="band-inner">
     <h2>{h}</h2>
@@ -1375,6 +1378,452 @@ for t in CALCS:
 
 
 
+# ────────────────────────────── SALES MATH LIBRARY ──────────────────────────────
+# Citation pages. Rule: the math needs no source; every benchmark needs one, and says where it came from.
+# Mark's own ranges are labelled as experience, never as data. No invented statistics.
+def _table(head, rows, note=''):
+    th = ''.join(f'<th>{h}</th>' for h in head)
+    tr = ''.join('<tr>' + ''.join(f'<td>{c}</td>' for c in r) + '</tr>' for r in rows)
+    return f'<div class="mtable"><table><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div>' + (f'<p class="fine">{note}</p>' if note else '')
+def _m(n):
+    return f'${n/1e6:.1f}M'.replace('.0M', 'M') if n >= 1e6 else f'${round(n/1e3)}K'
+WR = [.10, .15, .20, .25, .30, 1/3, .40, .50]
+cov_rows = [[('33%' if abs(w - 1/3) < .001 else f'{round(w*100)}%'), f'{1/w:.1f}X' + (' <strong>(3X)</strong>' if abs(w - 1/3) < .001 else ''), _m(1e6/w), _m(1e7/w)] for w in WR]
+RATES = [.005, .01, .02, .05, .10, .115, .15]
+q_rows = [[f'{r*100:g}%', *[f'{s/r:.1f}×' if s/r < 10 else f'{round(s/r)}×' for s in (.40, .47, .50)]] for r in RATES]
+MARG = [.30, .40, .60, .80]; DISC = [.05, .10, .15, .20, .25]
+d_rows = [[f'{round(m*100)}%', *[f'{max(0, 1-(1-m)/(1-d))*100:.0f}%' for d in DISC]] for m in MARG]
+c_rows = [[_m(g) if g >= 1e4 else f'${g:,.0f}', f'${g*.22:,.0f}', f'${g*.0765:,.0f}', f'${g*(1-.2965):,.0f}'] for g in (10000, 25000, 50000, 100000)]
+MATH = [
+ dict(slug='pipeline-coverage', title='How much pipeline do you actually need?',
+  dek='Coverage is one divided by your qualified win rate. 3X assumes you win a third.',
+  answer='Required pipeline coverage is 1 ÷ your qualified win rate. A 3X coverage ratio assumes a 33% win rate; at 20% you need 5X, at 25% you need 4X.',
+  body=f'''    <p>Coverage ratios get quoted as if they were laws. They're arithmetic. If you close a fraction <em>w</em> of the
+      qualified pipeline that's due in a period, the pipeline you need to make a number is the number divided by
+      <em>w</em>. Coverage is that divided by the number, which leaves <strong>1 ÷ w</strong>.</p>
+    <p>So 3X is a 33% win rate written down without saying so. It's right for a team that wins a third of what it
+      qualifies, and wrong for everyone else, in one direction or the other.</p>
+    <h2>Coverage by win rate</h2>
+    {_table(['Qualified win rate', 'Coverage needed', 'Pipeline for a $1M number', 'Pipeline for a $10M number'], cov_rows)}
+    <h2>Three things the ratio quietly assumes</h2>
+    <p><strong>Qualified, not total.</strong> The win rate and the pipeline have to measure the same thing. If your win
+      rate is calculated on qualified opportunities, count only qualified pipeline against it. Mixing a qualified win
+      rate with a CRM total overstates coverage every time.</p>
+    <p><strong>Due in the period.</strong> Pipeline that closes next year doesn't cover this year, however real it is.</p>
+    <p><strong>By value, not by count.</strong> If you win 30% of your deals but mostly the small ones, your win rate by
+      value is lower than 30%, and that's the one that matters here.</p>
+    <h2>Worked example</h2>
+    <p>A $6M number, a 20% qualified win rate. Coverage needed is 1 ÷ 0.20 = 5X, so the pipeline needed is $30M. A
+      seller carrying $18M is at 3X, which looks covered, and is $12M short.</p>''',
+  tool=('/', 'Pipeline Check', 'runs this with your own number and win rate, and shows the 3X line and yours on one bar.'),
+  sources=['The arithmetic on this page needs no source. The 3X convention is widespread in sales planning; this page explains what it assumes rather than endorsing it.']),
+ dict(slug='quota-to-ote', title='What your quota-to-OTE ratio really says',
+  dek='Quota ÷ OTE is your variable share divided by your commission rate. It is a pay rate in disguise.',
+  answer='Quota ÷ OTE equals your variable share of OTE divided by your commission rate at 100% attainment. SaaS new-bookings plans cluster around 4×; cloud consumption plans, paid at a fraction of a percent, run far higher by design.',
+  body=f'''    <p>Your commission at 100% attainment is your variable pay, and it equals your quota times your rate. Rearrange and
+      <strong>quota ÷ OTE = (variable ÷ OTE) ÷ rate</strong>. The multiple everyone argues about is just the pay mix
+      divided by the commission rate. Change what the rate is paid on, and the "normal" multiple changes with it.</p>
+    <h2>Implied quota ÷ OTE, by rate and pay mix</h2>
+    {_table(['Commission rate on quota', '40% variable', '47% variable', '50% variable'], q_rows, 'Each cell is variable share ÷ rate.')}
+    <h2>The published SaaS benchmark</h2>
+    <p>The most cited primary research on SaaS account executive pay is the Bridge Group's 2024 SaaS AE Metrics &amp;
+      Compensation Report, drawn from more than 170 B2B SaaS companies. It puts median on-target earnings at $190K with a
+      53:47 base-to-variable split. Summaries of the same report give a median commission rate of 11.5% of bookings and a
+      median quota-to-OTE ratio of 4.2×.</p>
+    <p>Those numbers check each other: 47% variable divided by an 11.5% rate is 4.1×, within rounding of the reported
+      4.2×. The multiple isn't a convention someone chose. It falls out of the rate.</p>
+    <h2>Why cloud and consumption plans look "crazy"</h2>
+    <p>Sellers carrying consumption growth at a cloud provider are typically paid a fraction of a percent to a couple of
+      percent on their number, not ten. Run that through the formula and the multiple lands at 20 to 50 times OTE, which
+      is why a cloud AM compared against the SaaS benchmark looks wildly over-quota when the plan may be ordinary. This
+      section is my experience across cloud providers and their partners, not published data; I haven't found a public
+      dataset for consumption plans, and I'd rather say so than invent one.</p>''',
+  tool=('/quota/', 'Quota Check', 'asks what your number is measured in and judges the multiple against the right range.'),
+  sources=['Bridge Group, <a href="https://blog.bridgegroupinc.com/2024-ae-metrics-compensation-benchmark" rel="noopener">2024 SaaS AE Metrics &amp; Compensation Benchmark Report</a>: median OTE $190K, 53:47 split, 170+ companies.',
+           'Median 11.5% commission rate and 4.2× quota-to-OTE from that report as summarized by <a href="https://optymyze.com/blog/sales-compensation-benchmarks/" rel="noopener">Optymyze</a> and <a href="https://getcarvd.com/blog/saas-sales-commission-rates" rel="noopener">Carvd</a>; the full report is gated.',
+           'Cloud and consumption ranges: the author\'s experience, labelled as such.']),
+ dict(slug='discount-math', title='What a discount really costs you and the company',
+  dek='Commission falls at the rate of the discount. Margin falls faster, because cost does not move.',
+  answer='A discount cuts your commission by exactly the discount percentage, and cuts gross margin to 1 − (1 − margin) ÷ (1 − discount). A 15% discount on a 40% margin leaves about 29%, not 25%.',
+  body=f'''    <p>Two formulas, and the second is the one sellers get wrong.</p>
+    <p><strong>Your commission.</strong> If you're paid a rate on the price, commission lost = rate × discount × list price.
+      A 15% discount is a 15% pay cut on that deal, no more and no less.</p>
+    <p><strong>The company's margin.</strong> The cost of delivering the thing doesn't change when the price does. Margin
+      after the discount is <strong>1 − (1 − m) ÷ (1 − d)</strong>, where m is the margin at list and d the discount.
+      Every point of discount comes straight out of the margin, and the margin is measured against a smaller price.</p>
+    <h2>Gross margin after a discount</h2>
+    {_table(['Margin at list', '5% off', '10% off', '15% off', '20% off', '25% off'], d_rows)}
+    <p>Read across the 30% row: a 25% discount leaves almost nothing. At high software margins the damage is smaller in
+      percentage terms, which is exactly why software discounts get given so casually.</p>
+    <h2>Worked example</h2>
+    <p>A $500,000 deal at 40% margin, 8% commission, 15% off. The customer saves $75,000. Your commission drops from
+      $40,000 to $34,000. The company's margin falls from 40% to 29%, and its gross profit on the deal from $200,000 to
+      $125,000, a 37.5% drop for a 15% discount.</p>''',
+  tool=('/discount/', 'Discount Check', 'does this for your deal before you agree to anything.'),
+  sources=['The arithmetic on this page needs no source.']),
+ dict(slug='commission-take-home', title='Why your commission check is smaller than the math',
+  dek='Separately paid commissions are withheld at a flat 22% federal, before payroll and state taxes.',
+  answer='US employers may withhold federal income tax on separately paid commissions at a flat 22% (37% on supplemental wages above $1 million in a year), plus 7.65% Social Security and Medicare, before any state tax. That is withholding, not the tax you finally owe.',
+  body=f'''    <p>The IRS treats commissions and bonuses as supplemental wages. When they're paid separately from salary, employers
+      can withhold federal income tax at a flat rate instead of running them through the normal tables. Social Security
+      and Medicare come out on top, then your state, if it has an income tax.</p>
+    <h2>Federal withholding and payroll tax, before state</h2>
+    {_table(['Gross commission', 'Federal (22%)', 'Social Security + Medicare (7.65%)', 'Left before state tax'], c_rows,
+            'Assumes supplemental wages under $1 million for the year and earnings under the Social Security wage base. Above the wage base, the 6.2% Social Security portion stops; above $200,000 in wages, an extra 0.9% Medicare applies.')}
+    <p>That's where the rough 30% figure comes from: 22% plus 7.65% is 29.65% before any state tax. It's why Commission
+      Check starts its set-aside at 30% for a W-2 seller.</p>
+    <h2>What this is not</h2>
+    <p>Withholding is an estimate collected in advance. What you actually owe is settled when you file, and depends on
+      your bracket, your state, your filing status and everything else you earned. A 1099 contractor has nothing
+      withheld at all. None of this is tax advice; for anything that matters, ask an accountant.</p>''',
+  tool=('/commission/', 'Commission Check', 'estimates your take-home on a deal with a set-aside you can change.'),
+  sources=['IRS, <a href="https://www.irs.gov/publications/p15" rel="noopener">Publication 15 (2026), Employer\'s Tax Guide</a>: supplemental wage withholding at 22%, or 37% on supplemental wages above $1 million in the calendar year.',
+           'Social Security (6.2%) and Medicare (1.45%, plus 0.9% Additional Medicare Tax above $200,000) are the standard employee payroll tax rates described in the same publication.']),
+]
+def _cite(p): return f'QuotaBird, "{p["title"]}," quotabird.com/math/{p["slug"]}/ (updated {BUILD[:7]}).'
+for p in MATH:
+    url = f'https://quotabird.com/math/{p["slug"]}/'
+    ld = json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": p['title'], "description": p['answer'], "url": url,
+                     "dateModified": BUILD[:10], "image": "https://quotabird.com/card.jpg",
+                     "author": {"@type": "Person", "@id": "https://quotabird.com/#about", "name": "Mark Flournoy"},
+                     "publisher": {"@type": "Organization", "name": "QuotaBird", "url": "https://quotabird.com/"}, "isPartOf": {"@type": "CreativeWorkSeries", "name": "QuotaBird Sales Math Library", "url": "https://quotabird.com/math/"}}, indent=2)
+    href, name, line = p['tool']
+    src = ''.join(f'<li>{s}</li>' for s in p['sources'])
+    html = note_head(p['title'], p['answer'], url).replace('| QuotaBird</title>', '| QuotaBird Sales Math</title>') + f'''<script type="application/ld+json">
+{ld}
+</script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note math">
+  <span class="overline"><a href="/math/">Sales Math Library</a></span>
+  <h1>{p['title']}</h1>
+  <div class="answer"><span class="overline">The short answer</span><p>{p['answer']}</p></div>
+{p['body']}
+  <div class="card card-accent" style="margin-top:28px;">
+    <span class="overline">Run your own</span>
+    <p class="lede"><a href="{href}">{name}</a> {line}</p>
+    <a class="btn btn-primary btn-full" href="{href}" style="margin-top:14px;">Try it</a>
+  </div>
+  <h2>Sources</h2>
+  <ul class="sources">{src}</ul>
+  <p class="fine cite">Cite this page: {_cite(p)}</p>
+</article>
+
+<section class="band" id="about"></section>
+
+''' + NOTE_TAIL.replace('Field Notes are part of', 'The Sales Math Library is part of')
+    assert '—' not in html and '–' not in html, p['slug']
+    os.makedirs(f'math/{p["slug"]}', exist_ok=True)
+    open(f'math/{p["slug"]}/index.html', 'w').write(html)
+_mlist = '<div class="doors">' + ''.join(f'<a class="door" href="/math/{p["slug"]}/"><span><b>{p["title"]}</b><span class="q">{p["dek"]}</span></span><span class="to">Read</span></a>' for p in MATH) + '</div>'
+os.makedirs('math', exist_ok=True)
+open('math/index.html', 'w').write(note_head('Sales Math Library', 'The arithmetic behind pipeline coverage, quota-to-OTE, discounts and commission, shown step by step, with sources for every benchmark.', 'https://quotabird.com/math/').replace('| QuotaBird</title>', '| QuotaBird</title>') + '''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note">
+  <span class="overline">QuotaBird</span>
+  <h1>Sales Math Library</h1>
+  <p class="dek">The arithmetic behind the checks, shown step by step. The math needs no source; every benchmark has one,
+    and anything that's my own experience says so.</p>
+  ''' + _mlist + '''
+  <p class="fine" style="margin-top:18px;">Coming when I find data I trust: federal sales-cycle lengths by agency and contract vehicle.</p>
+</article>
+
+<section class="band" id="about"></section>
+
+''' + NOTE_TAIL.replace('Field Notes are part of', 'The Sales Math Library is part of'))
+print('math', len(MATH))
+
+
+# ────────────────────────────── THE MANAGER'S FIELD KIT (/kit/) ──────────────────────────────
+# A free printable. Plain voice: a retired sales guy who has signed on to a few dumpster fires.
+# No travel theme, no methodology, no email gate. Print CSS turns it into a clean PDF.
+KIT_BODY = '''
+  <nav class="kit-toc" aria-label="Contents">
+    <a href="#k-first">First 30 days</a><a href="#k-rhythm">The weekly rhythm</a><a href="#k-forecast">The forecast call</a>
+    <a href="#k-pipeline">Pipeline</a><a href="#k-boss">Your boss</a><a href="#k-rep">A struggling rep</a>
+    <a href="#k-review">Review season</a><a href="#k-mistakes">Mistakes I've made</a><a href="#k-lines">Lines that work</a><a href="#k-sheets">Worksheets</a>
+  </nav>
+
+  <section class="kit-ch" id="k-start">
+    <h2>Before you start</h2>
+    <p>I've taken over a few sales teams that were on fire when I got there. Some I put out. A couple I made worse
+      before I made them better. This is what I'd want on paper the first week, if I had to do it again.</p>
+    <p>It isn't a methodology. It's the handful of things that held up, and a few worksheets I'd actually use.
+      Read the chapter that matches your week and skip the rest.</p>
+  </section>
+
+  <section class="kit-ch" id="k-first">
+    <h2>The first 30 days</h2>
+    <p>The mistake I made the first time was deciding who was good and who wasn't by the end of week two. I was
+      wrong about two of the five. Now I look at the patch before I look at the person.</p>
+    <p>If three people have failed in the same territory, I don't have three bad reps. So for each rep I size the
+      territory first: account quality, the installed base, the quota, the comp plan, who had it before and how they
+      did. Some patches can't make the number with anyone in them, and it's better to know that in October than in June.</p>
+    <p>Then the person, in roughly this order. Do customers want to spend time with them? Is there pipeline that
+      exists only because they're there? When they're in front of a customer, can they sell? Are they still trying?
+      The third one is the one I used to skip, and it's the one that tells you whether you're coaching or managing.</p>
+    <p>The best hour I spend in the first month is sitting with each rep and going through five of their real deals.
+      I learn more listening to how they talk about the customer than from any dashboard.</p>
+    <p>And the rep I'd have written off first is often the one who skips the internal meetings and has customers
+      calling back. The one with the spotless CRM and no customer pull is the one I watch.</p>
+    <p class="kit-note"><strong>My rough month:</strong> week one, meet everybody and ask what they'd change. Week two,
+      size every patch and write down the ones that can't work. Week three, sit in deals. Week four, tell my boss
+      what I found, patches first.</p>
+  </section>
+
+  <section class="kit-ch" id="k-rhythm">
+    <h2>The weekly rhythm</h2>
+    <p>Two meetings carry most of the week: a one-on-one that's about the rep, and a forecast call that's about the
+      number. When I let them blur together, my one-on-ones turned into status updates and people stopped telling
+      me anything useful.</p>
+    <p>My one-on-ones run thirty minutes. The rep's list goes first, including whatever I'm doing that's in their
+      way. Then one deal, looked at properly. Then one thing I saw them do and one thing to try next time. I close by
+      reading back what I said I'd do, and then I do it before the next one. That last part built more trust than
+      anything clever I ever said.</p>
+    <p>The forecast call runs forty-five minutes and covers the number only. Commit first, a minute a deal unless
+      something changed. Best case second. Everything else goes in a note. When the call runs past an hour, it's
+      turned into a pipeline review nobody prepared for, and I'd rather stop and schedule the real one.</p>
+    <p>Once a month I skip the deal in the one-on-one and ask what they'd do differently if they ran the team. You
+      hear things nobody says in a group.</p>
+  </section>
+
+  <section class="kit-ch" id="k-forecast">
+    <h2>The forecast call</h2>
+    <p>To me, commit means the customer could tell you today how the money gets to you and when. Short of that it's
+      best case, however sure the rep sounds. Most of the shaky deals I've inherited broke in one of five places, so
+      those are the five I ask about:</p>
+    <div class="mtable"><table><thead><tr><th>Question</th><th>What I'm really asking</th></tr></thead><tbody>
+      <tr><td>Customer</td><td>Has the customer said, in their words, that they want to solve this?</td></tr>
+      <tr><td>Money</td><td>Does the money have a name: a budget line, a program, a fiscal year?</td></tr>
+      <tr><td>Power</td><td>Have we met the person who can make it happen, not just the one who likes us?</td></tr>
+      <tr><td>Path</td><td>Do we know how they'll actually buy it: the vehicle, the contracting office, the approvals?</td></tr>
+      <tr><td>Now</td><td>What makes it happen this period instead of next?</td></tr>
+    </tbody></table></div>
+    <p>The most useful question I know in a forecast call is "who told you that?" A rep who can name a person and a
+      date has a deal. A rep who says the customer is really excited has a feeling, and I've forecast a few feelings.
+      They don't close.</p>
+    <p>When I need to move a deal, I don't argue with the rep's read. I ask which of the five they'd defend to my
+      boss, and we forecast that. Nobody loses face, and the number gets honest. On federal deals, path is where
+      things slip most, so I want the contract vehicle and the lead time before anything stays in commit.</p>
+  </section>
+
+  <section class="kit-ch" id="k-pipeline">
+    <h2>Pipeline: enough, and sturdy enough</h2>
+    <p>There are two questions and most reviews only ask the first. Is there enough pipeline? And would what's there
+      survive a bad week?</p>
+    <p>For the first, coverage is one divided by your win rate. The 3X everybody quotes is a 33% win rate that nobody
+      says out loud. At 20% you need 5X. At 25%, 4X. I use the team's qualified win rate from the last four quarters,
+      and I only count qualified pipeline that's due this period against it.</p>
+    <div class="mtable kit-small"><table><thead><tr><th>Qualified win rate</th><th>Coverage needed</th></tr></thead><tbody>
+      <tr><td>15%</td><td>6.7X</td></tr><tr><td>20%</td><td>5.0X</td></tr><tr><td>25%</td><td>4.0X</td></tr>
+      <tr><td>33%</td><td>3.0X</td></tr><tr><td>40%</td><td>2.5X</td></tr>
+    </tbody></table></div>
+    <p>For the second, I've seen teams at 4X miss the year. The pipeline was two big deals that hadn't moved since
+      spring. So I ask five more things. Would we still make it if the biggest deal slipped a quarter? Has every
+      commit deal changed stage in sixty days? Does every one have a next step on the customer's calendar, not just
+      ours? Is at least half of it due before the last month? Did we create a quarter of it this quarter?</p>
+    <p>One habit that helped: I write the forecast without the biggest deal. That's the plan I'm actually running.
+      And the day before a review I move anything that hasn't changed stage in sixty days back a stage. The reps who
+      argue are the ones with information.</p>
+  </section>
+
+  <section class="kit-ch" id="k-boss">
+    <h2>Your boss</h2>
+    <p>In my experience the boss doesn't want more information. They want fewer surprises. I send one page a week,
+      same shape every time: the number (commit, best case, the gap), what changed and why, the one thing most likely
+      to cost us the number and what I'm doing about it, and one ask with a date, or "nothing this week."</p>
+    <p>I lead with the bad news. A boss who hears it from me early, with a plan attached, starts trusting my
+      forecast. A boss who finds it in the CRM starts checking my work.</p>
+    <p>When the number from above doesn't match what I can see from below, I don't fight the target. I show the
+      arithmetic: the patches, the coverage at our real win rate, and what it would take to close the gap. The most
+      expensive sentence I ever said to a boss was "we'll find a way." I spent the whole year defending it.</p>
+  </section>
+
+  <section class="kit-ch" id="k-rep">
+    <h2>When a rep is struggling</h2>
+    <p>Before I write anybody up, I try to figure out which of four problems I've got. From the dashboard they all
+      look the same.</p>
+    <div class="mtable"><table><thead><tr><th>What it is</th><th>What it looks like</th><th>What I do</th></tr></thead><tbody>
+      <tr><td>The situation</td><td>Good rep, bad patch, number or plan</td><td>Fix the territory, the quota or the plan. A write-up fixes none of those.</td></tr>
+      <tr><td>A skill gap</td><td>Working hard, not converting</td><td>Coach it, one deal at a time, sitting in the room.</td></tr>
+      <tr><td>An effort gap</td><td>Can sell, isn't</td><td>Expectations in writing, with dates, and an honest talk about whether they still want this.</td></tr>
+      <tr><td>The wrong rep</td><td>Can't, and has stopped trying, in a fair patch</td><td>Start the process. Waiting doesn't make it kinder.</td></tr>
+    </tbody></table></div>
+    <p>I check the situation first, every time. I once spent six months coaching a rep whose territory couldn't have
+      produced the number for anybody. That's six months I'd like back, and so would he.</p>
+    <p>The quickest way I've found to tell skill from effort is to watch them with a customer. Good in the room and
+      thin pipeline is usually effort. Working hard and the room goes flat is usually skill.</p>
+  </section>
+
+  <section class="kit-ch" id="k-review">
+    <h2>Review season</h2>
+    <p>In calibration, the room can't see your rep's year. All it can test is your case. I've watched good reps with
+      thin cases lose to average reps whose managers brought receipts.</p>
+    <p>So I bring five things. Three results from the year, each with a number. For the biggest one, what wouldn't have
+      happened without them. Why it was work at their level and not good work a level down. One real example for each
+      behavior I'm going to claim. And the harder thing I'd give them next year, with a reason I'm sure they can carry it.</p>
+    <p>Before the room, I check myself. How much of my opinion comes from the last sixty days? Would I think the same if
+      they weren't in my meetings every week? Take away their best win, then their worst month. Does my view hold?</p>
+    <p>I say the weakest part of the case first. Once the room sees you name your own soft spot, they stop hunting for
+      it. And I keep a running note per rep from January on: date, what happened, the number. November goes a lot
+      easier.</p>
+  </section>
+
+  <section class="kit-ch" id="k-mistakes">
+    <h2>Mistakes I've made so you don't have to</h2>
+    <ul class="kit-list">
+      <li><strong>Managing the dashboard.</strong> The fields got cleaner. The pipeline didn't get bigger.</li>
+      <li><strong>Saving deals myself.</strong> It worked once. After that the rep waited for me.</li>
+      <li><strong>Reporting the average.</strong> Two reps at 6X and two at 1X isn't a team at 3.5X. It's two problems.</li>
+      <li><strong>Forecasting confidence.</strong> Some people sound sure about everything. That's a personality, not a close date.</li>
+      <li><strong>Sitting on bad news.</strong> I waited until I had a fix. My boss would have rather had the news Monday and the fix Friday.</li>
+      <li><strong>Giving everybody the same one-on-one.</strong> My best rep and my newest rep needed different things from the same thirty minutes.</li>
+      <li><strong>Approving the discount.</strong> The deal's real problem was power. The discount fixed price, which wasn't the problem.</li>
+    </ul>
+  </section>
+
+  <section class="kit-ch" id="k-lines">
+    <h2>Lines that have worked for me</h2>
+    <div class="mtable"><table><thead><tr><th>When</th><th>What I say</th></tr></thead><tbody>
+      <tr><td>A rep is sure about a shaky deal</td><td>"Walk me through who told you that, and when."</td></tr>
+      <tr><td>Moving a deal out of commit</td><td>"Which of the five would you defend to my boss? Let's forecast that."</td></tr>
+      <tr><td>A rep is missing and I don't know why</td><td>"Before we talk about the number, what's in your way?"</td></tr>
+      <tr><td>A number from above I can't see</td><td>"I can commit to this with what I have. Here's what it would take to get to that."</td></tr>
+      <tr><td>Bad news for my boss</td><td>"Heads up before it hits the CRM: this is at risk, here's why, here's what I'm doing."</td></tr>
+      <tr><td>A rep wants a discount to close</td><td>"What does the customer give us for it? A date, more scope, a reference?"</td></tr>
+      <tr><td>Starting a hard talk</td><td>"Here's what good looks like in thirty days. Let's talk about getting there."</td></tr>
+      <tr><td>I don't know the answer</td><td>"I don't know. I'll find out by Thursday." Then I find out by Thursday.</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <section class="kit-ch kit-sheets" id="k-sheets">
+    <h2>Worksheets</h2>
+    <p class="kit-screen-only">These print one to a page. Fill them in by hand.</p>
+
+    <div class="sheet">
+      <h3>One-on-one</h3>
+      <p class="sheet-meta">Rep ____________________ &nbsp; Date __________</p>
+      <p class="sheet-label">Their list: what's in their way, including me</p><div class="lines l3"></div>
+      <p class="sheet-label">One deal: customer, money, power, path, now</p><div class="lines l3"></div>
+      <p class="sheet-label">One thing I saw them do, one thing to try</p><div class="lines l2"></div>
+      <p class="sheet-label">What I said I'd do, and by when</p><div class="lines l2"></div>
+    </div>
+
+    <div class="sheet">
+      <h3>Deal inspection</h3>
+      <p class="sheet-meta">Deal ____________________ &nbsp; Rep ______________ &nbsp; Date __________</p>
+      <div class="mtable"><table class="ws"><thead><tr><th>Question</th><th>Yes / Sort of / No</th><th>Who said so, and when</th></tr></thead><tbody>
+        <tr><td>Customer: have they said they want to solve this?</td><td></td><td></td></tr>
+        <tr><td>Money: does it have a name and a fiscal year?</td><td></td><td></td></tr>
+        <tr><td>Power: have we met who can make it happen?</td><td></td><td></td></tr>
+        <tr><td>Path: do we know the vehicle and the approvals?</td><td></td><td></td></tr>
+        <tr><td>Now: what makes it happen this period?</td><td></td><td></td></tr>
+      </tbody></table></div>
+      <p class="sheet-foot">I only call it commit with five answers I'd defend to my boss.</p>
+    </div>
+
+    <div class="sheet">
+      <h3>Rep diagnostic</h3>
+      <p class="sheet-meta">Rep ____________________ &nbsp; Date __________</p>
+      <div class="mtable"><table class="ws"><thead><tr><th>In this order</th><th>Yes / Sort of / No</th><th>Notes</th></tr></thead><tbody>
+        <tr><td>Patch: could a good rep make this number here?</td><td></td><td></td></tr>
+        <tr><td>Customers: do they want time with this rep?</td><td></td><td></td></tr>
+        <tr><td>Pipeline: is there pipeline only this rep created?</td><td></td><td></td></tr>
+        <tr><td>Craft: can they sell in the room?</td><td></td><td></td></tr>
+        <tr><td>Will: are they still trying to win?</td><td></td><td></td></tr>
+      </tbody></table></div>
+      <p class="sheet-foot">Patch no: fix the situation. Craft no: coach. Will no: manage. Both no in a fair patch: the wrong rep.</p>
+    </div>
+
+    <div class="sheet">
+      <h3>Team pipeline</h3>
+      <p class="sheet-meta">Quarter __________ &nbsp; Date __________</p>
+      <div class="mtable"><table class="ws wide"><thead><tr><th>Rep</th><th>Number</th><th>Qualified pipeline</th><th>Win rate</th><th>Coverage needed (1 ÷ win rate)</th><th>Coverage now</th><th>Biggest deal as % of number</th></tr></thead><tbody>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody></table></div>
+      <p class="sheet-foot">Anyone whose biggest deal is over a third of their number is one slip from missing.</p>
+    </div>
+
+    <div class="sheet">
+      <h3>Calibration case</h3>
+      <p class="sheet-meta">Rep ____________________ &nbsp; Level ______ &nbsp; Date __________</p>
+      <p class="sheet-label">Three results, each with a number</p><div class="lines l3"></div>
+      <p class="sheet-label">Without them, what wouldn't have happened?</p><div class="lines l2"></div>
+      <p class="sheet-label">Why this was their level, not the one below</p><div class="lines l2"></div>
+      <p class="sheet-label">One example per behavior I'll claim</p><div class="lines l2"></div>
+      <p class="sheet-label">The harder thing next year, and why I'm sure</p><div class="lines l2"></div>
+      <p class="sheet-label">The weakest part of this case, said first</p><div class="lines l1"></div>
+    </div>
+  </section>
+'''
+KIT_CTA = '''
+  <section class="kit-cta" aria-labelledby="kit-cta-h">
+    <h2 id="kit-cta-h">If the kit isn't enough</h2>
+    <p>I'm Mark. I carried a number, managed the people who did, and led partner sales teams at AWS. If you're sitting in
+      one of these right now and want a second set of eyes, I'm glad to talk. Twenty minutes, free, no deck, no pitch.</p>
+    <div class="btn-row kit-cta-row">
+      <a class="btn btn-primary btn-lg" id="kitBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=kit&amp;utm_content=kit_cta" target="_blank" rel="noopener">Chat with Mark</a>
+      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
+    </div>
+    <p class="fine">If I don't think I can help, I'll tell you.</p>
+  </section>
+'''
+_kit_url = 'https://quotabird.com/kit/'
+_kit_desc = "A free, printable field kit for sales managers: the first 30 days with an inherited team, one-on-ones, the forecast call, pipeline, your boss, review season, and five worksheets."
+_kit_ld = json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": "The Manager's Field Kit", "description": _kit_desc, "url": _kit_url, "isAccessibleForFree": True,
+                      "dateModified": BUILD[:10], "image": "https://quotabird.com/card.jpg", "author": {"@type": "Person", "@id": "https://quotabird.com/#about", "name": "Mark Flournoy"},
+                      "publisher": {"@type": "Organization", "name": "QuotaBird", "url": "https://quotabird.com/"}}, indent=2)
+_kit = note_head("The Manager's Field Kit", _kit_desc, _kit_url).replace("| QuotaBird</title>", "| Free Printable | QuotaBird</title>") + f'''<script type="application/ld+json">
+{_kit_ld}
+</script>
+</head>
+<body class="kit-page">
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note kit">
+  <span class="overline">Free printable</span>
+  <h1>The Manager's Field Kit</h1>
+  <p class="dek">What I'd want on paper the week I inherited a sales team. Ten short chapters and five worksheets.</p>
+  <div class="kit-promo kit-hero">
+    <div class="kit-thumb" aria-hidden="true">
+      <img class="kt-back" src="/kit/preview-2.jpg" alt="" width="480" height="622" decoding="async">
+      <img class="kt-front" src="/kit/preview-1.jpg" alt="" width="480" height="622" decoding="async">
+    </div>
+    <div class="kit-promo-body">
+      <span class="pill">Free printable</span>
+      <p class="kit-hero-meta">12 pages, letter size. Ten short chapters and five worksheets. No email required.</p>
+      <div class="kit-promo-actions">
+        <a class="btn btn-primary btn-lg btn-icon" id="kitBookDl" href="/kit/managers-field-kit.pdf" download>Download the PDF<svg aria-hidden="true" viewBox="0 -960 960 960" width="20" height="20"><path fill="currentColor" d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg></a>
+        <button class="btn btn-text" id="kitPrint" type="button">Print this page</button>
+      </div>
+    </div>
+  </div>
+{KIT_BODY}
+{KIT_CTA}
+</article>
+
+''' + NOTE_TAIL.replace('Field Notes are part of', "The Manager's Field Kit is part of").replace('</script>\n</body>', """document.getElementById('kitPrint').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('kit_print'); window.print(); });
+document.getElementById('kitBook').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('kit_book'); });
+</script>
+</body>""")
+assert '—' not in _kit and '–' not in _kit
+os.makedirs('kit', exist_ok=True)
+open('kit/index.html', 'w').write(_kit)
+print('kit', len(_kit))
+
+
 # ────────────────────────────── ABOUT ──────────────────────────────
 os.makedirs('about', exist_ok=True)
 open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaBird, the situations he sees most, and how to reach him. Twenty minutes, free, no deck required.", 'https://quotabird.com/about/').replace('<meta property="og:type" content="article">', '<meta property="og:type" content="profile">') + '''</head>
@@ -1397,6 +1846,8 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
 # Every page gets the same header and the same About section, from one source.
 MARK_SRC = open('partials/mark.html').read()
 MADEBY_SRC = open('partials/made-by.html').read()
+KITCARD_SRC = open('partials/kit-card.html').read()
+KITCARD_PAGES = {'index.html', 'rep/index.html', 'partner/index.html', 'olr/index.html', 'risk/index.html', 'notes/index.html', 'math/index.html', 'about/index.html'}
 def root_of(path):
     if path == '404.html': return '/'
     return '../' * path.count('/')
@@ -1410,7 +1861,8 @@ def header(path):
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      {menu(current_of(path) if not path.startswith('notes/') else '/notes/')}
+      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/')) else '/' + path.split('/')[0] + '/')}
+      <a class="toplink" href="/kit/">Free kit</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
       <a class="chip chip-ask" href="{ask}">Ask Mark</a>
@@ -1424,15 +1876,16 @@ def chrome(path):
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
     ask = '#ask' if path == 'about/index.html' else '/about/#ask'
     if 'class="foot-nav"' not in s:
-        s = s.replace('<footer class="sitefoot">', f'<footer class="sitefoot">\n  <p class="foot-nav"><a href="/">Tools</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>', 1)
+        s = s.replace('<footer class="sitefoot">', f'<footer class="sitefoot">\n  <p class="foot-nav"><a href="/">Tools</a><a href="/kit/">Free kit</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>', 1)
     if path != '404.html':
         # the full story lives on the About page; every other page gets the short "Made by Mark" card
         src = MARK_SRC if path == 'about/index.html' else MADEBY_SRC
         mark = src.replace('{ROOT}', root_of(path)).replace('{UTM}', utm_of(path))
+        if path in KITCARD_PAGES and 'kit-band' not in mark: mark = KITCARD_SRC + mark
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
 PAGES = ['index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION)] \
-        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['404.html']
+        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kit/index.html'] + ['404.html']
 for _p in PAGES:
     chrome(_p)
 print('chrome', len(PAGES))
@@ -1492,7 +1945,7 @@ for g, items in groups:
     for h, n, d in items:
         desc = DESC[h].split(': ', 1)[1]; lines.append(f'- [{n}]({site}{h}): {desc[0].upper() + desc[1:]} ({d[0].lower() + d[1:]}.)')
     lines.append('')
-lines += ['## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
+lines += ['## Free printable', '', f"- [The Manager's Field Kit]({site}/kit/): a free, printable field kit for sales managers: the first 30 days with an inherited team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, and five worksheets.", '', '## Sales Math Library', ''] + [f'- [{p["title"]}]({site}/math/{p["slug"]}/): {p["answer"]}' for p in MATH] + ['', '## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
 open('llms.txt', 'w').write('\n'.join(lines))
 entries = []
 for g, h, n, d in TOOLS:

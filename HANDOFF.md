@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-12.0900**
+**Current build: 2026-10-13.1100**
 
 ## Naming: checks, not kills
 
@@ -234,6 +234,55 @@ Keep it that way: no runtime script injection, no global link listeners, no
 inline event handlers. The site has no executables and references only its
 own domain, LinkedIn, Calendly, fedhoo, Google Tag Manager, schema.org and
 sitemaps.org.
+
+**The Manager's Field Kit (`/kit/`).** A free printable, no email gate:
+ten short chapters (first 30 days, the weekly rhythm, the forecast call,
+pipeline, your boss, a struggling rep, review season, mistakes, lines that
+work) and five worksheets, in Mark's plain voice: a retired sales guy who
+has signed on to a few dumpster fires, first person, no methodology, no
+travel metaphors. One filled button at the top (*Print or save PDF*, which
+calls `window.print()`), chapter chips for jumping around on a phone, and a
+*Chat with Mark* card at the end. The print stylesheet drops the site
+chrome, lets chapters flow with headings kept attached, puts each worksheet
+on its own page, and prints the CTA as a short card with the URL: 12 pages
+on Letter and A4. If you change the content, re-check the page count and
+the "About 12 pages" note. Events: `kit_print`, `kit_book`. Linked from the
+menu, the footer, the home page and `llms.txt`.
+
+**The kit is a real PDF, promoted by one card.** `kit/managers-field-kit.pdf`
+(12 pages, Letter, about 300 KB) is rendered from `/kit/` with the print
+stylesheet; `kit/preview-1.jpg` and `preview-2.jpg` are its page 1 and page 8
+(the deal-inspection worksheet) at 480px. **When the kit's words change,
+re-render all three**: open `/kit/` in Chrome, Print, Save as PDF, Letter,
+default margins, background graphics on; then export pages 1 and 8 as
+images. The promo card (`partials/kit-card.html`: stacked page preview,
+*Free printable* pill, one sentence, filled *Download the PDF* with the
+`download` attribute, *What's inside*) is injected above *Made by Mark* on
+the home page and the manager pages (`KITCARD_PAGES`: home, Rep, Partner,
+OLR, Risk, Field Notes, Sales Math, About). The kit page uses the same card
+as its hero, with *Print this page* as the quiet second action; on phones
+the button comes before the preview so it stays above the fold. Nav: *Free
+kit* in the header on desktop, and a highlighted *Free: The Manager's Field
+Kit (PDF)* row at the top of the Tools menu on every screen. Downloads count
+as `kit_download`. PDFs are cached for a day.
+
+**Sales Math Library (`/math/`).** Citation pages for the arithmetic behind
+the tools, each with a one-paragraph short answer at the top (the sentence
+people and AI answers will quote), the formula, a table, a worked example, a
+*Run your own* card to the matching tool, a Sources list and a *Cite this
+page* line. Four pages: pipeline coverage by win rate, quota-to-OTE as pay
+mix ÷ rate, discount math (commission and margin), commission take-home
+(withholding). The rule, and it is not optional: **the math needs no
+source; every benchmark has one; Mark's experience is labelled as
+experience.** Sourced today: IRS Publication 15 (2026) for the 22% / 37%
+supplemental rate; Bridge Group's 2024 SaaS AE report for median OTE
+($190K, 53:47), with the 11.5% rate and 4.2× multiple attributed to the
+secondary summaries that report them (the full report is gated). The two
+check each other (0.47 ÷ 0.115 = 4.1×), which is the page's argument.
+Federal sales-cycle benchmarks are listed as *coming when I find data I
+trust*; don't publish a number without a source. Pages are generated from
+`MATH` in `make-tools.py` (tables computed, not typed); each calculator and
+the home 3X essay link to their page, and `llms.txt` lists them.
 
 **Agent discovery files.** `llms.txt` (llmstxt.org format) and
 `ai-catalog.json` (ARD / ai-catalog schema 1.0, served at
@@ -769,6 +818,8 @@ Set these in the Amplify console; they cannot live in the repo.
   { "source": "/rep", "status": "301", "target": "/rep/" },
   { "source": "/olr", "status": "301", "target": "/olr/" },
   { "source": "/notes", "status": "301", "target": "/notes/" },
+  { "source": "/kit", "status": "301", "target": "/kit/" },
+  { "source": "/math", "status": "301", "target": "/math/" },
   { "source": "/pipeline", "status": "301", "target": "/" },
   { "source": "/pipeline/<*>", "status": "301", "target": "/" },
   { "source": "/quota", "status": "301", "target": "/quota/" },
@@ -1337,3 +1388,9 @@ meeting with balanced two-column menu.
 **2026-10-11.1700** — Quota → Pipeline hand-off fills every field (3X pipeline, Federal 20%, $500K deals, just me) with a banner saying so; Federal 20% is the win-rate default on the home example too.
 
 **2026-10-12.0900** — llms.txt and ai-catalog.json (ARD 1.0, schema-validated) generated from the tool list.
+
+**2026-10-12.1100** — Sales Math Library: four sourced citation pages and an index at /math/, linked from the menu, footer, calculators, home and llms.txt.
+
+**2026-10-13.0900** — The Manager's Field Kit at /kit/: free printable, plain voice, 12-page print layout, Chat with Mark CTA.
+
+**2026-10-13.1100** — kit as a real PDF with page previews; promo card on home and manager pages; kit in the header and at the top of the Tools menu.
