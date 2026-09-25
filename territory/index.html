@@ -106,7 +106,7 @@
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/#about">About</a>
       <a class="chip chip-ask" href="#ask">Ask Mark</a>
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/" class="current">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/pipeline/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/#about">About Mark</a></div></div></details>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/" class="current">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/#about">About Mark</a></div></div></details>
     </nav>
   </header>
   <div id="screen">
@@ -211,7 +211,7 @@
     <details class="exp"><summary>What if I am new and do not know the territory yet?</summary>
       <div class="body">Then most answers will be sort of, and the verdict will say so. Run it again in 60 days. The gap between the two runs is what you learned.</div></details>
     <details class="exp"><summary>What about the coverage math?</summary>
-      <div class="body">That is the other tool. Once you know the territory can produce, <a href="/pipeline/">Pipeline Check</a> tells you how much pipeline it has to produce.</div></details>
+      <div class="body">That is the other tool. Once you know the territory can produce, <a href="/">Pipeline Check</a> tells you how much pipeline it has to produce.</div></details>
   </div>
 </section>
 
@@ -224,7 +224,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-07.1100';
+window.QB_BUILD = '2026-10-08.0900';
 CheckTool({
   slug: 'territory', name: 'Territory Check', url: 'https://quotabird.com/territory/',
   questions: [
@@ -258,7 +258,7 @@ CheckTool({
   },
   noMove: 'Build the plan for the ten accounts. The territory is not the problem.',
   handoff: (s) => s.total >= 55
-    ? { overline: 'Now the coverage math', text: 'The territory can produce. Pipeline Check tells you how much it has to.', href: '/pipeline/', label: 'Check my pipeline' }
+    ? { overline: 'Now the coverage math', text: 'The territory can produce. Pipeline Check tells you how much it has to.', href: '/', label: 'Check my pipeline' }
     : { overline: 'Take it to your manager', text: "Their version of this question is Rep Check, and its first question is the patch. Send them that with your sizing.", href: '/rep/', label: 'Check my rep' },
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have inherited the patch nobody could grow and handed one out by mistake. If the verdict is bad, I can help you make the case. If it's good, I can help you make the plan. One line. No account names." },
   dm: (s) => `Mark, ran my territory through Territory Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Want to make the case to my manager and not sure how. Worth 20 minutes?`,

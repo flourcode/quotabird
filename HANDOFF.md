@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-07.1100**
+**Current build: 2026-10-08.0900**
 
 ## Naming: checks, not kills
 
@@ -67,16 +67,24 @@ live in `CALCS` in `make-tools.py`; the page template is `calc_page()`.
 Menu group *Your number*; home doorways *I just got my quota*, *They want a
 discount*, *It closed*.
 
-**Home.** *Carrying a number is hard enough.* Everything else on the page
-(byline, sample verdict, doorways, how these work, Field Notes, About,
-FAQ) carried over from the SellClouds build unchanged.
+**Home is Pipeline Check.** The site is named for the number, so the front
+door is the tool that checks it. On a phone the order is hero, verdict card
+and coverage bar (`#out`), the fields, then the rows, clock, hand-off, share
+and Mark card (`#out2`); on desktop the fields sit left and the two output
+blocks stack on the right. The example (3.2X, Hopium, 3X says covered and
+25% says $8M short) is the light bulb and must be on the first screen of a
+375×667 phone; it is. The summary strip shows only while the fields are on
+screen and the verdict has scrolled off the top. A hash with a target but no
+pipeline (Quota Check's hand-off) fills the target and asks for the
+pipeline; it is not treated as a shared verdict. The earlier home hero (a
+live Deal Check question, then a photo byline) was replaced by this; Deal
+Check still accepts a 1-to-4 letter hash as a check in progress.
 
 | Path | What |
 | --- | --- |
-| `/` | **QuotaBird home**: hero, *What are you working on?* doorways (one per tool), how the tools work, Field Notes, About, FAQ |
+| `/` | **Home = Pipeline Check.** Hero (*You sure that's enough pipeline?*), the calculator with the verdict above the fields, then *Nine more checks* doorways, the 3X essay, how the tools work, Field Notes, About, FAQ. `/pipeline/` redirects here. |
 | `/deal/` | **Deal Check**, formerly the home page |
 | `/quota/`, `/discount/`, `/commission/` | the calculators (Quota, Discount, Commission Check) |
-| `/pipeline/` | **Pipeline Check**, the calculator |
 | `/brief/`, `/territory/`, `/partner/`, `/rep/`, `/olr/` | the generated five-question tools |
 | `/notes/` | **Field Notes**: short reads, each ending with the tool that does the math |
 | `partials/mark.html` | the About section every page carries (bio, situations, *Need another set of eyes?*) |
@@ -115,14 +123,8 @@ Solutions, no Consulting.
 **Every screen asks one easy question.** From the October 2026 UX review
 (three videos, consolidated): the tools already ask easy questions, so the
 work went into the questions the site asks about Mark. Six changes, keep them:
-- *The hero is the tool.* The home page shows Deal Check's first question,
-  live, with Yes / Sort of / No under it (`.live`). Each answer links to
-  `/deal/#y`, `#s` or `#n`; Deal Check reads a 1-to-4 letter hash as a check
-  in progress and picks up at question 2 with the answer kept. All three
-  answers sit above the fold on a 375×667 phone; keep them there. Under it,
-  *Five taps later*: a real Deal Check result (Hopium, 3½ of 5 proven,
-  weakest: money, and the question they'll ask), verbatim from the tool. If
-  Deal Check's first question or its copy changes, update both.
+- *The hero is the tool.* The home page is Pipeline Check with its example
+  verdict on the first screen (see *Home is Pipeline Check*).
 - *Trust at the top, as a clause, not a face.* The photo byline was tried and
   removed: on a small phone it pushed the value below the fold. Credibility
   is one clause in the dek ("back when I carried a number and led partner
@@ -677,6 +679,8 @@ Set these in the Amplify console; they cannot live in the repo.
   { "source": "/rep", "status": "301", "target": "/rep/" },
   { "source": "/olr", "status": "301", "target": "/olr/" },
   { "source": "/notes", "status": "301", "target": "/notes/" },
+  { "source": "/pipeline", "status": "301", "target": "/" },
+  { "source": "/pipeline/<*>", "status": "301", "target": "/" },
   { "source": "/quota", "status": "301", "target": "/quota/" },
   { "source": "/discount", "status": "301", "target": "/discount/" },
   { "source": "/commission", "status": "301", "target": "/commission/" },
@@ -1204,3 +1208,10 @@ first question live in the hero (answers land on /deal/ at question 2),
 the byline photo removed and credibility folded into the dek, the two
 buttons removed (the doorways and menu cover the rest), hero spacing
 tightened so all three answers show above the fold on a 375×667 phone.
+
+**2026-10-08.0900** — home page is now Pipeline Check: hero *You sure
+that's enough pipeline? Put in your win rate and find out.*, verdict and
+bar above the fields on phones, the rest of the home page below;
+`/pipeline/` retired (redirect to `/`), every link and hand-off repointed,
+Quota Check's target hand-off lands on the home calculator; home share card
+redrawn.
