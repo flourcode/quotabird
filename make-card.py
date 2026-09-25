@@ -58,6 +58,47 @@ CARDS = {
     foot='Any doc, deck or QBR. Nothing uploaded. Nothing stored.', url='quotabird.com/brief',
     pillars=['POINT', 'RECEIPTS', 'ALTERNATIVE', 'HOLE', 'ASK']),
 }
+if (sys.argv[1] if len(sys.argv) > 1 else '') == 'kit':
+    # The kit's card shows the pages themselves: text left, the two page previews stacked right.
+    from PIL import ImageFilter
+    W, H, M = 1200, 630, 72
+    SURF=(0xF9,0xFC,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x1D,0xA1,0xF2); SOFT=(0xC2,0xE3,0xFF); ONSOFT=(0x00,0x18,0x2B)
+    woff2 = open('inter.woff2', 'rb').read()
+    def font(w, size):
+        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
+        inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
+        return ImageFont.truetype(buf, size)
+    im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
+    # pages, right side
+    ph = 500; front = Image.open('kit/preview-1.jpg').convert('RGB'); back = Image.open('kit/preview-2.jpg').convert('RGB')
+    pw = int(front.width * ph / front.height); front = front.resize((pw, ph), Image.LANCZOS); back = back.resize((pw, ph), Image.LANCZOS)
+    px, py = W - M - pw - 24, (H - ph) // 2 - 6
+    def shadowed(page, angle, x, y, blur=14, alpha=70):
+        pg = page.convert('RGBA'); sh = Image.new('RGBA', (pg.width + 80, pg.height + 80), (0, 0, 0, 0))
+        ImageDraw.Draw(sh).rectangle((40, 48, 40 + pg.width, 48 + pg.height), fill=(0, 0, 0, alpha)); sh = sh.filter(ImageFilter.GaussianBlur(blur))
+        layer = Image.new('RGBA', sh.size, (0, 0, 0, 0)); layer.alpha_composite(sh); layer.paste(pg, (40, 40))
+        layer = layer.rotate(angle, resample=Image.BICUBIC, expand=True)
+        im.paste(layer, (x - 40 - (layer.width - sh.width) // 2, y - 40 - (layer.height - sh.height) // 2), layer)
+    shadowed(back, -4, px + 30, py + 14, alpha=45)
+    fr = front.copy(); ImageDraw.Draw(fr).rectangle((0, ph - 9, pw, ph), fill=ACC)
+    shadowed(fr, 0, px, py)
+    # text, left side
+    bird = Image.open('logo.png').convert('RGBA'); bh = 46; bw = int(bird.width * bh / bird.height); bird = bird.resize((bw, bh), Image.LANCZOS)
+    im.paste(bird, (M, M - 4), bird); d.text((M + bw + 16, M + 1), 'QuotaBird', font=font(700, 28), fill=INK)
+    pf = font(700, 22); pt = 'FREE PRINTABLE'; ptw = int(d.textlength(pt, font=pf))
+    d.rounded_rectangle((M, M + 84, M + ptw + 36, M + 84 + 44), radius=22, fill=SOFT); d.text((M + 18, M + 94), pt, font=pf, fill=ONSOFT)
+    hf = font(800, 64); y = M + 150
+    for line in ["The Manager's", 'Field Kit']:
+        d.text((M - 2, y), line, font=hf, fill=INK); y += 74
+    sf = font(400, 27); y += 18
+    for line in ['Useful things for the weeks when', 'the number, the team, or both', 'are giving you trouble.']:
+        d.text((M, y), line, font=sf, fill=VAR); y += 38
+    fy = H - M - 20
+    d.text((M, fy), '8 pages. No email.', font=font(400, 24), fill=VAR)
+    uf = font(700, 26); d.text((M + int(d.textlength('8 pages. No email.', font=font(400, 24))) + 22, fy - 2), 'quotabird.com/kit', font=uf, fill=ACC)
+    im.save('card-kit.jpg', quality=90, optimize=True)
+    print('card-kit.jpg', os.path.getsize('card-kit.jpg'), 'bytes'); sys.exit(0)
+
 C = CARDS[sys.argv[1] if len(sys.argv) > 1 else 'home']
 HEADLINE, DEK, FOOT, URL, PILLARS = C['headline'], C['dek'], C['foot'], C['url'], C['pillars']
 

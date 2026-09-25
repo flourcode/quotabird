@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-13.2100**
+**Current build: 2026-10-13.2300**
 
 ## Naming: checks, not kills
 
@@ -1435,3 +1435,10 @@ number, extra accounts, unpaid coaching), and three questions once a quarter.
 Start-here row shortened to *High performers → Chapter 10*. The print closing
 card puts the terms and URL on one line, and print paragraph spacing is 5.5pt,
 to keep the kit at 8 pages on Letter and A4.
+
+**2026-10-13.2300** — the kit has its own share card, `card-kit.jpg`
+(`python3 make-card.py kit`): QuotaBird mark, *Free printable* pill, title
+and subtitle on the left, the two page previews stacked on the right. It is
+drawn from `kit/preview-1.jpg` and `preview-2.jpg`, so **re-run it after
+regenerating the previews**. The kit page's og:image, twitter:image and
+structured data point to it.

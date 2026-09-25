@@ -1803,9 +1803,9 @@ KIT_CTA = '''
 _kit_url = 'https://quotabird.com/kit/'
 _kit_desc = "Useful things for the weeks when the number, the team, or both are giving you trouble. A free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, your boss, a struggling rep, review season, and the worksheets that go with them."
 _kit_ld = json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": "The Manager's Field Kit", "description": _kit_desc, "url": _kit_url, "isAccessibleForFree": True,
-                      "dateModified": BUILD[:10], "image": "https://quotabird.com/card.jpg", "author": {"@type": "Person", "@id": "https://quotabird.com/#about", "name": "Mark Flournoy"},
+                      "dateModified": BUILD[:10], "image": "https://quotabird.com/card-kit.jpg", "author": {"@type": "Person", "@id": "https://quotabird.com/#about", "name": "Mark Flournoy"},
                       "publisher": {"@type": "Organization", "name": "QuotaBird", "url": "https://quotabird.com/"}}, indent=2)
-_kit = note_head("The Manager's Field Kit", _kit_desc, _kit_url).replace("| QuotaBird</title>", "| Free Printable | QuotaBird</title>") + f'''<script type="application/ld+json">
+_kit = note_head("The Manager's Field Kit", _kit_desc, _kit_url).replace("| QuotaBird</title>", "| Free Printable | QuotaBird</title>").replace("https://quotabird.com/card.jpg", "https://quotabird.com/card-kit.jpg").replace('<meta name="twitter:card"', '<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">\n<meta property="og:image:alt" content="The Manager\'s Field Kit: a free, printable field kit for sales managers">\n<meta name="twitter:card"') + f'''<script type="application/ld+json">
 {_kit_ld}
 </script>
 </head>
