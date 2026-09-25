@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-13.2100'
+BUILD = '2026-10-14.0900'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -1870,6 +1870,16 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
 </div>
 
 <section class="band" id="about"></section>
+
+<section class="band bird-egg" aria-labelledby="bird-h">
+  <div class="band-inner">
+    <picture><source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/logo.svg" alt="" width="48" height="42"></picture>
+    <div>
+      <h2 id="bird-h">Why the bird?</h2>
+      <p>If you carry a number, sooner or later the Quota Bird lands on your branch.</p>
+    </div>
+  </div>
+</section>
 
 ''' + NOTE_TAIL.replace('Field Notes are part of', 'QuotaBird is'))
 
