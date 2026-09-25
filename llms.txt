@@ -1,0 +1,48 @@
+# QuotaBird
+
+> Quick reality checks for people who carry a number: thirteen free, one-minute tools for sellers and sales managers (deals, pipeline, quota, territories, partners, reps, reviews), plus short field notes. Everything runs in the browser; nothing is stored. Built by Mark Flournoy, who led partner sales teams at AWS.
+
+The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI.
+
+## Your deal
+
+- [Deal Check](https://quotabird.com/deal/): Five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal. (before you put it in commit.)
+- [Account Check](https://quotabird.com/account/): Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. One minute, nothing stored. (when you only know one person there.)
+- [Competition Check](https://quotabird.com/competition/): Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. One minute, nothing stored. (when you are not sure you are ahead.)
+
+## Your number
+
+- [Quota Check](https://quotabird.com/quota/): Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book. Free, in your browser, nothing stored. (the day the number lands.)
+- [Territory Check](https://quotabird.com/territory/): Can the patch make the number, or are you being asked to grow where nobody could? Five questions for sellers. Nothing stored. (month one in a new patch.)
+- [Discount Check](https://quotabird.com/discount/): They want a discount. See what it costs in your commission and the company's margin before you say yes. Free, in your browser, nothing stored. (when they ask you to sharpen the pencil.)
+- [Commission Check](https://quotabird.com/commission/): Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes. Free, in your browser, nothing stored. (when it closes.)
+
+## Your team
+
+- [Pipeline Check](https://quotabird.com/): Target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. (quarterly, before the review.)
+- [Risk Check](https://quotabird.com/risk/): Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored. (when coverage looks fine and you do not trust it.)
+- [Rep Check](https://quotabird.com/rep/): Is it the rep, the patch, a skill gap or an effort gap? Five questions for sales managers. No names, nothing stored. (when a rep is worrying you.)
+- [Partner Check](https://quotabird.com/partner/): Five questions that separate a partner who sells with you from a logo on a slide. For partner managers. One minute, nothing stored. (before you renew the partnership.)
+- [OLR Check](https://quotabird.com/olr/): Five questions that test the case you're making for a rep in OLR, then the room grills you. No names, no ratings, nothing stored. (review season.)
+
+## Any meeting
+
+- [Brief Check](https://quotabird.com/brief/): Five questions about the doc, deck or QBR you're about to present, then the room grills you. Nothing uploaded, nothing stored. (when someone in the room can say no.)
+
+## Field Notes
+
+- [3X is a win rate in disguise](https://quotabird.com/notes/3x-is-a-win-rate/): Everybody plans to it. Almost nobody asks where it came from.
+- [Why I don't start with BANT or MEDDIC](https://quotabird.com/notes/why-not-bant-or-meddic/): They're useful when you're working a deal. The trouble is the moment before that.
+- [If three people failed in the same patch](https://quotabird.com/notes/three-people-same-patch/): You probably don't have three bad reps.
+- [Your quota went up 30%. Did your territory?](https://quotabird.com/notes/quota-went-up-did-your-territory/): The number moved. Ask what else did.
+- [They asked for 15% off. What are you buying with it?](https://quotabird.com/notes/fifteen-percent-off/): A discount is a purchase. Make sure you get something for it.
+- [Your best rep hates internal meetings. Is that a problem?](https://quotabird.com/notes/best-rep-hates-meetings/): Probably not the one you think.
+
+## About
+
+- [About Mark](https://quotabird.com/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.
+
+## Optional
+
+- [Sitemap](https://quotabird.com/sitemap.xml)
+- [ai-catalog.json](https://quotabird.com/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.

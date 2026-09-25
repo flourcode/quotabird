@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-11.1100'
+BUILD = '2026-10-12.0900'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -1458,6 +1458,54 @@ def sync_faq(path):
     print('faq synced', path, len(ents))
 for _p in PAGES:
     sync_faq(_p)
+
+# ────────────────────────────── AGENT DISCOVERY: llms.txt and ai-catalog.json ──────────────────────────────
+# Both are generated from the same tool list as the site, so they cannot drift.
+# llms.txt follows llmstxt.org (H1, blockquote summary, H2 sections of "- [name](url): description").
+# ai-catalog.json follows the ARD ai-catalog schema 1.0 (ards-project/ard-spec); each tool is a text/html entry.
+DESC = {'/': 'Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need.',
+        '/deal/': 'Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.'}
+for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
+for c in CALCS: DESC['/' + c['slug'] + '/'] = c['name'] + ': ' + c['desc']
+QUERIES = {'/': ['do I have enough pipeline to make my number', 'pipeline coverage calculator with my win rate', 'is 3X pipeline coverage enough'],
+           '/deal/': ['is my deal real or hopium', 'qualify a federal sales deal before commit', 'what will my manager ask about this deal'],
+           '/quota/': ['is my quota crazy', 'quota to OTE ratio for cloud sales', 'is my sales quota fair'],
+           '/territory/': ['can my territory make the number', 'is my sales territory viable', 'new patch sizing check'],
+           '/discount/': ['what does a discount cost me in commission', 'should I give a 15 percent discount', 'discount impact on margin and commission'],
+           '/commission/': ['how much of my commission do I take home', 'commission take home after taxes', 'commission check calculator'],
+           '/rep/': ['is it the rep or the territory', 'why is my sales rep underperforming', 'rep problem or patch problem'],
+           '/partner/': ['is this partner real or a logo', 'is my channel partner actually selling', 'partner check for co-sell'],
+           '/olr/': ['prepare for OLR calibration', 'will my case for a rep survive talent review', 'Amazon OLR prep for managers'],
+           '/brief/': ['will my QBR survive the room', 'pressure test my brief before the meeting', 'what question am I hoping nobody asks'],
+           '/account/': ['do I know the account or just my contact', 'am I single-threaded in this account', 'federal account check'],
+           '/risk/': ['how fragile is my pipeline', 'pipeline concentration and aging risk', '4X coverage but still at risk'],
+           '/competition/': ['why would they pick us over doing nothing', 'am I beating the incumbent', 'competitive position check for a deal']}
+groups, last = [], None
+for g, h, n, d in TOOLS:
+    if g != last: groups.append([g, []]); last = g
+    groups[-1][1].append((h, n, d))
+site = 'https://quotabird.com'
+lines = ['# QuotaBird', '', '> Quick reality checks for people who carry a number: thirteen free, one-minute tools for sellers and sales managers (deals, pipeline, quota, territories, partners, reps, reviews), plus short field notes. Everything runs in the browser; nothing is stored. Built by Mark Flournoy, who led partner sales teams at AWS.', '',
+         'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI.', '']
+for g, items in groups:
+    lines.append(f'## {g}'); lines.append('')
+    for h, n, d in items:
+        desc = DESC[h].split(': ', 1)[1]; lines.append(f'- [{n}]({site}{h}): {desc[0].upper() + desc[1:]} ({d[0].lower() + d[1:]}.)')
+    lines.append('')
+lines += ['## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
+open('llms.txt', 'w').write('\n'.join(lines))
+entries = []
+for g, h, n, d in TOOLS:
+    slug = 'pipeline' if h == '/' else h.strip('/')
+    entries.append({"identifier": f"urn:air:quotabird.com:tools:{slug}-check", "displayName": n, "type": "text/html", "url": site + h,
+                    "description": DESC[h], "tags": [g.lower().replace(' ', '-'), 'sales', 'free', 'no-login'],
+                    "capabilities": [n.replace(' ', '')], "representativeQueries": QUERIES[h][:5], "version": BUILD[:10].replace('-', '.'),
+                    "updatedAt": BUILD[:10] + 'T00:00:00Z', "metadata": {"runsInBrowser": True, "storesData": False, "usesAI": False, "audience": g}})
+catalog = {"specVersion": "1.0", "host": {"displayName": "QuotaBird", "identifier": "https://quotabird.com", "documentationUrl": site + "/llms.txt", "logoUrl": site + "/logo.png"}, "entries": entries}
+os.makedirs('.well-known', exist_ok=True)
+for path in ['.well-known/ai-catalog.json', 'ai-catalog.json']:
+    open(path, 'w').write(json.dumps(catalog, indent=2) + '\n')
+print('llms.txt', len('\n'.join(lines)), 'chars | ai-catalog.json entries', len(entries))
 
 # ── sitemap, from the same page list ──
 _urls = [p for p in PAGES if p != '404.html']
