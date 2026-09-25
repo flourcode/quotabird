@@ -31,7 +31,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 ## Free printable
 
-- [The Sales Manager's Field Kit](https://quotabird.com/kit/): a free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, when to leave a rep alone, and six worksheets.
+- [The Manager's Field Kit](https://quotabird.com/kit/): a free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, managing high performers, and six worksheets.
 
 ## Sales Math Library
 

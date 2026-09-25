@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-13.1500**
+**Current build: 2026-10-13.2100**
 
 ## Naming: checks, not kills
 
@@ -235,7 +235,7 @@ inline event handlers. The site has no executables and references only its
 own domain, LinkedIn, Calendly, fedhoo, Google Tag Manager, schema.org and
 sitemaps.org.
 
-**The Sales Manager's Field Kit (`/kit/`).** A free printable, no email gate:
+**The Manager's Field Kit (`/kit/`).** A free printable, no email gate:
 ten short chapters (first 30 days, the weekly rhythm, the forecast call,
 pipeline, your boss, a struggling rep, review season, mistakes, lines that
 work) and five worksheets, in Mark's plain voice: a retired sales guy who
@@ -1413,3 +1413,25 @@ and worksheet padding, 12mm page margins, and a three-line closing card in
 print. Every page is at least half full on Letter and A4. **If you add text,
 re-render and check for a near-empty last page**: the kit is right at 8
 pages, and one extra paragraph can spill a line onto a ninth.
+
+**2026-10-13.1700** — kit finished; stop adding chapters, eight pages is the
+point. A *Having a bad week? Start here.* box on page 1 maps problems to
+chapters (links on screen, a two-column index in print; it replaced the
+chapter chips). Every worksheet names its exact online tool; the talent
+review sheet prints `quotabird.com/talent-review`, a small forwarding page
+(`talent-review/index.html`, noindex, canonical to `/olr/`) so the kit reads
+universal while the tool keeps the OLR name Mark chose. Closing line added:
+*If one of these pages saves you one bad meeting, it did its job.* Still 8
+pages on Letter and A4.
+
+**2026-10-13.1900** — renamed back to *The Manager's Field Kit*, subtitle
+*Useful things for the weeks when the number, the team, or both are giving
+you trouble.* on the kit page, the promo card, the menu row, the page title,
+structured data, llms.txt and the PDF. Still 8 pages; previews regenerated.
+
+**2026-10-13.2100** — chapter 10 is now *Managing high performers*: leave them
+alone when the system is working, don't punish them for being good (bigger
+number, extra accounts, unpaid coaching), and three questions once a quarter.
+Start-here row shortened to *High performers → Chapter 10*. The print closing
+card puts the terms and URL on one line, and print paragraph spacing is 5.5pt,
+to keep the kit at 8 pages on Letter and A4.

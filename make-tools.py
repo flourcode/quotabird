@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-13.1500'
+BUILD = '2026-10-13.2100'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -31,7 +31,7 @@ def menu(current):
         (left if n < total / 2 else right).append((g, items)); n += len(items)
     col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in gs) + '</div>'
     foot = '<div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div>'
-    kit = '<a class="menu-kit" href="/kit/"><span class="pill">Free</span>The Sales Manager\'s Field Kit (PDF)</a>'
+    kit = '<a class="menu-kit" href="/kit/"><span class="pill">Free</span>The Manager\'s Field Kit (PDF)</a>'
     return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{kit}{col(left)}{col(right)}{foot}</div></details>'
 
 
@@ -1546,12 +1546,6 @@ print('math', len(MATH))
 # A free printable. Plain voice: a retired sales guy who has signed on to a few dumpster fires.
 # No travel theme, no methodology, no email gate. Print CSS turns it into a clean PDF.
 KIT_BODY = '''
-  <nav class="kit-toc" aria-label="Contents">
-    <a href="#k-first">Inherited a team</a><a href="#k-rhythm">1:1 vs forecast</a><a href="#k-forecast">The forecast call</a>
-    <a href="#k-pipeline">Pipeline</a><a href="#k-boss">Your boss</a><a href="#k-rep">A struggling rep</a>
-    <a href="#k-review">Review season</a><a href="#k-mistakes">Learned the hard way</a><a href="#k-lines">Lines worth stealing</a><a href="#k-alone">Leave them alone</a>
-  </nav>
-
   <section class="kit-ch" id="k-start">
     <p>I've taken over teams that were doing great, teams that were struggling, and a few that were already on fire
       when I got there. Some I fixed. A couple I made worse before I made them better.</p>
@@ -1561,6 +1555,17 @@ KIT_BODY = '''
       keeping your own boss out of surprise mode.</p>
     <p>Don't read it front to back. <strong>Find the problem you have this week and start there.</strong> Each chapter
       ends with the worksheet that goes with it.</p>
+    <div class="kit-start">
+      <p class="kit-start-h">Having a bad week? Start here.</p>
+      <ul>
+        <li><a href="#k-first">Rep problem</a><span>Chapter 1 or 6</span></li>
+        <li><a href="#k-forecast">Forecast problem</a><span>Chapter 3</span></li>
+        <li><a href="#k-pipeline">Pipeline problem</a><span>Chapter 4</span></li>
+        <li><a href="#k-boss">Boss problem</a><span>Chapter 5</span></li>
+        <li><a href="#k-review">Review season</a><span>Chapter 7</span></li>
+        <li><a href="#k-alone">High performers</a><span>Chapter 10</span></li>
+      </ul>
+    </div>
   </section>
 
   <section class="kit-ch" id="k-first">
@@ -1591,7 +1596,7 @@ KIT_BODY = '''
         <tr><td>Craft: can they sell in the room?</td><td></td><td></td></tr>
         <tr><td>Will: are they still trying to win?</td><td></td><td></td></tr>
       </tbody></table></div>
-      <p class="sheet-foot">Patch is no: fix the situation. Craft is no: coach. Will is no: manage. Both no in a fair patch: see chapter 6.</p>
+      <p class="sheet-foot">Patch is no: fix the situation. Craft is no: coach. Will is no: manage. If both are no in a fair patch, read chapter 6.</p>
     </div>
   </section>
 
@@ -1664,7 +1669,7 @@ KIT_BODY = '''
     <p>One habit I like: run the forecast once without your biggest deal. That's the plan I'd want to manage.</p>
     <div class="sheet">
       <h3>Worksheet: Team pipeline</h3>
-      <p class="sheet-meta">Quarter __________ &nbsp; Date __________ &nbsp; <span class="sheet-tool">Online: quotabird.com</span></p>
+      <p class="sheet-meta">Quarter __________ &nbsp; Date __________ &nbsp; <span class="sheet-tool">Online: Pipeline Check, quotabird.com</span></p>
       <div class="mtable"><table class="ws wide"><thead><tr><th>Rep</th><th>Number</th><th>Qualified pipeline</th><th>Win rate</th><th>Coverage needed (1 ÷ win rate)</th><th>Coverage now</th><th>Biggest deal</th></tr></thead><tbody>
         <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -1729,7 +1734,7 @@ KIT_BODY = '''
       same question.</p>
     <div class="sheet">
       <h3>Worksheet: Talent review prep</h3>
-      <p class="sheet-meta">Rep ____________________ &nbsp; Level ______ &nbsp; <span class="sheet-tool">Online: quotabird.com/olr</span></p>
+      <p class="sheet-meta">Rep ____________________ &nbsp; Level ______ &nbsp; <span class="sheet-tool">Online: quotabird.com/talent-review</span></p>
       <p class="sheet-label">Three results, with numbers where they make sense</p><div class="lines l2"></div>
       <p class="sheet-label">What happened because this person was there</p><div class="lines l1"></div>
       <p class="sheet-label">Why the work was at their level</p><div class="lines l1"></div>
@@ -1769,13 +1774,16 @@ KIT_BODY = '''
   </section>
 
   <section class="kit-ch" id="k-alone">
-    <h2>10. When to leave the rep alone</h2>
-    <p>Managers can hurt good sellers by managing them too much. I've done it.</p>
-    <p>I leave them alone when customers call them back, when they create their own pipeline, when they know their
-      deals better than I do, when they tell me bad news before I find it, when they ask for help when they actually
-      need it, and when they make the number often enough that the system clearly works.</p>
-    <p>My job isn't to turn my best rep into me. It's to make sure they have a fair patch, get the stuff that slows
-      them down out of the way, help when they ask, and keep the rest of the company from improving them to death.</p>
+    <h2>10. Managing high performers</h2>
+    <p>The easiest way to lose a great seller is to manage them like everybody else. I've done it.</p>
+    <p>Mostly, I leave them alone. When customers call them back, they build their own pipeline and they tell me bad
+      news before I find it, the system is working. My job is a fair patch, clearing what slows them down, helping
+      when they ask, and keeping the rest of the company from improving them to death.</p>
+    <p>The other half is not punishing them for being good. The reward for making the number shouldn't be a bigger
+      number, three accounts nobody else could handle, and coaching the new hires on their own time.</p>
+    <p>Once a quarter I ask three things. What would make this job better? What do you want to be doing in two years?
+      What am I asking of you that isn't worth your time? Then I act on at least one answer. Great sellers rarely leave
+      over money alone. They leave when nobody noticed they were bored.</p>
   </section>
 '''
 KIT_CTA = '''
@@ -1783,6 +1791,7 @@ KIT_CTA = '''
     <h2 id="kit-cta-h">Sometimes another set of eyes helps</h2>
     <p>I'm Mark. I carried a number, managed people who did, and led partner sales teams at AWS. I still like this stuff.
       If you're staring at a deal, a forecast, a rep problem or a number that doesn't make sense, I'm happy to talk.</p>
+    <p class="kit-cta-job">If one of these pages saves you one bad meeting, it did its job.</p>
     <p class="kit-cta-terms">Twenty minutes. Free. No deck. No pitch.</p>
     <div class="btn-row kit-cta-row">
       <a class="btn btn-primary btn-lg" id="kitBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=kit&amp;utm_content=kit_cta" target="_blank" rel="noopener">Chat with Mark</a>
@@ -1792,11 +1801,11 @@ KIT_CTA = '''
   </section>
 '''
 _kit_url = 'https://quotabird.com/kit/'
-_kit_desc = "A free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, your boss, a struggling rep, review season, and the worksheets that go with them."
-_kit_ld = json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": "The Sales Manager's Field Kit", "description": _kit_desc, "url": _kit_url, "isAccessibleForFree": True,
+_kit_desc = "Useful things for the weeks when the number, the team, or both are giving you trouble. A free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, your boss, a struggling rep, review season, and the worksheets that go with them."
+_kit_ld = json.dumps({"@context": "https://schema.org", "@type": "Article", "headline": "The Manager's Field Kit", "description": _kit_desc, "url": _kit_url, "isAccessibleForFree": True,
                       "dateModified": BUILD[:10], "image": "https://quotabird.com/card.jpg", "author": {"@type": "Person", "@id": "https://quotabird.com/#about", "name": "Mark Flournoy"},
                       "publisher": {"@type": "Organization", "name": "QuotaBird", "url": "https://quotabird.com/"}}, indent=2)
-_kit = note_head("The Sales Manager's Field Kit", _kit_desc, _kit_url).replace("| QuotaBird</title>", "| Free Printable | QuotaBird</title>") + f'''<script type="application/ld+json">
+_kit = note_head("The Manager's Field Kit", _kit_desc, _kit_url).replace("| QuotaBird</title>", "| Free Printable | QuotaBird</title>") + f'''<script type="application/ld+json">
 {_kit_ld}
 </script>
 </head>
@@ -1807,8 +1816,8 @@ _kit = note_head("The Sales Manager's Field Kit", _kit_desc, _kit_url).replace("
 </div>
 <article class="note kit">
   <span class="overline">Free printable</span>
-  <h1>The Sales Manager's Field Kit</h1>
-  <p class="dek">Stuff I wish somebody had handed me the first time I ran a team.</p>
+  <h1>The Manager's Field Kit</h1>
+  <p class="dek">Useful things for the weeks when the number, the team, or both are giving you trouble.</p>
   <div class="kit-promo kit-hero">
     <div class="kit-thumb" aria-hidden="true">
       <img class="kt-back" src="/kit/preview-2.jpg" alt="" width="480" height="622" decoding="async">
@@ -1827,7 +1836,7 @@ _kit = note_head("The Sales Manager's Field Kit", _kit_desc, _kit_url).replace("
 {KIT_CTA}
 </article>
 
-''' + NOTE_TAIL.replace('Field Notes are part of', "The Sales Manager's Field Kit is part of").replace('</script>\n</body>', """document.getElementById('kitPrint').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('kit_print'); window.print(); });
+''' + NOTE_TAIL.replace('Field Notes are part of', "The Manager's Field Kit is part of").replace('</script>\n</body>', """document.getElementById('kitPrint').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('kit_print'); window.print(); });
 document.getElementById('kitBook').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('kit_book'); });
 </script>
 </body>""")
@@ -1836,6 +1845,15 @@ os.makedirs('kit', exist_ok=True)
 open('kit/index.html', 'w').write(_kit)
 print('kit', len(_kit))
 
+
+# /talent-review/ forwards to OLR Check (the kit prints the universal name; the tool keeps its name)
+os.makedirs('talent-review', exist_ok=True)
+open('talent-review/index.html', 'w').write('''<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Talent review prep | QuotaBird</title>
+<meta name="robots" content="noindex"><link rel="canonical" href="https://quotabird.com/olr/">
+<meta http-equiv="refresh" content="0; url=/olr/"></head>
+<body><p><a href="/olr/">Talent review prep is here.</a></p></body></html>
+''')
 
 # ────────────────────────────── ABOUT ──────────────────────────────
 os.makedirs('about', exist_ok=True)
@@ -1958,7 +1976,7 @@ for g, items in groups:
     for h, n, d in items:
         desc = DESC[h].split(': ', 1)[1]; lines.append(f'- [{n}]({site}{h}): {desc[0].upper() + desc[1:]} ({d[0].lower() + d[1:]}.)')
     lines.append('')
-lines += ['## Free printable', '', f"- [The Sales Manager's Field Kit]({site}/kit/): a free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, when to leave a rep alone, and six worksheets.", '', '## Sales Math Library', ''] + [f'- [{p["title"]}]({site}/math/{p["slug"]}/): {p["answer"]}' for p in MATH] + ['', '## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
+lines += ['## Free printable', '', f"- [The Manager's Field Kit]({site}/kit/): a free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, managing high performers, and six worksheets.", '', '## Sales Math Library', ''] + [f'- [{p["title"]}]({site}/math/{p["slug"]}/): {p["answer"]}' for p in MATH] + ['', '## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
 open('llms.txt', 'w').write('\n'.join(lines))
 entries = []
 for g, h, n, d in TOOLS:
