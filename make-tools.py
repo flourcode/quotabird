@@ -3,29 +3,35 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-09.1100'
+BUILD = '2026-10-11.1100'
 TOOLS = [
-    ('For sellers', '/deal/', 'Deal Check', 'Before you put it in commit'),
-    ('For sellers', '/quota/', 'Quota Check', 'The day the number lands'),
-    ('For sellers', '/territory/', 'Territory Check', 'Month one in a new patch'),
-    ('For sellers', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
-    ('For sellers', '/commission/', 'Commission Check', 'When it closes'),
-    ('For managers', '/', 'Pipeline Check', 'Quarterly, before the review'),
-    ('For managers', '/rep/', 'Rep Check', 'When a rep is worrying you'),
-    ('For managers', '/partner/', 'Partner Check', 'Before you renew the partnership'),
-    ('For managers', '/olr/', 'OLR Check', 'Review season'),
+    ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
+    ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
+    ('Your deal', '/competition/', 'Competition Check', 'When you are not sure you are ahead'),
+    ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
+    ('Your number', '/territory/', 'Territory Check', 'Month one in a new patch'),
+    ('Your number', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
+    ('Your number', '/commission/', 'Commission Check', 'When it closes'),
+    ('Your team', '/', 'Pipeline Check', 'Quarterly, before the review'),
+    ('Your team', '/risk/', 'Risk Check', 'When coverage looks fine and you do not trust it'),
+    ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
+    ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
+    ('Your team', '/olr/', 'OLR Check', 'Review season'),
     ('Any meeting', '/brief/', 'Brief Check', 'When someone in the room can say no'),
 ]
 
 def menu(current):
     groups, last = [], None
     for g, h, n, d in TOOLS:
-        if g == 'QuotaBird': continue
         if g != last: groups.append([g, []]); last = g
         groups[-1][1].append(f'<a href="{h}"{" class=\"current\"" if h == current else ""}>{n}</a>')
-    cols = ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in groups)
+    # two balanced columns: groups go left until the left holds at least half the items
+    total = sum(len(i) for g, i in groups); left, right, n = [], [], 0
+    for g, items in groups:
+        (left if n < total / 2 else right).append((g, items)); n += len(items)
+    col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in gs) + '</div>'
     foot = '<div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div>'
-    return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{cols}{foot}</div></details>'
+    return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{col(left)}{col(right)}{foot}</div></details>'
 
 
 
@@ -98,6 +104,7 @@ def page(t):
 }}
 </script>
 <link rel="stylesheet" href="../site.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.js" defer></script>
 </head>
 <body>
@@ -640,7 +647,260 @@ BRIEF = dict(
 });''',
 )
 
-for t in (REP, PARTNER, TERRITORY, OLR, BRIEF):
+# ────────────────────────────── ACCOUNT CHECK ──────────────────────────────
+ACCOUNT = dict(
+    slug='account', name='Account Check',
+    title='Account Check: Do You Know the Account, or Just Your Contact?',
+    desc='Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. One minute, nothing stored.',
+    ogdesc='Do you know the account, or just your contact? Five questions, one minute, no names.',
+    h1='Do you know the account, or just your contact?',
+    dek="Answer five questions and find out where you're single-threaded.",
+    cta='Check my account',
+    questions=[
+        dict(k='mission', n='MISSION', q='Can you say what this account is trying to get done this year, in their words?'),
+        dict(k='money', n='MONEY', q='Do you know where their money comes from and when it moves, beyond your deal?'),
+        dict(k='power', n='POWER', q='Have you met someone who matters beyond the deal in front of you?'),
+        dict(k='incumbent', n='INCUMBENT', q='Do you know who already owns the relationships, the contracts and the workloads?'),
+        dict(k='path', n='PATH', q='Do you know how this account actually buys, and who runs that process?'),
+    ],
+    bands=[
+        ('how', 'The five questions, and what each one disproves', '''    <p class="lede">Deal Check asks whether one opportunity is real. This asks whether you know the account it lives in.
+      The difference shows up the day your contact leaves, gets reorganized, or stops answering.</p>
+    <p><strong>MISSION: What are they trying to get done?</strong> Not what you sell them. What the agency, the program or the
+      business unit has to accomplish this year, in words they'd recognize. If you can only describe the account in terms
+      of your product, you know the opportunity, not the account.</p>
+    <p><strong>MONEY: Where does it come from, beyond your deal?</strong> Appropriations, program lines, colors of money,
+      fiscal calendars, the budget office. A seller who knows the account's money knows about deals before they exist. A
+      seller who only knows the money for their own deal finds out about the others from the competitor's press release.</p>
+    <p><strong>POWER: Who matters beyond this deal?</strong> Single-threaded is the most common way a good account goes
+      quiet. If every conversation runs through one person, you don't have a relationship with the account; you have a
+      relationship with them, and they have a career.</p>
+    <p><strong>INCUMBENT: Who already owns it?</strong> Relationships, contracts and workloads all have owners, and most of
+      them aren't you. Knowing who they are, and what they'd lose, is the difference between competing and hoping.</p>
+    <p><strong>PATH: How do they actually buy?</strong> The contracting office, the vehicles they use, the approvals, the
+      people who run the process. Every account has a way it buys, and it's the same for your deal as for the next one.
+      Learn it once.</p>'''),
+        ('verdicts', 'Four kinds of coverage', '''    <p><strong>Mapped.</strong> You know the mission, the money, the people and the process. Now find the next deal
+      before anyone else does.</p>
+    <p><strong>Half mapped.</strong> You know the parts your deal touches. Fill in the rest before the deal makes you.</p>
+    <p><strong>One thread.</strong> Everything runs through one person. That's a risk, not a relationship. Get introduced
+      upward and sideways this month.</p>
+    <p><strong>A contact.</strong> You know someone there. That's the beginning of an account, not an account.</p>'''),
+    ],
+    faq=[
+        ('Does anything I enter leave my device?', 'No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.'),
+        ('How is this different from Deal Check?', 'Deal Check is about one opportunity: is it real, will it close. Account Check is about the customer it lives in: do you know enough about them to find the next deal, survive a reorg, or beat the incumbent. A real deal in an unmapped account is how good sellers get surprised.'),
+        ('Is this only for federal?', 'The questions were written with agencies in mind, where mission, colors of money and contract vehicles are everything. But every enterprise account has a mission, a budget process, an incumbent and a way it buys. Read the words that way and it works the same.'),
+    ],
+    config='''CheckTool({
+  slug: 'account', name: 'Account Check', url: 'https://quotabird.com/account/',
+  questions: [
+    { k: 'mission',   n: 'MISSION',   q: 'Can you say what this account is trying to get done this year, in their words?' },
+    { k: 'money',     n: 'MONEY',     q: 'Do you know where their money comes from and when it moves, beyond your deal?' },
+    { k: 'power',     n: 'POWER',     q: 'Have you met someone who matters beyond the deal in front of you?' },
+    { k: 'incumbent', n: 'INCUMBENT', q: 'Do you know who already owns the relationships, the contracts and the workloads?' },
+    { k: 'path',      n: 'PATH',      q: 'Do you know how this account actually buys, and who runs that process?' },
+  ],
+  weights: { power: 24, money: 22, mission: 20, incumbent: 18, path: 16 },
+  verdict(a, total) {
+    if (total >= 75) return { label: 'Mapped', cls: 'ready', attack: 'You know the account, not just the deal.', sub: 'Now find the next one before anyone else does.' };
+    if (total >= 55) return { label: 'Half mapped', cls: 'proof', attack: 'You know the parts your deal touches.', sub: 'Fill in the rest before the deal makes you, or the reorg does.' };
+    if (total >= 35) return { label: 'One thread', cls: 'prove', attack: 'Everything runs through one person.', sub: "That's a risk, not a relationship. Get introduced upward and sideways this month." };
+    return { label: 'A contact', cls: 'dont', attack: 'You know someone there. That is the beginning of an account, not an account.', sub: 'Start with the mission and the money. The people follow from those.' };
+  },
+  askedBy: 'Your boss will ask',
+  grill: {
+    mission: 'What is this account trying to get done this year, in their words?',
+    money: 'Where does their money come from, and when does it move?',
+    power: 'Who have you met who matters beyond this deal?',
+    incumbent: 'Who owns the relationships, the contracts and the workloads today?',
+    path: 'How does this account buy, and who runs it?',
+  },
+  moves: {
+    mission: 'Find the strategic plan, the budget justification or the all-hands deck. Read it. Write one sentence.',
+    money: 'Find the program line and the fiscal calendar. Know when money moves before it does.',
+    power: 'Ask your one contact for one introduction, upward or sideways, this week.',
+    incumbent: 'List who owns the contracts and the workloads, and what each would lose if you won.',
+    path: 'Find the contracting office and the vehicle they used last time. Ask how the last buy actually happened.',
+  },
+  noMove: 'Write the account down on one page while you still know it. Accounts change; the page is what survives the reorg.',
+  handoff: (s) => s.total >= 55
+    ? { overline: 'Now the deal inside it', text: 'You know the account. Is the opportunity in it real? Deal Check asks the five questions your manager will.', href: '/deal/', label: 'Check my deal' }
+    : { overline: 'Before you build the account', text: "Can the patch it sits in make the number at all? Territory Check answers that before you spend a year here.", href: '/territory/', label: 'Check my territory' },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've built accounts from one contact and lost accounts that were mapped to the bone. Send me one line about the account, no name, and I'll tell you where I'd start." },
+  dm: (s) => `Mark, ran an account through Account Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure where to start. Worth 20 minutes?`,
+});''',
+)
+
+# ────────────────────────────── RISK CHECK ──────────────────────────────
+RISK = dict(
+    slug='risk', name='Risk Check',
+    title='Risk Check: How Fragile Is the Pipeline You Have?',
+    desc='Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored.',
+    ogdesc='4X coverage can still be a house of cards. Five questions, one minute, no deal names.',
+    h1='4X coverage can still be a house of cards.',
+    dek='Answer five questions and find out how fragile the pipeline you have really is.',
+    cta='Check my risk',
+    questions=[
+        dict(k='spread', n='SPREAD', q='Would you still make the number if your biggest deal slipped a quarter?'),
+        dict(k='motion', n='MOTION', q='Has every deal in commit moved stage in the last sixty days?'),
+        dict(k='next', n='NEXT', q='Does every commit deal have a customer action on the calendar, not just yours?'),
+        dict(k='timing', n='TIMING', q='Is at least half of it due before the last month of the period?'),
+        dict(k='fresh', n='FRESH', q='Did you create at least a quarter of it this quarter?'),
+    ],
+    bands=[
+        ('how', 'Five ways a covered pipeline falls over', '''    <p class="lede">Pipeline Check asks whether you have enough. This asks whether what you have would survive a bad
+      week. A seller can be at 4X and one slipped deal from missing the year.</p>
+    <p><strong>SPREAD: What if the big one slips?</strong> If a third of the number sits in one or two deals, your
+      forecast is a bet on one customer's procurement calendar. Managers can't see this in the coverage ratio, which is
+      why they ask about it in the review.</p>
+    <p><strong>MOTION: Is it moving?</strong> A deal that hasn't changed stage in sixty days isn't in the stage it's in.
+      It's parked, and parked deals leave the forecast all at once, usually in the last week of the quarter.</p>
+    <p><strong>NEXT: Whose calendar is the next step on?</strong> A next step that only you scheduled is a task. A next
+      step the customer put on their calendar is a commitment. Commit pipeline with no customer action in it is
+      pipeline with no customer in it.</p>
+    <p><strong>TIMING: When is it due?</strong> If most of the number lands in the last month of the period, you've built
+      a year that can only be saved in December. Federal money makes this worse, not better: a September close is a
+      September problem.</p>
+    <p><strong>FRESH: Are you still creating?</strong> Pipeline you inherited or carried over runs out. If a quarter of
+      what you're carrying wasn't created this quarter, next year's crater is already dug.</p>'''),
+        ('verdicts', 'Four states of a pipeline', '''    <p><strong>Sturdy.</strong> Spread out, moving, with customers on the calendar. Go get the coverage number too.</p>
+    <p><strong>Lopsided.</strong> One weakness. Fix it before the review notices.</p>
+    <p><strong>Fragile.</strong> A slip or a quiet customer takes you off the number. Re-underwrite the commit deals now.</p>
+    <p><strong>House of cards.</strong> It looks like coverage. It is a schedule of hopes. Rebuild it from the customers
+      up.</p>'''),
+    ],
+    faq=[
+        ('Does anything I enter leave my device?', 'No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.'),
+        ('I am at 4X coverage. Why does this say fragile?', 'Because coverage measures size, not shape. Four times the number in two deals that have not moved since spring is a smaller pipeline than it looks. Run Pipeline Check for the size and this for the shape; you need both to sleep.'),
+        ('Should a manager run this on the team?', 'Yes, deal by deal is even better. The questions are the ones a good forecast call asks anyway. Running them before the call turns an argument into a plan.'),
+    ],
+    config='''CheckTool({
+  slug: 'risk', name: 'Risk Check', url: 'https://quotabird.com/risk/',
+  questions: [
+    { k: 'spread', n: 'SPREAD', q: 'Would you still make the number if your biggest deal slipped a quarter?' },
+    { k: 'motion', n: 'MOTION', q: 'Has every deal in commit moved stage in the last sixty days?' },
+    { k: 'next',   n: 'NEXT',   q: 'Does every commit deal have a customer action on the calendar, not just yours?' },
+    { k: 'timing', n: 'TIMING', q: 'Is at least half of it due before the last month of the period?' },
+    { k: 'fresh',  n: 'FRESH',  q: 'Did you create at least a quarter of it this quarter?' },
+  ],
+  weights: { spread: 24, next: 22, motion: 20, fresh: 18, timing: 16 },
+  verdict(a, total) {
+    if (total >= 75) return { label: 'Sturdy', cls: 'ready', attack: 'Spread out, moving, customers on the calendar.', sub: 'Now go get the coverage number too. Shape without size is still a miss.' };
+    if (total >= 55) return { label: 'Lopsided', cls: 'proof', attack: 'One weakness, and it is the one the review will find.', sub: 'Fix the weakest answer before someone asks about it.' };
+    if (total >= 35) return { label: 'Fragile', cls: 'prove', attack: 'A slip or a quiet customer takes you off the number.', sub: 'Re-underwrite every commit deal this week. Whose calendar is the next step on?' };
+    return { label: 'House of cards', cls: 'dont', attack: 'It looks like coverage. It is a schedule of hopes.', sub: 'Rebuild it from the customers up, starting with the deals that have not moved.' };
+  },
+  askedBy: 'Your boss will ask',
+  grill: {
+    spread: 'What happens to the number if the big one slips a quarter?',
+    motion: 'Which commit deals have not changed stage since last quarter?',
+    next: "Which commit deals have a customer action on the customer's calendar?",
+    timing: 'How much of the number lands in the last month?',
+    fresh: 'How much of this did you create this quarter?',
+  },
+  moves: {
+    spread: 'Write the number without your biggest deal. That is the plan you are actually running.',
+    motion: 'Move every deal that has not changed stage in sixty days back a stage, today. Then work the ones that argue.',
+    next: 'For each commit deal, get one customer action onto their calendar this week or move it out of commit.',
+    timing: 'Pull one deal into an earlier month, or accept that the year is a December bet and tell your manager so.',
+    fresh: 'Block two mornings this week for creation. Nothing else fixes a crater.',
+  },
+  noMove: 'Keep the shape. Now check the size: run the coverage math with your real win rate.',
+  handoff: (s) => ({ overline: 'Shape checked. Now the size.', text: 'Risk is the shape of the pipeline. Pipeline Check is the size. You need both.', href: '/', label: 'Check my pipeline' }),
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have forecast the year on two deals and watched both slip in the same week. Send me one line about the shape of the pipeline, no customer names, no dollars." },
+  dm: (s) => `Mark, ran my pipeline through Risk Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Coverage looks fine and I don't trust it. Worth 20 minutes?`,
+});''',
+)
+
+# ────────────────────────────── COMPETITION CHECK ──────────────────────────────
+COMPETITION = dict(
+    slug='competition', name='Competition Check',
+    title='Competition Check: Why You, Instead of Nothing?',
+    desc='Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. One minute, nothing stored.',
+    ogdesc='Why you, instead of nothing? Five questions, one minute, no names.',
+    h1='Why you, instead of nothing?',
+    dek='Answer five questions and find out whether the incumbent or doing nothing is beating you.',
+    cta='Check my position',
+    questions=[
+        dict(k='nothing', n='NOTHING', q='Do you know what it costs them to do nothing, in their numbers?'),
+        dict(k='switch', n='SWITCH', q='Do you know what it costs them to leave the incumbent, and who feels it?'),
+        dict(k='preference', n='PREFERENCE', q='Has the customer told you, unprompted, why they would prefer you?'),
+        dict(k='proof', n='PROOF', q='Do you have proof only you can show them: a reference, a pilot, a result?'),
+        dict(k='access', n='ACCESS', q='Do you know who at the customer the competitor already owns?'),
+    ],
+    bands=[
+        ('how', 'The five questions, and what each one disproves', '''    <p class="lede">Most deals aren't lost to a competitor. They're lost to nothing: the customer keeps what they have,
+      the money goes elsewhere, the project waits a year. This checks whether you're beating nothing before it checks
+      whether you're beating anyone.</p>
+    <p><strong>NOTHING: What does inaction cost them?</strong> If you can't put a number, in their terms, on what happens if
+      they don't act, then doing nothing is free, and free wins. This is the question sellers skip because the answer
+      lives in the customer's world, not the product's.</p>
+    <p><strong>SWITCH: What does leaving cost them?</strong> Incumbents don't win on merit. They win on the cost of
+      change: retraining, migration, the person whose job is the current system. Know that cost and who carries it, or
+      you'll lose to someone who never showed up to a meeting.</p>
+    <p><strong>PREFERENCE: Have they said it?</strong> Not "we like your solution." An unprompted reason, in their words,
+      why you instead of the alternative. Until you've heard it, you're a column in their comparison, and columns don't
+      win.</p>
+    <p><strong>PROOF: What can only you show?</strong> A reference they can call, a pilot in their environment, a result
+      at a customer they respect. Claims are free. Proof they can check is the only thing the incumbent can't copy.</p>
+    <p><strong>ACCESS: Who does the competitor own?</strong> Somewhere in the account there's a person the other side has
+      been having lunch with for three years. Knowing who tells you where the fight is; not knowing means you'll find
+      out in the debrief.</p>'''),
+        ('verdicts', 'Four positions', '''    <p><strong>Preferred.</strong> They've told you why, you can prove it, and you know the cost of nothing. Close.</p>
+    <p><strong>In the mix.</strong> You're a real option. So is something else. Find the reason and get it in their
+      words.</p>
+    <p><strong>Behind.</strong> The incumbent or the competitor has something you don't: access, proof, or a friend.
+      Name it before you spend another quarter here.</p>
+    <p><strong>Nothing wins.</strong> Doing nothing is beating you, and it isn't even trying. Until inaction has a cost,
+      you don't have a competitor. You have a hobby.</p>'''),
+    ],
+    faq=[
+        ('Does anything I enter leave my device?', 'No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.'),
+        ('What if there is no competitor?', 'There is always one: doing nothing. Most deals that are "uncontested" are lost to the status quo, which is why the first question is about the cost of inaction rather than a named rival. Answer it honestly and the tool will tell you whether nothing is winning.'),
+        ('Is this a battlecard?', 'No. Battlecards are about them. This is about the customer: what inaction costs, what switching costs, what they have said, what you can prove, and who the other side already has. Win those and the battlecard is optional.'),
+    ],
+    config='''CheckTool({
+  slug: 'competition', name: 'Competition Check', url: 'https://quotabird.com/competition/',
+  questions: [
+    { k: 'nothing',    n: 'NOTHING',    q: 'Do you know what it costs them to do nothing, in their numbers?' },
+    { k: 'switch',     n: 'SWITCH',     q: 'Do you know what it costs them to leave the incumbent, and who feels it?' },
+    { k: 'preference', n: 'PREFERENCE', q: 'Has the customer told you, unprompted, why they would prefer you?' },
+    { k: 'proof',      n: 'PROOF',      q: 'Do you have proof only you can show them: a reference, a pilot, a result?' },
+    { k: 'access',     n: 'ACCESS',     q: 'Do you know who at the customer the competitor already owns?' },
+  ],
+  weights: { nothing: 24, preference: 22, proof: 20, switch: 18, access: 16 },
+  verdict(a, total) {
+    if (total >= 75) return { label: 'Preferred', cls: 'ready', attack: "They've told you why, and you can prove it.", sub: 'Close it before the incumbent finds a friend.' };
+    if (total >= 55) return { label: 'In the mix', cls: 'proof', attack: "You're a real option. So is something else.", sub: 'Find the reason they would pick you and get it in their words.' };
+    if (total >= 35) return { label: 'Behind', cls: 'prove', attack: 'The other side has something you don\\'t.', sub: 'Name it: access, proof, or a friend. Then decide whether to spend another quarter here.' };
+    return { label: 'Nothing wins', cls: 'dont', attack: "Doing nothing is beating you, and it isn't even trying.", sub: "Until inaction has a cost in their numbers, you don't have a competitor. You have a hobby." };
+  },
+  askedBy: 'Your boss will ask',
+  grill: {
+    nothing: 'What does it cost them to do nothing this year?',
+    switch: 'What does it cost them to leave what they have, and who takes the hit?',
+    preference: 'What did they say, in their words, about why they would pick us?',
+    proof: 'What can we show them that the incumbent cannot?',
+    access: 'Who does the other side already have in the account?',
+  },
+  moves: {
+    nothing: "Ask the customer what happens if they do nothing this year. Write the number down in their words.",
+    switch: 'List what leaving the incumbent costs them and who carries each cost. Then address the person, not the cost.',
+    preference: 'Ask one question on the next call: what would make you choose us over the alternative? Then stop talking.',
+    proof: 'Line up one reference they can call this month, or one pilot in their environment. Not a deck.',
+    access: 'Find out who the competitor knows in the account. Ask your champion; they know.',
+  },
+  noMove: 'You are preferred. Write down why, in their words, so the reason survives the next reorg.',
+  handoff: (s) => s.total >= 55
+    ? { overline: 'Now the deal itself', text: 'Position is about them. Deal Check is about the deal: customer, money, power, path, now.', href: '/deal/', label: 'Check my deal' }
+    : { overline: 'Do you know the account?', text: 'Being behind usually means the other side knows the account better. Account Check finds where.', href: '/account/', label: 'Check my account' },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've lost to incumbents I never saw and to nothing more times than I'd like. Send me one line about where you stand, no company names." },
+  dm: (s) => `Mark, ran a deal through Competition Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure I'm actually ahead. Worth 20 minutes?`,
+});''',
+)
+
+for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION):
     os.makedirs(t['slug'], exist_ok=True)
     html = page(t)
     assert '—' not in html and '–' not in html, t['slug']
@@ -780,6 +1040,7 @@ def note_head(title, desc, url):
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
 <link rel="stylesheet" href="/site.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="/analytics.js" defer></script>
 '''
 NOTE_TAIL = '''<footer class="sitefoot">
@@ -864,51 +1125,63 @@ open('index.html', 'w').write(home)
 CALCS = [
  dict(slug='quota', name='Quota Check',
   title='Quota Check: Is My Quota Crazy?',
-  desc='Your quota against your on-target earnings. Multiples under 3 and over 10 both mean something. Free, in your browser, nothing stored.',
-  ogdesc='Is my quota crazy? Base, variable and quota in, a straight answer out.',
+  desc='Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book. Free, in your browser, nothing stored.',
+  ogdesc='Is my quota crazy? Base, variable, quota and what it is measured in. A straight answer out.',
   h1='Is my quota crazy?', dek='Plug in your base, your variable and the number they handed you to find out.',
-  fields=[dict(id='base',kind='money',label='Base salary',example='$90K'),dict(id='variable',kind='money',label='Target variable at 100%',example='$90K'),
-          dict(id='quota',kind='money',label='Your quota for the year',example='$1.2M'),dict(id='closed',kind='money',label='What you closed last year',example='',placeholder='$0 (optional)')],
-  card=dict(headline=['Is my quota crazy?',''],dek='Your number against your on-target earnings, and what it asks of your patch.',pillars=['OTE','MULTIPLE','VARIABLE','GROWTH']),
-  bands=[('how','What the multiple means','''    <p class="lede">Divide your quota by your on-target earnings. That one number tells you more about the plan than the plan will.</p>
-    <p>Somewhere between 4 and 6 is the range I've usually seen for mid-market SaaS and cloud reps: the company expects to pay you roughly a fifth of what you bring in. Below 3 is unusual, and usually means a ramp quota, an overlay role, or a plan with a catch in it. Six to eight is enterprise at a big CSP, and it needs a strong pipeline behind it. Eight to ten is strategic and named-account territory, where you'll need three to four times coverage and a patch that can produce it. Above ten, the plan is asking the territory for something it may not have.</p>
-    <p>The second number that matters is variable as a share of OTE. Under 40% and the quota matters less than it looks; over 60% and it's most of your pay, so treat it like one. And if you closed last year, the growth the new number implies is the honest measure of how much harder this year is.</p>
-    <p>None of this says the number is wrong. It says where it sits. Whether the patch can produce it is <a href="/territory/">Territory Check</a>, and how much pipeline it takes is <a href="/">Pipeline Check</a>.</p>''')],
+  fields=[dict(id='basis',kind='choice',label='What the number is measured in',example='cloud',options=[('saas','New bookings'),('cloud','Cloud consumption growth'),('book','Whole book')]),
+          dict(id='base',kind='money',label='Base salary',example='$150,000'),dict(id='variable',kind='money',label='Target variable at 100%',example='$130,000'),
+          dict(id='quota',kind='money',label='Your quota for the year',example='$6,000,000'),dict(id='closed',kind='money',label='What you closed last year',example='',placeholder='$0 (optional)')],
+  card=dict(headline=['Is my quota crazy?',''],dek='Your number against your on-target earnings, judged by what it is measured in.',pillars=['OTE','MULTIPLE','RATE','GROWTH']),
+  bands=[('how','Why the multiple depends on what you sell','''    <p class="lede">Divide your quota by your on-target earnings. That number tells you more about the plan than the plan will, but only once you know what the quota is measured in.</p>
+    <p>For SaaS reps carrying new bookings, the published benchmarks agree: 4 to 6 times OTE, with 5 as the steady state and enterprise roles a little higher. That range is really a commission rate in disguise. At a 50/50 pay mix and roughly 10% on new ARR, quota works out to about five times OTE. Below 3 is unusual and usually means a ramp, an overlay, or a plan with a condition in it. Above 8 the plan is asking for something the patch may not have.</p>
+    <p>Cloud consumption is a different animal, and it's the one most people on this site carry. The number is incremental revenue growth on a book, paid at a fraction of a percent, so the same arithmetic gives 15 to 30 times OTE at a big cloud provider and higher in strategic accounts. A rep carrying a $6M growth target on a $280K OTE is at 21×, and in my experience that's ordinary, not crazy. Whole-book targets (retention plus growth on the full run rate) run higher still, 40 to 80 times OTE, because most of that revenue would have happened anyway.</p>
+    <p>The number to watch across all three is the implied rate: your variable divided by your quota. If it's well under what your peers are paid on the same kind of number, the plan is heavier than the multiple alone suggests. And if you closed last year, the growth the new number implies is the honest measure of how much harder this year is. Whether the patch can produce it is <a href="/territory/">Territory Check</a>; how much pipeline it takes is <a href="/">Pipeline Check</a>.</p>'''),
+         ('ranges','The ranges I use','''    <p>These are ranges I've seen across cloud providers, SaaS companies and their partners, not rules, and roles differ. Quota ÷ OTE:</p>
+    <p><strong>New bookings.</strong> Under 3: low. 3 to 4: favorable. 4 to 6: standard. 6 to 8: a stretch. 8 to 12: aggressive. Over 12: crazy.</p>
+    <p><strong>Cloud consumption growth.</strong> Under 8: low. 8 to 15: favorable. 15 to 30: standard. 30 to 45: a stretch. 45 to 60: aggressive. Over 60: crazy.</p>
+    <p><strong>Whole book.</strong> Under 20: low. 20 to 40: favorable. 40 to 80: standard. 80 to 120: a stretch. 120 to 160: aggressive. Over 160: crazy.</p>
+    <p>If your plan sits in a different place and you think the range is wrong, tell me. I'd rather fix the range than argue with your paycheck.</p>''')],
   faq=[('Does anything I enter leave my device?','No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.'),
-       ('Where do the ranges come from?','Years of looking at comp plans at cloud providers, SaaS companies and their partners. They are typical ranges, not rules, and roles differ: an overlay or a ramp quota can be low and correct, and a strategic account role can be high and still fair.'),
+       ('Why does it ask what the number is measured in?','Because the same multiple means different things. A $1.4M new-bookings quota on a $280K OTE is 5× and normal. A $1.4M cloud consumption growth target on the same OTE is 5× and unusually light, because consumption is paid at a fraction of the rate bookings are. Pick the basis your plan actually uses.'),
+       ('Where do the ranges come from?','The SaaS range is the published consensus (Bridge Group, RepVue, Pavilion and others put it at 4 to 6× OTE). The cloud and whole-book ranges are what I have seen at cloud providers and their partners, derived from the commission rates those plans pay. They are ranges, not rules, and I will change them if enough people tell me their plan sits somewhere else.'),
        ('What if my variable is a bonus, not commission?','Use the target amount at 100% attainment either way. The tool cares about how much of your pay depends on the number, not what the plan calls it.')],
-  config='''CalcTool({
+  config="""CalcTool({
   slug: 'quota', name: 'Quota Check', url: 'https://quotabird.com/quota/',
-  fields: [{ id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],
+  fields: [{ id: 'basis', kind: 'choice', example: 'cloud' }, { id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],
   compute(v) {
     if (!(v.base > 0 && v.variable > 0 && v.quota > 0)) return null;
-    const ote = v.base + v.variable, mult = v.quota / ote, share = v.variable / ote, X = mult.toFixed(1) + '×';
+    const ote = v.base + v.variable, mult = v.quota / ote, share = v.variable / ote, rate = v.variable / v.quota;
+    const X = (mult >= 10 ? Math.round(mult) : mult.toFixed(1)) + '×';
     const pct = (r) => Math.round(r * 100) + '%';
+    const ratePct = rate >= .1 ? Math.round(rate * 100) + '%' : (rate * 100).toFixed(rate >= .01 ? 1 : 2) + '%';
     const money = (n) => n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n);
+    // ranges I've seen, by what the quota is measured in (see the page copy)
+    const B = { saas: { name: 'new bookings', cuts: [3, 4, 6, 8, 12] }, cloud: { name: 'cloud consumption growth', cuts: [8, 15, 30, 45, 60] }, book: { name: 'a whole book', cuts: [20, 40, 80, 120, 160] } }[v.basis] || { name: 'cloud consumption growth', cuts: [8, 15, 30, 45, 60] };
+    const c = B.cuts, std = c[1] + ' to ' + c[2];
     let t;
-    if (mult < 3) t = ['Low', 'proof', `Quota is ${X} OTE. That's unusually low: a ramp, an overlay, or a plan with a catch in it.`, 'Read the plan twice. Low multiples usually come with a condition.'];
-    else if (mult <= 4) t = ['Favorable', 'ready', `Quota is ${X} OTE, below the 4 to 6 I usually see.`, 'Common in SMB, commercial and brand-new patches. Enjoy it while it lasts.'];
-    else if (mult <= 6) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the 4 to 6 I usually see.`, "The number is fair. Whether the patch can produce it is a different question."];
-    else if (mult <= 8) t = ['A stretch', 'proof', `Quota is ${X} OTE, above the range I usually see.`, 'Normal for enterprise at a big CSP, and it needs a strong pipeline behind it.'];
-    else if (mult <= 10) t = ['Aggressive', 'prove', `Quota is ${X} OTE. Strategic and named-account territory.`, "You'll need 3 to 4X coverage and a patch that can produce it."];
-    else t = ['Crazy', 'dont', `Quota is ${X} OTE. The plan is asking the patch for something it may not have.`, 'Check the territory before you sign, and get the sizing in writing.'];
+    if (mult < c[0]) t = ['Low', 'proof', `Quota is ${X} OTE. For ${B.name} that's unusually low: a ramp, an overlay, or a plan with a condition in it.`, 'Read the plan twice. Low multiples usually come with a catch.'];
+    else if (mult < c[1]) t = ['Favorable', 'ready', `Quota is ${X} OTE, below the ${std} I usually see for ${B.name}.`, 'Common in new patches, SMB and commercial. Enjoy it while it lasts.'];
+    else if (mult <= c[2]) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the ${std} I usually see for ${B.name}.`, "The number is ordinary. Whether the patch can produce it is a different question."];
+    else if (mult <= c[3]) t = ['A stretch', 'proof', `Quota is ${X} OTE, above the ${std} I usually see for ${B.name}.`, 'Normal for enterprise and strategic roles, and it needs a strong pipeline behind it.'];
+    else if (mult <= c[4]) t = ['Aggressive', 'prove', `Quota is ${X} OTE, well above the ${std} I usually see for ${B.name}.`, 'Strategic-account territory. You need coverage and a patch that can produce it.'];
+    else t = ['Crazy', 'dont', `Quota is ${X} OTE. For ${B.name}, the plan is asking the patch for something it may not have.`, 'Check the territory before you sign, and get the sizing in writing.'];
     const growth = v.closed > 0 ? (v.quota - v.closed) / v.closed : null;
-    const rows = [['On-target earnings', money(ote)], ['Quota ÷ OTE', X], ['Variable share of OTE', pct(share)]];
+    const rows = [['On-target earnings', money(ote)], ['Quota ÷ OTE', X], ['Implied rate on quota', ratePct], ['Variable share of OTE', pct(share)]];
     if (growth != null) rows.push(['Growth over what you closed', (growth >= 0 ? '+' : '') + pct(growth), growth > .3 ? 'v-no' : '']);
     const note = share < .4 ? 'Variable is under 40% of OTE. You are paid mostly to show up, and the quota matters less than it looks.' : share > .6 ? 'Variable is over 60% of OTE. The quota is most of your pay. Treat it like one.' : '';
-    return { label: t[0], cls: t[1], attack: t[2], sub: t[3], big: X, rows, note, mult, share, growth, ote, quota: v.quota };
+    return { label: t[0], cls: t[1], attack: t[2], sub: t[3], big: X, rows, note, mult, share, growth, ote, quota: v.quota, basis: B.name, ratePct };
   },
-  handoff: (s) => ({ overline: 'Now the coverage math', text: `At 3X you'd need about ${(s.quota * 3 / 1e6).toFixed(1)}M of qualified pipeline to cover it. Your win rate will say more.`.replace('about ', 'about $'), href: `/#t=${Math.round(s.quota)}&y=cy`, label: 'Check my pipeline' }),
+  handoff: (s) => ({ overline: 'Now the coverage math', text: `At 3X you'd need about $${(s.quota * 3 / 1e6).toFixed(1)}M of qualified pipeline to cover it. Your win rate will say more.`, href: `/#t=${Math.round(s.quota)}&y=cy`, label: 'Check my pipeline' }),
   mark: { title: () => 'Is the plan sane?', body: "I'm Mark. I've been handed the crazy number and handed one out by mistake. If the multiple is off, I can help you make the case. If it's fair, I can help you make the plan. One line, no company name, no dollar figures." },
-  dm: (s) => `Mark, ran my comp plan through Quota Check. Quota is ${s.big} OTE and variable is ${Math.round(s.share * 100)}% of OTE${s.growth != null ? ', ' + Math.round(s.growth * 100) + '% over what I closed last year' : ''}. Not sure it's sane. Worth 20 minutes?`,
-  bookNote: (s) => `Quota Check: ${s.big} OTE, variable ${Math.round(s.share * 100)}% of OTE, ${s.label.toLowerCase()}.`,
-});'''),
+  dm: (s) => `Mark, ran my comp plan through Quota Check. Quota is ${s.big} OTE on ${s.basis}, implied rate ${s.ratePct}, variable ${Math.round(s.share * 100)}% of OTE${s.growth != null ? ', ' + Math.round(s.growth * 100) + '% over what I closed last year' : ''}. Not sure it's sane. Worth 20 minutes?`,
+  bookNote: (s) => `Quota Check: ${s.big} OTE on ${s.basis}, implied rate ${s.ratePct}, ${s.label.toLowerCase()}.`,
+});"""),
  dict(slug='discount', name='Discount Check',
   title='Discount Check: What a Discount Costs You',
   desc='They want a discount. See what it costs in your commission and the company\'s margin before you say yes. Free, in your browser, nothing stored.',
   ogdesc='They want a discount. Here is exactly what it costs you before you sharpen the pencil.',
   h1='They want a discount.', dek='Plug in the price and the discount to see what it costs you before you say yes.',
-  fields=[dict(id='list',kind='money',label='Full list price',example='$500K'),dict(id='disc',kind='pct',label='Discount they want',example='15%'),
+  fields=[dict(id='list',kind='money',label='Full list price',example='$500,000'),dict(id='disc',kind='pct',label='Discount they want',example='15%'),
           dict(id='margin',kind='pct',label="Company gross margin",example='40%'),dict(id='rate',kind='pct',label='Your commission rate',example='8%')],
   card=dict(headline=['They want a discount.',''],dek='What it costs you in commission, and the company in margin, before you say yes.',pillars=['PRICE','DISCOUNT','MARGIN','YOUR CUT']),
   bands=[('how','A discount is a purchase','''    <p class="lede">Every point off the price buys something. The question is whether you got it.</p>
@@ -951,7 +1224,7 @@ CALCS = [
   desc='Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes. Free, in your browser, nothing stored.',
   ogdesc='It closed. Here is roughly what you actually take home.',
   h1='It closed. What do I actually take home?', dek='Plug in the deal and your rate to find out, roughly, before the check lands.',
-  fields=[dict(id='deal',kind='money',label='Deal size',example='$500K'),dict(id='rate',kind='pct',label='Your commission rate',example='8%'),
+  fields=[dict(id='deal',kind='money',label='Deal size',example='$500,000'),dict(id='rate',kind='pct',label='Your commission rate',example='8%'),
           dict(id='buffer',kind='pct',label='Set aside for taxes',example='30%',presets=[('W-2 ~30%','30%'),('High bracket ~40%','40%'),('1099 ~20%','20%')])],
   card=dict(headline=['It closed.','What do I take home?'],dek='A planning estimate of the check after withholding, in about ten seconds.',pillars=['DEAL','RATE','WITHHELD','TAKE-HOME']),
   bands=[('how','Why the check is smaller than the math','''    <p class="lede">Gross commission is the number in the plan. Take-home is the number in your account. They are further apart than most sellers expect the first time.</p>
@@ -1047,6 +1320,7 @@ def calc_page(t):
 }}
 </script>
 <link rel="stylesheet" href="../site.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.js" defer></script>
 </head>
 <body class="wide-page">
@@ -1157,7 +1431,7 @@ def chrome(path):
         mark = src.replace('{ROOT}', root_of(path)).replace('{UTM}', utm_of(path))
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
-PAGES = ['index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF)] \
+PAGES = ['index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION)] \
         + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['404.html']
 for _p in PAGES:
     chrome(_p)

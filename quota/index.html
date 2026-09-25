@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Quota Check: Is My Quota Crazy?</title>
-<meta name="description" content="Your quota against your on-target earnings. Multiples under 3 and over 10 both mean something. Free, in your browser, nothing stored.">
+<meta name="description" content="Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book. Free, in your browser, nothing stored.">
 <link rel="canonical" href="https://quotabird.com/quota/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
@@ -14,7 +14,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://quotabird.com/quota/">
 <meta property="og:title" content="Quota Check: Is my quota crazy?">
-<meta property="og:description" content="Is my quota crazy? Base, variable and quota in, a straight answer out.">
+<meta property="og:description" content="Is my quota crazy? Base, variable, quota and what it is measured in. A straight answer out.">
 <meta property="og:site_name" content="QuotaBird">
 <meta property="og:image" content="https://quotabird.com/card-quota.jpg">
 <meta property="og:image:width" content="1200">
@@ -22,7 +22,7 @@
 <meta property="og:image:alt" content="Quota Check: Is my quota crazy?">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Quota Check: Is my quota crazy?">
-<meta name="twitter:description" content="Is my quota crazy? Base, variable and quota in, a straight answer out.">
+<meta name="twitter:description" content="Is my quota crazy? Base, variable, quota and what it is measured in. A straight answer out.">
 <meta name="twitter:image" content="https://quotabird.com/card-quota.jpg">
 <meta name="twitter:image:alt" content="Quota Check: Is my quota crazy?">
 <meta name="color-scheme" content="light dark">
@@ -38,7 +38,7 @@
       "url": "https://quotabird.com/quota/",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Any",
-      "description": "Your quota against your on-target earnings. Multiples under 3 and over 10 both mean something. Free, in your browser, nothing stored.",
+      "description": "Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book. Free, in your browser, nothing stored.",
       "image": "https://quotabird.com/card-quota.jpg",
       "offers": {
         "@type": "Offer",
@@ -67,10 +67,18 @@
         },
         {
           "@type": "Question",
+          "name": "Why does it ask what the number is measured in?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because the same multiple means different things. A $1.4M new-bookings quota on a $280K OTE is 5× and normal. A $1.4M cloud consumption growth target on the same OTE is 5× and unusually light, because consumption is paid at a fraction of the rate bookings are. Pick the basis your plan actually uses."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Where do the ranges come from?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Years of looking at comp plans at cloud providers, SaaS companies and their partners. They are typical ranges, not rules, and roles differ: an overlay or a ramp quota can be low and correct, and a strategic account role can be high and still fair."
+            "text": "The SaaS range is the published consensus (Bridge Group, RepVue, Pavilion and others put it at 4 to 6× OTE). The cloud and whole-book ranges are what I have seen at cloud providers and their partners, derived from the commission rates those plans pay. They are ranges, not rules, and I will change them if enough people tell me their plan sits somewhere else."
           }
         },
         {
@@ -87,6 +95,7 @@
 }
 </script>
 <link rel="stylesheet" href="../site.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.js" defer></script>
 </head>
 <body class="wide-page">
@@ -95,7 +104,7 @@
   <header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check</a><a href="/quota/" class="current">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div></div></details>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/" class="current">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your team</div><a href="/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div></div></details>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
       <a class="chip chip-ask" href="/about/#ask">Ask Mark</a>
@@ -109,9 +118,10 @@
       <div class="calc-out" id="out" aria-live="polite"></div>
       <form class="calc-in" id="f" autocomplete="off" novalidate>
         <p class="startnote fields-note"><span id="exnote">Example numbers. Type yours over them.</span></p>
-        <label class="tf"><span class="tf-label">Base salary</span><input id="base" type="text" inputmode="decimal" autocomplete="off" value="$90K"></label>
-        <label class="tf"><span class="tf-label">Target variable at 100%</span><input id="variable" type="text" inputmode="decimal" autocomplete="off" value="$90K"></label>
-        <label class="tf"><span class="tf-label">Your quota for the year</span><input id="quota" type="text" inputmode="decimal" autocomplete="off" value="$1.2M"></label>
+        <div class="tf"><span class="tf-label">What the number is measured in</span><div class="chips" style="margin-top:6px;"><button class="chip" data-choice="basis" data-v="saas" type="button">New bookings</button><button class="chip on" data-choice="basis" data-v="cloud" type="button">Cloud consumption growth</button><button class="chip" data-choice="basis" data-v="book" type="button">Whole book</button></div></div>
+        <label class="tf"><span class="tf-label">Base salary</span><input id="base" type="text" inputmode="decimal" autocomplete="off" value="$150,000"></label>
+        <label class="tf"><span class="tf-label">Target variable at 100%</span><input id="variable" type="text" inputmode="decimal" autocomplete="off" value="$130,000"></label>
+        <label class="tf"><span class="tf-label">Your quota for the year</span><input id="quota" type="text" inputmode="decimal" autocomplete="off" value="$6,000,000"></label>
         <label class="tf"><span class="tf-label">What you closed last year</span><input id="closed" type="text" inputmode="decimal" autocomplete="off" placeholder="$0 (optional)"></label>
       </form>
       <div class="calc-out2" id="out2"></div>
@@ -124,17 +134,28 @@
 
 <section class="band" id="how">
   <div class="band-inner">
-    <h2>What the multiple means</h2>
-    <p class="lede">Divide your quota by your on-target earnings. That one number tells you more about the plan than the plan will.</p>
-    <p>Somewhere between 4 and 6 is the range I've usually seen for mid-market SaaS and cloud reps: the company expects to pay you roughly a fifth of what you bring in. Below 3 is unusual, and usually means a ramp quota, an overlay role, or a plan with a catch in it. Six to eight is enterprise at a big CSP, and it needs a strong pipeline behind it. Eight to ten is strategic and named-account territory, where you'll need three to four times coverage and a patch that can produce it. Above ten, the plan is asking the territory for something it may not have.</p>
-    <p>The second number that matters is variable as a share of OTE. Under 40% and the quota matters less than it looks; over 60% and it's most of your pay, so treat it like one. And if you closed last year, the growth the new number implies is the honest measure of how much harder this year is.</p>
-    <p>None of this says the number is wrong. It says where it sits. Whether the patch can produce it is <a href="/territory/">Territory Check</a>, and how much pipeline it takes is <a href="/">Pipeline Check</a>.</p>
+    <h2>Why the multiple depends on what you sell</h2>
+    <p class="lede">Divide your quota by your on-target earnings. That number tells you more about the plan than the plan will, but only once you know what the quota is measured in.</p>
+    <p>For SaaS reps carrying new bookings, the published benchmarks agree: 4 to 6 times OTE, with 5 as the steady state and enterprise roles a little higher. That range is really a commission rate in disguise. At a 50/50 pay mix and roughly 10% on new ARR, quota works out to about five times OTE. Below 3 is unusual and usually means a ramp, an overlay, or a plan with a condition in it. Above 8 the plan is asking for something the patch may not have.</p>
+    <p>Cloud consumption is a different animal, and it's the one most people on this site carry. The number is incremental revenue growth on a book, paid at a fraction of a percent, so the same arithmetic gives 15 to 30 times OTE at a big cloud provider and higher in strategic accounts. A rep carrying a $6M growth target on a $280K OTE is at 21×, and in my experience that's ordinary, not crazy. Whole-book targets (retention plus growth on the full run rate) run higher still, 40 to 80 times OTE, because most of that revenue would have happened anyway.</p>
+    <p>The number to watch across all three is the implied rate: your variable divided by your quota. If it's well under what your peers are paid on the same kind of number, the plan is heavier than the multiple alone suggests. And if you closed last year, the growth the new number implies is the honest measure of how much harder this year is. Whether the patch can produce it is <a href="/territory/">Territory Check</a>; how much pipeline it takes is <a href="/">Pipeline Check</a>.</p>
+  </div>
+</section>
+
+<section class="band" id="ranges">
+  <div class="band-inner">
+    <h2>The ranges I use</h2>
+    <p>These are ranges I've seen across cloud providers, SaaS companies and their partners, not rules, and roles differ. Quota ÷ OTE:</p>
+    <p><strong>New bookings.</strong> Under 3: low. 3 to 4: favorable. 4 to 6: standard. 6 to 8: a stretch. 8 to 12: aggressive. Over 12: crazy.</p>
+    <p><strong>Cloud consumption growth.</strong> Under 8: low. 8 to 15: favorable. 15 to 30: standard. 30 to 45: a stretch. 45 to 60: aggressive. Over 60: crazy.</p>
+    <p><strong>Whole book.</strong> Under 20: low. 20 to 40: favorable. 40 to 80: standard. 80 to 120: a stretch. 120 to 160: aggressive. Over 160: crazy.</p>
+    <p>If your plan sits in a different place and you think the range is wrong, tell me. I'd rather fix the range than argue with your paycheck.</p>
   </div>
 </section>
 
 <section class="band" id="about" aria-labelledby="madeby-h">
   <div class="band-inner madeby">
-    <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async" onerror="this.remove();">
+    <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
       <p>I carried a number, managed the people who did, and led partner sales teams at AWS. I make these because
@@ -149,8 +170,10 @@
     <h2 id="faq-h">Questions</h2>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
       <div class="body">No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.</div></details>
+    <details class="exp"><summary>Why does it ask what the number is measured in?</summary>
+      <div class="body">Because the same multiple means different things. A $1.4M new-bookings quota on a $280K OTE is 5× and normal. A $1.4M cloud consumption growth target on the same OTE is 5× and unusually light, because consumption is paid at a fraction of the rate bookings are. Pick the basis your plan actually uses.</div></details>
     <details class="exp"><summary>Where do the ranges come from?</summary>
-      <div class="body">Years of looking at comp plans at cloud providers, SaaS companies and their partners. They are typical ranges, not rules, and roles differ: an overlay or a ramp quota can be low and correct, and a strategic account role can be high and still fair.</div></details>
+      <div class="body">The SaaS range is the published consensus (Bridge Group, RepVue, Pavilion and others put it at 4 to 6× OTE). The cloud and whole-book ranges are what I have seen at cloud providers and their partners, derived from the commission rates those plans pay. They are ranges, not rules, and I will change them if enough people tell me their plan sits somewhere else.</div></details>
     <details class="exp"><summary>What if my variable is a bonus, not commission?</summary>
       <div class="body">Use the target amount at 100% attainment either way. The tool cares about how much of your pay depends on the number, not what the plan calls it.</div></details>
   </div>
@@ -165,32 +188,37 @@
 <script src="../calc.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-09.1100';
+window.QB_BUILD = '2026-10-11.1100';
 CalcTool({
   slug: 'quota', name: 'Quota Check', url: 'https://quotabird.com/quota/',
-  fields: [{ id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],
+  fields: [{ id: 'basis', kind: 'choice', example: 'cloud' }, { id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],
   compute(v) {
     if (!(v.base > 0 && v.variable > 0 && v.quota > 0)) return null;
-    const ote = v.base + v.variable, mult = v.quota / ote, share = v.variable / ote, X = mult.toFixed(1) + '×';
+    const ote = v.base + v.variable, mult = v.quota / ote, share = v.variable / ote, rate = v.variable / v.quota;
+    const X = (mult >= 10 ? Math.round(mult) : mult.toFixed(1)) + '×';
     const pct = (r) => Math.round(r * 100) + '%';
+    const ratePct = rate >= .1 ? Math.round(rate * 100) + '%' : (rate * 100).toFixed(rate >= .01 ? 1 : 2) + '%';
     const money = (n) => n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n);
+    // ranges I've seen, by what the quota is measured in (see the page copy)
+    const B = { saas: { name: 'new bookings', cuts: [3, 4, 6, 8, 12] }, cloud: { name: 'cloud consumption growth', cuts: [8, 15, 30, 45, 60] }, book: { name: 'a whole book', cuts: [20, 40, 80, 120, 160] } }[v.basis] || { name: 'cloud consumption growth', cuts: [8, 15, 30, 45, 60] };
+    const c = B.cuts, std = c[1] + ' to ' + c[2];
     let t;
-    if (mult < 3) t = ['Low', 'proof', `Quota is ${X} OTE. That's unusually low: a ramp, an overlay, or a plan with a catch in it.`, 'Read the plan twice. Low multiples usually come with a condition.'];
-    else if (mult <= 4) t = ['Favorable', 'ready', `Quota is ${X} OTE, below the 4 to 6 I usually see.`, 'Common in SMB, commercial and brand-new patches. Enjoy it while it lasts.'];
-    else if (mult <= 6) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the 4 to 6 I usually see.`, "The number is fair. Whether the patch can produce it is a different question."];
-    else if (mult <= 8) t = ['A stretch', 'proof', `Quota is ${X} OTE, above the range I usually see.`, 'Normal for enterprise at a big CSP, and it needs a strong pipeline behind it.'];
-    else if (mult <= 10) t = ['Aggressive', 'prove', `Quota is ${X} OTE. Strategic and named-account territory.`, "You'll need 3 to 4X coverage and a patch that can produce it."];
-    else t = ['Crazy', 'dont', `Quota is ${X} OTE. The plan is asking the patch for something it may not have.`, 'Check the territory before you sign, and get the sizing in writing.'];
+    if (mult < c[0]) t = ['Low', 'proof', `Quota is ${X} OTE. For ${B.name} that's unusually low: a ramp, an overlay, or a plan with a condition in it.`, 'Read the plan twice. Low multiples usually come with a catch.'];
+    else if (mult < c[1]) t = ['Favorable', 'ready', `Quota is ${X} OTE, below the ${std} I usually see for ${B.name}.`, 'Common in new patches, SMB and commercial. Enjoy it while it lasts.'];
+    else if (mult <= c[2]) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the ${std} I usually see for ${B.name}.`, "The number is ordinary. Whether the patch can produce it is a different question."];
+    else if (mult <= c[3]) t = ['A stretch', 'proof', `Quota is ${X} OTE, above the ${std} I usually see for ${B.name}.`, 'Normal for enterprise and strategic roles, and it needs a strong pipeline behind it.'];
+    else if (mult <= c[4]) t = ['Aggressive', 'prove', `Quota is ${X} OTE, well above the ${std} I usually see for ${B.name}.`, 'Strategic-account territory. You need coverage and a patch that can produce it.'];
+    else t = ['Crazy', 'dont', `Quota is ${X} OTE. For ${B.name}, the plan is asking the patch for something it may not have.`, 'Check the territory before you sign, and get the sizing in writing.'];
     const growth = v.closed > 0 ? (v.quota - v.closed) / v.closed : null;
-    const rows = [['On-target earnings', money(ote)], ['Quota ÷ OTE', X], ['Variable share of OTE', pct(share)]];
+    const rows = [['On-target earnings', money(ote)], ['Quota ÷ OTE', X], ['Implied rate on quota', ratePct], ['Variable share of OTE', pct(share)]];
     if (growth != null) rows.push(['Growth over what you closed', (growth >= 0 ? '+' : '') + pct(growth), growth > .3 ? 'v-no' : '']);
     const note = share < .4 ? 'Variable is under 40% of OTE. You are paid mostly to show up, and the quota matters less than it looks.' : share > .6 ? 'Variable is over 60% of OTE. The quota is most of your pay. Treat it like one.' : '';
-    return { label: t[0], cls: t[1], attack: t[2], sub: t[3], big: X, rows, note, mult, share, growth, ote, quota: v.quota };
+    return { label: t[0], cls: t[1], attack: t[2], sub: t[3], big: X, rows, note, mult, share, growth, ote, quota: v.quota, basis: B.name, ratePct };
   },
-  handoff: (s) => ({ overline: 'Now the coverage math', text: `At 3X you'd need about ${(s.quota * 3 / 1e6).toFixed(1)}M of qualified pipeline to cover it. Your win rate will say more.`.replace('about ', 'about $'), href: `/#t=${Math.round(s.quota)}&y=cy`, label: 'Check my pipeline' }),
+  handoff: (s) => ({ overline: 'Now the coverage math', text: `At 3X you'd need about $${(s.quota * 3 / 1e6).toFixed(1)}M of qualified pipeline to cover it. Your win rate will say more.`, href: `/#t=${Math.round(s.quota)}&y=cy`, label: 'Check my pipeline' }),
   mark: { title: () => 'Is the plan sane?', body: "I'm Mark. I've been handed the crazy number and handed one out by mistake. If the multiple is off, I can help you make the case. If it's fair, I can help you make the plan. One line, no company name, no dollar figures." },
-  dm: (s) => `Mark, ran my comp plan through Quota Check. Quota is ${s.big} OTE and variable is ${Math.round(s.share * 100)}% of OTE${s.growth != null ? ', ' + Math.round(s.growth * 100) + '% over what I closed last year' : ''}. Not sure it's sane. Worth 20 minutes?`,
-  bookNote: (s) => `Quota Check: ${s.big} OTE, variable ${Math.round(s.share * 100)}% of OTE, ${s.label.toLowerCase()}.`,
+  dm: (s) => `Mark, ran my comp plan through Quota Check. Quota is ${s.big} OTE on ${s.basis}, implied rate ${s.ratePct}, variable ${Math.round(s.share * 100)}% of OTE${s.growth != null ? ', ' + Math.round(s.growth * 100) + '% over what I closed last year' : ''}. Not sure it's sane. Worth 20 minutes?`,
+  bookNote: (s) => `Quota Check: ${s.big} OTE on ${s.basis}, implied rate ${s.ratePct}, ${s.label.toLowerCase()}.`,
 });
 </script>
 </body>

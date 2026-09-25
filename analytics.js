@@ -1,34 +1,19 @@
-/* QuotaBird analytics.
-   Paste your Google Analytics 4 measurement ID below (it looks like G-XXXXXXXXXX).
-   Leave it empty and nothing loads. Both pages include this file. */
+/* QuotaBird analytics. Google Analytics 4, loaded by the plain <script> tag in each page's head
+   (Google's standard install). This file only configures it and counts named events.
+   The URL fragment carries a shared verdict (#ysnys) or pipeline numbers; Google never receives it. */
 var GA_ID = 'G-BG9NR9GXQZ';
+window.dataLayer = window.dataLayer || [];
+function gtag() { dataLayer.push(arguments); }
+gtag('js', new Date());
+gtag('config', GA_ID, { page_location: location.origin + location.pathname, page_title: document.title });
 
-(function () {
-  if (!GA_ID) { window.qbTrack = function () {}; window.qbTrackQ = []; return; }
+/* Named events with no parameters. Usage, never content. */
+window.qbTrack = function (name) { try { gtag('event', name); } catch (e) {} };
+(window.qbTrackQ || []).forEach(window.qbTrack); window.qbTrackQ = [];
 
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  window.gtag = gtag;
-
-  var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
-  document.head.appendChild(s);
-
-  gtag('js', new Date());
-  /* The URL fragment carries a shared verdict (#ysnys) or pipeline numbers.
-     Google never receives it: page_location is set without the hash. */
-  gtag('config', GA_ID, { page_location: location.origin + location.pathname, page_title: document.title });
-
-  /* Named events with no parameters. Usage, never content. Events fired
-     before this file loaded are queued by the page and flushed here. */
-  window.qbTrack = function (name) { try { gtag('event', name); } catch (e) {} };
-  (window.qbTrackQ || []).forEach(window.qbTrack); window.qbTrackQ = [];
-})();
-
-/* Tool behaviour, no inputs: a hand-off card tapped, or Ask Mark. Event names only. */
-document.addEventListener('click', function (e) {
-  var t = e.target.closest ? e.target.closest('a') : null; if (!t) return;
-  if (t.closest('.card-accent')) window.qbTrack('related_tool_click');
-  else if (t.classList.contains('chip-ask') || (t.getAttribute('href') || '').indexOf('#ask') >= 0) window.qbTrack('ask_mark_click');
+/* Two more counts, attached to the specific elements: the Ask Mark chip and hand-off cards. */
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('a.chip-ask, .madeby-links a[href*="#ask"]').forEach(function (a) { a.addEventListener('click', function () { window.qbTrack('ask_mark_click'); }); });
+  var out = document.getElementById('out2') || document.getElementById('out') || document.getElementById('screen');
+  if (out) out.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('.card-accent a')) window.qbTrack('related_tool_click'); });
 });

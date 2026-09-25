@@ -98,7 +98,8 @@ h3 { font-size:19px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
    spans the screen under the header; on wider screens it centres under the chip. */
 @media (max-width:699px) { .menu { position:static; } .menu-list { left:16px; right:16px; width:auto; top:64px; } }
 @media (min-width:700px) { .menu-list { left:50%; right:auto; transform:translateX(-50%); } }
-.menu-g:nth-child(1) { grid-row:span 2; }
+.menu-col { display:flex; flex-direction:column; }
+.menu-g + .menu-g { margin-top:6px; }
 .menu-foot { grid-column:1 / -1; }
 .menu-list a { padding:7px 10px; font-size:14px; white-space:nowrap; }
 .menu-foot { display:flex; gap:4px; border-top:1px solid var(--line); margin-top:6px; padding-top:6px; }

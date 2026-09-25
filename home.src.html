@@ -60,6 +60,7 @@
 }
 </script>
 <link rel="stylesheet" href="site.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="analytics.js" defer></script>
 </head>
 <body class="wide-page">
@@ -70,7 +71,7 @@
     <span class="overline tool-name">Pipeline Check</span>
     <h1>You sure that's enough pipeline?</h1>
     <p class="dek">Plug in your own numbers to find out.
-      <a class="shelf" href="#working">One of ten quick checks ↓</a></p>
+      <a class="shelf" href="#working">One of thirteen quick checks ↓</a></p>
     <div class="calc">
       <div class="calc-out" id="out" aria-live="polite"></div>
       <form class="calc-in" id="f" autocomplete="off" novalidate>
@@ -110,16 +111,20 @@
 
 <section class="band" id="working" aria-labelledby="working-h">
   <div class="band-inner">
-    <h2 id="working-h">Nine more checks</h2>
+    <h2 id="working-h">Twelve more checks</h2>
     <p class="lede">Pick the day you're having.</p>
     <div class="doors">
-      <span class="overline">For sellers</span>
+      <span class="overline">Your deal</span>
       <a class="door" href="/deal/"><span><b>I have a deal.</b><span class="q">Is it real, or are we filling in the blanks ourselves?</span></span><span class="to">Deal Check</span></a>
+      <a class="door" href="/account/"><span><b>I only know one person there.</b><span class="q">Do I know the account, or just my contact?</span></span><span class="to">Account Check</span></a>
+      <a class="door" href="/competition/"><span><b>I'm not sure I'm ahead.</b><span class="q">Why me, instead of the incumbent or nothing?</span></span><span class="to">Competition Check</span></a>
+      <span class="overline">Your number</span>
       <a class="door" href="/quota/"><span><b>I just got my quota.</b><span class="q">Is it crazy, or just a stretch?</span></span><span class="to">Quota Check</span></a>
       <a class="door" href="/territory/"><span><b>I have a territory.</b><span class="q">Can it make the number, or is nobody going to grow here?</span></span><span class="to">Territory Check</span></a>
       <a class="door" href="/discount/"><span><b>They want a discount.</b><span class="q">What does it actually cost me?</span></span><span class="to">Discount Check</span></a>
       <a class="door" href="/commission/"><span><b>It closed.</b><span class="q">What do I actually take home?</span></span><span class="to">Commission Check</span></a>
-      <span class="overline">For managers</span>
+      <span class="overline">Your team</span>
+      <a class="door" href="/risk/"><span><b>Coverage looks fine and I don't trust it.</b><span class="q">How fragile is the pipeline I have?</span></span><span class="to">Risk Check</span></a>
       <a class="door" href="/rep/"><span><b>I have a rep who's worrying me.</b><span class="q">Is it the rep, or what they inherited?</span></span><span class="to">Rep Check</span></a>
       <a class="door" href="/partner/"><span><b>I have a partner.</b><span class="q">Are they selling with me, or sitting on my slide?</span></span><span class="to">Partner Check</span></a>
       <a class="door" href="/olr/"><span><b>It's review season.</b><span class="q">Will my case for them survive the room?</span></span><span class="to">OLR Check</span></a>
@@ -244,6 +249,22 @@ function money(n) {
   if (n >= 1e3) return '$' + Math.round(n / 1e3) + 'K';
   return '$' + Math.round(n);
 }
+
+/* Money fields format as you type ($10,000,000), keep the caret where it was, and still accept
+   shorthand like 10m or 500k (left alone until you leave the field). */
+const fullMoney = (n) => '$' + Math.round(n).toLocaleString('en-US');
+function liveMoney(el) {
+  const raw = el.value;
+  if (/[a-zA-Z]/.test(raw)) return;
+  const digitsBefore = raw.slice(0, el.selectionStart || 0).replace(/[^0-9]/g, '').length;
+  const s = raw.replace(/[^0-9.]/g, ''); const dot = s.indexOf('.');
+  let ip = (dot >= 0 ? s.slice(0, dot) : s).replace(/^0+(?=\d)/, ''); const fr = dot >= 0 ? '.' + s.slice(dot + 1).replace(/\./g, '') : '';
+  const out = (ip || fr) ? '$' + ip.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + fr : '';
+  if (out === raw) return;
+  el.value = out;
+  let pos = 0, seen = 0; while (pos < out.length && seen < digitsBefore) { if (/[0-9]/.test(out[pos])) seen++; pos++; }
+  try { el.setSelectionRange(pos, pos); } catch (e) {}
+}
 const X = (n) => n.toFixed(1) + 'X';
 const pct = (r) => Math.round(r * 100) + '%';
 
@@ -332,9 +353,9 @@ function readHash() {
   if (!/^t=/.test(h)) return false;
   const p = new URLSearchParams(h);
   const set = (id, v, fmt) => { $(id).value = v ? fmt(v) : ''; };
-  set('goal', parseMoney(p.get('t')), money); set('pipe', parseMoney(p.get('p')), money);
-  set('win', parseRate(p.get('w')), pct); set('size', parseMoney(p.get('s')), money);
-  set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), money);
+  set('goal', parseMoney(p.get('t')), fullMoney); set('pipe', parseMoney(p.get('p')), fullMoney);
+  set('win', parseRate(p.get('w')), pct); set('size', parseMoney(p.get('s')), fullMoney);
+  set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), fullMoney);
   yearEnd = p.get('y') === 'fy' ? 'fy' : 'cy';
   return true;
 }
@@ -463,8 +484,9 @@ const onEdit = () => {
   render();
 };
 ['goal','pipe','win','size','reps','closed'].forEach(id => $(id).addEventListener('input', onEdit));
+['goal','pipe','size','closed'].forEach(id => { const el = $(id); el.addEventListener('input', () => liveMoney(el)); const v0 = parseMoney(el.value); if (v0) el.value = fullMoney(v0); });
 // Tidy money fields when you leave them: "10m" becomes "$10M".
-['goal','pipe','size','closed'].forEach(id => $(id).addEventListener('blur', () => { const v = parseMoney($(id).value); if (v) $(id).value = money(v); }));
+['goal','pipe','size','closed'].forEach(id => $(id).addEventListener('blur', () => { const v = parseMoney($(id).value); if (v) $(id).value = fullMoney(v); }));
 $('win').addEventListener('blur', () => { const v = parseRate($('win').value); if (v) $('win').value = pct(v); });
 // Selecting the whole field on focus makes typing over an example one step.
 document.querySelectorAll('.calc-in input').forEach(inp => inp.addEventListener('focus', () => { setTimeout(() => { try { inp.select(); } catch {} }, 0); }));

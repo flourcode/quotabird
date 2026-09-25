@@ -87,6 +87,7 @@
 }
 </script>
 <link rel="stylesheet" href="../site.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.js" defer></script>
 </head>
 <body class="wide-page">
@@ -95,7 +96,7 @@
   <header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-g"><div class="menu-group">For sellers</div><a href="/deal/">Deal Check</a><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/" class="current">Discount Check</a><a href="/commission/">Commission Check</a></div><div class="menu-g"><div class="menu-group">For managers</div><a href="/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div></div></details>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/" class="current">Discount Check</a><a href="/commission/">Commission Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your team</div><a href="/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-foot"><a href="/">Home</a><a href="/notes/">Field Notes</a><a href="/about/">About Mark</a></div></div></details>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
       <a class="chip chip-ask" href="/about/#ask">Ask Mark</a>
@@ -109,7 +110,7 @@
       <div class="calc-out" id="out" aria-live="polite"></div>
       <form class="calc-in" id="f" autocomplete="off" novalidate>
         <p class="startnote fields-note"><span id="exnote">Example numbers. Type yours over them.</span></p>
-        <label class="tf"><span class="tf-label">Full list price</span><input id="list" type="text" inputmode="decimal" autocomplete="off" value="$500K"></label>
+        <label class="tf"><span class="tf-label">Full list price</span><input id="list" type="text" inputmode="decimal" autocomplete="off" value="$500,000"></label>
         <label class="tf"><span class="tf-label">Discount they want</span><input id="disc" type="text" inputmode="decimal" autocomplete="off" value="15%"></label>
         <label class="tf"><span class="tf-label">Company gross margin</span><input id="margin" type="text" inputmode="decimal" autocomplete="off" value="40%"></label>
         <label class="tf"><span class="tf-label">Your commission rate</span><input id="rate" type="text" inputmode="decimal" autocomplete="off" value="8%"></label>
@@ -134,7 +135,7 @@
 
 <section class="band" id="about" aria-labelledby="madeby-h">
   <div class="band-inner madeby">
-    <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async" onerror="this.remove();">
+    <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
       <p>I carried a number, managed the people who did, and led partner sales teams at AWS. I make these because
@@ -165,7 +166,7 @@
 <script src="../calc.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-09.1100';
+window.QB_BUILD = '2026-10-11.1100';
 CalcTool({
   slug: 'discount', name: 'Discount Check', url: 'https://quotabird.com/discount/',
   fields: [{ id: 'list', kind: 'money' }, { id: 'disc', kind: 'pct' }, { id: 'margin', kind: 'pct' }, { id: 'rate', kind: 'pct' }],

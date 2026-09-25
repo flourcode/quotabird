@@ -22,6 +22,22 @@
     return (neg ? '-' : '') + t;
   }
   const pct = (r) => Math.round(r * 100) + '%';
+
+  /* Money fields format as you type ($10,000,000), keep the caret where it was, and still accept
+     shorthand like 10m or 500k (left alone until you leave the field). */
+  const fullMoney = (n) => '$' + Math.round(n).toLocaleString('en-US');
+  function liveMoney(el) {
+    const raw = el.value;
+    if (/[a-zA-Z]/.test(raw)) return;
+    const digitsBefore = raw.slice(0, el.selectionStart || 0).replace(/[^0-9]/g, '').length;
+    const s = raw.replace(/[^0-9.]/g, ''); const dot = s.indexOf('.');
+    let ip = (dot >= 0 ? s.slice(0, dot) : s).replace(/^0+(?=\d)/, ''); const fr = dot >= 0 ? '.' + s.slice(dot + 1).replace(/\./g, '') : '';
+    const out = (ip || fr) ? '$' + ip.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + fr : '';
+    if (out === raw) return;
+    el.value = out;
+    let pos = 0, seen = 0; while (pos < out.length && seen < digitsBefore) { if (/[0-9]/.test(out[pos])) seen++; pos++; }
+    try { el.setSelectionRange(pos, pos); } catch (e) {}
+  }
   function copyText(text) {
     try {
       const ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;';
@@ -44,7 +60,7 @@
 
   window.CalcTool = function (cfg) {
     const F = cfg.fields; let shared = false, touched = false, lastS = null;
-    const fmt = { money, pct: (r) => (r * 100).toFixed(1).replace(/\.0$/, '') + '%', count: String, choice: String };
+    const fmt = { money: fullMoney, pct: (r) => (r * 100).toFixed(1).replace(/\.0$/, '') + '%', count: String, choice: String };
     const parse = { money: parseMoney, pct: parsePct, count: (v) => Math.max(0, parseInt(String(v || '').replace(/[^0-9]/g, ''), 10) || 0), choice: (v) => v };
     const read = () => { const v = {}; F.forEach(f => { v[f.id] = f.kind === 'choice' ? (document.querySelector(`[data-choice="${f.id}"].on`) || {}).dataset?.v ?? f.example : parse[f.kind]($(f.id).value); }); return v; };
     const encode = () => { const p = new URLSearchParams(); const v = read(); F.forEach(f => { if (v[f.id] !== 0 && v[f.id] !== '' && v[f.id] != null) p.set(f.id, f.kind === 'pct' ? Math.round(v[f.id] * 1000) / 10 : f.kind === 'money' ? Math.round(v[f.id]) : v[f.id]); }); return p.toString(); };
@@ -53,7 +69,7 @@
       const p = new URLSearchParams(h); let any = false;
       F.forEach(f => { if (!p.has(f.id)) return; any = true; const raw = p.get(f.id);
         if (f.kind === 'choice') document.querySelectorAll(`[data-choice="${f.id}"]`).forEach(b => b.classList.toggle('on', b.dataset.v === raw));
-        else $(f.id).value = f.kind === 'pct' ? fmt.pct(parsePct(raw)) : f.kind === 'money' ? money(parseMoney(raw)) : raw; });
+        else $(f.id).value = f.kind === 'pct' ? fmt.pct(parsePct(raw)) : f.kind === 'money' ? fullMoney(parseMoney(raw)) : raw; });
       return any;
     }
     const shareLink = () => (location.origin && location.origin !== 'null' ? location.origin + location.pathname : cfg.url) + '#' + encode();
@@ -98,7 +114,8 @@
       new MutationObserver(watch).observe($('out'), { childList: true });
     }
     const onEdit = () => { if (!touched) { touched = true; track(cfg.slug + '_edit'); const n = $('exnote'); if (n) n.textContent = ''; } if (shared) { shared = false; try { history.replaceState(null, '', location.pathname); } catch {} } render(); };
-    F.forEach(f => { if (f.kind === 'choice') return; const el = $(f.id); el.addEventListener('input', onEdit);
+    F.forEach(f => { if (f.kind === 'choice') return; const el = $(f.id); el.addEventListener('input', () => { if (f.kind === 'money') liveMoney(el); onEdit(); });
+      if (f.kind === 'money' && el.value) { const v0 = parseMoney(el.value); if (v0) el.value = fullMoney(v0); }
       el.addEventListener('blur', () => { const v = parse[f.kind](el.value); if (v) el.value = fmt[f.kind](v); });
       el.addEventListener('focus', () => setTimeout(() => { try { el.select(); } catch {} }, 0)); });
     document.querySelectorAll('[data-choice]').forEach(b => b.onclick = () => { document.querySelectorAll(`[data-choice="${b.dataset.choice}"]`).forEach(x => x.classList.toggle('on', x === b)); onEdit(); });

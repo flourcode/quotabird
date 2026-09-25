@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-09.1300**
+**Current build: 2026-10-11.1100**
 
 ## Naming: checks, not kills
 
@@ -43,15 +43,46 @@ share card are rendered from it. The S-cloud mark is retired. The 404 page alone
 `logo-x-dark.svg`, the same bird with the original X eye: that is the one
 place the bird is meant to be dead.
 
+**Thirteen tools, and that's the shelf for a while.** A second round of
+suggestions (Forecast, Champion, Close Plan, Discovery, Business Case,
+Exec Meeting Prep, Value, Expansion) was declined as overlap with Deal
+Check's five questions; three real gaps were built as question tools:
+- **Account Check** (`/account/`): *Do you know the account, or just your
+  contact?* MISSION, MONEY, POWER (beyond the deal), INCUMBENT, PATH.
+  Verdicts *Mapped / Half mapped / One thread / A contact*. Hands off to
+  Deal Check when the account is known, Territory Check when it isn't.
+- **Risk Check** (`/risk/`): *4X coverage can still be a house of cards.*
+  The shape of the pipeline, not the size: SPREAD, MOTION, NEXT, TIMING,
+  FRESH, all phrased so Yes is the safe answer. *Sturdy / Lopsided /
+  Fragile / House of cards*. Hands off to Pipeline Check for the size.
+- **Competition Check** (`/competition/`): *Why you, instead of nothing?*
+  NOTHING (cost of inaction), SWITCH, PREFERENCE, PROOF, ACCESS.
+  *Preferred / In the mix / Behind / Nothing wins*. Hands off to Deal Check
+  or, when behind, Account Check.
+The menu and the home doorways now use four groups: *Your deal* (Deal,
+Account, Competition), *Your number* (Quota, Territory, Discount,
+Commission), *Your team* (Pipeline, Risk, Rep, Partner, OLR), *Any
+meeting* (Brief); the menu balances them into two columns (`menu()`).
+
 **Ten tools, in two kinds.** Seven question tools (Deal, Territory, Brief,
 Rep, Partner, OLR, plus the Pipeline calculator) and three new calculators
 rebuilt from the old Fedmo tools page:
-- **Quota Check** (`/quota/`, *Is my quota crazy?*): base + variable = OTE;
-  quota ÷ OTE on the ladder Low (<3) / Favorable (3–4) / Standard (4–6) / A
-  stretch (6–8) / Aggressive (8–10) / Crazy (>10); variable share of OTE with
-  a note under 40% or over 60%; growth over last year's close when given.
-  Hands off to Pipeline Check with the quota prefilled as the target
-  (`/pipeline/#t=…`).
+- **Quota Check** (`/quota/`, *Is my quota crazy?*): first asks what the
+  number is measured in, because the OTE multiple is a commission rate in
+  disguise (10% on bookings at 50/50 ≈ 5× OTE; 1–2% on consumption growth ≈
+  25–50×). Three ladders, quota ÷ OTE, Low / Favorable / Standard / A stretch
+  / Aggressive / Crazy at these cut points: **new bookings** 3, 4, 6, 8, 12
+  (the published consensus: Bridge Group, RepVue, Pavilion all say 4–6×);
+  **cloud consumption growth** 8, 15, 30, 45, 60; **whole book** 20, 40, 80,
+  120, 160. The cloud and whole-book cuts are Mark's ranges from CSP and
+  partner plans, derived from the rates those plans pay; there is no public
+  dataset for them (the sites that "estimate" AWS quotas at 5× are applying
+  the SaaS formula, not reporting). They live in one line (`B` in the quota
+  config) and the page says they are ranges, not rules. Also shown: implied
+  rate (variable ÷ quota), variable share of OTE, growth over last year's
+  close. The example is a cloud AM: $150K base, $130K variable, $6M growth
+  target → 21×, Standard. Hands off to Pipeline Check with the quota
+  prefilled as the target (`/#t=…`).
 - **Discount Check** (`/discount/`, *They want a discount.*): revenue given
   away, commission lost, margin after (cost of goods held constant, so the
   margin falls faster than the discount). Normal (≤5%) / Meaningful (≤15%) /
@@ -90,6 +121,7 @@ Check still accepts a 1-to-4 letter hash as a check in progress.
 | `/` | **Home = Pipeline Check.** Hero (*You sure that's enough pipeline?*), the calculator with the verdict above the fields, then *Nine more checks* doorways, the 3X essay, how the tools work, Field Notes, About, FAQ. `/pipeline/` redirects here. |
 | `/deal/` | **Deal Check**, formerly the home page |
 | `/quota/`, `/discount/`, `/commission/` | the calculators (Quota, Discount, Commission Check) |
+| `/account/`, `/risk/`, `/competition/` | the October 2026 additions: Account Check, Risk Check, Competition Check |
 | `/brief/`, `/territory/`, `/partner/`, `/rep/`, `/olr/` | the generated five-question tools |
 | `/about/` | **About Mark**: the full story and the booking steps; every other page carries only the short *Made by Mark* card |
 | `/notes/` | **Field Notes**: short reads, each ending with the tool that does the math |
@@ -182,6 +214,21 @@ a *One of ten quick checks ↓* link under the hero. Not taken: moving
 Pipeline Check off the home page (instant value on load was a deliberate
 choice, and the phone screenshot backs it); renaming OLR Check to Talent
 Review (the users are at Amazon); more bird decoration.
+
+**Analytics is the standard Google tag, on purpose.** On 2026-09-25 Windows
+Defender flagged a zip of the site (`Trojan:Win32/MalUri.A!cl`, a cloud/ML
+heuristic) on `analytics.js` and `about/index.html`. Inspection found nothing
+but the site's own files; the likely triggers were two benign-but-suspicious
+patterns in `analytics.js`: a `<script>` element created at runtime with a
+URL built from a variable, and a page-wide click listener reading every
+link's href. Both are gone: the gtag script is a plain `<script async src>`
+tag in every head (Google's documented install), `analytics.js` only
+configures it and counts named events, and the two extra counts attach to
+the specific elements. The photo's inline `onerror` handler was removed too.
+Keep it that way: no runtime script injection, no global link listeners, no
+inline event handlers. The site has no executables and references only its
+own domain, LinkedIn, Calendly, fedhoo, Google Tag Manager, schema.org and
+sitemaps.org.
 
 **The ask is soft on purpose.** The three-tier rate card is gone. The About
 section ends *Need another set of eyes? 20 minutes. Free. No deck required.*
@@ -1253,3 +1300,17 @@ above the fields, rows and hand-off below); every tool intro cut to one
 sentence that says what to do; GA4 ID updated to G-BG9NR9GXQZ.
 
 **2026-10-09.1300** — Tools menu panel no longer clipped on phones (it spans the screen under the header; centred under the chip on desktop).
+
+
+**Money fields format as you type** (`liveMoney()` in `calc.js` and the home page): $10,000,000 with the caret held in place; shorthand like 10m left alone until blur; full comma form on blur. Compact forms ($10M) are for results only.
+
+**2026-10-10.0900** — Quota Check rebuilt around what the number is measured
+in (new bookings / cloud consumption growth / whole book), three ladders,
+implied rate shown, cloud AM example; money fields format with commas as you
+type across all calculators and the home page.
+
+**2026-10-11.0900** — Account Check, Risk Check and Competition Check added;
+menu and doorways regrouped into Your deal / Your number / Your team / Any
+meeting with balanced two-column menu.
+
+**2026-10-11.1100** — analytics rebuilt on the standard Google tag after a Defender false positive; runtime script injection, the global click listener and the inline onerror removed.
