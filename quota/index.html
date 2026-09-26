@@ -211,7 +211,7 @@
 <script src="../calc.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-16.1300';
+window.QB_BUILD = '2026-10-16.1700';
 CalcTool({
   slug: 'quota', name: 'Quota Check', url: 'https://quotabird.com/quota/',
   fields: [{ id: 'basis', kind: 'choice', example: 'cloud' }, { id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],
@@ -228,7 +228,7 @@ CalcTool({
     let t;
     if (mult < c[0]) t = ['Low', 'proof', `Quota is ${X} OTE. For ${B.name} that's unusually low: a ramp, an overlay, or a plan with a condition in it.`, 'Read the plan twice. Low multiples usually come with a catch.'];
     else if (mult < c[1]) t = ['Favorable', 'ready', `Quota is ${X} OTE, below the ${std} I usually see for ${B.name}.`, 'Common in new patches, SMB and commercial. Enjoy it while it lasts.'];
-    else if (mult <= c[2]) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the ${std} I usually see for ${B.name}.`, "The number is ordinary. Whether the patch can produce it's a different question."];
+    else if (mult <= c[2]) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the ${std} I usually see for ${B.name}.`, "The number is ordinary. Whether the patch can produce it is a different question."];
     else if (mult <= c[3]) t = ['A stretch', 'proof', `Quota is ${X} OTE, above the ${std} I usually see for ${B.name}.`, 'Normal for enterprise and strategic roles, and it needs a strong pipeline behind it.'];
     else if (mult <= c[4]) t = ['Aggressive', 'prove', `Quota is ${X} OTE, well above the ${std} I usually see for ${B.name}.`, 'Strategic-account territory. You need coverage and a patch that can produce it.'];
     else t = ['Crazy', 'dont', `Quota is ${X} OTE. For ${B.name}, the plan is asking the patch for something it may not have.`, 'Check the territory before you sign, and get the sizing in writing.'];

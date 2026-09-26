@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-16.1300'
+BUILD = '2026-10-16.1700'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -182,7 +182,7 @@ REP = dict(
         ('buckets', 'Four kinds of problem, and the one that isn\'t', '''    <p><strong>Good rep, bad situation.</strong> Fix the situation: the patch, the number, or the plan.</p>
     <p><strong>Good rep, skill gap.</strong> Coach them. Name the skill and work it, one deal at a time.</p>
     <p><strong>Capable rep, effort gap.</strong> Manage them. Expectations in writing, with dates.</p>
-    <p><strong>Wrong rep, reasonable situation.</strong> Start the process. Waiting doesn't make it kinder.</p>
+    <p><strong>Wrong rep, reasonable situation.</strong> Start the process. If they're the wrong rep, six more months won't fix it.</p>
     <p><strong>They're fine.</strong> Leave them alone. Don't invent a management problem because they don't love
       one-on-ones. Figure out what visibility you actually need and let them sell.</p>
     <p>The mistake this tool exists to prevent is spending six months coaching a territory problem, or redesigning a
@@ -195,7 +195,7 @@ REP = dict(
     ],
     faq=[
         ('Does anything I enter leave my device?', 'No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.'),
-        ("Why does it never ask the rep's name?", 'Because it doesn\'t need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, have the conversation, and nothing about it\'s written down anywhere.'),
+        ("Why does it never ask the rep's name?", 'Because it doesn\'t need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, have the conversation, and nothing about it is written down anywhere.'),
         ('What do the verdicts mean?', "<strong>They're fine:</strong> leave them alone. <strong>The situation:</strong> good rep, bad patch, number or plan; fix that. <strong>Coach them:</strong> good rep, skill gap. <strong>Manage them:</strong> capable rep, effort gap; expectations and dates. <strong>Wrong rep:</strong> reasonable situation, wrong person. <strong>Not sure:</strong> too many sort-ofs; sit in five of their deals and run it again."),
         ('Why is PATCH the first question?', 'Because the order you ask in is the order you think in. A manager who starts with the territory, the number and the plan makes different decisions for the next six months than one who starts with the rep\'s calendar.'),
         ('Can I run it on myself?', 'Yes, and sellers should. If the patch answer is no, <a href="/territory/">Territory Check</a> makes that case to your manager with the sizing behind it.'),
@@ -220,7 +220,7 @@ REP = dict(
     if (no('patch'))
       return { label: 'The situation', cls: 'prove', attack: 'Good rep, bad situation.', sub: 'Nobody makes a number in a patch that can\\'t produce one. Fix the territory, the number or the plan. Writing them up fixes none of them.' };
     if (no('craft') && no('will'))
-      return { label: 'Wrong rep', cls: 'dont', attack: 'Reasonable situation, wrong person.', sub: "They can't and they've stopped trying. Start the process. Waiting doesn't make it kinder, for them or for the team." };
+      return { label: 'Wrong rep', cls: 'dont', attack: 'Reasonable situation, wrong person.', sub: "They can't and they've stopped trying. Start the process. Six more months won't fix it, for them or for the team." };
     if (no('craft'))
       return { label: 'Coach them', cls: 'proof', attack: 'Good rep, skill gap.', sub: "They're trying and it isn't working. Name the skill, sit in their deals, work it one opportunity at a time." };
     if (no('will') || no('customers') || no('pipeline'))
@@ -470,7 +470,7 @@ OLR = dict(
         ('What is OLR?', "Organization and Leadership Review: Amazon's annual talent review, where managers propose an evaluation for each of their people and then defend it in calibration with other managers, alongside promotion and development decisions. OLR Check is the rehearsal for the defending part."),
         ('Is this only for Amazon?', 'OLR is Amazon\'s name for it, and that\'s where most of the people who use these tools have sat. But every calibration room asks the same five things, whatever the company calls it. Read "leadership principle" as your organization\'s behavioral standard and the tool works the same.'),
         ('What does Pressure test do?', 'It plays the room. Three hard questions about your weakest answer, one at a time, and you say whether you can answer each. If you can\'t answer two of three about ownership, that case isn\'t ready, and better to learn that here than across the table.'),
-        ('Why does it never ask the rep\'s name?', 'Because it doesn\'t need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, fix the case, and nothing about it\'s written down anywhere.'),
+        ('Why does it never ask the rep\'s name?', 'Because it doesn\'t need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, fix the case, and nothing about it is written down anywhere.'),
     ],
     config='''CheckTool({
   slug: 'olr', name: 'OLR Check', url: 'https://quotabird.com/olr/',
@@ -545,7 +545,7 @@ BRIEF = dict(
         dict(k='ask', n='ASK', q='Is it completely clear what you need from them today, and who owns the next step?'),
     ],
     bands=[
-        ('how', 'The room isn\'t attacking the document', '''    <p class="lede">It's attacking the assumptions underneath it. Every brief that dies in a meeting dies the same way:
+        ('how', 'What the room goes after', '''    <p class="lede">Nobody cares about your deck. They're going after the assumptions underneath it. Every brief that dies in a meeting dies the same way:
       somebody asks the question the author was hoping nobody would.</p>
     <p><strong>POINT: One sentence, and why now.</strong> If you can't say what you want the room to decide in one
       sentence, the brief doesn't have a point yet, it has a topic. And "why now" is the second half of the
@@ -554,11 +554,8 @@ BRIEF = dict(
       false, take the recommendation down with them. Data, customer evidence, financials, documented behavior. And
       at least one piece that didn't come from your own team, because the room discounts everything that did.</p>
     <p><strong>ALTERNATIVE: The other option, including nothing.</strong> This is where most executive documents
-      fall apart. Why this instead of doing nothing? Why build instead of buy? Why us instead of them? If the brief
-      doesn't answer the alternative someone in the room already prefers, that person will answer it for you.</p>
-    <p><strong>HOLE: Your own weakest assumption, and who will find it.</strong> The most important question in the
-      tool. If you know where the soft spot is, you can lead with it, and a room respects a brief that names its own
-      risk. If you don't, somebody whose incentives differ from yours will find it, and they won't be gentle.</p>
+      fall apart. Why this instead of doing nothing? Why build instead of buy? Why us instead of them? Someone in that room already prefers another answer. If you don't deal with it in the brief, they'll bring it up for you.</p>
+    <p><strong>HOLE: Your own weakest assumption, and who will find it.</strong> If you know the weak spot, say it before somebody else does. If you don't, somebody whose incentives differ from yours will find it, and they won't be gentle.</p>
     <p><strong>ASK: What you need today, and who owns what next.</strong> A shocking number of decks survive thirty
       slides and end with no decision. Is this an FYI, a discussion, a recommendation or a decision? What resource,
       commitment or approval do you need before you leave the room? Who owns the next action, by when?</p>'''),
@@ -594,7 +591,7 @@ BRIEF = dict(
   ],
   weights: { point: 24, receipts: 22, hole: 20, alternative: 18, ask: 16 },
   verdict(a, total) {
-    if (total >= 75) return { label: 'Room ready', cls: 'ready', attack: 'Your argument is clear and the claims have receipts.', sub: 'Lead with the hole. A room respects a brief that names its own risk.' };
+    if (total >= 75) return { label: 'Room ready', cls: 'ready', attack: 'Your argument is clear and the claims have receipts.', sub: 'Lead with the hole. Say the weak spot before somebody else does.' };
     if (total >= 55) return { label: 'A fight', cls: 'proof', attack: "Your recommendation may be sound. You've left an opening.", sub: 'They will find it. Better you find it first.' };
     if (total >= 35) return { label: 'Shark food', cls: 'prove', attack: "You're relying on assumptions, vague impact, or an unclear ask.", sub: 'The room won\\'t argue with you. It will just move on.' };
     return { label: 'No point', cls: 'dont', attack: "There isn't a decision in this brief yet.", sub: 'Find the one sentence first. Everything else is formatting.' };
@@ -640,7 +637,7 @@ BRIEF = dict(
   },
   noMove: 'Lead with the hole. Say your weakest assumption out loud in the first minute; the room will spend the rest of the meeting on your terms.',
   handoff: (s) => s.total >= 75
-    ? { overline: 'If the brief is about a deal', text: 'The room will ask whether the deal underneath it\\'s real. Deal Check is that question.', href: '/deal/', label: 'Check my deal' }
+    ? { overline: 'If the brief is about a deal', text: 'The room will ask whether the deal underneath it is real. Deal Check is that question.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'If the brief is about the number', text: 'Vague impact usually means the coverage math is missing. Pipeline Check puts a number on it.', href: '/', label: 'Check my pipeline' },
   mark: { title: (s) => 'Stuck on the ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have written the doc that got shredded and the one that got funded, and the difference was always one question I hadn't asked myself. Send me one line about the brief. No document, no company name." },
   dm: (s) => `Mark, ran a brief through Brief Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is the ${s.weak.n.toLowerCase()}. Meeting is coming and I'm not sure it holds. Worth 20 minutes?`,
@@ -758,7 +755,7 @@ RISK = dict(
     <p><strong>MOTION: Is it moving?</strong> A deal that hasn't changed stage in sixty days isn't in the stage it's in.
       It's parked, and parked deals leave the forecast all at once, usually in the last week of the quarter.</p>
     <p><strong>NEXT: Whose calendar is the next step on?</strong> A next step that only you scheduled is a task. A next
-      step the customer put on their calendar is a commitment. Commit pipeline with no customer action in it's
+      step the customer put on their calendar is a commitment. Commit pipeline with no customer action in it is
       pipeline with no customer in it.</p>
     <p><strong>TIMING: When is it due?</strong> If most of the number lands in the last month of the period, you've built
       a year that can only be saved in December. Federal money makes this worse, not better: a September close is a
@@ -919,7 +916,7 @@ NOTES = [
       plan to. Almost nobody asks where it came from.</p>
     <p>It came from a win rate. If a third of the qualified pipeline due in a period closes, 3X covers the number
       exactly. So 3X is a 33% win rate written down without saying so.</p>
-    <p>Here's why that matters. A team that wins 20% of what it qualifies needs 5X. A team that wins half needs
+    <p>A team that wins 20% of what it qualifies needs 5X. A team that wins half needs
       2X. If your team wins 20% and plans to 3X, the forecast is wrong on day one, and nobody finds out until the
       quarter is mostly gone.</p>
     <p>The other word doing a lot of work is <em>qualified</em>. Coverage only counts pipeline that would survive a
@@ -978,7 +975,7 @@ NOTES = [
       actually closed last year. That's the growth the plan is assuming, and it's the real measure of how much
       harder this year is.</p>
     <p>Then look at the patch the same way a stranger would. Has anyone ever made this number in it? What's the
-      addressable spend, and how much of it's already committed to somebody else? If the number went up and the
+      addressable spend, and how much of it is already committed to somebody else? If the number went up and the
       patch didn't, say so early, with the sizing, in writing. Nobody argues with a number that came with its
       work shown.</p>''',
          tool=('/quota/', 'Quota Check', 'does the arithmetic in ten seconds, and hands the number to the territory and pipeline checks.')),
@@ -1162,7 +1159,7 @@ CALCS = [
     let t;
     if (mult < c[0]) t = ['Low', 'proof', `Quota is ${X} OTE. For ${B.name} that's unusually low: a ramp, an overlay, or a plan with a condition in it.`, 'Read the plan twice. Low multiples usually come with a catch.'];
     else if (mult < c[1]) t = ['Favorable', 'ready', `Quota is ${X} OTE, below the ${std} I usually see for ${B.name}.`, 'Common in new patches, SMB and commercial. Enjoy it while it lasts.'];
-    else if (mult <= c[2]) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the ${std} I usually see for ${B.name}.`, "The number is ordinary. Whether the patch can produce it's a different question."];
+    else if (mult <= c[2]) t = ['Standard', 'ready', `Quota is ${X} OTE, inside the ${std} I usually see for ${B.name}.`, "The number is ordinary. Whether the patch can produce it is a different question."];
     else if (mult <= c[3]) t = ['A stretch', 'proof', `Quota is ${X} OTE, above the ${std} I usually see for ${B.name}.`, 'Normal for enterprise and strategic roles, and it needs a strong pipeline behind it.'];
     else if (mult <= c[4]) t = ['Aggressive', 'prove', `Quota is ${X} OTE, well above the ${std} I usually see for ${B.name}.`, 'Strategic-account territory. You need coverage and a patch that can produce it.'];
     else t = ['Crazy', 'dont', `Quota is ${X} OTE. For ${B.name}, the plan is asking the patch for something it may not have.`, 'Check the territory before you sign, and get the sizing in writing.'];
@@ -1230,7 +1227,7 @@ CALCS = [
   card=dict(headline=['It closed.','What do I take home?'],dek='A planning estimate of the check after withholding, in about ten seconds.',pillars=['DEAL','RATE','WITHHELD','TAKE-HOME']),
   bands=[('how','Why the check is smaller than the math','''    <p class="lede">Gross commission is the number in the plan. Take-home is the number in your account. They're further apart than most sellers expect the first time.</p>
     <p>The percentage you set aside is a planning buffer, not a withholding rate. For commissions paid separately from salary, the IRS lets employers withhold federal income tax at a flat 22% (up to a million dollars a year), and payroll taxes and state withholding come on top of that, so a W-2 check often lands with roughly 30% gone. High earners tend to owe closer to 40% once the year is reconciled. A 1099 contractor has nothing withheld and should set aside 20% or more. Your real number depends on your state, your filing status and everything else you earned this year, which is why the field is editable.</p>
-    <p>Use it to plan, not to argue with payroll. And once you know what a deal pays, the more useful question is whether the plan behind it's sane: <a href="/quota/">Quota Check</a>.</p>''')],
+    <p>Use it to plan, not to argue with payroll. And once you know what a deal pays, the more useful question is whether the plan behind it is sane: <a href="/quota/">Quota Check</a>.</p>''')],
   faq=[('Does anything I enter leave my device?','No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.'),
        ('Is this tax advice?','No. The percentage is a planning buffer you can change; it\'s not a withholding rate. Federal withholding on separately paid commissions is typically a flat 22%, with payroll and state taxes on top, and what you actually owe is settled at tax time. For anything that matters, ask an accountant.'),
        ('What about accelerators and clawbacks?','Enter the rate that applies to this deal. If your plan has accelerators above quota, use the accelerated rate; if it has clawbacks, remember the take-home is provisional until the clawback window closes.')],
@@ -1247,7 +1244,7 @@ CALCS = [
   },
   handoff: { overline: 'Is the plan sane?', text: 'Now that you know what a deal pays, check the number it has to cover.', href: '/quota/', label: 'Check my quota' },
   mark: { title: () => 'Questions about the plan?', body: "I'm Mark. Comp plans are where sellers find out what the company actually wants. If yours doesn't add up, send me one line. No company name, no dollar figures." },
-  dm: (s) => `Mark, ran a deal through Commission Check. I keep about ${Math.round(s.keep * 100)}% of gross. The question is whether the plan behind it's sane. Worth 20 minutes?`,
+  dm: (s) => `Mark, ran a deal through Commission Check. I keep about ${Math.round(s.keep * 100)}% of gross. The question is whether the plan behind it is sane. Worth 20 minutes?`,
   bookNote: (s) => `Commission Check: keeps about ${Math.round(s.keep * 100)}% of gross.`,
 });'''),
 ]
@@ -1582,7 +1579,7 @@ KIT_BODY = '''
       still trying?</p>
     <p>One of the most useful things I ever did with a new team was sit with each rep and go through five real deals.
       You learn a lot from how somebody talks about a customer. And every once in a while, the rep who drives you nuts
-      internally turns out to be the one customers keep calling back. That matters.</p>
+      internally turns out to be the one customers keep calling back.</p>
     <p class="kit-note"><strong>My first month.</strong> Week 1: meet everybody, ask what they'd change. Week 2: size the
       patches. Week 3: sit in deals and customer calls. Week 4: tell your boss what you found. Patches first, people
       second.</p>
@@ -1627,7 +1624,7 @@ KIT_BODY = '''
   <section class="kit-ch" id="k-forecast">
     <h2>3. The forecast call isn't story time</h2>
     <p>To me, commit means the customer could explain how the money gets from them to us, and roughly when. Anything
-      short of that's some flavor of hope. Most shaky deals eventually break in one of five places:</p>
+      short of that is some flavor of hope. Most shaky deals eventually break in one of five places:</p>
     <div class="mtable"><table><thead><tr><th>Where it breaks</th><th>What I'm really asking</th></tr></thead><tbody>
       <tr><td>Customer</td><td>Do they actually want to solve this?</td></tr>
       <tr><td>Money</td><td>Is there real money attached to it?</td></tr>
@@ -1726,8 +1723,7 @@ KIT_BODY = '''
 
   <section class="kit-ch" id="k-review">
     <h2>7. Review season: bring receipts</h2>
-    <p>The calibration room didn't see your rep's whole year. It saw whatever case you brought into the room. That
-      took me too long to appreciate.</p>
+    <p>Nobody in the calibration room saw your rep's whole year. They saw whatever case you brought in. That took me too long to figure out.</p>
     <p>I keep a running note during the year: date, what happened, result. Nothing elaborate. Then review season isn't
       an archaeological dig through email and Slack.</p>
     <p>For each rep I want three meaningful results (with numbers where numbers make sense), what happened because this
@@ -1895,8 +1891,7 @@ LEADER_BODY = '''
     <p>Start with three things you believe about running a sales team now that you didn't believe five years ago. They
       don't have to be profound. "Most forecast misses are path problems, not customer problems" is a point of view.
       "Communication matters" isn't.</p>
-    <p>Then pick the one you'd defend in a room full of people who disagree. That's the one worth writing up, presenting
-      or teaching, and it's the one people will remember you for.</p>
+    <p>Then pick the one you'd defend in a room full of people who disagree. That's the one to write up or teach.</p>
     <div class="sheet">
       <h3>Worksheet: My point of view</h3>
       <p class="sheet-label">Three things I believe now that I didn't five years ago</p><div class="lines l3"></div>
@@ -2116,7 +2111,7 @@ SELLER_BODY = '''
     <p>Busy and stalled look alike for about a week. Busy looks like short replies and moved meetings. Stalled looks like
       no replies and nobody else at the customer you can call.</p>
     <p>Send one short note that's easy to answer: "Is this still a priority for this quarter, or should I check back in
-      January?" A no is useful. Silence for two weeks after that's an answer too.</p>
+      January?" A no is useful. Silence for two weeks after that is an answer too.</p>
   </section>
 
   <section class="kit-ch" id="s-behind">

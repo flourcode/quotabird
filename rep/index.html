@@ -70,7 +70,7 @@
           "name": "Why does it never ask the rep's name?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Because it doesn't need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, have the conversation, and nothing about it's written down anywhere."
+            "text": "Because it doesn't need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, have the conversation, and nothing about it is written down anywhere."
           }
         },
         {
@@ -160,7 +160,7 @@
     <p><strong>Good rep, bad situation.</strong> Fix the situation: the patch, the number, or the plan.</p>
     <p><strong>Good rep, skill gap.</strong> Coach them. Name the skill and work it, one deal at a time.</p>
     <p><strong>Capable rep, effort gap.</strong> Manage them. Expectations in writing, with dates.</p>
-    <p><strong>Wrong rep, reasonable situation.</strong> Start the process. Waiting doesn't make it kinder.</p>
+    <p><strong>Wrong rep, reasonable situation.</strong> Start the process. If they're the wrong rep, six more months won't fix it.</p>
     <p><strong>They're fine.</strong> Leave them alone. Don't invent a management problem because they don't love
       one-on-ones. Figure out what visibility you actually need and let them sell.</p>
     <p>The mistake this tool exists to prevent is spending six months coaching a territory problem, or redesigning a
@@ -211,7 +211,7 @@
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
       <div class="body">No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.</div></details>
     <details class="exp"><summary>Why does it never ask the rep's name?</summary>
-      <div class="body">Because it doesn't need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, have the conversation, and nothing about it's written down anywhere.</div></details>
+      <div class="body">Because it doesn't need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, have the conversation, and nothing about it is written down anywhere.</div></details>
     <details class="exp"><summary>What do the verdicts mean?</summary>
       <div class="body"><strong>They're fine:</strong> leave them alone. <strong>The situation:</strong> good rep, bad patch, number or plan; fix that. <strong>Coach them:</strong> good rep, skill gap. <strong>Manage them:</strong> capable rep, effort gap; expectations and dates. <strong>Wrong rep:</strong> reasonable situation, wrong person. <strong>Not sure:</strong> too many sort-ofs; sit in five of their deals and run it again.</div></details>
     <details class="exp"><summary>Why is PATCH the first question?</summary>
@@ -230,7 +230,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-16.1300';
+window.QB_BUILD = '2026-10-16.1700';
 CheckTool({
   slug: 'rep', name: 'Rep Check', url: 'https://quotabird.com/rep/',
   questions: [
@@ -251,7 +251,7 @@ CheckTool({
     if (no('patch'))
       return { label: 'The situation', cls: 'prove', attack: 'Good rep, bad situation.', sub: 'Nobody makes a number in a patch that can\'t produce one. Fix the territory, the number or the plan. Writing them up fixes none of them.' };
     if (no('craft') && no('will'))
-      return { label: 'Wrong rep', cls: 'dont', attack: 'Reasonable situation, wrong person.', sub: "They can't and they've stopped trying. Start the process. Waiting doesn't make it kinder, for them or for the team." };
+      return { label: 'Wrong rep', cls: 'dont', attack: 'Reasonable situation, wrong person.', sub: "They can't and they've stopped trying. Start the process. Six more months won't fix it, for them or for the team." };
     if (no('craft'))
       return { label: 'Coach them', cls: 'proof', attack: 'Good rep, skill gap.', sub: "They're trying and it isn't working. Name the skill, sit in their deals, work it one opportunity at a time." };
     if (no('will') || no('customers') || no('pipeline'))

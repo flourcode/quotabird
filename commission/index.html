@@ -129,7 +129,7 @@
     <h2>Why the check is smaller than the math</h2>
     <p class="lede">Gross commission is the number in the plan. Take-home is the number in your account. They're further apart than most sellers expect the first time.</p>
     <p>The percentage you set aside is a planning buffer, not a withholding rate. For commissions paid separately from salary, the IRS lets employers withhold federal income tax at a flat 22% (up to a million dollars a year), and payroll taxes and state withholding come on top of that, so a W-2 check often lands with roughly 30% gone. High earners tend to owe closer to 40% once the year is reconciled. A 1099 contractor has nothing withheld and should set aside 20% or more. Your real number depends on your state, your filing status and everything else you earned this year, which is why the field is editable.</p>
-    <p>Use it to plan, not to argue with payroll. And once you know what a deal pays, the more useful question is whether the plan behind it's sane: <a href="/quota/">Quota Check</a>.</p>
+    <p>Use it to plan, not to argue with payroll. And once you know what a deal pays, the more useful question is whether the plan behind it is sane: <a href="/quota/">Quota Check</a>.</p>
     <p><a href="/math/commission-take-home/">The full math, with tables and sources →</a></p>
   </div>
 </section>
@@ -188,7 +188,7 @@
 <script src="../calc.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-16.1300';
+window.QB_BUILD = '2026-10-16.1700';
 CalcTool({
   slug: 'commission', name: 'Commission Check', url: 'https://quotabird.com/commission/',
   fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'buffer', kind: 'pct' }],
@@ -202,7 +202,7 @@ CalcTool({
   },
   handoff: { overline: 'Is the plan sane?', text: 'Now that you know what a deal pays, check the number it has to cover.', href: '/quota/', label: 'Check my quota' },
   mark: { title: () => 'Questions about the plan?', body: "I'm Mark. Comp plans are where sellers find out what the company actually wants. If yours doesn't add up, send me one line. No company name, no dollar figures." },
-  dm: (s) => `Mark, ran a deal through Commission Check. I keep about ${Math.round(s.keep * 100)}% of gross. The question is whether the plan behind it's sane. Worth 20 minutes?`,
+  dm: (s) => `Mark, ran a deal through Commission Check. I keep about ${Math.round(s.keep * 100)}% of gross. The question is whether the plan behind it is sane. Worth 20 minutes?`,
   bookNote: (s) => `Commission Check: keeps about ${Math.round(s.keep * 100)}% of gross.`,
 });
 </script>

@@ -122,8 +122,8 @@
 
 <section class="band" id="how">
   <div class="band-inner">
-    <h2>The room isn't attacking the document</h2>
-    <p class="lede">It's attacking the assumptions underneath it. Every brief that dies in a meeting dies the same way:
+    <h2>What the room goes after</h2>
+    <p class="lede">Nobody cares about your deck. They're going after the assumptions underneath it. Every brief that dies in a meeting dies the same way:
       somebody asks the question the author was hoping nobody would.</p>
     <p><strong>POINT: One sentence, and why now.</strong> If you can't say what you want the room to decide in one
       sentence, the brief doesn't have a point yet, it has a topic. And "why now" is the second half of the
@@ -132,11 +132,8 @@
       false, take the recommendation down with them. Data, customer evidence, financials, documented behavior. And
       at least one piece that didn't come from your own team, because the room discounts everything that did.</p>
     <p><strong>ALTERNATIVE: The other option, including nothing.</strong> This is where most executive documents
-      fall apart. Why this instead of doing nothing? Why build instead of buy? Why us instead of them? If the brief
-      doesn't answer the alternative someone in the room already prefers, that person will answer it for you.</p>
-    <p><strong>HOLE: Your own weakest assumption, and who will find it.</strong> The most important question in the
-      tool. If you know where the soft spot is, you can lead with it, and a room respects a brief that names its own
-      risk. If you don't, somebody whose incentives differ from yours will find it, and they won't be gentle.</p>
+      fall apart. Why this instead of doing nothing? Why build instead of buy? Why us instead of them? Someone in that room already prefers another answer. If you don't deal with it in the brief, they'll bring it up for you.</p>
+    <p><strong>HOLE: Your own weakest assumption, and who will find it.</strong> If you know the weak spot, say it before somebody else does. If you don't, somebody whose incentives differ from yours will find it, and they won't be gentle.</p>
     <p><strong>ASK: What you need today, and who owns what next.</strong> A shocking number of decks survive thirty
       slides and end with no decision. Is this an FYI, a discussion, a recommendation or a decision? What resource,
       commitment or approval do you need before you leave the room? Who owns the next action, by when?</p>
@@ -198,7 +195,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-16.1300';
+window.QB_BUILD = '2026-10-16.1700';
 CheckTool({
   slug: 'brief', name: 'Brief Check', url: 'https://quotabird.com/brief/',
   questions: [
@@ -210,7 +207,7 @@ CheckTool({
   ],
   weights: { point: 24, receipts: 22, hole: 20, alternative: 18, ask: 16 },
   verdict(a, total) {
-    if (total >= 75) return { label: 'Room ready', cls: 'ready', attack: 'Your argument is clear and the claims have receipts.', sub: 'Lead with the hole. A room respects a brief that names its own risk.' };
+    if (total >= 75) return { label: 'Room ready', cls: 'ready', attack: 'Your argument is clear and the claims have receipts.', sub: 'Lead with the hole. Say the weak spot before somebody else does.' };
     if (total >= 55) return { label: 'A fight', cls: 'proof', attack: "Your recommendation may be sound. You've left an opening.", sub: 'They will find it. Better you find it first.' };
     if (total >= 35) return { label: 'Shark food', cls: 'prove', attack: "You're relying on assumptions, vague impact, or an unclear ask.", sub: 'The room won\'t argue with you. It will just move on.' };
     return { label: 'No point', cls: 'dont', attack: "There isn't a decision in this brief yet.", sub: 'Find the one sentence first. Everything else is formatting.' };
@@ -256,7 +253,7 @@ CheckTool({
   },
   noMove: 'Lead with the hole. Say your weakest assumption out loud in the first minute; the room will spend the rest of the meeting on your terms.',
   handoff: (s) => s.total >= 75
-    ? { overline: 'If the brief is about a deal', text: 'The room will ask whether the deal underneath it\'s real. Deal Check is that question.', href: '/deal/', label: 'Check my deal' }
+    ? { overline: 'If the brief is about a deal', text: 'The room will ask whether the deal underneath it is real. Deal Check is that question.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'If the brief is about the number', text: 'Vague impact usually means the coverage math is missing. Pipeline Check puts a number on it.', href: '/', label: 'Check my pipeline' },
   mark: { title: (s) => 'Stuck on the ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have written the doc that got shredded and the one that got funded, and the difference was always one question I hadn't asked myself. Send me one line about the brief. No document, no company name." },
   dm: (s) => `Mark, ran a brief through Brief Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is the ${s.weak.n.toLowerCase()}. Meeting is coming and I'm not sure it holds. Worth 20 minutes?`,

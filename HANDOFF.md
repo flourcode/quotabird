@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-16.1300**
+**Current build: 2026-10-16.1700**
 
 ## Naming: checks, not kills
 
@@ -311,6 +311,25 @@ site should sound like one veteran seller talking, not a manual:
 - **No AI vocabulary** (leverage, robust, navigate, journey, unlock...) and no
   dashes. A quick check: search the built pages for those words and for "do not",
   "is not", "make sure" and "you should".
+- **Write like a 58-year-old sales manager who's seen this movie before, not a
+  28-year-old copywriter describing what sales managers experience.** In
+  practice: assume the reader has been in sales a while; prefer the sentence
+  you'd say out loud; mild annoyance is good and cleverness is optional; don't
+  wrap up every thought; and if a sentence sounds quotable, be suspicious.
+- **Never tell the reader a point matters. Make the point matter.** No "That
+  matters.", "The useful part is", "The point is", "The important thing",
+  "Here's why", "The reality is", "At the end of the day". No sentence that
+  explains the joke after the joke.
+- **Rooms don't respect things; people do.** Say "nobody cares about your
+  deck", not "the room isn't attacking the document."
+- Lines to keep because they're unmistakably Mark: *hopium with a spreadsheet*,
+  *pick the day you're having*, *a couple of storage companies you've probably
+  forgotten*, *no new sales religion*, *like Santa, but with quota*.
+- **Careful contracting "it is / that is / there is":** only when the word is
+  the subject ("whether it's moving", "and that's the point"). Never when it's
+  the object of the word before it: "behind it is sane", "short of that is
+  hope", "after that is an answer", "underneath it is real". The October
+  contraction pass got nine of these wrong; all are fixed.
 - Editing copy that lives inside the tool configs (JavaScript inside Python
   strings) needs an escaped apostrophe: `\\'` in the source. Run a syntax
   check on every page after copy edits.
@@ -1532,3 +1551,22 @@ identical *The five questions, and what each one disproves* headings each got
 their own words; the stiff "isn't X. It's Y." lines rewritten; *honestly*,
 *make sure* and *you should* tics removed. All thirteen tools run end to end;
 kits unchanged at 4, 8 and 3 pages; previews and share cards refreshed.
+
+**2026-10-16.1500** — de-polish pass from a second read: About ("Usually
+you've got more than one problem. That's what makes it fun."; the number from
+above now ends "Somehow those two numbers are supposed to meet."), Pipeline
+("Being short on pipeline doesn't automatically mean everybody needs to
+prospect harder."), Deal ("which part of the deal you can't actually prove";
+"Deal Check tells you whether you've actually got one yet"), Rep ("six more
+months won't fix it"), Brief ("Nobody cares about your deck", "say it before
+somebody else does"), and the last two "That matters." lines. A sweep of the
+built site finds none of the filler phrases left.
+
+**2026-10-16.1700** — kits read against the de-polish rules. Found and fixed
+nine grammar errors introduced by the contraction pass ("it" or "that" as the
+object of the word before it, e.g. "after that's an answer too"): Seller's kit,
+Manager's kit, Commission, Rep and OLR FAQ, Risk, Territory, a Field Note, and
+the home page's share/search description. Two kit lines rewritten (the
+calibration room as a person; a wrap-up in the Leadership kit). Lines Mark or
+his reviewers kept were left alone. Kits still 4, 8 and 3 pages; previews and
+share cards refreshed.
