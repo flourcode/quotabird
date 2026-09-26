@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-19.1700'
+BUILD = '2026-10-20.1500'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -12,7 +12,7 @@ TOOLS = [
     ('Your number', '/territory/', 'Territory Check', 'Month one in a new patch'),
     ('Your number', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
     ('Your number', '/commission/', 'Commission Check', 'When it closes'),
-    ('Your team', '/', 'Pipeline Check', 'Quarterly, before the review'),
+    ('Your team', '/pipeline/', 'Pipeline Check', 'Quarterly, before the review'),
     ('Your team', '/risk/', 'Risk Check', 'When coverage looks fine and you don\'t trust it'),
     ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
     ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
@@ -328,7 +328,7 @@ PARTNER = dict(
   noMove: 'Keep doing what you\\'re doing, and write down why it works before someone changes it.',
   handoff: (s) => s.total >= 55
     ? { overline: 'Is there a deal inside this partnership?', text: 'Run it through Deal Check. A real partner deal survives the same five questions any deal does.', href: '/deal/', label: 'Check my deal' }
-    : { overline: 'How much of your number is leaning on them?', text: 'If this partner is in your coverage math, the math is wrong. Pipeline Check shows you by how much.', href: '/', label: 'Check my pipeline' },
+    : { overline: 'How much of your number is leaning on them?', text: 'If this partner is in your coverage math, the math is wrong. Pipeline Check shows you by how much.', href: '/pipeline/', label: 'Check my pipeline' },
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I spent six years leading federal partner sales teams at AWS and sat on the other side of the table before that. I have seen every version of the partnership that looks great in the QBR and produces nothing. Send me one line. No partner names." },
   dm: (s) => `Mark, ran a partner through Partner Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure what to do with it. Worth 20 minutes?`,
 });''',
@@ -375,7 +375,7 @@ TERRITORY = dict(
         ('Does anything I enter leave my device?', 'No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.'),
         ('Is this just a way to argue about quota?', 'It\'s a way to argue about quota with evidence instead of feelings, which is the only version of that argument anyone has ever won.'),
         ('What if I\'m new and don\'t know the territory yet?', 'Then most answers will be sort of, and the verdict will say so. Run it again in 60 days. The gap between the two runs is what you learned.'),
-        ('What about the coverage math?', 'That\'s the other tool. Once you know the territory can produce, <a href="/">Pipeline Check</a> tells you how much pipeline it has to produce.'),
+        ('What about the coverage math?', 'That\'s the other tool. Once you know the territory can produce, <a href="/pipeline/">Pipeline Check</a> tells you how much pipeline it has to produce.'),
     ],
     config='''CheckTool({
   slug: 'territory', name: 'Territory Check', url: 'https://quotabird.com/territory/',
@@ -410,7 +410,7 @@ TERRITORY = dict(
   },
   noMove: 'Build the plan for the ten accounts. The territory isn\\'t the problem.',
   handoff: (s) => s.total >= 55
-    ? { overline: 'Now the coverage math', text: 'The territory can produce. Pipeline Check tells you how much it has to.', href: '/', label: 'Check my pipeline' }
+    ? { overline: 'Now the coverage math', text: 'The territory can produce. Pipeline Check tells you how much it has to.', href: '/pipeline/', label: 'Check my pipeline' }
     : { overline: 'Take it to your manager', text: "Their version of this question is Rep Check, and its first question is the patch. Send them that with your sizing.", href: '/rep/', label: 'Check my rep' },
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have inherited the patch nobody could grow and handed one out by mistake. If the verdict is bad, I can help you make the case. If it's good, I can help you make the plan. One line. No account names." },
   dm: (s) => `Mark, ran my territory through Territory Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Want to make the case to my manager and not sure how. Worth 20 minutes?`,
@@ -638,7 +638,7 @@ BRIEF = dict(
   noMove: 'Lead with the hole. Say your weakest assumption out loud in the first minute; the room will spend the rest of the meeting on your terms.',
   handoff: (s) => s.total >= 75
     ? { overline: 'If the brief is about a deal', text: 'The room will ask whether the deal underneath it is real. Deal Check is that question.', href: '/deal/', label: 'Check my deal' }
-    : { overline: 'If the brief is about the number', text: 'Vague impact usually means the coverage math is missing. Pipeline Check puts a number on it.', href: '/', label: 'Check my pipeline' },
+    : { overline: 'If the brief is about the number', text: 'Vague impact usually means the coverage math is missing. Pipeline Check puts a number on it.', href: '/pipeline/', label: 'Check my pipeline' },
   mark: { title: (s) => 'Stuck on the ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have written the doc that got shredded and the one that got funded, and the difference was always one question I hadn't asked myself. Send me one line about the brief. No document, no company name." },
   dm: (s) => `Mark, ran a brief through Brief Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is the ${s.weak.n.toLowerCase()}. Meeting is coming and I'm not sure it holds. Worth 20 minutes?`,
   dmGrill: (s, missed) => `Mark, ran a brief through Brief Check and couldn't answer ${missed} of the room's 3 questions about the ${s.weak.n.toLowerCase()}. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
@@ -805,7 +805,7 @@ RISK = dict(
     fresh: 'Block two mornings this week for creation. Nothing else fixes a crater.',
   },
   noMove: 'Keep the shape. Now check the size: run the coverage math with your real win rate.',
-  handoff: (s) => ({ overline: 'Shape checked. Now the size.', text: 'Risk is the shape of the pipeline. Pipeline Check is the size. You need both.', href: '/', label: 'Check my pipeline' }),
+  handoff: (s) => ({ overline: 'Shape checked. Now the size.', text: 'Risk is the shape of the pipeline. Pipeline Check is the size. You need both.', href: '/pipeline/', label: 'Check my pipeline' }),
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have forecast the year on two deals and watched both slip in the same week. Send me one line about the shape of the pipeline, no customer names, no dollars." },
   dm: (s) => `Mark, ran my pipeline through Risk Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Coverage looks fine and I don't trust it. Worth 20 minutes?`,
 });''',
@@ -925,7 +925,7 @@ NOTES = [
     <h3>Here's a simple way to tell</h3>
     <p>Take your qualified win rate for the last four quarters. Divide one by it. That's your coverage number, not
       three. Then count only the pipeline you'd defend in a review, and hold it up against that.</p>''',
-         tool=('/', 'Pipeline Check', 'does both in about a minute, and shows the 3X line and yours on the same bar.')),
+         tool=('/pipeline/', 'Pipeline Check', 'does both in about a minute, and shows the 3X line and yours on the same bar.')),
     dict(slug='why-not-bant-or-meddic', title="Why I don't start with BANT or MEDDIC",
          dek="They're useful when you're working a deal. The trouble is the moment before that.",
          body='''    <p class="lede">I've used both, and plenty of versions of both. They're useful when you're working a deal.
@@ -1116,6 +1116,9 @@ print('notes', len(NOTES))
 # The home page source lives in home.src.html; this fills in the note list and build stamp.
 home = open('home.src.html').read().replace('__NOTES__', note_list()).replace('__BUILD__', BUILD)
 open('index.html', 'w').write(home)
+# Pipeline Check lives at /pipeline/ again (it was the home page until the shelf took over)
+os.makedirs('pipeline', exist_ok=True)
+open('pipeline/index.html', 'w').write(open('pipeline.src.html').read().replace('__BUILD__', BUILD))
 
 # ────────────────────────────── CALCULATORS (Quota, Discount, Commission) ──────────────────────────────
 # Rebuilt from the old Fedmo tools: Is My Quota Crazy?, They Want a Discount, Commissions Take-Home.
@@ -1132,7 +1135,7 @@ CALCS = [
   bands=[('how','Why the multiple depends on what you sell','''    <p class="lede">Divide your quota by your on-target earnings. That number tells you more about the plan than the plan will, but only once you know what the quota is measured in.</p>
     <p>For SaaS reps carrying new bookings, the published benchmarks agree: 4 to 6 times OTE, with 5 as the steady state and enterprise roles a little higher. That range is really a commission rate in disguise. At a 50/50 pay mix and roughly 10% on new ARR, quota works out to about five times OTE. Below 3 is unusual and usually means a ramp, an overlay, or a plan with a condition in it. Above 8 the plan is asking for something the patch may not have.</p>
     <p>Cloud consumption is a different animal, and it's the one most people on this site carry. The number is incremental revenue growth on a book, paid at a fraction of a percent, so the same arithmetic gives 15 to 30 times OTE at a big cloud provider and higher in strategic accounts. A rep carrying a $6M growth target on a $280K OTE is at 21×, and in my experience that's ordinary, not crazy. Whole-book targets (retention plus growth on the full run rate) run higher still, 40 to 80 times OTE, because most of that revenue would have happened anyway.</p>
-    <p>The number to watch across all three is the implied rate: your variable divided by your quota. If it's well under what your peers are paid on the same kind of number, the plan is heavier than the multiple alone suggests. And if you closed last year, the growth the new number implies is the real measure of how much harder this year is. Whether the patch can produce it is <a href="/territory/">Territory Check</a>; how much pipeline it takes is <a href="/">Pipeline Check</a>.</p>'''),
+    <p>The number to watch across all three is the implied rate: your variable divided by your quota. If it's well under what your peers are paid on the same kind of number, the plan is heavier than the multiple alone suggests. And if you closed last year, the growth the new number implies is the real measure of how much harder this year is. Whether the patch can produce it is <a href="/territory/">Territory Check</a>; how much pipeline it takes is <a href="/pipeline/">Pipeline Check</a>.</p>'''),
          ('ranges','The ranges I use','''    <p>These are ranges I've seen across cloud providers, SaaS companies and their partners, not rules, and roles differ. Quota ÷ OTE:</p>
     <p><strong>New bookings.</strong> Under 3: low. 3 to 4: favorable. 4 to 6: standard. 6 to 8: a stretch. 8 to 12: aggressive. Over 12: crazy.</p>
     <p><strong>Cloud consumption growth.</strong> Under 8: low. 8 to 15: favorable. 15 to 30: standard. 30 to 45: a stretch. 45 to 60: aggressive. Over 60: crazy.</p>
@@ -1168,7 +1171,7 @@ CALCS = [
     const note = share < .4 ? 'Variable is under 40% of OTE. You\\'re paid mostly to show up, and the quota matters less than it looks.' : share > .6 ? 'Variable is over 60% of OTE. The quota is most of your pay. Treat it like one.' : '';
     return { label: t[0], cls: t[1], attack: t[2], sub: t[3], big: X, rows, note, mult, share, growth, ote, quota: v.quota, basis: B.name, ratePct };
   },
-  handoff: (s) => ({ overline: 'Now the coverage math', text: `At 3X you'd need about $${(s.quota * 3 / 1e6).toFixed(1)}M of qualified pipeline to cover it. Your win rate will say more.`, href: `/#t=${Math.round(s.quota)}&y=cy`, label: 'Check my pipeline' }),
+  handoff: (s) => ({ overline: 'Now the coverage math', text: `At 3X you'd need about $${(s.quota * 3 / 1e6).toFixed(1)}M of qualified pipeline to cover it. Your win rate will say more.`, href: `/pipeline/#t=${Math.round(s.quota)}&y=cy`, label: 'Check my pipeline' }),
   mark: { title: () => 'Is the plan sane?', body: "I'm Mark. I've been handed the crazy number and handed one out by mistake. If the multiple is off, I can help you make the case. If it's fair, I can help you make the plan. One line, no company name, no dollar figures." },
   dm: (s) => `Mark, ran my comp plan through Quota Check. Quota is ${s.big} OTE on ${s.basis}, implied rate ${s.ratePct}, variable ${Math.round(s.share * 100)}% of OTE${s.growth != null ? ', ' + Math.round(s.growth * 100) + '% over what I closed last year' : ''}. Not sure it's sane. Worth 20 minutes?`,
   bookNote: (s) => `Quota Check: ${s.big} OTE on ${s.basis}, implied rate ${s.ratePct}, ${s.label.toLowerCase()}.`,
@@ -1411,7 +1414,7 @@ MATH = [
     <h2>Worked example</h2>
     <p>A $6M number, a 20% qualified win rate. Coverage needed is 1 ÷ 0.20 = 5X, so the pipeline needed is $30M. A
       seller carrying $18M is at 3X, which looks covered, and is $12M short.</p>''',
-  tool=('/', 'Pipeline Check', 'runs this with your own number and win rate, and shows the 3X line and yours on one bar.'),
+  tool=('/pipeline/', 'Pipeline Check', 'runs this with your own number and win rate, and shows the 3X line and yours on one bar.'),
   sources=['The arithmetic on this page needs no source. The 3X convention is widespread in sales planning; this page explains what it assumes rather than endorsing it.']),
  dict(slug='quota-to-ote', title='What your quota-to-OTE ratio really says',
   dek='Quota ÷ OTE is your variable share divided by your commission rate. It\'s a pay rate in disguise.',
@@ -1670,7 +1673,7 @@ KIT_BODY = '''
     <p>One habit I like: run the forecast once without your biggest deal. That's the plan I'd want to manage.</p>
     <div class="sheet">
       <h3>Worksheet: Team pipeline</h3>
-      <p class="sheet-meta">Quarter __________ &nbsp; Date __________ &nbsp; <span class="sheet-tool">Online: Pipeline Check, quotabird.com</span></p>
+      <p class="sheet-meta">Quarter __________ &nbsp; Date __________ &nbsp; <span class="sheet-tool">Online: quotabird.com/pipeline</span></p>
       <div class="mtable"><table class="ws wide"><thead><tr><th>Rep</th><th>Number</th><th>Qualified pipeline</th><th>Win rate</th><th>Coverage needed (1 ÷ win rate)</th><th>Coverage now</th><th>Biggest deal</th></tr></thead><tbody>
         <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -2064,7 +2067,7 @@ SELLER_BODY = '''
       however real it is.</p>
     <div class="sheet">
       <h3>Worksheet: My pipeline math</h3>
-      <p class="sheet-meta">Period __________ &nbsp; <span class="sheet-tool">Online: Pipeline Check, quotabird.com</span></p>
+      <p class="sheet-meta">Period __________ &nbsp; <span class="sheet-tool">Online: quotabird.com/pipeline</span></p>
       <div class="mtable"><table class="ws"><tbody>
         <tr><td>My number</td><td></td><td>Closed so far</td><td></td></tr>
         <tr><td>Left to close</td><td></td><td>My win rate</td><td></td></tr>
@@ -2387,7 +2390,7 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
 
 # ── the 404 page carries the same shelf as the home page (one copy of the covers, pulled at build time) ──
 _home_src = open('home.src.html', encoding='utf-8').read()
-_shelf = re.search(r'    <div class="shelf-grid">.*?\n    </div>\n', _home_src, flags=re.S).group(0).replace('href="#pipeline"', 'href="/#pipeline"')
+_shelf = re.search(r'    <div class="shelf-grid">.*?\n    </div>\n', _home_src, flags=re.S).group(0)
 _nf = open('404.html', encoding='utf-8').read()
 _nf = re.sub(r'<!--shelf-->.*?<!--/shelf-->', lambda m_: '<!--shelf-->\n' + _shelf + '<!--/shelf-->', _nf, count=1, flags=re.S)
 open('404.html', 'w', encoding='utf-8').write(_nf)
@@ -2442,7 +2445,7 @@ def chrome(path):
         elif path in SELLERCARD_PAGES and 'kit-band' not in mark: mark = SELLERCARD_SRC + mark
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
-PAGES = ['index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION)] \
+PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION)] \
         + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html'] + ['404.html']
 for _p in PAGES:
     chrome(_p)
@@ -2474,11 +2477,11 @@ for _p in PAGES:
 # Both are generated from the same tool list as the site, so they cannot drift.
 # llms.txt follows llmstxt.org (H1, blockquote summary, H2 sections of "- [name](url): description").
 # ai-catalog.json follows the ARD ai-catalog schema 1.0 (ards-project/ard-spec); each tool is a text/html entry.
-DESC = {'/': 'Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need.',
+DESC = {'/pipeline/': 'Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need.',
         '/deal/': 'Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.'}
 for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
 for c in CALCS: DESC['/' + c['slug'] + '/'] = c['name'] + ': ' + c['desc']
-QUERIES = {'/': ['do I have enough pipeline to make my number', 'pipeline coverage calculator with my win rate', 'is 3X pipeline coverage enough'],
+QUERIES = {'/pipeline/': ['do I have enough pipeline to make my number', 'pipeline coverage calculator with my win rate', 'is 3X pipeline coverage enough'],
            '/deal/': ['is my deal real or hopium', 'qualify a federal sales deal before commit', 'what will my manager ask about this deal'],
            '/quota/': ['is my quota crazy', 'quota to OTE ratio for cloud sales', 'is my sales quota fair'],
            '/territory/': ['can my territory make the number', 'is my sales territory viable', 'new patch sizing check'],
@@ -2507,7 +2510,7 @@ lines += ['## Free printable', '', f"- [The Manager's Field Kit]({site}/kit/): a
 open('llms.txt', 'w').write('\n'.join(lines))
 entries = []
 for g, h, n, d in TOOLS:
-    slug = 'pipeline' if h == '/' else h.strip('/')
+    slug = h.strip('/')
     entries.append({"identifier": f"urn:air:quotabird.com:tools:{slug}-check", "displayName": n, "type": "text/html", "url": site + h,
                     "description": DESC[h], "tags": [g.lower().replace(' ', '-'), 'sales', 'free', 'no-login'],
                     "capabilities": [n.replace(' ', '')], "representativeQueries": QUERIES[h][:5], "version": BUILD[:10].replace('-', '.'),

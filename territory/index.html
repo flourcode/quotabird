@@ -104,7 +104,7 @@
   <header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/territory/" class="current">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your team</div><a href="/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">Talent Review</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div></div></details>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/territory/" class="current">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your team</div><a href="/pipeline/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">Talent Review</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div></div></details>
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
@@ -177,8 +177,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed the people who did, and spent six years leading federal partner sales teams at AWS. I make these because
-        they're the things I wish we'd had. If a check isn't enough, I'm happy to look at the real thing with you.</p>
+      <p>I carried a number, managed the people who did, and spent six years leading federal partner sales teams at AWS. I make these because they're the things I wish we'd had. Most of it is free; when a problem needs more than a check, I work with managers and teams directly.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -194,7 +193,7 @@
     <details class="exp"><summary>What if I'm new and don't know the territory yet?</summary>
       <div class="body">Then most answers will be sort of, and the verdict will say so. Run it again in 60 days. The gap between the two runs is what you learned.</div></details>
     <details class="exp"><summary>What about the coverage math?</summary>
-      <div class="body">That's the other tool. Once you know the territory can produce, <a href="/">Pipeline Check</a> tells you how much pipeline it has to produce.</div></details>
+      <div class="body">That's the other tool. Once you know the territory can produce, <a href="/pipeline/">Pipeline Check</a> tells you how much pipeline it has to produce.</div></details>
   </div>
 </section>
 
@@ -207,7 +206,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-19.1700';
+window.QB_BUILD = '2026-10-20.1500';
 CheckTool({
   slug: 'territory', name: 'Territory Check', url: 'https://quotabird.com/territory/',
   questions: [
@@ -241,7 +240,7 @@ CheckTool({
   },
   noMove: 'Build the plan for the ten accounts. The territory isn\'t the problem.',
   handoff: (s) => s.total >= 55
-    ? { overline: 'Now the coverage math', text: 'The territory can produce. Pipeline Check tells you how much it has to.', href: '/', label: 'Check my pipeline' }
+    ? { overline: 'Now the coverage math', text: 'The territory can produce. Pipeline Check tells you how much it has to.', href: '/pipeline/', label: 'Check my pipeline' }
     : { overline: 'Take it to your manager', text: "Their version of this question is Rep Check, and its first question is the patch. Send them that with your sizing.", href: '/rep/', label: 'Check my rep' },
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have inherited the patch nobody could grow and handed one out by mistake. If the verdict is bad, I can help you make the case. If it's good, I can help you make the plan. One line. No account names." },
   dm: (s) => `Mark, ran my territory through Territory Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Want to make the case to my manager and not sure how. Worth 20 minutes?`,

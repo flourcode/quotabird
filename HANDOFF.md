@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-19.1700**
+**Current build: 2026-10-20.1500**
 
 ## Naming: checks, not kills
 
@@ -1813,3 +1813,40 @@ should look like defaults). The rest of that review was already true of the
 site: receipt-style rows (labels left, values right), centring only for
 fine print, grouping over white space, colour that carries meaning. Icons
 were deliberately not added; the plain-text voice is the brand.
+
+**2026-10-20.0900** — from a homepage roast, what was taken:
+- **One name:** *free, private sales checks* (tab title, home eyebrow, share
+  card, banner). "The sales problems shelf" is no longer a visible name.
+- **Pipeline Check moved back to `/pipeline/`** (source `pipeline.src.html`),
+  with its 3X essay and its four FAQ answers. Home is now the shelf, *How these
+  work*, Field Notes, the kit card, Made by Mark and a general FAQ; the
+  duplicate "Twelve more checks" list is gone. Every link, hand-off (Quota
+  Check lands on `/pipeline/#t=…`), llms.txt and ai-catalog entry repointed;
+  1,403 internal links checked, none broken. **Amplify: the old `/pipeline` →
+  `/` rules must go** (new list in `amplify-rewrites.json`: `/pipeline` →
+  `/pipeline/`). Browsers that visited `/pipeline` after Oct 8 may have cached
+  the old redirect; it clears with their cache.
+- **Pipeline verdict ladder:** Covered / Close / At risk / Short. *Hopium* stays
+  in Deal Check, the Deal cover and the 3X essay only.
+- Home hero: *Five questions or a few numbers each. Nothing typed into a system
+  your boss can see.* (the "five taps" stretch is gone).
+- Desktop header no longer repeats Field Kits / Field Notes / About inside the
+  Tools menu (phones still need them there).
+- Cover stamps are `aria-hidden` (screen readers heard "QuotaBird" 15 times).
+- American spelling throughout (three British spellings fixed).
+- Made by Mark now says plainly that paid help exists.
+Not taken: three tools instead of fifteen (the shelf is Mark's choice and has
+one *Start here*), leading the whole site with "federal" (the audience is
+cloud and SaaS sellers too; the credential line carries it), renaming `/kit/`
+(the PDF is already shared at that address).
+
+**2026-10-20.1100** — the site's one name is now *Help for your sales problems* (tab title, home label, search and share text, share card, banner), replacing *free, private sales checks*; "private" answered a question Mark's users weren't asking.
+
+**2026-10-20.1300** — home hero, Mark's wording: *A little help with sales* /
+*Pick the problem you've got.* / *A few questions. A few numbers. A useful
+answer.* / *Built by Mark Flournoy, after six years leading federal partner
+sales teams at AWS.* Carried through the tab title, search and share text,
+share card and banner. The privacy line ("nothing typed into a system your
+boss can see") now lives in *How these work* rather than the hero.
+
+**2026-10-20.1500** — home hero trimmed to the label and headline (*A little help with sales / Pick the problem you've got.*) so more of the shelf shows above the fold. The credential still appears on About, Ask Mark and in the Made-by card; the share card and banner keep their three short lines.

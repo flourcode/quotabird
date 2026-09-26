@@ -40,6 +40,8 @@ CARDS = {
     dek='Five questions, then the room pressure-tests you. Grades the assessment, never the rep.',
     foot='For managers with a rep to defend. No names. No ratings.', url='quotabird.com/olr',
     pillars=['RECEIPTS', 'OWNERSHIP', 'SCOPE', 'HOW', 'NEXT']),
+  'pipeline': dict(out='card-pipeline.jpg', wordmark='PIPELINE CHECK', headline=["You sure that's", 'enough pipeline?'], dek='3X is a rule of thumb. Put in your win rate and see what you really need.',
+    foot='Free. In your browser. Nothing stored.', url='quotabird.com/pipeline', pillars=['TARGET', 'PIPELINE', 'WIN RATE', 'THE GAP']),
   'quota': dict(out='card-quota.jpg', wordmark='QUOTA CHECK', headline=['Is my quota crazy?', ''], dek='Your number against your on-target earnings, and what it asks of your patch.',
     foot='Free. In your browser. Nothing stored.', url='quotabird.com/quota', pillars=['OTE', 'MULTIPLE', 'VARIABLE', 'GROWTH']),
   'discount': dict(out='card-discount.jpg', wordmark='DISCOUNT CHECK', headline=['They want a discount.', ''], dek='What it costs you in commission, and the company in margin, before you say yes.',
@@ -104,7 +106,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'banner':
     lb = bird.resize((int(34 * S * bird.width / bird.height), 34 * S), Image.LANCZOS)
     ty = 92 * S
     im.paste(lb, (tx, ty), lb); d.text((tx + lb.width + 10 * S, ty + 3 * S), 'QuotaBird', font=font(700, 22), fill=INK)
-    d.text((tx, ty + 56 * S), 'THE SALES PROBLEMS SHELF', font=font(700, 13), fill=ACC)
+    d.text((tx, ty + 56 * S), 'A LITTLE HELP WITH SALES', font=font(700, 13), fill=ACC)
     d.text((tx - 2 * S, ty + 80 * S), 'Pick the problem', font=font(800, 38), fill=INK)
     d.text((tx - 2 * S, ty + 124 * S), "you've got.", font=font(800, 38), fill=INK)
     d.text((tx, ty + 180 * S), 'quotabird.com', font=font(700, 19), fill=ACC)
@@ -156,12 +158,12 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
         im.paste(cover, (x, y), rm)
     lb = bird.resize((int(46 * S * bird.width / bird.height), 46 * S), Image.LANCZOS); im.paste(lb, (M, M - 4 * S), lb)
     d.text((M + lb.width + 14 * S, M + 1 * S), 'QuotaBird', font=font(700, 28), fill=INK)
-    d.text((M, M + 96 * S), 'THE SALES PROBLEMS SHELF', font=font(700, 17), fill=ACC)
+    d.text((M, M + 96 * S), 'A LITTLE HELP WITH SALES', font=font(700, 17), fill=ACC)
     y = M + 128 * S
     for line in ['Pick the', 'problem', "you've got."]:
         d.text((M - 2 * S, y), line, font=font(800, 62), fill=INK); y += 70 * S
     y += 16 * S
-    for line in ['Five taps or a few numbers.', 'A straight answer.', 'Nothing stored.']:
+    for line in ['A few questions.', 'A few numbers.', 'A useful answer.']:
         d.text((M, y), line, font=font(400, 25), fill=VAR); y += 34 * S
     d.text((M, H - M - 26 * S), 'quotabird.com', font=font(700, 26), fill=ACC)
     im.save('card.jpg', quality=90, optimize=True, progressive=True, subsampling=0)

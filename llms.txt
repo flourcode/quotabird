@@ -19,7 +19,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 ## Your team
 
-- [Pipeline Check](https://quotabird.com/): Target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. (quarterly, before the review.)
+- [Pipeline Check](https://quotabird.com/pipeline/): Target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. (quarterly, before the review.)
 - [Risk Check](https://quotabird.com/risk/): Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored. (when coverage looks fine and you don't trust it.)
 - [Rep Check](https://quotabird.com/rep/): Is it the rep, the patch, a skill gap or an effort gap? Five questions for sales managers. No names, nothing stored. (when a rep is worrying you.)
 - [Partner Check](https://quotabird.com/partner/): Five questions that separate a partner who sells with you from a logo on a slide. For partner managers. One minute, nothing stored. (before you renew the partnership.)

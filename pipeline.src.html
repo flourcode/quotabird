@@ -16,14 +16,14 @@
 <meta property="og:title" content="Pipeline Check: You sure that's enough pipeline?">
 <meta property="og:description" content="Pipeline coverage by your own win rate, not a blind 3X. Put in your target, your qualified pipeline and your win rate to see the real gap. Free, in your browser, nothing stored.">
 <meta property="og:site_name" content="QuotaBird">
-<meta property="og:image" content="https://quotabird.com/card-pipeline.jpg?v=ea80ae10">
+<meta property="og:image" content="https://quotabird.com/card-pipeline.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Pipeline Check: You sure that's enough pipeline?">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Pipeline Check: You sure that's enough pipeline?">
 <meta name="twitter:description" content="Pipeline coverage by your own win rate, not a blind 3X. Put in your target, your qualified pipeline and your win rate to see the real gap. Free, in your browser, nothing stored.">
-<meta name="twitter:image" content="https://quotabird.com/card-pipeline.jpg?v=ea80ae10">
+<meta name="twitter:image" content="https://quotabird.com/card-pipeline.jpg">
 <meta name="twitter:image:alt" content="Pipeline Check: You sure that's enough pipeline?">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
@@ -39,7 +39,7 @@
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Any",
       "description": "Pipeline coverage by your own win rate, not a blind 3X. Put in your target, your qualified pipeline and your win rate to see the real gap. Free, in your browser, nothing stored.",
-      "image": "https://quotabird.com/card-pipeline.jpg?v=ea80ae10",
+      "image": "https://quotabird.com/card-pipeline.jpg",
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -70,7 +70,7 @@
           "name": "How is the verdict calculated?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Required pipeline is the number still to find ÷ your qualified win rate, or × 3 if you leave win rate blank. The verdict is your pipeline as a share of that: covered at 100% or more, close from 75%, at risk from 50%, short below. Opportunities are the gap ÷ your average deal size, rounded up."
+            "text": "Required pipeline is the number still to find \u00f7 your qualified win rate, or \u00d7 3 if you leave win rate blank. The verdict is your pipeline as a share of that: covered at 100% or more, close from 75%, at risk from 50%, short below. Opportunities are the gap \u00f7 your average deal size, rounded up."
           }
         },
         {
@@ -101,16 +101,7 @@
 <body class="wide-page">
 
 <div class="wrap wide">
-  <header class="appbar">
-    <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
-    <nav class="topnav" aria-label="Site">
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your team</div><a href="/pipeline/" class="current">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">Talent Review</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div></div></details>
-      <a class="toplink" href="/kits/">Field Kits</a>
-      <a class="toplink" href="/notes/">Field Notes</a>
-      <a class="toplink" href="/about/">About</a>
-      <a class="chip chip-ask" href="/ask/">Ask Mark</a>
-    </nav>
-  </header>
+  <header class="appbar"></header>
   <div id="screen" class="calc-screen">
     <span class="overline tool-name">Pipeline Check</span>
     <h1>You sure that's enough pipeline?</h1>
@@ -175,16 +166,7 @@
   </div>
 </section>
 
-<section class="band" id="about" aria-labelledby="madeby-h">
-  <div class="band-inner madeby">
-    <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
-    <div>
-      <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed the people who did, and spent six years leading federal partner sales teams at AWS. I make these because they're the things I wish we'd had. Most of it is free; when a problem needs more than a check, I work with managers and teams directly.</p>
-      <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
-    </div>
-  </div>
-</section>
+<section class="band" id="about"></section>
 
 <section class="band" id="faq" aria-labelledby="faq-h">
   <div class="band-inner">
@@ -210,14 +192,13 @@
 </section>
 
 <footer class="sitefoot">
-  <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/ask/">Ask Mark</a></p>
   <p>Pipeline Check is one of the free <a href="/">QuotaBird</a> tools by
     <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-20.1500';
+window.QB_BUILD = '__BUILD__';
 const track = (n) => { if (typeof window.qbTrack === 'function') window.qbTrack(n); else (window.qbTrackQ = window.qbTrackQ || []).push(n); };
 const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const $ = (id) => document.getElementById(id);
