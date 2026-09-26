@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-18.2100**
+**Current build: 2026-10-18.2300**
 
 ## Naming: checks, not kills
 
@@ -1731,3 +1731,13 @@ Field Notes, Sales Math and their articles, Field Kits). Home share title
 the shelf; structured data adds the shelf as an ItemList of fifteen. **If a
 cover's words or colors change, re-run `make-card.py home` so the card keeps
 matching the shelf.**
+
+**2026-10-18.2300** — share-tag hygiene, run at the end of every build:
+share images carry a content fingerprint (`card.jpg?v=adec3d8f`) because
+LinkedIn caches images by URL and ignored the new home card; a changed card
+now gets a new URL, an unchanged one keeps its URL. **Order matters: run
+`make-card.py` first, then `make-tools.py`,** so the fingerprints match the
+images. Share descriptions under 100 characters (LinkedIn's warning) fall
+back to the page's search description; Field Notes' descriptions now say
+which tool each ends with. Partner and Rep no longer share with their old
+"Before you…" lines.

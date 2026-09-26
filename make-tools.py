@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-18.2100'
+BUILD = '2026-10-18.2300'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -1064,7 +1064,7 @@ for n in NOTES:
                      "author": {"@type": "Person", "@id": "https://quotabird.com/#about", "name": "Mark Flournoy"},
                      "publisher": {"@type": "Organization", "name": "QuotaBird", "url": "https://quotabird.com/"}}, indent=2)
     href, name, line = n['tool']
-    html = note_head(n['title'], n['dek'], url) + f'''<script type="application/ld+json">
+    html = note_head(n['title'], n['dek'] + ' A Field Note that ends with ' + n['tool'][1] + ', which ' + n['tool'][2], url) + f'''<script type="application/ld+json">
 {ld}
 </script>
 </head>
@@ -1092,7 +1092,7 @@ for n in NOTES:
     os.makedirs(f'notes/{n["slug"]}', exist_ok=True)
     open(f'notes/{n["slug"]}/index.html', 'w').write(html)
 
-idx = note_head('Field Notes', 'Short reads on things everybody in tech sales says that deserve a second look.', 'https://quotabird.com/notes/') + '''</head>
+idx = note_head('Field Notes', 'Short reads on things everybody in tech sales says that deserve a second look. Each one ends with the tool that does the math.', 'https://quotabird.com/notes/') + '''</head>
 <body>
 
 <div class="wrap">
@@ -2413,3 +2413,28 @@ def _pri(p): return '1.0' if p == 'index.html' else '0.6' if p.startswith('notes
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     + ''.join(f'  <url><loc>{_loc(p)}</loc><lastmod>{BUILD[:10]}</lastmod><priority>{_pri(p)}</priority></url>\n' for p in _urls) + '</urlset>\n')
 print('sitemap', len(_urls), 'urls')
+
+# ── share-tag hygiene, run on every built page ──
+# 1. LinkedIn wants 100+ characters: a short og/twitter description falls back to the page's search description.
+# 2. Share images carry a fingerprint of their contents (card.jpg?v=1a2b3c4d), so a changed card gets a new URL
+#    and LinkedIn, which caches images by URL, has to fetch it fresh. Unchanged cards keep their URL.
+#    Re-run this build after make-card.py, so the fingerprints match the images.
+import hashlib, glob as _glob, html as _h
+def _fp(fname):
+    try: return hashlib.sha1(open(fname, 'rb').read()).hexdigest()[:8]
+    except FileNotFoundError: return None
+_short = []
+for _p in ['index.html'] + sorted(_glob.glob('*/index.html')) + sorted(_glob.glob('*/*/index.html')) + ['404.html']:
+    _s = open(_p, encoding='utf-8').read(); _o = _s
+    _meta = re.search(r'<meta name="description" content="([^"]*)"', _s)
+    for _tag in ('property="og:description"', 'name="twitter:description"'):
+        _m = re.search(r'<meta ' + re.escape(_tag) + r' content="([^"]*)"', _s)
+        if _m and len(_h.unescape(_m.group(1))) < 100 and _meta and len(_h.unescape(_meta.group(1))) >= 100:
+            _s = _s.replace(_m.group(0), '<meta ' + _tag + ' content="' + _meta.group(1) + '"', 1)
+    def _ver(mm):
+        f = _fp(mm.group(2)); return mm.group(1) + (f'?v={f}' if f else '')
+    _s = re.sub(r'(https://quotabird\.com/(card[\w-]*\.jpg))(?:\?v=[0-9a-f]+)?', _ver, _s)
+    if _s != _o: open(_p, 'w', encoding='utf-8').write(_s)
+    _d = re.search(r'property="og:description" content="([^"]*)"', _s)
+    if _d and len(_h.unescape(_d.group(1))) < 100: _short.append(_p)
+print('share descriptions under 100 characters:', _short or 'none')
