@@ -68,11 +68,24 @@
 
 <div class="wrap wide">
   <header class="appbar"></header>
+  <div class="front" id="front">
+    <span class="overline tool-name">QuotaBird</span>
+    <h1>What's giving you trouble this week?</h1>
+    <p class="dek">Pick one. Five taps or a few numbers, a straight answer, nothing stored.</p>
+    <div class="choice-group front-picks" role="list">
+      <a class="choice" href="/deal/#start"><span>A deal I'm not sure about</span><small>Deal Check</small></a>
+      <a class="choice" href="#pipeline"><span>Not enough pipeline</span><small>Pipeline Check</small></a>
+      <a class="choice" href="/quota/"><span>The quota they just handed me</span><small>Quota Check</small></a>
+      <a class="choice" href="/rep/#start"><span>A rep who's worrying me</span><small>Rep Check</small></a>
+      <a class="choice" href="/partner/#start"><span>A partner that isn't producing</span><small>Partner Check</small></a>
+      <a class="choice" href="/brief/#start"><span>A deck or brief to defend</span><small>Brief Check</small></a>
+    </div>
+    <p class="startnote"><a href="#working">Something else? All thirteen checks ↓</a></p>
+  </div>
   <div id="screen" class="calc-screen home-calc">
-    <span class="overline tool-name">Pipeline Check</span>
-    <h1>You sure that's enough pipeline?</h1>
-    <p class="dek">Plug in your own numbers to find out.
-      <a class="shelf" href="#working">One of thirteen quick checks ↓</a></p>
+    <span class="overline tool-name" id="pipeline">Pipeline Check</span>
+    <h2 class="h1">You sure that's enough pipeline?</h2>
+    <p class="dek">Plug in your own numbers to find out.</p>
     <div class="calc">
       <div class="calc-out" id="out" aria-live="polite"></div>
       <form class="calc-in" id="f" autocomplete="off" novalidate>

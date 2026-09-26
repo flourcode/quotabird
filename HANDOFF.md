@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-18.0900**
+**Current build: 2026-10-18.1100**
 
 ## Naming: checks, not kills
 
@@ -104,7 +104,19 @@ live in `CALCS` in `make-tools.py`; the page template is `calc_page()`.
 Menu group *Your number*; home doorways *I just got my quota*, *They want a
 discount*, *It closed*.
 
-**Home is Pipeline Check.** The site is named for the number, so the front
+**The front door asks the question.** The home page opens with *What's
+giving you trouble this week?* and six first-person answers, styled like the
+tools' own answer buttons: a deal, pipeline, quota, a rep, a partner, a deck
+or brief. Six is the cap (more is a menu). Each is one tap into the right
+tool, and the question tools open on question 1 via a `#start` link
+(`/deal/#start`, `/rep/#start`…; `check.js` and the Deal page both honor
+it). The pipeline answer scrolls to the calculator, which sits right below
+the front door with its own heading. Recognition is the instant value here:
+a jaded seller sees their week named before they see a number. All six fit
+above the fold on a 375×667 phone; the tool names beside each answer show
+only from 420px up. Taps count as `front_pick`.
+
+**Home is Pipeline Check, second.** The site is named for the number, so the front
 door is the tool that checks it. On a phone the order is hero, verdict card
 and coverage bar (`#out`), the fields, then the rows, clock, hand-off, share
 and Mark card (`#out2`); on desktop the fields sit left and the two output
@@ -1649,3 +1661,8 @@ assessment survive the room?* Start button *Test my assessment* (18
 characters, at the limit). Nav and home doorway say *Talent Review* (the
 page keeps the full name). "The room respects…" line replaced with "A soft
 spot you name first stops being a weakness."
+
+**2026-10-18.1100** — new front door on the home page: *What's giving you
+trouble this week?* with six one-tap answers; tools accept `#start` to open
+on question 1; Pipeline Check moves to second position with an h2. Easy to
+revert: the calculator block is unchanged underneath.

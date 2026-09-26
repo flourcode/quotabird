@@ -272,6 +272,7 @@
     bind();
     try { history.replaceState({ sc: ['h'] }, '', location.href); } catch {}
     if (readHash()) result(true);
+    else if (location.hash === '#start') { clearHash(); const b = document.getElementById('prep'); if (b) b.click(); }   // the home page's front door lands on question 1
     window.addEventListener('popstate', (e) => {
       const st = e.state && e.state.sc; restoring = true;
       const complete = P.every(p => answers[p.k]);

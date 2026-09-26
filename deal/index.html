@@ -712,7 +712,8 @@ if (fromHash) { Object.assign(answers, fromHash); result(true); }
 else {
   // The home page asks question 1 and sends the answer here as a short hash: pick up at question 2.
   const partial = (location.hash || '').replace('#', '').toLowerCase();
-  if (/^[ysn]{1,4}$/.test(partial)) { answers = {}; [...partial].forEach((ch, i) => { answers[P[i].k] = DECODE[ch]; }); clearHash(); track('start'); ask(partial.length); }
+  if (partial === 'start') { clearHash(); ask(0); }   // the home page's front door lands on question 1
+  else if (/^[ysn]{1,4}$/.test(partial)) { answers = {}; [...partial].forEach((ch, i) => { answers[P[i].k] = DECODE[ch]; }); clearHash(); track('start'); ask(partial.length); }
 }
 // A shared link opened in a tab that already has the site.
 window.addEventListener('hashchange', () => { const h = readHash(); if (h) { answers = {}; Object.assign(answers, h); result(true); } });
