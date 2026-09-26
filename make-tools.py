@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-17.1900'
+BUILD = '2026-10-18.0900'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -16,7 +16,7 @@ TOOLS = [
     ('Your team', '/risk/', 'Risk Check', 'When coverage looks fine and you don\'t trust it'),
     ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
     ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
-    ('Your team', '/olr/', 'Talent Review Check', 'Review season'),
+    ('Your team', '/olr/', 'Talent Review', 'Review season'),
     ('Any meeting', '/brief/', 'Brief Check', 'When someone in the room can say no'),
 ]
 
@@ -420,12 +420,11 @@ TERRITORY = dict(
 OLR = dict(
     slug='olr', name='Talent Review Check',
     title='Talent Review Check: Will Your Case Survive Calibration? (OLR Prep)',
-    desc="Five questions that test the case you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you. No names, no ratings, nothing stored.",
-    ogdesc='Before you walk into calibration, test your case. Five questions, then the room pressure-tests you. No names, no ratings.',
-    h1='Will your case survive the room?',
-    ogh1='Will your recommendations survive the room?',
-    dek='Five questions about your case, before the room asks them.',
-    cta='Check my case',
+    desc="Five questions that test the assessment you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you. No names, no ratings, nothing stored.",
+    ogdesc='Before you walk into calibration, test your assessment. Five questions, then the room pressure-tests you. No names, no ratings.',
+    h1='Will your assessment survive the room?',
+    dek='Five questions about your assessment, before the room asks them.',
+    cta='Test my assessment',
     questions=[
         dict(k='receipts', n='RECEIPTS', q='Can you name three things they delivered this year, each with a number on it?'),
         dict(k='ownership', n='OWNERSHIP', q="For the biggest one, can you say what wouldn't have happened without them?"),
@@ -438,15 +437,15 @@ OLR = dict(
       seconds to managers who don't know them, and having the explanation survive their questions.</p>
     <p>Every calibration room runs the same way: you propose, they probe, the evaluation moves if you can't hold it.
       The managers across the table aren't hostile. They just haven't seen your rep's year, so all they can test is
-      your case. A case is receipts, ownership, scope, behavior and next scope. Everything else is adjectives.</p>
+      your assessment. An assessment is receipts, ownership, scope, behavior and next scope. Everything else is adjectives.</p>
     <p><strong>RECEIPTS: Three things, each with a number.</strong> Amazon's own self-review now asks for three to five
       accomplishments with measurable outcomes. If you can't name three with a number on them, the room hears "had a
       good year," and "had a good year" loses to anyone who brought a spreadsheet.</p>
     <p><strong>OWNERSHIP: What wouldn't have happened without them?</strong> The first question in any room is how much of
       the outcome belongs to this person versus the team, the partner, or the market. If you can answer that in one
-      sentence for the biggest win, the rest of the case is easier.</p>
+      sentence for the biggest win, the rest of the assessment is easier.</p>
     <p><strong>SCOPE: Their level, not the level below.</strong> "Strong L5 execution" is the polite way a room says no to
-      an L6 case. What made the problem their-level sized: the ambiguity, the number of teams, the absence of a
+      an L6 assessment. What made the problem their-level sized: the ambiguity, the number of teams, the absence of a
       playbook, the decisions nobody else was going to make?</p>
     <p><strong>HOW: One example per principle.</strong> Leadership principles are behavioral standards, not compliments.
       The room will ask for the example. If you'll cite four principles, bring four examples, and drop the ones you
@@ -454,7 +453,7 @@ OLR = dict(
     <p><strong>NEXT: The harder thing.</strong> Potential isn't "I think she's a future VP." It's the problem you would
       hand them next year that you wouldn't have handed them last year, and what they've already done that makes you
       sure. Scope, complexity, or impact, growing.</p>'''),
-        ('bias', 'Check yourself before the room does', '''    <p class="lede">The case that fails in calibration is usually a good rep with a manager who brought impressions.</p>
+        ('bias', 'Check yourself before the room does', '''    <p class="lede">The assessment that fails in calibration is usually a good rep with a manager who brought impressions.</p>
     <p><strong>Recency.</strong> How much of your judgment comes from the last sixty days?</p>
     <p><strong>Visibility.</strong> Would you reach the same conclusion if this person weren't in your meetings every week?</p>
     <p><strong>Halo.</strong> Remove their biggest win. What does the rest of the year look like?</p>
@@ -462,16 +461,16 @@ OLR = dict(
     <p><strong>Style.</strong> Are you evaluating impact, or whether they communicate the way you do?</p>
     <p><strong>Context.</strong> Did a reorg, a manager change, a leave, or a territory change alter what could reasonably
       be delivered? Say so first, before someone else does.</p>
-    <p>This tool grades your case, never your rep. It won't tell you a rating, predict one, or suggest one, and it
+    <p>This tool grades your assessment, never your rep. It won't tell you a rating, predict one, or suggest one, and it
       never asks for a name. What it will do is ask the questions the room is going to ask, before the room does.</p>'''),
     ],
     faq=[
         ('Does anything I enter leave my device?', 'No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.'),
-        ('Does it predict a rating?', 'No, and it never will. It grades the quality of your case: ready, not yet, a story, or no receipts. Your organization already has machinery for the rating. What it doesn\'t have is a rehearsal.'),
+        ('Does it predict a rating?', 'No, and it never will. It grades the quality of your assessment: ready, not yet, a story, or no receipts. Your organization already has machinery for the rating. What it doesn\'t have is a rehearsal.'),
         ('What is OLR?', "Organization and Leadership Review: Amazon's annual talent review, where managers propose an evaluation for each of their people and then defend it in calibration with other managers, alongside promotion and development decisions. Talent Review Check is the rehearsal for the defending part."),
         ('Is this only for Amazon?', 'OLR is Amazon\'s name for it, and that\'s where most of the people who use these tools have sat. But every calibration room asks the same five things, whatever the company calls it. Read "leadership principle" as your organization\'s behavioral standard and the tool works the same.'),
-        ('What does Pressure test do?', 'It plays the room. Three hard questions about your weakest answer, one at a time, and you say whether you can answer each. If you can\'t answer two of three about ownership, that case isn\'t ready, and better to learn that here than across the table.'),
-        ('Why does it never ask the rep\'s name?', 'Because it doesn\'t need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, fix the case, and nothing about it is written down anywhere.'),
+        ('What does Pressure test do?', 'It plays the room. Three hard questions about your weakest answer, one at a time, and you say whether you can answer each. If you can\'t answer two of three about ownership, that assessment isn\'t ready, and better to learn that here than across the table.'),
+        ('Why does it never ask the rep\'s name?', 'Because it doesn\'t need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, fix the assessment, and nothing about it is written down anywhere.'),
     ],
     config='''CheckTool({
   slug: 'olr', name: 'Talent Review Check', url: 'https://quotabird.com/olr/',
@@ -487,7 +486,7 @@ OLR = dict(
     if (total >= 75) return { label: 'Ready', cls: 'ready', attack: 'The room can test this. Let it.', sub: 'Bring the receipts in the order you would say them, and say the weakest one first.' };
     if (total >= 55) return { label: 'Not yet', cls: 'proof', attack: 'Your conclusion may be right. You haven\\'t documented enough to defend it.', sub: 'One more receipt on the weakest answer and this holds.' };
     if (total >= 35) return { label: 'A story', cls: 'prove', attack: "You're telling a story. The room wants receipts.", sub: 'Adjectives and impressions where outcomes, examples and artifacts should be.' };
-    return { label: 'No receipts', cls: 'dont', attack: 'This won\\'t survive the first question.', sub: "It may still be a good rep. It isn't a case yet." };
+    return { label: 'No receipts', cls: 'dont', attack: 'This won\\'t survive the first question.', sub: "It may still be a good rep. It isn't an assessment yet." };
   },
   askedBy: 'The room will ask',
   grill: {
@@ -505,12 +504,12 @@ OLR = dict(
     next: ['What harder problem have they already shown they can handle?', 'Where did they grow scope without being asked?', 'What feedback did they get this year, and what observable behavior changed?'],
   },
   grillBy: 'The room', grillLabel: 'Pressure test', fixLabel: 'Before the room',
-  grillLines: { clean: 'Your case would survive.', one: 'Your case would mostly survive. One hole left.', bad: 'Your case wouldn\\'t survive.', cleanSub: 'Three questions from the room, three answers. Say the weakest receipt first.' },
+  grillLines: { clean: 'Your assessment would survive.', one: 'Your assessment would mostly survive. One hole left.', bad: 'Your assessment wouldn\\'t survive.', cleanSub: 'Three questions from the room, three answers. Say the weakest receipt first.' },
   fix: {
-    receipts: 'Write the three things down, each with its number, before you write anything else. If you can\\'t get to three, the case is the problem, not the rep.',
+    receipts: 'Write the three things down, each with its number, before you write anything else. If you can\\'t get to three, the assessment is the problem, not the rep.',
     ownership: 'For the biggest win, write one sentence starting "Without them, ...". If you can\\'t finish it, find the win where you can.',
     scope: 'Write what made the problem their-level sized: the teams, the ambiguity, the missing playbook, the decision nobody else would make.',
-    how: 'Cut every principle you can\\'t attach an example to. A case with two backed principles beats one with six adjectives.',
+    how: 'Cut every principle you can\\'t attach an example to. An assessment with two backed principles beats one with six adjectives.',
     next: 'Name the harder assignment you would give them and the thing they already did that makes you sure. Potential is evidence, not a feeling.',
   },
   moves: {
@@ -520,13 +519,13 @@ OLR = dict(
     how: 'Cut every principle without an example. Keep the ones you can prove.',
     next: 'Name next year\\'s harder assignment and the evidence that says they can carry it.',
   },
-  noMove: 'Put the weakest receipt first when you present. The room respects a case that leads with its own soft spot.',
+  noMove: 'Put the weakest receipt first when you present. A soft spot you name first stops being a weakness.',
   handoff: (s) => s.total >= 75
-    ? { overline: 'The case is ready. Is the year set up?', text: "Next year's case starts now. Is the rep in a patch that can produce one? Rep Check asks that first.", href: '/rep/', label: 'Check my rep' }
+    ? { overline: 'The assessment is ready. Is the year set up?', text: "Next year's assessment starts now. Is the rep in a patch that can produce one? Rep Check asks that first.", href: '/rep/', label: 'Check my rep' }
     : { overline: 'The fastest receipt', text: 'A deal you watched them run. Sit in their next customer meeting and run it through Deal Check together. That\\'s evidence for both of you.', href: '/deal/', label: 'Check my deal' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have written the case that got taken apart in the room and the one that held, and the difference was never the rep. Send me one line about the case. No names, no ratings." },
-  dm: (s) => `Mark, ran a rep's talent review case through Talent Review Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. OLR is coming and I'm not sure it holds. Worth 20 minutes?`,
-  dmGrill: (s, missed) => `Mark, ran a rep's talent review case through Talent Review Check and couldn't answer ${missed} of the room's 3 ${s.weak.n.toLowerCase()} questions. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have written the assessment that got taken apart in the room and the one that held, and the difference was never the rep. Send me one line about the assessment. No names, no ratings." },
+  dm: (s) => `Mark, ran a rep's talent review assessment through Talent Review Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. OLR is coming and I'm not sure it holds. Worth 20 minutes?`,
+  dmGrill: (s, missed) => `Mark, ran a rep's talent review assessment through Talent Review Check and couldn't answer ${missed} of the room's 3 ${s.weak.n.toLowerCase()} questions. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
 });''',
 )
 

@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-17.1900**
+**Current build: 2026-10-18.0900**
 
 ## Naming: checks, not kills
 
@@ -1641,3 +1641,11 @@ Also fixed a leftover "then the room grills you" in two descriptions
 (Talent Review and Brief), from before *Grill me* became *Pressure test*.
 
 **2026-10-17.1900** — Talent Review Check's share card and share title read *Will your recommendations survive the room?* (the page headline stays *Will your case survive the room?*; a tool can set `ogh1` to give its share card its own line). Three share-card subtitles still said "the room grills you" (Talent Review, Account, Brief); now "pressure-tests you".
+
+**2026-10-18.0900** — Talent Review Check: the thing you bring into the room
+is your **assessment** everywhere (page, verdicts, DM, share card; 27
+"case"s replaced). Headline and share line are the same again: *Will your
+assessment survive the room?* Start button *Test my assessment* (18
+characters, at the limit). Nav and home doorway say *Talent Review* (the
+page keeps the full name). "The room respects…" line replaced with "A soft
+spot you name first stops being a weakness."
