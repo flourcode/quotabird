@@ -145,6 +145,7 @@
       const back = document.getElementById('back'); if (back) back.onclick = () => history.back();
     }
 
+    document.addEventListener('click', (e) => { const a = e.target.closest && e.target.closest('a[data-aside]'); if (a) track(cfg.slug + '_fedhoo'); });
     function result(isShared) {
       const s = score(answers); lastScore = s;
       nav(['r']);
@@ -167,11 +168,12 @@
       <span class="overline" style="margin-top:16px;">Do this first</span>
       <p class="lede">${esc(firstMove)}</p>
     </div>
-    ${(() => { const h = typeof cfg.handoff === 'function' ? cfg.handoff(s) : cfg.handoff; return h ? `<div class="card card-accent">
+    ${(() => { const h = typeof cfg.handoff === 'function' ? cfg.handoff(s, answers) : cfg.handoff; return h ? `<div class="card card-accent">
       <span class="overline">${esc(h.overline)}</span>
       <p class="lede">${esc(h.text)}</p>
       <a class="btn btn-tonal btn-full" href="${h.href}" style="margin-top:14px;">${esc(h.label)}</a>
     </div>` : ''; })()}
+    ${(() => { const a = typeof cfg.aside === 'function' ? cfg.aside(s, answers) : null; return a ? `<p class="aside-link">${esc(a.text)} <a href="${a.href}" target="_blank" rel="noopener" data-aside="1">${esc(a.label)} ↗</a></p>` : ''; })()}
     ${cfg.grillSet ? `<button class="btn btn-primary btn-lg btn-full" id="grill" type="button" style="margin-top:16px;">${esc(cfg.grillLabel || 'Grill me')}</button>` : ''}
     <div class="btn-row center" style="margin-top:8px;">
       <button class="btn btn-text" id="copy" type="button">Share</button>

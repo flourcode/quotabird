@@ -77,7 +77,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'banner':
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
     # covers, right side
-    cols, gap, bw = 4, 14 * S, 104 * S; bh = int(bw * 1.5); x0 = W - 112 * S - cols * bw - (cols - 1) * gap; y0 = (H - bh) // 2
+    cols, gap, bw = 4, 14 * S, 104 * S; bh = int(bw * 4 / 3); x0 = W - 112 * S - cols * bw - (cols - 1) * gap; y0 = (H - bh) // 2
     tf = font(800, 15); lh = 19 * S
     def wrap(text, width):
         words, lines, cur = text.split(), [], ''
@@ -131,7 +131,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
              ("Real partner, or a logo on a slide?", '#F28482', '#2B1B1B'), ("They want a discount.", '#9DD2FF', '#12324F')]
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
-    cols, gap, bw = 3, 18 * S, 172 * S; bh = int(bw * 1.5); x0 = W - M - cols * bw - (cols - 1) * gap; y0 = (H - 2 * bh - gap) // 2
+    cols, gap, bw = 3, 18 * S, 172 * S; bh = int(bw * 4 / 3); x0 = W - M - cols * bw - (cols - 1) * gap; y0 = (H - 2 * bh - gap) // 2
     tf = font(800, 24); lh = 29 * S
     def wrap(text, width):
         words, lines, cur = text.split(), [], ''

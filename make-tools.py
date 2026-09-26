@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-20.1500'
+BUILD = '2026-10-21.1300'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -295,6 +295,7 @@ PARTNER = dict(
         ('Can I use it on a distributor or an SI?', 'Yes. The questions don\'t care which direction the paper flows. They care whether anyone on the other side is accountable for a deal with your name on it.'),
     ],
     config='''CheckTool({
+  aside: (s, a) => ['accounts', 'pull'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo ranks which primes actually pass work to subs and which resellers hold the right vehicles.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=partner&utm_content=verdict', label: 'Find a better route on fedhoo' } : null,
   slug: 'partner', name: 'Partner Check', url: 'https://quotabird.com/partner/',
   questions: [
     { k: 'sourced',  n: 'SOURCED',  q: "Have they brought you an opportunity you didn't find yourself?" },
@@ -378,6 +379,7 @@ TERRITORY = dict(
         ('What about the coverage math?', 'That\'s the other tool. Once you know the territory can produce, <a href="/pipeline/">Pipeline Check</a> tells you how much pipeline it has to produce.'),
     ],
     config='''CheckTool({
+  aside: (s, a) => ['spend', 'access'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo shows what each agency in your patch actually spends, who's winning it, and what's expiring.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=territory&utm_content=verdict', label: 'Look up your territory on fedhoo' } : null,
   slug: 'territory', name: 'Territory Check', url: 'https://quotabird.com/territory/',
   questions: [
     { k: 'spend',    n: 'SPEND',    q: 'Is there enough addressable spend in the territory to make the number twice over?' },
@@ -409,8 +411,8 @@ TERRITORY = dict(
     history: 'Find the last person who had the patch. Buy them coffee.',
   },
   noMove: 'Build the plan for the ten accounts. The territory isn\\'t the problem.',
-  handoff: (s) => s.total >= 55
-    ? { overline: 'Now the coverage math', text: 'The territory can produce. Pipeline Check tells you how much it has to.', href: '/pipeline/', label: 'Check my pipeline' }
+  handoff: (s, a) => (s.total >= 55 && a.spend !== 'no')
+    ? { overline: 'Now the coverage math', text: (s.total < 75 ? "It's thin, but it might produce." : a.spend === 'yes' ? 'The territory can produce.' : 'The territory can probably produce, if the spend is really there.') + ' Pipeline Check tells you how much it has to.', href: '/pipeline/', label: 'Check my pipeline' }
     : { overline: 'Take it to your manager', text: "Their version of this question is Rep Check, and its first question is the patch. Send them that with your sizing.", href: '/rep/', label: 'Check my rep' },
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have inherited the patch nobody could grow and handed one out by mistake. If the verdict is bad, I can help you make the case. If it's good, I can help you make the plan. One line. No account names." },
   dm: (s) => `Mark, ran my territory through Territory Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Want to make the case to my manager and not sure how. Worth 20 minutes?`,
@@ -691,6 +693,7 @@ ACCOUNT = dict(
         ('Is this only for federal?', 'The questions were written with agencies in mind, where mission, colors of money and contract vehicles are everything. But every enterprise account has a mission, a budget process, an incumbent and a way it buys. Read the words that way and it works the same.'),
     ],
     config='''CheckTool({
+  aside: (s, a) => ['incumbent', 'money'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo shows the agency's current contracts, who holds them, and what it spends.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=account&utm_content=verdict', label: 'Look up the agency on fedhoo' } : null,
   slug: 'account', name: 'Account Check', url: 'https://quotabird.com/account/',
   questions: [
     { k: 'mission',   n: 'MISSION',   q: 'Can you say what this account is trying to get done this year, in their words?' },
@@ -859,6 +862,7 @@ COMPETITION = dict(
         ('Is this a battlecard?', 'No. Battlecards are about them. This is about the customer: what inaction costs, what switching costs, what they have said, what you can prove, and who the other side already has. Win those and the battlecard is optional.'),
     ],
     config='''CheckTool({
+  aside: (s, a) => ['switch', 'access'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo shows who holds the incumbent contract, what it's worth, and when it ends.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=competition&utm_content=verdict', label: 'Look up the incumbent on fedhoo' } : null,
   slug: 'competition', name: 'Competition Check', url: 'https://quotabird.com/competition/',
   questions: [
     { k: 'nothing',    n: 'NOTHING',    q: 'Do you know what it costs them to do nothing, in their numbers?' },
@@ -2297,7 +2301,7 @@ open('ask/index.html', 'w').write(_ask)
 
 # ────────────────────────────── STUFF I LIKE (/stuff/) ──────────────────────────────
 # Mark's books and podcasts. No affiliate links, no links at all: the value is that it's his.
-_stuff = note_head('Stuff I Like', "Books and podcasts Mark Flournoy has gotten something from. Some sales, some management, some just because he likes them. No required reading, no affiliate links.", 'https://quotabird.com/stuff/') + '''</head>
+_stuff = note_head('Stuff I Like', "Books and podcasts Mark Flournoy has gotten something from. Some sales, some just because he likes them. Ten books, ten podcasts, one line on each, and no affiliate links.", 'https://quotabird.com/stuff/') + '''</head>
 <body>
 
 <div class="wrap">
@@ -2306,32 +2310,34 @@ _stuff = note_head('Stuff I Like', "Books and podcasts Mark Flournoy has gotten 
 <article class="note stuff">
   <span class="overline">QuotaBird</span>
   <h1>Stuff I Like</h1>
-  <p class="dek">Some sales. Some management. Some just because I like them. No required reading.</p>
+  <p class="dek">Some sales. Some just because I like them.</p>
 
-  <h2>Books I've gotten something from</h2>
+  <h2>Books that made me think</h2>
   <div class="likes">
+    <div class="like"><p class="like-t">The Qualified Sales Leader</p><p class="like-by">John McMahon</p><p class="like-why">Probably the one I'd hand to someone managing serious enterprise sellers.</p></div>
     <div class="like"><p class="like-t">Fanatical Prospecting</p><p class="like-by">Jeb Blount</p><p class="like-why">If prospecting is the part of the job you keep finding reasons not to do.</p></div>
+    <div class="like"><p class="like-t">Getting to Yes</p><p class="like-by">Roger Fisher, William Ury and Bruce Patton</p><p class="like-why">Negotiating without turning every conversation into a hostage situation.</p></div>
     <div class="like"><p class="like-t">The Little Red Book of Selling</p><p class="like-by">Jeffrey Gitomer</p><p class="like-why">Old-school, occasionally corny, and still right about a surprising amount.</p></div>
     <div class="like"><p class="like-t">How to Say It</p><p class="like-by">Rosalie Maggio</p><p class="like-why">Not really a sales book. Useful when you know what you mean but can't find the words.</p></div>
     <div class="like"><p class="like-t">Atomic Habits</p><p class="like-by">James Clear</p><p class="like-why">Useful mostly because sales careers are built out of a lot of boring things done repeatedly.</p></div>
-    <div class="like"><p class="like-t">The Qualified Sales Leader</p><p class="like-by">John McMahon</p><p class="like-why">Probably the one I'd hand to someone managing serious enterprise sellers.</p></div>
-    <div class="like"><p class="like-t">Getting to Yes</p><p class="like-by">Roger Fisher, William Ury and Bruce Patton</p><p class="like-why">Negotiating without turning every conversation into a hostage situation.</p></div>
+    <div class="like"><p class="like-t">Meditations</p><p class="like-by">Marcus Aurelius</p><p class="like-why">Two thousand years old and still useful when the forecast call starts getting stupid.</p></div>
+    <div class="like"><p class="like-t">Tao Te Ching</p><p class="like-by">Lao Tzu</p><p class="like-why">A useful reminder that forcing things usually makes them worse. Applies to selling, managing, and most meetings.</p></div>
     <div class="like"><p class="like-t">The Bezos Blueprint</p><p class="like-by">Carmine Gallo</p><p class="like-why">A good look at why Amazon communicates the strange way it does.</p></div>
     <div class="like"><p class="like-t">Amazon Unbound</p><p class="like-by">Brad Stone</p><p class="like-why">Less about selling than understanding how one very large company thinks.</p></div>
   </div>
 
-  <h2>Podcasts I actually listen to</h2>
+  <h2>Podcasts I fall asleep to</h2>
   <div class="likes">
-    <div class="like"><p class="like-t">Hidden Brain</p><p class="like-why">People are weird. Helpful to remember when selling to them or managing them.</p></div>
-    <div class="like"><p class="like-t">The Brutal Truth About Sales &amp; Selling</p><p class="like-why">Actual selling. Not much incense.</p></div>
-    <div class="like"><p class="like-t">Stuff You Should Know</p><p class="like-why">Has nothing to do with quota. That's partly why I like it.</p></div>
-    <div class="like"><p class="like-t">Radiolab</p><p class="like-why">Good stories about things I didn't know I was interested in.</p></div>
-    <div class="like"><p class="like-t">How to Be a Better Human</p><p class="like-why">Pretty much what it says.</p></div>
-    <div class="like"><p class="like-t">The Side Hustle Show</p><p class="like-why">For people who occasionally wonder what else they could build.</p></div>
-    <div class="like"><p class="like-t">Freakonomics Radio</p><p class="like-why">Incentives explain a lot of behavior, including some very stupid sales behavior.</p></div>
-    <div class="like"><p class="like-t">Marketplace</p><p class="like-why">Twenty-some minutes and you have a decent idea what's happening in the economy.</p></div>
-    <div class="like"><p class="like-t">The Daily Stoic</p><p class="like-why">Useful before certain forecast calls.</p></div>
-    <div class="like"><p class="like-t">Pivot</p><p class="like-why">Tech, business, politics, and two people disagreeing with each other.</p></div>
+    <div class="like"><p class="like-t">The Brutal Truth About Sales &amp; Selling</p><p class="like-by">Brian Burns</p><p class="like-why">Actual selling. Not much incense.</p></div>
+    <div class="like"><p class="like-t">Hidden Brain</p><p class="like-by">Shankar Vedantam</p><p class="like-why">People are weird. Helpful to remember when selling to them or managing them.</p></div>
+    <div class="like"><p class="like-t">Freakonomics Radio</p><p class="like-by">Stephen J. Dubner</p><p class="like-why">Incentives explain a lot of behavior, including some very stupid sales behavior.</p></div>
+    <div class="like"><p class="like-t">Marketplace</p><p class="like-by">American Public Media</p><p class="like-why">Twenty-some minutes and you have a decent idea what's happening in the economy.</p></div>
+    <div class="like"><p class="like-t">Pivot</p><p class="like-by">Kara Swisher and Scott Galloway</p><p class="like-why">Tech, business, politics, and two people disagreeing with each other.</p></div>
+    <div class="like"><p class="like-t">How to Be a Better Human</p><p class="like-by">TED</p><p class="like-why">Pretty much what it says.</p></div>
+    <div class="like"><p class="like-t">The Daily Stoic</p><p class="like-by">Ryan Holiday</p><p class="like-why">Useful before certain forecast calls.</p></div>
+    <div class="like"><p class="like-t">The Side Hustle Show</p><p class="like-by">Nick Loper</p><p class="like-why">For people who occasionally wonder what else they could build.</p></div>
+    <div class="like"><p class="like-t">Radiolab</p><p class="like-by">WNYC</p><p class="like-why">Good stories about things I didn't know I was interested in.</p></div>
+    <div class="like"><p class="like-t">Stuff You Should Know</p><p class="like-by">Josh Clark and Chuck Bryant</p><p class="like-why">Has nothing to do with quota. That's partly why I like it.</p></div>
   </div>
 
   <p class="fine stuff-foot">No links and no affiliate anything. Your library and your podcast app will find them.</p>
@@ -2386,7 +2392,7 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
   </div>
 </section>
 
-''' + NOTE_TAIL.replace('Field Notes are part of', 'QuotaBird is'))
+''' + NOTE_TAIL.replace('Field Notes are part of <a href="/">QuotaBird</a>, a shelf', 'QuotaBird is a shelf'))
 
 # ── the 404 page carries the same shelf as the home page (one copy of the covers, pulled at build time) ──
 _home_src = open('home.src.html', encoding='utf-8').read()
@@ -2506,6 +2512,7 @@ for g, items in groups:
     for h, n, d in items:
         desc = DESC[h].split(': ', 1)[1]; lines.append(f'- [{n}]({site}{h}): {desc[0].upper() + desc[1:]} ({d[0].lower() + d[1:]}.)')
     lines.append('')
+lines += ['## Ask Mark', '', f'- [Ask Mark]({site}/ask/): a free twenty-minute call to start; Manager Wingman (monthly calls for sales managers) and team sessions (pipeline or deal reviews, account planning, manager workshops) if it needs more.', '', '## Stuff I Like', '', f'- [Stuff I Like]({site}/stuff/): ten books and ten podcasts Mark has gotten something from, each with one line on why. No affiliate links.', '']
 lines += ['## Free printable', '', f"- [The Manager's Field Kit]({site}/kit/): a free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, managing high performers, and six worksheets.", f"- [The Seller's Field Kit]({site}/seller/): a free, printable field kit for sellers: is it a real deal, pipeline math, one deal carrying the quarter, single-threaded accounts, discounts, quiet deals, falling behind, and keeping your manager informed.", f"- [The Leadership Field Kit]({site}/leader/): a free, printable field kit for managers who want their influence to travel beyond their team: what to be known for, a point of view, receipts, templates others can borrow, the right rooms, and developing the people behind you.", '', '## Sales Math Library', ''] + [f'- [{p["title"]}]({site}/math/{p["slug"]}/): {p["answer"]}' for p in MATH] + ['', '## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
 open('llms.txt', 'w').write('\n'.join(lines))
 entries = []

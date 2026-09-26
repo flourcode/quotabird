@@ -157,7 +157,7 @@ h3 { font-size:22px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 .shelf-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:14px 10px; }
 .bk { display:flex; flex-direction:column; gap:5px; text-decoration:none; color:var(--ink); }
 .bk-label { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.bk-cover { position:relative; display:flex; flex-direction:column; aspect-ratio:2/3; background:var(--bg); color:var(--ink);
+.bk-cover { position:relative; display:flex; flex-direction:column; aspect-ratio:3/4; background:var(--bg); color:var(--ink);
   border-radius:3px 6px 6px 3px; padding:12% 10% 10%; overflow:hidden;
   box-shadow:inset 5px 0 0 rgba(0,0,0,.14), 0 2px 5px rgba(0,0,0,.14), 0 8px 18px rgba(0,0,0,.10); transition:transform .15s var(--ease-out), box-shadow .15s; }
 .bk-cover::after { content:""; position:absolute; right:-14%; bottom:-6%; width:78%; aspect-ratio:692/600; background:var(--ink); opacity:.13;
@@ -201,6 +201,10 @@ h3 { font-size:22px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 .like-why { font-size:15px !important; color:var(--ink-2) !important; margin-top:5px !important; line-height:1.45 !important; }
 .stuff-foot { margin-top:26px !important; }
 .helped { font-size:15px !important; color:var(--ink-2) !important; margin:18px 2px 0 !important; }
+
+/* ── fedhoo hand-off: one quiet line under a federal-relevant weak answer ── */
+.aside-link { font-size:15px; color:var(--ink-2); margin:14px 4px 0; line-height:1.45; }
+.aside-link a { font-weight:600; white-space:nowrap; }
 
 /* ── Ask Mark page ── */
 .ask h2 { font-size:22px; margin:6px 0 8px; }

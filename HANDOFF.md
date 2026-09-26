@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-20.1500**
+**Current build: 2026-10-21.1300**
 
 ## Naming: checks, not kills
 
@@ -1850,3 +1850,45 @@ share card and banner. The privacy line ("nothing typed into a system your
 boss can see") now lives in *How these work* rather than the hero.
 
 **2026-10-20.1500** — home hero trimmed to the label and headline (*A little help with sales / Pick the problem you've got.*) so more of the shelf shows above the fold. The credential still appears on About, Ask Mark and in the Made-by card; the share card and banner keep their three short lines.
+
+**Tried and dropped (Oct 20):** a "worn" shelf (duller covers, a coffee ring, a dog-ear, a sticky-note "start here", a blunter line on the Deal cover). Mocked up side by side; Mark passed. The shelf stays clean.
+
+**2026-10-20.1700** — Mark's live edits folded into the build (he had edited
+About and Stuff on the live site; deploying without this would have overwritten
+them): About's lede is just "Usually you've got more than one problem."; Stuff
+I Like has his order, two new books (*Meditations*, *Tao Te Ching*), his
+headings (*Books that made me think*, *Podcasts I fall asleep to*), and each
+podcast's host. The list lives only on `/stuff/`; About keeps the one-line
+pointer so its story runs straight into the ask. Marketplace is credited to
+American Public Media (not NPR). Fixed: About's footer read "QuotaBird is
+QuotaBird, a shelf…"; Ask Mark and Stuff I Like were missing from llms.txt
+(earlier edits had silently matched nothing). **Edit copy in the build, not on
+the live site**, or the next deploy undoes it. The live site was a mix of
+builds; deploy this whole package, with `amplify-rewrites.json`, to make every
+page consistent.
+
+**2026-10-21.0900** — **fedhoo hand-offs** (Mark's federal market-data site, a
+separate product). One quiet line under the result, after the tool's own
+next-step card, shown only when a federal-relevant answer is weak ("sort of"
+or "no"): Territory (Spend, Access), Competition (Switch, Access), Account
+(Incumbent, Money), Partner (Accounts, Pull). Each starts "Selling federal?"
+so commercial sellers skip it, links to fedhoo.com with
+`utm_source=quotabird&utm_medium=<tool>`, and counts as `<tool>_fedhoo`.
+Engine hook: a tool config can set `aside: (s, answers) => ({text, href,
+label}) | null`. QuotaBird's promises are unchanged: nothing from the check
+is sent to fedhoo.
+
+**2026-10-21.1100** — Territory Check's next-step card now agrees with its
+verdict. It used to say "The territory can produce" whenever the score cleared
+55% (the *Thin* line), even when Spend was "no". Now: Workable with Spend yes,
+"The territory can produce."; Workable with Spend sort of, "…can probably
+produce, if the spend is really there."; Thin, "It's thin, but it might
+produce."; Spend "no" or below Thin, the manager route (Rep Check). Hand-offs
+now receive the answers too: `handoff: (s, answers) => …`.
+
+**2026-10-21.1300** — shelf covers are 3:4 (trade paperback) instead of 2:3,
+on the home page, the 404, the share card and the banner. Books were kept over
+squircles (distinctive, and already the brand across card and banner); the
+shorter shape recovers most of the space: the shelf is about 12% shorter, an
+iPhone SE reads six problems before scrolling instead of three, and desktop
+shows all fifteen on the first screen. Every title fits from 320px up.
