@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-18.1500'
+BUILD = '2026-10-18.2100'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -31,7 +31,7 @@ def menu(current):
         (left if n < total / 2 else right).append((g, items)); n += len(items)
     col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in gs) + '</div>'
     foot = '<div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div>'
-    kit = '<a class="menu-kit" href="/kits/"><span class="pill">Free</span>Field Kits for sellers, managers, leaders</a>'
+    kit = '<a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a>'
     return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{kit}{col(left)}{col(right)}{foot}</div></details>'
 
 
@@ -2273,6 +2273,13 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
 
 ''' + NOTE_TAIL.replace('Field Notes are part of', 'QuotaBird is'))
 
+# ── the 404 page carries the same shelf as the home page (one copy of the covers, pulled at build time) ──
+_home_src = open('home.src.html', encoding='utf-8').read()
+_shelf = re.search(r'    <div class="shelf-grid">.*?\n    </div>\n', _home_src, flags=re.S).group(0).replace('href="#pipeline"', 'href="/#pipeline"')
+_nf = open('404.html', encoding='utf-8').read()
+_nf = re.sub(r'<!--shelf-->.*?<!--/shelf-->', lambda m_: '<!--shelf-->\n' + _shelf + '<!--/shelf-->', _nf, count=1, flags=re.S)
+open('404.html', 'w', encoding='utf-8').write(_nf)
+
 # ────────────────────────────── SHARED CHROME ──────────────────────────────
 # Every page gets the same header and the same About section, from one source.
 MARK_SRC = open('partials/mark.html').read()
@@ -2317,7 +2324,8 @@ def chrome(path):
         # the full story lives on the About page; every other page gets the short "Made by Mark" card
         src = MARK_SRC if path == 'about/index.html' else MADEBY_SRC
         mark = src.replace('{ROOT}', root_of(path)).replace('{UTM}', utm_of(path))
-        s = re.sub(r'\s*<section class="band kit-band[^"]*"[^>]*>.*?</section>', '', s, flags=re.S)   # never let cards accumulate on hand-written pages
+        if path in KITCARD_PAGES | SELLERCARD_PAGES:   # only pages that get a card injected; /kits/ is made of cards
+            s = re.sub(r'\s*<section class="band kit-band[^"]*"[^>]*>.*?</section>', '', s, flags=re.S)   # never let cards accumulate on hand-written pages
         if path in KITCARD_PAGES and 'kit-band' not in mark: mark = KITCARD_SRC + (LEADERCARD_SRC if path in LEADERCARD_PAGES else '') + mark
         elif path in SELLERCARD_PAGES and 'kit-band' not in mark: mark = SELLERCARD_SRC + mark
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)

@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-18.1500**
+**Current build: 2026-10-18.2100**
 
 ## Naming: checks, not kills
 
@@ -114,6 +114,17 @@ the corner of each cover is the publisher's mark. Deal Check is the big
 grid and a 6-column desktop grid with no orphans; adding or removing a
 cover breaks that, so replace rather than add. Covers keep their own colors
 in dark mode. Question tools open on question 1 via `#start`.
+
+**Context survives the tap.** Covers open question 1 directly (`#start`), so
+every question screen carries a context line built from the page's own
+tool name and headline: on question 1 a small hero (tool, the question in
+the user's words, "Five questions, about a minute, nothing stored."), on
+questions 2 to 5 one quiet line. Both engines (`check.js`, the Deal page)
+read it from the intro at load, so a new tool gets it for free. Back
+twice reaches the full intro. The 404 page shows the same shelf, pulled
+from `home.src.html` at build time between `<!--shelf-->` markers; the
+shelf is deliberately not on About or elsewhere (the Tools menu is the
+shelf in list form, and each tool's hand-off names the specific next step).
 
 **The front door asks the question (superseded by the shelf).** The home page opens with *What's
 giving you trouble this week?* and six first-person answers, styled like the
@@ -372,6 +383,19 @@ site should sound like one veteran seller talking, not a manual:
 - Editing copy that lives inside the tool configs (JavaScript inside Python
   strings) needs an escaped apostrophe: `\\'` in the source. Run a syntax
   check on every page after copy edits.
+
+**One type scale: 11, 13, 15, 17, 22, 28, 36** (plus 76 for the big verdict
+number). Every page renders six to eight sizes; before October 18 the home
+page used sixteen (13, 14, 15, 16, 17, 18 and 19 all appeared). Inputs are
+17px, so iOS never zooms. Tiny-phone overrides (under 360px) and print
+sizes (in pt) sit outside the scale on purpose. Use a size from the scale;
+don't add one.
+
+**Every tap gets a response.** Buttons, answer choices, chips, doorways,
+menu rows, kit links and footer links have a pressed state (a slight
+shrink, off for reduced-motion users). Keyboard focus is a site-wide 2px
+accent ring. In dark mode the book covers are dimmed 10% so the pale ones
+don't glare.
 
 **Phone tap targets: 44px.** Every button, menu row, footer link, chip and
 text link outside running prose is at least 44px tall on a phone (chips are
@@ -1683,3 +1707,27 @@ revert: the calculator block is unchanged underneath.
 **2026-10-18.1500** — home front door is now *The sales problems shelf*
 (15 book covers, featured *Start here* Deal Check), replacing the six
 buttons. Taps still count as `front_pick`. Every label fits from 320px up.
+
+**2026-10-18.1700** — final polish against a UI/UX fundamentals review:
+type consolidated to one scale (6 to 8 sizes a page, from up to 16);
+pressed states on everything tappable; dark-mode covers dimmed slightly;
+Tools menu kit row shortened to *The Field Kits (PDF)*. **Bug fixed:** the
+Oct 17 guard against duplicate kit cards was stripping the cards from every
+page, including `/kits/`, which is made of them; it now runs only on pages
+that get a card injected. Full audit clean: 807 buttons at 320, 360 and
+1280px, the shelf, the menu, all thirteen tools, kits at 4, 8 and 3 pages.
+
+**2026-10-18.1900** — context line above every question (mini-hero on Q1,
+one line after); 404 page shows the shelf instead of a single button.
+All nine question tools checked from the shelf on a 375×667 phone: the
+context matches the cover, and all three answers stay above the fold.
+
+**2026-10-18.2100** — the default share card (`card.jpg`, `python3 make-card.py
+home`) is now the shelf: *The sales problems shelf / Pick the problem you've
+got.* with eight real covers in the site's colors, words and bird marks. It
+is the card for the home page and for every page without its own (About,
+Field Notes, Sales Math and their articles, Field Kits). Home share title
+*QuotaBird: Pick the problem you've got.*; description and alt text describe
+the shelf; structured data adds the shelf as an ItemList of fifteen. **If a
+cover's words or colors change, re-run `make-card.py home` so the card keeps
+matching the shelf.**

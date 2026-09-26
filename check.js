@@ -117,10 +117,17 @@
     function home() { nav(['h']); answers = {}; clearHash(); intro(); }
     function bind() { const b = document.getElementById('prep'); if (b) b.onclick = () => { track(cfg.slug + '_start'); ask(0); }; }
 
+
+    // Context above every question: the tool and the question the user tapped on the shelf, in their words.
+    const CTX_TOOL = ((document.querySelector('.tool-name') || {}).textContent || '').trim();
+    const CTX_H = ((document.querySelector('#screen h1') || {}).textContent || '').trim();
+    const ctx = (i) => !CTX_H ? '' : i === 0
+      ? `<div class="ctx ctx-lead"><span class="ctx-tool">${esc(CTX_TOOL)}</span><h1 class="ctx-h">${esc(CTX_H)}</h1><p class="ctx-sub">Five questions, about a minute, nothing stored.</p></div>`
+      : `<div class="ctx"><span class="ctx-tool">${esc(CTX_TOOL)}</span> · ${esc(CTX_H)}</div>`;
     function ask(i) {
       nav(['q', i]);
       const p = P[i];
-      show(`
+      show(`${ctx(i)}
     <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${P.length}" aria-valuenow="${i + 1}">${P.map((_, j) => `<i class="${j <= i ? 'done' : ''}"></i>`).join('')}</div>
     <span class="overline">${p.n} · question ${i + 1} of ${P.length}</span>
     <div class="question">${esc(p.q)}</div>
