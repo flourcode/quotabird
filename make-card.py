@@ -59,24 +59,24 @@ CARDS = {
     pillars=['POINT', 'RECEIPTS', 'ALTERNATIVE', 'HOLE', 'ASK']),
 }
 if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
-    # The home card is the shelf itself: the pitch on the left, eight real covers on the right.
+    # The home card is the shelf itself. Drawn at 2x (2400x1260) and saved without chroma subsampling, so
+    # LinkedIn's downscaled copies stay sharp and coloured text on coloured covers doesn't smear.
     from PIL import ImageFilter
-    W, H, M = 1200, 630, 64
+    S = 2; W, H, M = 1200 * S, 630 * S, 64 * S
     SURF=(0xF9,0xFC,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x1D,0xA1,0xF2)
     woff2 = open('inter.woff2', 'rb').read()
     def font(w, size):
         inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
         inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
-        return ImageFont.truetype(buf, size)
+        return ImageFont.truetype(buf, size * S)
     hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
     books = [("Is it a deal, or is it hopium?", '#1C3D5A', '#FFFFFF'), ("You sure that's enough pipeline?", '#F2C14E', '#1B1B1B'),
              ("Is my quota crazy?", '#E07A5F', '#FFFFFF'), ("Is it the rep, or the patch?", '#3D8B7D', '#FFFFFF'),
-             ("Real partner, or a logo on a slide?", '#F28482', '#2B1B1B'), ("They want a discount.", '#9DD2FF', '#12324F'),
-             ("Why you, instead of nothing?", '#C8553D', '#FFFFFF'), ("Will your assessment survive the room?", '#264653', '#E9C46A')]
+             ("Real partner, or a logo on a slide?", '#F28482', '#2B1B1B'), ("They want a discount.", '#9DD2FF', '#12324F')]
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
-    cols, gap, bw = 4, 16, 136; bh = int(bw * 1.5); x0 = W - M - cols * bw - (cols - 1) * gap; y0 = (H - 2 * bh - gap) // 2
-    tf = font(800, 19)
+    cols, gap, bw = 3, 18 * S, 172 * S; bh = int(bw * 1.5); x0 = W - M - cols * bw - (cols - 1) * gap; y0 = (H - 2 * bh - gap) // 2
+    tf = font(800, 24); lh = 29 * S
     def wrap(text, width):
         words, lines, cur = text.split(), [], ''
         for w_ in words:
@@ -86,31 +86,32 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
         return lines + [cur]
     for i, (title, bg, ink) in enumerate(books):
         x = x0 + (i % cols) * (bw + gap); y = y0 + (i // cols) * (bh + gap)
-        sh = Image.new('RGBA', (bw + 40, bh + 40), (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((20, 26, 20 + bw, 26 + bh), 6, fill=(0, 0, 0, 60))
-        sh = sh.filter(ImageFilter.GaussianBlur(7)); im.paste(sh, (x - 20, y - 20), sh)
+        pad = 24 * S
+        sh = Image.new('RGBA', (bw + 2 * pad, bh + 2 * pad), (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((pad, pad + 6 * S, pad + bw, pad + 6 * S + bh), 7 * S, fill=(0, 0, 0, 60))
+        sh = sh.filter(ImageFilter.GaussianBlur(8 * S)); im.paste(sh, (x - pad, y - pad), sh)
         cover = Image.new('RGBA', (bw, bh), hexc(bg) + (255,)); cd = ImageDraw.Draw(cover)
-        cd.rectangle((0, 0, 5, bh), fill=tuple(int(v * .86) for v in hexc(bg)) + (255,))
+        cd.rectangle((0, 0, 6 * S, bh), fill=tuple(int(v * .86) for v in hexc(bg)) + (255,))
         bm = mask.resize((int(bw * .8), int(bw * .8 * mask.height / mask.width)), Image.LANCZOS)
         tint = Image.new('RGBA', bm.size, hexc(ink) + (0,)); tint.putalpha(bm.point(lambda a: int(a * .13)))
         cover.alpha_composite(tint, (int(bw * .32), bh - int(bm.height * .9)))
-        ty = 16
-        for line in wrap(title, bw - 26):
-            cd.text((14, ty), line, font=tf, fill=hexc(ink)); ty += 23
-        cd.text((14, bh - 22), 'QUOTABIRD', font=font(700, 10), fill=hexc(ink) + (170,))
-        rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), 6, fill=255)
-        im.paste(cover, (x, y), Image.composite(cover.split()[3], Image.new('L', (bw, bh), 0), rm))
-    lb = bird.resize((int(46 * bird.width / bird.height), 46), Image.LANCZOS); im.paste(lb, (M, M - 4), lb)
-    d.text((M + lb.width + 14, M + 1), 'QuotaBird', font=font(700, 28), fill=INK)
-    d.text((M, M + 96), 'THE SALES PROBLEMS SHELF', font=font(700, 17), fill=ACC)
-    y = M + 128
-    for line in ['Pick the', "problem", "you've got."]:
-        d.text((M - 2, y), line, font=font(800, 62), fill=INK); y += 70
-    y += 16
+        ty = 18 * S
+        for line in wrap(title, bw - 34 * S):
+            cd.text((17 * S, ty), line, font=tf, fill=hexc(ink)); ty += lh
+        cd.text((17 * S, bh - 26 * S), 'QUOTABIRD', font=font(700, 11), fill=hexc(ink) + (170,))
+        rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), 7 * S, fill=255)
+        im.paste(cover, (x, y), rm)
+    lb = bird.resize((int(46 * S * bird.width / bird.height), 46 * S), Image.LANCZOS); im.paste(lb, (M, M - 4 * S), lb)
+    d.text((M + lb.width + 14 * S, M + 1 * S), 'QuotaBird', font=font(700, 28), fill=INK)
+    d.text((M, M + 96 * S), 'THE SALES PROBLEMS SHELF', font=font(700, 17), fill=ACC)
+    y = M + 128 * S
+    for line in ['Pick the', 'problem', "you've got."]:
+        d.text((M - 2 * S, y), line, font=font(800, 62), fill=INK); y += 70 * S
+    y += 16 * S
     for line in ['Five taps or a few numbers.', 'A straight answer.', 'Nothing stored.']:
-        d.text((M, y), line, font=font(400, 25), fill=VAR); y += 34
-    d.text((M, H - M - 26), 'quotabird.com', font=font(700, 26), fill=ACC)
-    im.save('card.jpg', quality=90, optimize=True)
-    print('card.jpg', os.path.getsize('card.jpg'), 'bytes'); sys.exit(0)
+        d.text((M, y), line, font=font(400, 25), fill=VAR); y += 34 * S
+    d.text((M, H - M - 26 * S), 'quotabird.com', font=font(700, 26), fill=ACC)
+    im.save('card.jpg', quality=90, optimize=True, progressive=True, subsampling=0)
+    print('card.jpg', im.size, os.path.getsize('card.jpg') // 1024, 'KB'); sys.exit(0)
 
 KITCARDS = {
   'seller': dict(out='card-seller.jpg', dir='seller', title=["The Seller's", 'Field Kit'], sub=['Useful things for the weeks when', 'the deal, the number, or both', 'are giving you trouble.'], foot='4 pages. No email.', url='quotabird.com/seller'),
@@ -156,7 +157,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') in KITCARDS:
     fy = H - M - 20
     d.text((M, fy), K['foot'], font=font(400, 24), fill=VAR)
     uf = font(700, 26); d.text((M + int(d.textlength(K['foot'], font=font(400, 24))) + 22, fy - 2), K['url'], font=uf, fill=ACC)
-    im.save(K['out'], quality=90, optimize=True)
+    im.save(K['out'], quality=90, optimize=True, subsampling=0)
     print(K['out'], os.path.getsize(K['out']), 'bytes'); sys.exit(0)
 
 C = CARDS[sys.argv[1] if len(sys.argv) > 1 else 'home']
@@ -190,5 +191,5 @@ fy = H - M - 20
 d.text((M, fy), FOOT, font=font(400, 24), fill=VAR)
 uf = font(700, 26)
 d.text((W - M - d.textlength(URL, font=uf), fy - 2), URL, font=uf, fill=PINK)
-im.save(C['out'], quality=90, optimize=True)
+im.save(C['out'], quality=90, optimize=True, subsampling=0)
 print(C['out'], os.path.getsize(C['out']), 'bytes')

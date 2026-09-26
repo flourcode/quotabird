@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-18.2300**
+**Current build: 2026-10-19.0900**
 
 ## Naming: checks, not kills
 
@@ -1741,3 +1741,12 @@ images. Share descriptions under 100 characters (LinkedIn's warning) fall
 back to the page's search description; Field Notes' descriptions now say
 which tool each ends with. Partner and Rep no longer share with their old
 "Before you…" lines.
+
+**2026-10-19.0900** — sharper share cards. LinkedIn's Post Inspector shows its
+own 480px copy, so it will always look softer than the feed, but two things on
+our side made it worse: every card was saved with 4:2:0 chroma subsampling
+(which smears coloured text on coloured backgrounds), and the shelf card's
+eight covers had titles too small to survive the shrink. All sixteen cards now
+save with `subsampling=0`; the shelf card is drawn at 2x (2400×1260, declared
+in og:image:width/height) with six larger covers. Fingerprints changed, so
+LinkedIn refetches.
