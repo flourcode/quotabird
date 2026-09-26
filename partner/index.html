@@ -104,7 +104,7 @@
   <header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>Field Kits for sellers, managers, leaders</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your team</div><a href="/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/" class="current">Partner Check</a><a href="/olr/">OLR Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div></div></details>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>Field Kits for sellers, managers, leaders</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/territory/">Territory Check</a><a href="/discount/">Discount Check</a><a href="/commission/">Commission Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your team</div><a href="/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/" class="current">Partner Check</a><a href="/olr/">Talent Review Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div></div></details>
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
@@ -176,7 +176,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed the people who did, and led partner sales teams at AWS. I make these because
+      <p>I carried a number, managed the people who did, and spent six years leading federal partner sales teams at AWS. I make these because
         they're the things I wish we'd had. If a check isn't enough, I'm happy to look at the real thing with you.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/about/#ask">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
@@ -206,7 +206,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-17.1100';
+window.QB_BUILD = '2026-10-17.1900';
 CheckTool({
   slug: 'partner', name: 'Partner Check', url: 'https://quotabird.com/partner/',
   questions: [
@@ -242,7 +242,7 @@ CheckTool({
   handoff: (s) => s.total >= 55
     ? { overline: 'Is there a deal inside this partnership?', text: 'Run it through Deal Check. A real partner deal survives the same five questions any deal does.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'How much of your number is leaning on them?', text: 'If this partner is in your coverage math, the math is wrong. Pipeline Check shows you by how much.', href: '/', label: 'Check my pipeline' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I led partner sales teams at AWS for six years and sat on the other side of the table before that. I have seen every version of the partnership that looks great in the QBR and produces nothing. Send me one line. No partner names." },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I spent six years leading federal partner sales teams at AWS and sat on the other side of the table before that. I have seen every version of the partnership that looks great in the QBR and produces nothing. Send me one line. No partner names." },
   dm: (s) => `Mark, ran a partner through Partner Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure what to do with it. Worth 20 minutes?`,
 });
 </script>

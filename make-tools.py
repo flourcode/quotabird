@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-17.1100'
+BUILD = '2026-10-17.1900'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -16,7 +16,7 @@ TOOLS = [
     ('Your team', '/risk/', 'Risk Check', 'When coverage looks fine and you don\'t trust it'),
     ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
     ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
-    ('Your team', '/olr/', 'OLR Check', 'Review season'),
+    ('Your team', '/olr/', 'Talent Review Check', 'Review season'),
     ('Any meeting', '/brief/', 'Brief Check', 'When someone in the room can say no'),
 ]
 
@@ -64,18 +64,18 @@ def page(t):
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://quotabird.com/{t['slug']}/">
-<meta property="og:title" content="{t['name']}: {t['h1']}">
+<meta property="og:title" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta property="og:description" content="{t['ogdesc']}">
 <meta property="og:site_name" content="QuotaBird">
 <meta property="og:image" content="https://quotabird.com/card-{t['slug']}.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="{t['name']}: {t['h1']}">
+<meta property="og:image:alt" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{t['name']}: {t['h1']}">
+<meta name="twitter:title" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta name="twitter:description" content="{t['ogdesc']}">
 <meta name="twitter:image" content="https://quotabird.com/card-{t['slug']}.jpg">
-<meta name="twitter:image:alt" content="{t['name']}: {t['h1']}">
+<meta name="twitter:image:alt" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
@@ -329,7 +329,7 @@ PARTNER = dict(
   handoff: (s) => s.total >= 55
     ? { overline: 'Is there a deal inside this partnership?', text: 'Run it through Deal Check. A real partner deal survives the same five questions any deal does.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'How much of your number is leaning on them?', text: 'If this partner is in your coverage math, the math is wrong. Pipeline Check shows you by how much.', href: '/', label: 'Check my pipeline' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I led partner sales teams at AWS for six years and sat on the other side of the table before that. I have seen every version of the partnership that looks great in the QBR and produces nothing. Send me one line. No partner names." },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I spent six years leading federal partner sales teams at AWS and sat on the other side of the table before that. I have seen every version of the partnership that looks great in the QBR and produces nothing. Send me one line. No partner names." },
   dm: (s) => `Mark, ran a partner through Partner Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure what to do with it. Worth 20 minutes?`,
 });''',
 )
@@ -418,11 +418,12 @@ TERRITORY = dict(
 )
 
 OLR = dict(
-    slug='olr', name='OLR Check',
-    title='OLR Check: Will Your Case Survive Calibration?',
-    desc="Five questions that test the case you're making for a rep in OLR, then the room grills you. No names, no ratings, nothing stored.",
-    ogdesc='Before you walk into OLR, test your case. Five questions, then the room grills you. No names, no ratings.',
+    slug='olr', name='Talent Review Check',
+    title='Talent Review Check: Will Your Case Survive Calibration? (OLR Prep)',
+    desc="Five questions that test the case you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you. No names, no ratings, nothing stored.",
+    ogdesc='Before you walk into calibration, test your case. Five questions, then the room pressure-tests you. No names, no ratings.',
     h1='Will your case survive the room?',
+    ogh1='Will your recommendations survive the room?',
     dek='Five questions about your case, before the room asks them.',
     cta='Check my case',
     questions=[
@@ -467,13 +468,13 @@ OLR = dict(
     faq=[
         ('Does anything I enter leave my device?', 'No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.'),
         ('Does it predict a rating?', 'No, and it never will. It grades the quality of your case: ready, not yet, a story, or no receipts. Your organization already has machinery for the rating. What it doesn\'t have is a rehearsal.'),
-        ('What is OLR?', "Organization and Leadership Review: Amazon's annual talent review, where managers propose an evaluation for each of their people and then defend it in calibration with other managers, alongside promotion and development decisions. OLR Check is the rehearsal for the defending part."),
+        ('What is OLR?', "Organization and Leadership Review: Amazon's annual talent review, where managers propose an evaluation for each of their people and then defend it in calibration with other managers, alongside promotion and development decisions. Talent Review Check is the rehearsal for the defending part."),
         ('Is this only for Amazon?', 'OLR is Amazon\'s name for it, and that\'s where most of the people who use these tools have sat. But every calibration room asks the same five things, whatever the company calls it. Read "leadership principle" as your organization\'s behavioral standard and the tool works the same.'),
         ('What does Pressure test do?', 'It plays the room. Three hard questions about your weakest answer, one at a time, and you say whether you can answer each. If you can\'t answer two of three about ownership, that case isn\'t ready, and better to learn that here than across the table.'),
         ('Why does it never ask the rep\'s name?', 'Because it doesn\'t need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, fix the case, and nothing about it is written down anywhere.'),
     ],
     config='''CheckTool({
-  slug: 'olr', name: 'OLR Check', url: 'https://quotabird.com/olr/',
+  slug: 'olr', name: 'Talent Review Check', url: 'https://quotabird.com/olr/',
   questions: [
     { k: 'receipts',  n: 'RECEIPTS',  q: 'Can you name three things they delivered this year, each with a number on it?' },
     { k: 'ownership', n: 'OWNERSHIP', q: "For the biggest one, can you say what wouldn't have happened without them?" },
@@ -524,15 +525,15 @@ OLR = dict(
     ? { overline: 'The case is ready. Is the year set up?', text: "Next year's case starts now. Is the rep in a patch that can produce one? Rep Check asks that first.", href: '/rep/', label: 'Check my rep' }
     : { overline: 'The fastest receipt', text: 'A deal you watched them run. Sit in their next customer meeting and run it through Deal Check together. That\\'s evidence for both of you.', href: '/deal/', label: 'Check my deal' },
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have written the case that got taken apart in the room and the one that held, and the difference was never the rep. Send me one line about the case. No names, no ratings." },
-  dm: (s) => `Mark, ran a rep's OLR case through OLR Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. OLR is coming and I'm not sure it holds. Worth 20 minutes?`,
-  dmGrill: (s, missed) => `Mark, ran a rep's OLR case through OLR Check and couldn't answer ${missed} of the room's 3 ${s.weak.n.toLowerCase()} questions. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
+  dm: (s) => `Mark, ran a rep's talent review case through Talent Review Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. OLR is coming and I'm not sure it holds. Worth 20 minutes?`,
+  dmGrill: (s, missed) => `Mark, ran a rep's talent review case through Talent Review Check and couldn't answer ${missed} of the room's 3 ${s.weak.n.toLowerCase()} questions. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
 });''',
 )
 
 BRIEF = dict(
     slug='brief', name='Brief Check',
     title='Brief Check: Will Your Brief Survive the Room?',
-    desc="Five questions about the doc, deck or QBR you're about to present, then the room grills you. Nothing uploaded, nothing stored.",
+    desc="Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. Nothing uploaded, nothing stored.",
     ogdesc="What's the question you're hoping nobody asks? Brief Check finds it before the meeting does.",
     h1="What's the question you're hoping nobody asks?",
     dek='Five questions about the doc, the deck or the QBR, before the meeting asks them.',
@@ -1290,18 +1291,18 @@ def calc_page(t):
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://quotabird.com/{t['slug']}/">
-<meta property="og:title" content="{t['name']}: {t['h1']}">
+<meta property="og:title" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta property="og:description" content="{t['ogdesc']}">
 <meta property="og:site_name" content="QuotaBird">
 <meta property="og:image" content="https://quotabird.com/card-{t['slug']}.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="{t['name']}: {t['h1']}">
+<meta property="og:image:alt" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{t['name']}: {t['h1']}">
+<meta name="twitter:title" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta name="twitter:description" content="{t['ogdesc']}">
 <meta name="twitter:image" content="https://quotabird.com/card-{t['slug']}.jpg">
-<meta name="twitter:image:alt" content="{t['name']}: {t['h1']}">
+<meta name="twitter:image:alt" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
@@ -1790,7 +1791,7 @@ KIT_BODY = '''
 KIT_CTA = '''
   <section class="kit-cta" aria-labelledby="kit-cta-h">
     <h2 id="kit-cta-h">Sometimes another set of eyes helps</h2>
-    <p>I'm Mark. I carried a number, managed people who did, and led partner sales teams at AWS. I still like this stuff.
+    <p>I'm Mark. I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I still like this stuff.
       If you're staring at a deal, a forecast, a rep problem or a number that doesn't make sense, I'm happy to talk.</p>
     <p class="kit-cta-job">If one of these pages saves you one bad meeting, it did its job.</p>
     <p class="kit-cta-terms">Twenty minutes. Free. No deck. No pitch.</p>
@@ -1948,7 +1949,7 @@ LEADER_BODY = '''
 LEADER_CTA = '''
   <section class="kit-cta" aria-labelledby="leader-cta-h">
     <h2 id="leader-cta-h">Sometimes another set of eyes helps</h2>
-    <p>I'm Mark. I carried a number, managed people who did, and led partner sales teams at AWS. If you want a second set
+    <p>I'm Mark. I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. If you want a second set
       of eyes on a point of view, a presentation to your VP, or what the next step looks like, I'm happy to talk.</p>
     <p class="kit-cta-job">If one of these pages gets you into one better room, it did its job.</p>
     <p class="kit-cta-terms">Twenty minutes. Free. No deck. No pitch.</p>
@@ -2148,7 +2149,7 @@ SELLER_BODY = '''
 SELLER_CTA = '''
   <section class="kit-cta" aria-labelledby="seller-cta-h">
     <h2 id="seller-cta-h">Sometimes another set of eyes helps</h2>
-    <p>I'm Mark. I carried a number before I managed people who did, and later led partner sales teams at AWS. If you're
+    <p>I'm Mark. I carried a number before I managed people who did, and later spent six years leading federal partner sales teams at AWS. If you're
       staring at a deal, a forecast or a number that doesn't make sense, I'm happy to talk.</p>
     <p class="kit-cta-job">If one of these pages saves you one bad forecast call, it did its job.</p>
     <p class="kit-cta-terms">Twenty minutes. Free. No deck. No pitch.</p>
@@ -2229,7 +2230,7 @@ open('kits/index.html', 'w').write(_kits)
 print('seller kit', len(_seller), '| kits index', len(_kits))
 
 
-# /talent-review/ forwards to OLR Check (the kit prints the universal name; the tool keeps its name)
+# /talent-review/ forwards to Talent Review Check (at /olr/) (the kit prints the universal name; the tool keeps its name)
 os.makedirs('talent-review', exist_ok=True)
 open('talent-review/index.html', 'w').write('''<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><title>Talent review prep | QuotaBird</title>
@@ -2310,12 +2311,14 @@ def chrome(path):
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
     ask = '#ask' if path == 'about/index.html' else '/about/#ask'
-    if 'class="foot-nav"' not in s:
-        s = s.replace('<footer class="sitefoot">', f'<footer class="sitefoot">\n  <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>', 1)
+    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>'
+    s = re.sub(r'\s*<p class="foot-nav">.*?</p>', '', s, count=1, flags=re.S)          # the footer nav is regenerated every build, so every page matches
+    s = s.replace('<footer class="sitefoot">', '<footer class="sitefoot">\n  ' + nav, 1)
     if path != '404.html':
         # the full story lives on the About page; every other page gets the short "Made by Mark" card
         src = MARK_SRC if path == 'about/index.html' else MADEBY_SRC
         mark = src.replace('{ROOT}', root_of(path)).replace('{UTM}', utm_of(path))
+        s = re.sub(r'\s*<section class="band kit-band[^"]*"[^>]*>.*?</section>', '', s, flags=re.S)   # never let cards accumulate on hand-written pages
         if path in KITCARD_PAGES and 'kit-band' not in mark: mark = KITCARD_SRC + (LEADERCARD_SRC if path in LEADERCARD_PAGES else '') + mark
         elif path in SELLERCARD_PAGES and 'kit-band' not in mark: mark = SELLERCARD_SRC + mark
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
@@ -2374,7 +2377,7 @@ for g, h, n, d in TOOLS:
     if g != last: groups.append([g, []]); last = g
     groups[-1][1].append((h, n, d))
 site = 'https://quotabird.com'
-lines = ['# QuotaBird', '', '> Quick reality checks for people who carry a number: thirteen free, one-minute tools for sellers and sales managers (deals, pipeline, quota, territories, partners, reps, reviews), plus short field notes. Everything runs in the browser; nothing is stored. Built by Mark Flournoy, who led partner sales teams at AWS.', '',
+lines = ['# QuotaBird', '', '> Quick reality checks for people who carry a number: thirteen free, one-minute tools for sellers and sales managers (deals, pipeline, quota, territories, partners, reps, reviews), plus short field notes. Everything runs in the browser; nothing is stored. Built by Mark Flournoy, who spent six years leading federal partner sales teams at AWS.', '',
          'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI.', '']
 for g, items in groups:
     lines.append(f'## {g}'); lines.append('')

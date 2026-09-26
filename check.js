@@ -67,14 +67,14 @@
     bar.innerHTML = '<button class="btn btn-primary btn-lg" type="button"></button>';
     document.body.appendChild(bar);
     const btn = bar.querySelector('button');
-    let prepOut = false, aboutIn = false;
-    const update = () => { const prep = document.getElementById('prep'); if (prep) btn.textContent = prep.textContent; bar.hidden = !(prep && prepOut && !aboutIn); };
+    let prepOut = false, aboutIn = false, footIn = false;
+    const update = () => { const prep = document.getElementById('prep'); if (prep) btn.textContent = prep.textContent; bar.hidden = !(prep && prepOut && !aboutIn && !footIn); };
     const io = new IntersectionObserver((es) => {
-      es.forEach(e => { if (e.target.id === 'prep') prepOut = !e.isIntersecting && e.boundingClientRect.top < 0; else aboutIn = e.isIntersecting; });
+      es.forEach(e => { if (e.target.id === 'prep') prepOut = !e.isIntersecting && e.boundingClientRect.top < 0; else if (e.target.id === 'about') aboutIn = e.isIntersecting; else footIn = e.isIntersecting; });
       update();
     });
-    const watch = () => { io.disconnect(); prepOut = false; const prep = document.getElementById('prep'), about = document.getElementById('about');
-      if (prep) io.observe(prep); if (about) io.observe(about); update(); };
+    const watch = () => { io.disconnect(); prepOut = false; const prep = document.getElementById('prep'), about = document.getElementById('about'), foot = document.querySelector('.sitefoot');
+      if (prep) io.observe(prep); if (about) io.observe(about); if (foot) io.observe(foot); update(); };
     new MutationObserver(watch).observe(screen, { childList: true });
     watch();
     btn.onclick = () => { window.scrollTo({ top: 0 }); const prep = document.getElementById('prep'); if (prep) prep.click(); };

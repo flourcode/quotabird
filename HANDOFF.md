@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-17.1100**
+**Current build: 2026-10-17.1900**
 
 ## Naming: checks, not kills
 
@@ -151,9 +151,10 @@ Territory, Discount, Commission), *For managers* (Pipeline, Rep, Partner,
 OLR), *Any meeting* (Brief). The About's situations open with the one every
 seller recognises: the forecast call has become the job.
 
-**Mark's AWS role, worded precisely:** he *led partner sales teams at AWS*.
-Never "led partner sales at AWS" or "ran partner sales"; the difference
-matters to him and to anyone who was there.
+**Mark's AWS role, in his own words:** *six years leading federal partner
+sales teams at AWS* (or "led federal partner sales teams at AWS" where the
+six years is already stated). Never "led partner sales at AWS" or "ran
+partner sales"; the difference matters to him and to anyone who was there.
 
 **Nav.** Header: bird + *QuotaBird* (home), *Field Notes* and *About* as
 text links on screens 700px and wider, an *Ask Mark* chip that jumps to the
@@ -348,6 +349,16 @@ site should sound like one veteran seller talking, not a manual:
 - Editing copy that lives inside the tool configs (JavaScript inside Python
   strings) needs an escaped apostrophe: `\\'` in the source. Run a syntax
   check on every page after copy edits.
+
+**Phone tap targets: 44px.** Every button, menu row, footer link, chip and
+text link outside running prose is at least 44px tall on a phone (chips are
+40px, which Material allows). Measured October 2026 across the home page,
+Deal, Quota, the kit pages and About, open menu included. Prose links inside
+sentences are the exception, as everywhere on the web. Page weight is 115 to
+240 KB in 6 to 8 requests; every input is 16px so iOS doesn't zoom; every
+image has width and height so nothing jumps. The footer nav is regenerated
+on every page each build (it had drifted on Deal). The sticky start button
+hides over the About/Made-by section and over the footer.
 
 **The ask is soft on purpose.** The three-tier rate card is gone. The About
 section ends *Need another set of eyes? 20 minutes. Free. No deck required.*
@@ -1067,7 +1078,7 @@ pace.* Never a name, never a dollar figure; the old site's version sent
 dollars and this one must not. If the Calendly event type's first question
 is ever removed, the prefill silently does nothing, which is fine.
 
-**OLR Check grades the case, never the rep.** It was built as *Kill My
+**Talent Review Check (at `/olr/`) grades the case, never the rep.** It was built as *Kill My
 Case* at `/case/` and renamed because most users are at Amazon and OLR is the
 word they use; *case* stays in body copy where it is the precise word (the
 room tests your case), but not in the name, URL, card, menu or DMs. The FAQ
@@ -1604,3 +1615,29 @@ the new headlines; fifteen padding "actually"s removed. Verdict lines left
 alone: they already carry the edge, aimed at the deal.
 
 **2026-10-17.1100** — dark-mode bird outline changed from white to the accent blue (`logo-dark.svg`, `logo-x-dark.svg`, `favicon.svg`): two-tone blue, no harsh rim, wing line kept.
+
+**2026-10-17.1300** — mobile pass against the UX notes: tap targets raised
+to 44px (header chips 40px, menu rows, text buttons, footer links, the
+start-here links in the kits, the Made-by About link); footer nav regenerated
+every build; sticky start button no longer covers the footer.
+
+**2026-10-17.1500** — **Bug fixed:** on the hand-written Deal page, the kit
+card was being added again on every build instead of replaced, and had
+reached 24 copies (22 phone screens). `chrome()` now strips any existing kit
+card before inserting one. Deal Check trimmed from 30.8 to 7.9 phone
+screens: *Why not BANT or MEDDIC?* cut to the verdict plus a link to the
+Field Note; the pipeline-review essay cut to *If you run the review*; FAQ
+from 8 to 5 (customer/dollar and rigor folded into the privacy and scoring
+answers). Bio wording updated everywhere to Mark's: *six years leading
+federal partner sales teams at AWS*. Kits re-rendered (4, 8, 3 pages).
+
+**2026-10-17.1700** — *OLR Check* renamed **Talent Review Check**. The URL
+stays `/olr/` (no redirect needed) and `/talent-review/` still forwards to
+it. The copy keeps "OLR" where it explains that it's Amazon's name for the
+talent review, which is what people search for; the page title carries
+"(OLR Prep)" for the same reason. Renamed in the menu, the home doorway,
+the page, the DM text, the share card wordmark, llms.txt and ai-catalog.json.
+Also fixed a leftover "then the room grills you" in two descriptions
+(Talent Review and Brief), from before *Grill me* became *Pressure test*.
+
+**2026-10-17.1900** — Talent Review Check's share card and share title read *Will your recommendations survive the room?* (the page headline stays *Will your case survive the room?*; a tool can set `ogh1` to give its share card its own line). Three share-card subtitles still said "the room grills you" (Talent Review, Account, Brief); now "pressure-tests you".

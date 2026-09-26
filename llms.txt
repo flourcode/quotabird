@@ -1,6 +1,6 @@
 # QuotaBird
 
-> Quick reality checks for people who carry a number: thirteen free, one-minute tools for sellers and sales managers (deals, pipeline, quota, territories, partners, reps, reviews), plus short field notes. Everything runs in the browser; nothing is stored. Built by Mark Flournoy, who led partner sales teams at AWS.
+> Quick reality checks for people who carry a number: thirteen free, one-minute tools for sellers and sales managers (deals, pipeline, quota, territories, partners, reps, reviews), plus short field notes. Everything runs in the browser; nothing is stored. Built by Mark Flournoy, who spent six years leading federal partner sales teams at AWS.
 
 The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI.
 
@@ -23,11 +23,11 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 - [Risk Check](https://quotabird.com/risk/): Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored. (when coverage looks fine and you don't trust it.)
 - [Rep Check](https://quotabird.com/rep/): Is it the rep, the patch, a skill gap or an effort gap? Five questions for sales managers. No names, nothing stored. (when a rep is worrying you.)
 - [Partner Check](https://quotabird.com/partner/): Five questions that separate a partner who sells with you from a logo on a slide. For partner managers. One minute, nothing stored. (before you renew the partnership.)
-- [OLR Check](https://quotabird.com/olr/): Five questions that test the case you're making for a rep in OLR, then the room grills you. No names, no ratings, nothing stored. (review season.)
+- [Talent Review Check](https://quotabird.com/olr/): Five questions that test the case you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you. No names, no ratings, nothing stored. (review season.)
 
 ## Any meeting
 
-- [Brief Check](https://quotabird.com/brief/): Five questions about the doc, deck or QBR you're about to present, then the room grills you. Nothing uploaded, nothing stored. (when someone in the room can say no.)
+- [Brief Check](https://quotabird.com/brief/): Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. Nothing uploaded, nothing stored. (when someone in the room can say no.)
 
 ## Free printable
 

@@ -328,10 +328,10 @@
     },
     {
       "identifier": "urn:air:quotabird.com:tools:olr-check",
-      "displayName": "OLR Check",
+      "displayName": "Talent Review Check",
       "type": "text/html",
       "url": "https://quotabird.com/olr/",
-      "description": "OLR Check: Five questions that test the case you're making for a rep in OLR, then the room grills you. No names, no ratings, nothing stored.",
+      "description": "Talent Review Check: Five questions that test the case you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you. No names, no ratings, nothing stored.",
       "tags": [
         "your-team",
         "sales",
@@ -339,7 +339,7 @@
         "no-login"
       ],
       "capabilities": [
-        "OLRCheck"
+        "TalentReviewCheck"
       ],
       "representativeQueries": [
         "prepare for OLR calibration",
@@ -360,7 +360,7 @@
       "displayName": "Brief Check",
       "type": "text/html",
       "url": "https://quotabird.com/brief/",
-      "description": "Brief Check: Five questions about the doc, deck or QBR you're about to present, then the room grills you. Nothing uploaded, nothing stored.",
+      "description": "Brief Check: Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. Nothing uploaded, nothing stored.",
       "tags": [
         "any-meeting",
         "sales",
