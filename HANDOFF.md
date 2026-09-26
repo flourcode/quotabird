@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-17.0900**
+**Current build: 2026-10-17.1100**
 
 ## Naming: checks, not kills
 
@@ -38,7 +38,8 @@ heavy Gaussian blur, radius 22, which removes the pixel stair-steps of the
 256px source; 41 curve segments, not 259; the
 eye is a true circle at (156.3, 84.8), radius 16.5, where the X used to
 be). Body `#9DD2FF`, outline `#122F4D`; `logo-dark.svg` swaps the outline
-for white; `favicon.svg` switches by colour scheme; the PNG icons and every
+for the accent blue (`#1DA1F2`, the button colour; white read as a hard rim
+on dark); `favicon.svg` switches by colour scheme; the PNG icons and every
 share card are rendered from it. The S-cloud mark is retired. The 404 page alone uses `logo-x.svg` /
 `logo-x-dark.svg`, the same bird with the original X eye: that is the one
 place the bird is meant to be dead.
@@ -1601,3 +1602,5 @@ Check's leftover "Federal Sales Pipeline Review Tool" title and the OLR title
 brought into the "X Check: question" pattern; five share cards redrawn with
 the new headlines; fifteen padding "actually"s removed. Verdict lines left
 alone: they already carry the edge, aimed at the deal.
+
+**2026-10-17.1100** — dark-mode bird outline changed from white to the accent blue (`logo-dark.svg`, `logo-x-dark.svg`, `favicon.svg`): two-tone blue, no harsh rim, wing line kept.
