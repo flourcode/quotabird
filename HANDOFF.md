@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-18.1100**
+**Current build: 2026-10-18.1500**
 
 ## Naming: checks, not kills
 
@@ -104,7 +104,18 @@ live in `CALCS` in `make-tools.py`; the page template is `calc_page()`.
 Menu group *Your number*; home doorways *I just got my quota*, *They want a
 discount*, *It closed*.
 
-**The front door asks the question.** The home page opens with *What's
+**The front door is a shelf.** *The sales problems shelf / Pick the problem
+you've got.* Fifteen covers styled as a matched paperback series: the
+thirteen tools plus Field Kits and Sales Math. Each cover is the problem in
+the user's words (*Is my quota crazy?*), the small label above it is the tool
+("Territory", no "Check", so labels fit a phone), and a faint Quota Bird in
+the corner of each cover is the publisher's mark. Deal Check is the big
+*Start here* cover so nobody has to choose. Fifteen fills a 3-column phone
+grid and a 6-column desktop grid with no orphans; adding or removing a
+cover breaks that, so replace rather than add. Covers keep their own colors
+in dark mode. Question tools open on question 1 via `#start`.
+
+**The front door asks the question (superseded by the shelf).** The home page opens with *What's
 giving you trouble this week?* and six first-person answers, styled like the
 tools' own answer buttons: a deal, pipeline, quota, a rep, a partner, a deck
 or brief. Six is the cap (more is a menu). Each is one tap into the right
@@ -1666,3 +1677,9 @@ spot you name first stops being a weakness."
 trouble this week?* with six one-tap answers; tools accept `#start` to open
 on question 1; Pipeline Check moves to second position with an h2. Easy to
 revert: the calculator block is unchanged underneath.
+
+**2026-10-18.1300** — full Amplify rewrite list regenerated from the page list (`amplify-rewrites.json`): trailing-slash 301s for every page, including the Field Notes and Sales Math articles; `/talent-review` now a real 301 to `/olr/` (the forwarding page stays as a fallback); `/pipeline` to `/`; the 404 catch-all last. When a page is added, add its `/{slug}` → `/{slug}/` line above the catch-all.
+
+**2026-10-18.1500** — home front door is now *The sales problems shelf*
+(15 book covers, featured *Start here* Deal Check), replacing the six
+buttons. Taps still count as `front_pick`. Every label fits from 320px up.
