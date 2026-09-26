@@ -186,7 +186,7 @@
       <div class="btn-row center" style="margin-top:4px;">
         <a class="btn btn-text" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_score&a1=${encodeURIComponent(cfg.name + ': ' + s.label.toLowerCase() + '. ' + s.meta)}" target="_blank" rel="noopener">Or book a call</a>
       </div>
-      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. I answer LinkedIn faster than email.</p>
+      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. For bigger things, <a href="/ask/">here\'s how I work with teams</a>.</p>
     </div>`);
       const rm = document.getElementById('runMine'); if (rm) rm.onclick = () => { answers = {}; clearHash(); ask(0); };
       const u = document.getElementById('useful'); if (u) u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track(cfg.slug + '_useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; });
@@ -264,7 +264,7 @@
       <div class="btn-row center" style="margin-top:4px;">
         <a class="btn btn-text" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_grill&a1=${encodeURIComponent(cfg.name + ': ' + s.label.toLowerCase() + '. ' + s.meta)}" target="_blank" rel="noopener">Or book a call</a>
       </div>
-      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. I answer LinkedIn faster than email.</p>
+      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. For bigger things, <a href="/ask/">here\'s how I work with teams</a>.</p>
     </div>`);
       document.getElementById('back2').onclick = () => result(false);
       const text = cfg.dmGrill ? cfg.dmGrill(s, grillOuch) : cfg.dm(s);

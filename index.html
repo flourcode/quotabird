@@ -252,7 +252,7 @@
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
-      <a class="chip chip-ask" href="/about/#ask">Ask Mark</a>
+      <a class="chip chip-ask" href="/ask/">Ask Mark</a>
     </nav>
   </header>
   <div class="front" id="front">
@@ -414,7 +414,7 @@
       <h2 id="madeby-h">Made by Mark.</h2>
       <p>I carried a number, managed the people who did, and spent six years leading federal partner sales teams at AWS. I make these because
         they're the things I wish we'd had. If a check isn't enough, I'm happy to look at the real thing with you.</p>
-      <p class="madeby-links"><a class="btn btn-primary" href="/about/#ask">Ask Mark</a><a href="/about/">About Mark</a></p>
+      <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
 </section>
@@ -452,14 +452,14 @@
 </section>
 
 <footer class="sitefoot">
-  <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/about/#ask">Ask Mark</a></p>
+  <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/ask/">Ask Mark</a></p>
   <p>QuotaBird is a shelf of free tools by
     <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-19.0900';
+window.QB_BUILD = '2026-10-19.1100';
 const track = (n) => { if (typeof window.qbTrack === 'function') window.qbTrack(n); else (window.qbTrackQ = window.qbTrackQ || []).push(n); };
 const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const $ = (id) => document.getElementById(id);
@@ -695,7 +695,7 @@ function render() {
       <div class="btn-row center" style="margin-top:4px;">
         <a class="btn btn-text" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=pipeline&utm_content=after_score&a1=${encodeURIComponent(bookNote(s))}" target="_blank" rel="noopener">Or book a call</a>
       </div>
-      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. I answer LinkedIn faster than email.</p>
+      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. For bigger things, <a href="/ask/">here\'s how I work with teams</a>.</p>
     </div>`;
   { const st = $('stress'); if (st) st.onclick = () => { const w = Math.max(.05, Math.round((s.win - .05) * 100) / 100); $('win').value = pct(w); track('pipeline_stress'); onEdit(); }; }
   $('copy').onclick = (e) => { track('pipeline_share'); try { history.replaceState(null, '', '#' + encodeInputs()); } catch {} shareOut(e.currentTarget, shareBlock(s), 'Pipeline Check'); };

@@ -58,6 +58,60 @@ CARDS = {
     foot='Any doc, deck or QBR. Nothing uploaded. Nothing stored.', url='quotabird.com/brief',
     pillars=['POINT', 'RECEIPTS', 'ALTERNATIVE', 'HOLE', 'ASK']),
 }
+if (sys.argv[1] if len(sys.argv) > 1 else '') == 'banner':
+    # LinkedIn profile banner, 1584x396 (drawn at 2x). The left third stays clear for the headshot, which overlaps
+    # the bottom-left on desktop and is proportionally larger in the mobile app; nothing hugs the top or bottom edge.
+    from PIL import ImageFilter
+    S = 2; W, H = 1584 * S, 396 * S
+    SURF=(0xF9,0xFC,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x1D,0xA1,0xF2)
+    woff2 = open('inter.woff2', 'rb').read()
+    def font(w, size):
+        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
+        inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
+        return ImageFont.truetype(buf, size * S)
+    hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
+    books = [("Is it a deal, or is it hopium?", '#1C3D5A', '#FFFFFF'), ("You sure that's enough pipeline?", '#F2C14E', '#1B1B1B'),
+             ("Is my quota crazy?", '#E07A5F', '#FFFFFF'), ("Is it the rep, or the patch?", '#3D8B7D', '#FFFFFF')]
+    im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
+    bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
+    # covers, right side
+    cols, gap, bw = 4, 14 * S, 104 * S; bh = int(bw * 1.5); x0 = W - 112 * S - cols * bw - (cols - 1) * gap; y0 = (H - bh) // 2
+    tf = font(800, 15); lh = 19 * S
+    def wrap(text, width):
+        words, lines, cur = text.split(), [], ''
+        for w_ in words:
+            t = (cur + ' ' + w_).strip()
+            if d.textlength(t, font=tf) <= width: cur = t
+            else: lines.append(cur); cur = w_
+        return lines + [cur]
+    for i, (title, bg, ink) in enumerate(books):
+        x = x0 + i * (bw + gap); y = y0; pad = 20 * S
+        sh = Image.new('RGBA', (bw + 2 * pad, bh + 2 * pad), (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((pad, pad + 5 * S, pad + bw, pad + 5 * S + bh), 6 * S, fill=(0, 0, 0, 60))
+        sh = sh.filter(ImageFilter.GaussianBlur(7 * S)); im.paste(sh, (x - pad, y - pad), sh)
+        cover = Image.new('RGBA', (bw, bh), hexc(bg) + (255,)); cd = ImageDraw.Draw(cover)
+        cd.rectangle((0, 0, 5 * S, bh), fill=tuple(int(v * .86) for v in hexc(bg)) + (255,))
+        bm = mask.resize((int(bw * .8), int(bw * .8 * mask.height / mask.width)), Image.LANCZOS)
+        tint = Image.new('RGBA', bm.size, hexc(ink) + (0,)); tint.putalpha(bm.point(lambda a: int(a * .13)))
+        cover.alpha_composite(tint, (int(bw * .32), bh - int(bm.height * .9)))
+        ty = 13 * S
+        for line in wrap(title, bw - 24 * S):
+            cd.text((12 * S, ty), line, font=tf, fill=hexc(ink)); ty += lh
+        cd.text((12 * S, bh - 19 * S), 'QUOTABIRD', font=font(700, 8), fill=hexc(ink) + (170,))
+        rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), 6 * S, fill=255)
+        im.paste(cover, (x, y), rm)
+    # the pitch, middle third
+    tx = 575 * S
+    lb = bird.resize((int(34 * S * bird.width / bird.height), 34 * S), Image.LANCZOS)
+    ty = 92 * S
+    im.paste(lb, (tx, ty), lb); d.text((tx + lb.width + 10 * S, ty + 3 * S), 'QuotaBird', font=font(700, 22), fill=INK)
+    d.text((tx, ty + 56 * S), 'THE SALES PROBLEMS SHELF', font=font(700, 13), fill=ACC)
+    d.text((tx - 2 * S, ty + 80 * S), 'Pick the problem', font=font(800, 38), fill=INK)
+    d.text((tx - 2 * S, ty + 124 * S), "you've got.", font=font(800, 38), fill=INK)
+    d.text((tx, ty + 180 * S), 'quotabird.com', font=font(700, 19), fill=ACC)
+    im.save('linkedin-banner@2x.jpg', quality=92, optimize=True, subsampling=0)
+    im.resize((1584, 396), Image.LANCZOS).save('linkedin-banner.jpg', quality=92, optimize=True, subsampling=0)
+    print('linkedin-banner.jpg (1584x396) and linkedin-banner@2x.jpg (3168x792)'); sys.exit(0)
+
 if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
     # The home card is the shelf itself. Drawn at 2x (2400x1260) and saved without chroma subsampling, so
     # LinkedIn's downscaled copies stay sharp and coloured text on coloured covers doesn't smear.

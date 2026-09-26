@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-19.0900'
+BUILD = '2026-10-19.1100'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -1798,6 +1798,7 @@ KIT_CTA = '''
       <a class="btn btn-primary btn-lg" id="kitBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=kit&amp;utm_content=kit_cta" target="_blank" rel="noopener">Chat with Mark</a>
       <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
     </div>
+    <p class="kit-bridge">Used this with your team and found something ugly? I do this with sales managers and teams too. <a href="/ask/">Here\'s how</a>.</p>
     <p class="fine">Or email me: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>. And if I don't think I can help, I'll tell you.</p>
   </section>
 '''
@@ -1956,6 +1957,7 @@ LEADER_CTA = '''
       <a class="btn btn-primary btn-lg" id="leaderBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=leader&amp;utm_content=leader_cta" target="_blank" rel="noopener">Chat with Mark</a>
       <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
     </div>
+    <p class="kit-bridge">Used this with your team and found something ugly? I do this with sales managers and teams too. <a href="/ask/">Here\'s how</a>.</p>
     <p class="fine">Or email me: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>. And if I don't think I can help, I'll tell you.</p>
   </section>
 '''
@@ -2156,6 +2158,7 @@ SELLER_CTA = '''
       <a class="btn btn-primary btn-lg" id="sellerBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=seller&amp;utm_content=seller_cta" target="_blank" rel="noopener">Chat with Mark</a>
       <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
     </div>
+    <p class="kit-bridge">Used this with your team and found something ugly? I do this with sales managers and teams too. <a href="/ask/">Here\'s how</a>.</p>
     <p class="fine">Or email me: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>. And if I don't think I can help, I'll tell you.</p>
   </section>
   <div class="kit-next"><span class="overline">Next</span><p>Running a team? <a href="/kit/">The Manager's Field Kit</a> is the one for that.</p></div>
@@ -2229,6 +2232,64 @@ open('kits/index.html', 'w').write(_kits)
 print('seller kit', len(_seller), '| kits index', len(_kits))
 
 
+# ────────────────────────────── ASK MARK (/ask/): what working with Mark looks like ──────────────────────────────
+_ask_url = 'https://quotabird.com/ask/'
+_ask_desc = "Got a sales problem that doesn't fit in five questions? A free twenty-minute call with Mark Flournoy to start, then monthly help for managers or a working session with your team. No methodology rollout, no deck."
+_ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>', '| QuotaBird</title>') + '''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note ask">
+  <span class="overline">Ask Mark</span>
+  <h1>Got a problem that doesn't fit in five questions?</h1>
+  <p class="dek">I help sales leaders work through messy deals, pipeline, reps, territories and QBRs. No methodology rollout, no 40-page deck.</p>
+
+  <div class="offer offer-first">
+    <span class="overline">Start here</span>
+    <h2>Twenty minutes, free</h2>
+    <p>Bring one problem: a deal you don't trust, a rep you're worried about, a number that doesn't add up. If I can't help, I'll tell you.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary btn-lg" id="askBook" href=\"https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=ask&amp;utm_content=ask" target="_blank" rel="noopener">Chat with Mark</a>
+      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
+    </div>
+    <p class="steps-h">How the call works</p>
+    <ol class="steps">
+      <li><b>Pick a time.</b> Name, email and one line about what's going on. No deck required.</li>
+      <li><b>I read your line before we talk,</b> so we start in the middle instead of at the beginning.</li>
+      <li><b>Twenty minutes, free.</b> Then you decide whether there's anything more. No pitch, and no sales follow-ups.</li>
+    </ol>
+  </div>
+
+  <h2 class="offers-h">If it needs more than twenty minutes</h2>
+  <div class="offer">
+    <h3>Manager Wingman</h3>
+    <p class="offer-when">Monthly</p>
+    <p>A couple of calls a month for the stuff you don't want to work through with your boss or your team: a rep decision,
+      a forecast you don't trust, a plan you have to defend, the promotion conversation.</p>
+    <p><a href="mailto:mark@quotabird.com?subject=Manager%20Wingman">Ask about Wingman</a></p>
+  </div>
+  <div class="offer">
+    <h3>Team session</h3>
+    <p class="offer-when">One session, not a rollout</p>
+    <p>A pipeline review, deal review, account planning session or manager workshop, run with your team, using the same
+      questions as the tools here.</p>
+    <p><a href="mailto:mark@quotabird.com?subject=Team%20session">Ask about a team session</a></p>
+  </div>
+  <p class="fine">Paid work is priced by scope. We agree on it before anything starts, usually on the free call.</p>
+
+  <p class="ask-foot">Not ready to talk? The <a href="/">tools</a> are free, and so are the <a href="/kits/">Field Kits</a>.
+    Or email me: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
+</article>
+
+''' + NOTE_TAIL.replace('Field Notes are part of', 'Ask Mark is part of').replace('</script>\n</body>', """document.getElementById('askBook').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('ask_book'); });
+</script>
+</body>""")
+assert '—' not in _ask and '–' not in _ask
+os.makedirs('ask', exist_ok=True)
+open('ask/index.html', 'w').write(_ask)
+
 # /talent-review/ forwards to Talent Review Check (at /olr/) (the kit prints the universal name; the tool keeps its name)
 os.makedirs('talent-review', exist_ok=True)
 open('talent-review/index.html', 'w').write('''<!DOCTYPE html>
@@ -2299,11 +2360,11 @@ def current_of(path):
     return '/' if path == 'index.html' else '/' + path.rsplit('/', 1)[0] + '/'
 def header(path):
     b = root_of(path)
-    ask = '#ask' if path == 'about/index.html' else '/about/#ask'
+    ask = '/ask/'
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/')) else '/' + path.split('/')[0] + '/')}
+      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/')) else '/' + path.split('/')[0] + '/')}
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
@@ -2316,7 +2377,7 @@ def chrome(path):
     if 'rel="preload" href="/inter.woff2"' not in s:
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
-    ask = '#ask' if path == 'about/index.html' else '/about/#ask'
+    ask = '/ask/'
     nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>'
     s = re.sub(r'\s*<p class="foot-nav">.*?</p>', '', s, count=1, flags=re.S)          # the footer nav is regenerated every build, so every page matches
     s = s.replace('<footer class="sitefoot">', '<footer class="sitefoot">\n  ' + nav, 1)
@@ -2331,7 +2392,7 @@ def chrome(path):
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
 PAGES = ['index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION)] \
-        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html'] + ['404.html']
+        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html'] + ['404.html']
 for _p in PAGES:
     chrome(_p)
 print('chrome', len(PAGES))

@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-19.0900**
+**Current build: 2026-10-19.1100**
 
 ## Naming: checks, not kills
 
@@ -1750,3 +1750,25 @@ eight covers had titles too small to survive the shrink. All sixteen cards now
 save with `subsampling=0`; the shelf card is drawn at 2x (2400×1260, declared
 in og:image:width/height) with six larger covers. Fingerprints changed, so
 LinkedIn refetches.
+
+**LinkedIn profile banner** — `python3 make-card.py banner` writes
+`linkedin-banner.jpg` (1584×396, LinkedIn's size) and `linkedin-banner@2x.jpg`
+(3168×792). The shelf pitch and four covers sit in the right two-thirds; the
+left 574px stays clear for the headshot, which overlaps the bottom-left on
+desktop and is larger in the mobile app, and nothing sits near the top or
+bottom edge, which the app trims. These are for Mark's profile, not the site;
+they aren't in the deploy package.
+
+**2026-10-19.1100** — **Ask Mark is a page** (`/ask/`): *Got a problem that
+doesn't fit in five questions?* The free twenty-minute call first (button above
+the fold on a phone, then how the call works), then *If it needs more than
+twenty minutes*: **Manager Wingman** (monthly calls) and **Team session** (a
+pipeline or deal review, account planning or manager workshop, one session, not
+a rollout), each with an email link, no prices yet ("Paid work is priced by
+scope. We agree on it before anything starts."). The header chip, footer, and
+Made-by card link there; About's booking section is now a short pointer to it.
+Every result card ends "Free either way. For bigger things, here's how I work
+with teams."; every kit's closing card adds "Used this with your team and found
+something ugly? I do this with sales managers and teams too." (screen only, so
+kit page counts hold). Amplify: add `/ask` → `/ask/`. Also fixed: the numbered
+steps only rendered inside section bands. Next is distribution, not more site.

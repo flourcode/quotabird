@@ -97,7 +97,7 @@
       <div class="preview mono" title="Tap to select">${esc(cfg.dm(s))}</div>
       <button class="btn btn-primary btn-lg btn-full" id="dmBtn" type="button" style="margin-top:14px;">Copy this &amp; DM me</button>
       <div class="btn-row center" style="margin-top:4px;"><a class="btn btn-text" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_score&a1=${encodeURIComponent(cfg.bookNote(s))}" target="_blank" rel="noopener">Or book a call</a></div>
-      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. I answer LinkedIn faster than email.</p>
+      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. For bigger things, <a href="/ask/">here\'s how I work with teams</a>.</p>
     </div>`;
       $('copy').onclick = (e) => { track(cfg.slug + '_share'); try { history.replaceState(null, '', '#' + encode()); } catch {} shareOut(e.currentTarget, shareBlock(s), cfg.name); };
       $('dmBtn').onclick = (e) => { const btn = e.currentTarget; track(cfg.slug + '_dm_copy'); copyText(cfg.dm(s)).then(() => { btn.textContent = 'Copied ✓'; window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener'); }).catch(() => { btn.textContent = "Couldn't copy"; }); };
