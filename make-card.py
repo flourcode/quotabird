@@ -63,7 +63,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'banner':
     # the bottom-left on desktop and is proportionally larger in the mobile app; nothing hugs the top or bottom edge.
     from PIL import ImageFilter
     S = 2; W, H = 1584 * S, 396 * S
-    SURF=(0xF9,0xFC,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x1D,0xA1,0xF2)
+    SURF=(0xF9,0xFC,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x0A,0x71,0xB1)
     woff2 = open('inter.woff2', 'rb').read()
     def font(w, size):
         inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
@@ -71,7 +71,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'banner':
         return ImageFont.truetype(buf, size * S)
     hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
     books = [("Is it a deal, or is it hopium?", '#1C3D5A', '#FFFFFF'), ("You sure that's enough pipeline?", '#F2C14E', '#1B1B1B'),
-             ("Is my quota crazy?", '#E07A5F', '#FFFFFF'), ("Is it the rep, or the patch?", '#3D8B7D', '#FFFFFF')]
+             ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), ("Is it the rep, or the patch?", '#388073', '#FFFFFF')]
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
     # covers, right side
@@ -117,7 +117,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
     # LinkedIn's downscaled copies stay sharp and coloured text on coloured covers doesn't smear.
     from PIL import ImageFilter
     S = 2; W, H, M = 1200 * S, 630 * S, 64 * S
-    SURF=(0xF9,0xFC,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x1D,0xA1,0xF2)
+    SURF=(0xF9,0xFC,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x0A,0x71,0xB1)
     woff2 = open('inter.woff2', 'rb').read()
     def font(w, size):
         inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
@@ -125,7 +125,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
         return ImageFont.truetype(buf, size * S)
     hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
     books = [("Is it a deal, or is it hopium?", '#1C3D5A', '#FFFFFF'), ("You sure that's enough pipeline?", '#F2C14E', '#1B1B1B'),
-             ("Is my quota crazy?", '#E07A5F', '#FFFFFF'), ("Is it the rep, or the patch?", '#3D8B7D', '#FFFFFF'),
+             ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), ("Is it the rep, or the patch?", '#388073', '#FFFFFF'),
              ("Real partner, or a logo on a slide?", '#F28482', '#2B1B1B'), ("They want a discount.", '#9DD2FF', '#12324F')]
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
@@ -177,7 +177,7 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') in KITCARDS:
     # The kit's card shows the pages themselves: text left, the two page previews stacked right.
     from PIL import ImageFilter
     W, H, M = 1200, 630, 72
-    SURF=(0xF9,0xFC,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x1D,0xA1,0xF2); SOFT=(0xC2,0xE3,0xFF); ONSOFT=(0x00,0x18,0x2B)
+    SURF=(0xF9,0xFC,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x0A,0x71,0xB1); SOFT=(0xC2,0xE3,0xFF); ONSOFT=(0x00,0x18,0x2B)
     woff2 = open('inter.woff2', 'rb').read()
     def font(w, size):
         inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)

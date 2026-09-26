@@ -124,6 +124,10 @@
     const u = $('useful'); if (u) u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track(cfg.slug + '_useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; });
     const form = $('f'); if (form) form.addEventListener('submit', (e) => e.preventDefault());
     if (readHash()) { shared = true; touched = true; const n = $('exnote'); if (n) n.textContent = ''; track(cfg.slug + '_verdict_shared'); }
+    // Example values look like defaults (quiet grey) until the user types in that field, so their own numbers stand out.
+    F.forEach(f => { if (f.kind === 'choice') return; const el = $(f.id); if (!el) return;
+      if (!shared && el.value) el.classList.add('is-example');
+      el.addEventListener('input', () => el.classList.remove('is-example')); });
     window.addEventListener('hashchange', () => { if (readHash()) { shared = true; render(); } });
     render();
     window.QB_TEST = { compute: cfg.compute, read };

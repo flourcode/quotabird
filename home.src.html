@@ -168,17 +168,18 @@
     <span class="overline tool-name">The sales problems shelf</span>
     <h1>Pick the problem you've got.</h1>
     <p class="dek">Five taps or a few numbers each. A straight answer. Nothing stored.</p>
+    <p class="hero-proof">Built by <a href="/about/">Mark Flournoy</a>, who spent six years leading federal partner sales teams at AWS.</p>
     <div class="shelf-grid">
       <a class="bk feat" href="/deal/#start"><span class="bk-label">Start here</span><span class="bk-cover" style="--bg:#1C3D5A;--ink:#FFFFFF"><span class="bk-title">Is it a deal, or is it hopium?</span><span class="bk-sub">Five questions to separate proof from hopium before your manager does.</span><span class="bk-foot">QuotaBird</span></span></a>
       <a class="bk" href="#pipeline"><span class="bk-label">Pipeline</span><span class="bk-cover" style="--bg:#F2C14E;--ink:#1B1B1B"><span class="bk-title">You sure that's enough pipeline?</span><span class="bk-foot">QuotaBird</span></span></a>
-      <a class="bk" href="/quota/"><span class="bk-label">Quota</span><span class="bk-cover" style="--bg:#E07A5F;--ink:#FFFFFF"><span class="bk-title">Is my quota crazy?</span><span class="bk-foot">QuotaBird</span></span></a>
-      <a class="bk" href="/rep/#start"><span class="bk-label">Rep</span><span class="bk-cover" style="--bg:#3D8B7D;--ink:#FFFFFF"><span class="bk-title">Is it the rep, or the patch?</span><span class="bk-foot">QuotaBird</span></span></a>
+      <a class="bk" href="/quota/"><span class="bk-label">Quota</span><span class="bk-cover" style="--bg:#E07A5F;--ink:#2B1B1B"><span class="bk-title">Is my quota crazy?</span><span class="bk-foot">QuotaBird</span></span></a>
+      <a class="bk" href="/rep/#start"><span class="bk-label">Rep</span><span class="bk-cover" style="--bg:#388073;--ink:#FFFFFF"><span class="bk-title">Is it the rep, or the patch?</span><span class="bk-foot">QuotaBird</span></span></a>
       <a class="bk" href="/territory/#start"><span class="bk-label">Territory</span><span class="bk-cover" style="--bg:#F4E1C1;--ink:#2B2B2B"><span class="bk-title">Can this patch make the number?</span><span class="bk-foot">QuotaBird</span></span></a>
       <a class="bk" href="/account/#start"><span class="bk-label">Account</span><span class="bk-cover" style="--bg:#6C5B7B;--ink:#FFFFFF"><span class="bk-title">Do you know the account?</span><span class="bk-foot">QuotaBird</span></span></a>
-      <a class="bk" href="/competition/#start"><span class="bk-label">Competition</span><span class="bk-cover" style="--bg:#C8553D;--ink:#FFFFFF"><span class="bk-title">Why you, instead of nothing?</span><span class="bk-foot">QuotaBird</span></span></a>
+      <a class="bk" href="/competition/#start"><span class="bk-label">Competition</span><span class="bk-cover" style="--bg:#C35037;--ink:#FFFFFF"><span class="bk-title">Why you, instead of nothing?</span><span class="bk-foot">QuotaBird</span></span></a>
       <a class="bk" href="/risk/#start"><span class="bk-label">Risk</span><span class="bk-cover" style="--bg:#2E2E3A;--ink:#F2C14E"><span class="bk-title">4X can still be a house of cards.</span><span class="bk-foot">QuotaBird</span></span></a>
       <a class="bk" href="/discount/"><span class="bk-label">Discount</span><span class="bk-cover" style="--bg:#9DD2FF;--ink:#12324F"><span class="bk-title">They want a discount.</span><span class="bk-foot">QuotaBird</span></span></a>
-      <a class="bk" href="/commission/"><span class="bk-label">Commission</span><span class="bk-cover" style="--bg:#588157;--ink:#FFFFFF"><span class="bk-title">What do I actually take home?</span><span class="bk-foot">QuotaBird</span></span></a>
+      <a class="bk" href="/commission/"><span class="bk-label">Commission</span><span class="bk-cover" style="--bg:#567E55;--ink:#FFFFFF"><span class="bk-title">What do I actually take home?</span><span class="bk-foot">QuotaBird</span></span></a>
       <a class="bk" href="/partner/#start"><span class="bk-label">Partner</span><span class="bk-cover" style="--bg:#F28482;--ink:#2B1B1B"><span class="bk-title">Real partner, or a logo on a slide?</span><span class="bk-foot">QuotaBird</span></span></a>
       <a class="bk" href="/olr/#start"><span class="bk-label">Talent Review</span><span class="bk-cover" style="--bg:#264653;--ink:#E9C46A"><span class="bk-title">Will your assessment survive the room?</span><span class="bk-foot">QuotaBird</span></span></a>
       <a class="bk" href="/brief/#start"><span class="bk-label">Brief</span><span class="bk-cover" style="--bg:#E9C46A;--ink:#2B2B2B"><span class="bk-title">The question you hope nobody asks.</span><span class="bk-foot">QuotaBird</span></span></a>
@@ -617,12 +618,18 @@ const onEdit = () => {
 $('win').addEventListener('blur', () => { const v = parseRate($('win').value); if (v) $('win').value = pct(v); });
 // Selecting the whole field on focus makes typing over an example one step.
 document.querySelectorAll('.calc-in input').forEach(inp => inp.addEventListener('focus', () => { setTimeout(() => { try { inp.select(); } catch {} }, 0); }));
-document.querySelectorAll('[data-win]').forEach(b => b.onclick = () => { $('win').value = b.dataset.win + '%'; track('pipeline_winrate'); onEdit(); });
+document.querySelectorAll('[data-win]').forEach(b => b.onclick = () => { $('win').value = b.dataset.win + '%'; $('win').classList.remove('is-example'); track('pipeline_winrate'); onEdit(); });
 document.querySelectorAll('[data-ye]').forEach(b => b.onclick = () => { yearEnd = b.dataset.ye; onEdit(); });
-$('justMe').onclick = () => { $('reps').value = '1'; onEdit(); };
+$('justMe').onclick = () => { $('reps').value = '1'; $('reps').classList.remove('is-example'); onEdit(); };
 $('f').addEventListener('submit', (e) => e.preventDefault());
 { const u = $('useful'); u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track('pipeline_useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; }); }
-if (readHash()) { shared = /(^|&)p=/.test(location.hash); touched = true; $('exnote').textContent = ''; if (shared) track('pipeline_verdict_shared'); }   // a target alone (from Quota Check) is a hand-off, not a shared verdict
+if (readHash()) { shared = /(^|&)p=/.test(location.hash); touched = true; $('exnote').textContent = ''; if (shared) track('pipeline_verdict_shared'); } 
+// Example values look like defaults (quiet grey) until the user types in that field; after the Quota Check hand-off the
+// quota is theirs and the rest are assumptions; a shared link shows someone's real numbers.
+['goal','pipe','win','size','reps','closed'].forEach(id => { const el = $(id);
+  if (!shared && el.value && !(fromQuota && id === 'goal')) el.classList.add('is-example');
+  el.addEventListener('input', () => el.classList.remove('is-example')); });
+  // a target alone (from Quota Check) is a hand-off, not a shared verdict
 window.addEventListener('hashchange', () => { if (readHash()) { shared = true; render(); } });
 render();
 window.QB_TEST = { compute, read, calendar };

@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-19.1100'
+BUILD = '2026-10-19.1700'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -2262,6 +2262,8 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
     </ol>
   </div>
 
+  <p class="helped">People I've helped have worked at Amazon, Microsoft, Google, Akamai, Databricks, Oracle, government agencies, and a bunch of smaller companies you've never heard of.</p>
+
   <h2 class="offers-h">If it needs more than twenty minutes</h2>
   <div class="offer">
     <h3>Manager Wingman</h3>
@@ -2289,6 +2291,55 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
 assert '—' not in _ask and '–' not in _ask
 os.makedirs('ask', exist_ok=True)
 open('ask/index.html', 'w').write(_ask)
+
+# ────────────────────────────── STUFF I LIKE (/stuff/) ──────────────────────────────
+# Mark's books and podcasts. No affiliate links, no links at all: the value is that it's his.
+_stuff = note_head('Stuff I Like', "Books and podcasts Mark Flournoy has gotten something from. Some sales, some management, some just because he likes them. No required reading, no affiliate links.", 'https://quotabird.com/stuff/') + '''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note stuff">
+  <span class="overline">QuotaBird</span>
+  <h1>Stuff I Like</h1>
+  <p class="dek">Some sales. Some management. Some just because I like them. No required reading.</p>
+
+  <h2>Books I've gotten something from</h2>
+  <div class="likes">
+    <div class="like"><p class="like-t">Fanatical Prospecting</p><p class="like-by">Jeb Blount</p><p class="like-why">If prospecting is the part of the job you keep finding reasons not to do.</p></div>
+    <div class="like"><p class="like-t">The Little Red Book of Selling</p><p class="like-by">Jeffrey Gitomer</p><p class="like-why">Old-school, occasionally corny, and still right about a surprising amount.</p></div>
+    <div class="like"><p class="like-t">How to Say It</p><p class="like-by">Rosalie Maggio</p><p class="like-why">Not really a sales book. Useful when you know what you mean but can't find the words.</p></div>
+    <div class="like"><p class="like-t">Atomic Habits</p><p class="like-by">James Clear</p><p class="like-why">Useful mostly because sales careers are built out of a lot of boring things done repeatedly.</p></div>
+    <div class="like"><p class="like-t">The Qualified Sales Leader</p><p class="like-by">John McMahon</p><p class="like-why">Probably the one I'd hand to someone managing serious enterprise sellers.</p></div>
+    <div class="like"><p class="like-t">Getting to Yes</p><p class="like-by">Roger Fisher, William Ury and Bruce Patton</p><p class="like-why">Negotiating without turning every conversation into a hostage situation.</p></div>
+    <div class="like"><p class="like-t">The Bezos Blueprint</p><p class="like-by">Carmine Gallo</p><p class="like-why">A good look at why Amazon communicates the strange way it does.</p></div>
+    <div class="like"><p class="like-t">Amazon Unbound</p><p class="like-by">Brad Stone</p><p class="like-why">Less about selling than understanding how one very large company thinks.</p></div>
+  </div>
+
+  <h2>Podcasts I actually listen to</h2>
+  <div class="likes">
+    <div class="like"><p class="like-t">Hidden Brain</p><p class="like-why">People are weird. Helpful to remember when selling to them or managing them.</p></div>
+    <div class="like"><p class="like-t">The Brutal Truth About Sales &amp; Selling</p><p class="like-why">Actual selling. Not much incense.</p></div>
+    <div class="like"><p class="like-t">Stuff You Should Know</p><p class="like-why">Has nothing to do with quota. That's partly why I like it.</p></div>
+    <div class="like"><p class="like-t">Radiolab</p><p class="like-why">Good stories about things I didn't know I was interested in.</p></div>
+    <div class="like"><p class="like-t">How to Be a Better Human</p><p class="like-why">Pretty much what it says.</p></div>
+    <div class="like"><p class="like-t">The Side Hustle Show</p><p class="like-why">For people who occasionally wonder what else they could build.</p></div>
+    <div class="like"><p class="like-t">Freakonomics Radio</p><p class="like-why">Incentives explain a lot of behavior, including some very stupid sales behavior.</p></div>
+    <div class="like"><p class="like-t">Marketplace</p><p class="like-why">Twenty-some minutes and you have a decent idea what's happening in the economy.</p></div>
+    <div class="like"><p class="like-t">The Daily Stoic</p><p class="like-why">Useful before certain forecast calls.</p></div>
+    <div class="like"><p class="like-t">Pivot</p><p class="like-why">Tech, business, politics, and two people disagreeing with each other.</p></div>
+  </div>
+
+  <p class="fine stuff-foot">No links and no affiliate anything. Your library and your podcast app will find them.</p>
+</article>
+
+<section class="band" id="about"></section>
+
+''' + NOTE_TAIL.replace('Field Notes are part of', 'Stuff I Like is part of')
+assert '—' not in _stuff and '–' not in _stuff
+os.makedirs('stuff', exist_ok=True)
+open('stuff/index.html', 'w').write(_stuff)
 
 # /talent-review/ forwards to Talent Review Check (at /olr/) (the kit prints the universal name; the tool keeps its name)
 os.makedirs('talent-review', exist_ok=True)
@@ -2364,7 +2415,7 @@ def header(path):
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/')) else '/' + path.split('/')[0] + '/')}
+      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/', 'stuff/')) else '/' + path.split('/')[0] + '/')}
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
@@ -2378,7 +2429,7 @@ def chrome(path):
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
     ask = '/ask/'
-    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>'
+    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>'
     s = re.sub(r'\s*<p class="foot-nav">.*?</p>', '', s, count=1, flags=re.S)          # the footer nav is regenerated every build, so every page matches
     s = s.replace('<footer class="sitefoot">', '<footer class="sitefoot">\n  ' + nav, 1)
     if path != '404.html':
@@ -2392,7 +2443,7 @@ def chrome(path):
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
 PAGES = ['index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION)] \
-        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html'] + ['404.html']
+        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html'] + ['404.html']
 for _p in PAGES:
     chrome(_p)
 print('chrome', len(PAGES))

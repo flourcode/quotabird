@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-19.1100**
+**Current build: 2026-10-19.1700**
 
 ## Naming: checks, not kills
 
@@ -383,6 +383,21 @@ site should sound like one veteran seller talking, not a manual:
 - Editing copy that lives inside the tool configs (JavaScript inside Python
   strings) needs an escaped apostrophe: `\\'` in the source. Run a syntax
   check on every page after copy edits.
+
+**Example numbers look like examples.** Every calculator opens on example
+values in quiet grey (`.is-example`, `--ink-2`, 5.5:1 on the field); a
+field turns full ink the moment the user types in it or taps a chip that
+fills it, so at a glance you can tell your numbers from the assumptions.
+After the Quota Check hand-off the quota is black and the assumed fields are
+grey; a shared link shows someone's real numbers, all black.
+
+**Contrast meets WCAG AA everywhere (measured Oct 19, light and dark).** Two
+blues: `--accent` (#0A71B1) for text, links and buttons, which passes 5.2:1
+with white text and 5.1:1 as a link; `--accent-bright` (#1DA1F2, the brand
+blue) only for decoration (progress bar, kit-preview edge). Never put text in
+the bright blue. Cover colours were checked the same way: white titles need
+4.5:1, so teal, rust and green were darkened a hair and Quota's coral carries
+dark text; the share card and banner use the same colours.
 
 **One type scale: 11, 13, 15, 17, 22, 28, 36** (plus 76 for the big verdict
 number). Every page renders six to eight sizes; before October 18 the home
@@ -1772,3 +1787,29 @@ with teams."; every kit's closing card adds "Used this with your team and found
 something ugly? I do this with sales managers and teams too." (screen only, so
 kit page counts hold). Amplify: add `/ask` → `/ask/`. Also fixed: the numbered
 steps only rendered inside section bands. Next is distribution, not more site.
+
+**2026-10-19.1300** — **Stuff I Like** (`/stuff/`): eight books and ten
+podcasts, each with one line in Mark's voice. No affiliate links and no links
+at all ("Your library and your podcast app will find them."); keep it curated,
+don't grow it. Linked from the About story and the footer. **Who I've helped**
+on About, and one line near the paid offers on Ask Mark: names in plain text
+("people I've helped have worked at…"), never a logo wall and never "trusted
+by", which implies the companies engaged Mark. No "used by" claim on the home
+page: the tools store nothing, so usage can't be backed up. **Mark: confirm
+the company list is accurate.** Amplify: add `/stuff` → `/stuff/`.
+
+**2026-10-19.1500** — from a web-design principles review: contrast audit
+(29 failing text styles, all real ones fixed: the brand blue failed as button
+and link text at 2.5 to 2.8:1, now a deeper blue of the same hue; four
+covers fixed); a proof line in the home hero (*Built by Mark Flournoy, who
+spent six years leading federal partner sales teams at AWS*), so the first
+screen has headline, context, proof and action. Share card, banner and kit
+cards regenerated with the new colours.
+
+**2026-10-19.1700** — from a "why some UI feels perfect" review: example
+values in the calculators render grey until edited, so the user's own
+numbers stand out (emphasis is the difference from the neighbours; defaults
+should look like defaults). The rest of that review was already true of the
+site: receipt-style rows (labels left, values right), centring only for
+fine print, grouping over white space, colour that carries meaning. Icons
+were deliberately not added; the plain-text voice is the brand.

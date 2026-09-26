@@ -14,7 +14,7 @@
   --brand:#9DD2FF;
   --bg:#F9FCFF; --bg-2:#EDF2F7; --bg-3:#E0E6EC;
   --ink:#131619; --ink-2:#556270; --ink-3:#667380; --line:#DDE4EA;
-  --accent:#1DA1F2; --on-accent:#FFFFFF; --accent-soft:#C2E3FF; --on-accent-soft:#00182B;
+  --accent:#0A71B1; --accent-bright:#1DA1F2; --on-accent:#FFFFFF; --accent-soft:#C2E3FF; --on-accent-soft:#00182B;
   /* Verdict pastels. Text stays ink; only the background carries the verdict. */
   --v-green:#C6EBC9; --v-yellow:#FFF982; --v-orange:#FFCF8A; --v-red:#F5B3AD; --on-verdict:#131619;
   --r-sm:10px; --r-md:14px; --r-lg:20px; --r-full:9999px;
@@ -26,7 +26,7 @@
     /* In the dark the button is the bird. */
     --bg:#101418; --bg-2:#1B1F24; --bg-3:#293038;
     --ink:#E8EDF2; --ink-2:#A7B2BC; --ink-3:#8C97A3; --line:#2A3138;
-    --accent:#9DD2FF; --on-accent:#00182B; --accent-soft:#184B71; --on-accent-soft:#C2E3FF;
+    --accent:#9DD2FF; --accent-bright:#9DD2FF; --on-accent:#00182B; --accent-soft:#184B71; --on-accent-soft:#C2E3FF;
     /* Dimmed a step so a card on black reads as a sticky note, not a neon sign. */
     --v-green:#A6D4AB; --v-yellow:#E6DE72; --v-orange:#E3B06B; --v-red:#D68F88; --on-verdict:#131619;
   }
@@ -151,7 +151,9 @@ h3 { font-size:22px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 /* ── Home front door: the sales problems shelf ── */
 .front { max-width:none; margin:0 0 44px; }
 .front h1 { margin-top:10px; }
-.front .dek { margin-bottom:16px; }
+.front .dek { margin-bottom:6px; }
+.hero-proof { font-size:13px; color:var(--ink-2); margin:0 0 16px; }
+.hero-proof a { color:var(--ink); font-weight:600; }
 .shelf-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:14px 10px; }
 .bk { display:flex; flex-direction:column; gap:5px; text-decoration:none; color:var(--ink); }
 .bk-label { font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -188,6 +190,18 @@ h3 { font-size:22px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 .ctx-lead .ctx-h { font-size:22px; line-height:1.15; letter-spacing:-.02em; margin:4px 0 4px; color:var(--ink); }
 .ctx-lead .ctx-sub { font-size:13px; color:var(--ink-2); margin:0; }
 
+/* ── Stuff I Like ── */
+.stuff h2 { font-size:22px; margin:34px 0 6px; }
+.likes { display:grid; grid-template-columns:1fr; gap:0; }
+@media (min-width:720px) { .likes { grid-template-columns:1fr 1fr; column-gap:28px; } }
+.like { padding:14px 0; border-top:1px solid var(--line); }
+.like p { margin:0 !important; }
+.like-t { font-weight:700; font-size:17px !important; color:var(--ink) !important; }
+.like-by { font-size:13px !important; color:var(--ink-2) !important; margin-top:1px !important; }
+.like-why { font-size:15px !important; color:var(--ink-2) !important; margin-top:5px !important; line-height:1.45 !important; }
+.stuff-foot { margin-top:26px !important; }
+.helped { font-size:15px !important; color:var(--ink-2) !important; margin:18px 2px 0 !important; }
+
 /* ── Ask Mark page ── */
 .ask h2 { font-size:22px; margin:6px 0 8px; }
 .offer { border:1px solid var(--line); border-radius:var(--r-lg); padding:18px 20px; margin:14px 0; }
@@ -222,7 +236,7 @@ h3 { font-size:22px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 .kit-thumb { position:relative; display:block; aspect-ratio:480/622; margin:6px 14px 10px 0; }
 .kit-thumb img { position:absolute; inset:0; width:100%; height:100%; border-radius:8px; background:#fff; }
 .kt-back { transform:translate(14px, 8px) rotate(3deg); box-shadow:0 2px 10px rgba(0,0,0,.12); opacity:.95; }
-.kt-front { box-shadow:0 6px 20px rgba(0,0,0,.16); border-bottom:6px solid var(--accent); }
+.kt-front { box-shadow:0 6px 20px rgba(0,0,0,.16); border-bottom:6px solid var(--accent-bright); }
 @media (max-width:599px) {
   .kit-promo { grid-template-columns:1fr; gap:18px; padding:20px; text-align:left; }
   .kit-thumb { width:150px; margin:0 auto 8px; }
@@ -459,7 +473,7 @@ h3 { font-size:22px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 /* ── Segmented progress ── */
 .progress { display:flex; gap:6px; margin:12px 0 28px; }
 .progress i { flex:1; height:4px; border-radius:var(--r-full); background:var(--bg-3); transition:background .3s var(--ease); }
-.progress i.done { background:var(--accent); }
+.progress i.done { background:var(--accent-bright); }
 
 /* ── Cards ── */
 .card { background:var(--bg-2); border-radius:var(--r-lg); padding:20px; }
@@ -522,6 +536,7 @@ details.exp.quiet summary { font-size:15px; color:var(--accent); min-height:44px
 .tf input { width:100%; height:50px; padding:0 16px; font:500 22px/1 var(--font); letter-spacing:-.01em; color:var(--ink);
   background:var(--bg-2); border:1.5px solid transparent; border-radius:var(--r-md); outline:none; transition:border-color .15s var(--ease), background .15s var(--ease); }
 .tf input:focus { border-color:var(--accent); background:var(--bg); }
+.tf input.is-example { color:var(--ink-2); font-weight:400; }
 .tf input::placeholder { color:var(--ink-3); font-weight:400; }
 .tf-grid { display:grid; grid-template-columns:1fr 1fr; gap:0 12px; }
 .supporting { font-size:13px; line-height:1.4; color:var(--ink-2); margin:-2px 2px 18px; }
