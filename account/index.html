@@ -106,7 +106,7 @@
   <div id="screen">
     <span class="overline tool-name">Account Check</span>
     <h1>Do you know the account, or just your contact?</h1>
-    <p class="dek">Answer five questions and find out where you're single-threaded.</p>
+    <p class="dek">Five questions. They'll show you where you're single-threaded.</p>
     <button class="btn btn-primary btn-lg btn-full" id="prep" type="button">Check my account</button>
     <p class="startnote">5 taps · about a minute · nothing stored</p>
     <p class="pillars">Mission · Money · Power · Incumbent · Path</p></div>
@@ -200,7 +200,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-16.1700';
+window.QB_BUILD = '2026-10-17.0900';
 CheckTool({
   slug: 'account', name: 'Account Check', url: 'https://quotabird.com/account/',
   questions: [
@@ -230,7 +230,7 @@ CheckTool({
     money: 'Find the program line and the fiscal calendar. Know when money moves before it does.',
     power: 'Ask your one contact for one introduction, upward or sideways, this week.',
     incumbent: 'List who owns the contracts and the workloads, and what each would lose if you won.',
-    path: 'Find the contracting office and the vehicle they used last time. Ask how the last buy actually happened.',
+    path: 'Find the contracting office and the vehicle they used last time. Ask how the last buy happened.',
   },
   noMove: 'Write the account down on one page while you still know it. Accounts change; the page is what survives the reorg.',
   handoff: (s) => s.total >= 55

@@ -106,7 +106,7 @@
   <div id="screen">
     <span class="overline tool-name">Competition Check</span>
     <h1>Why you, instead of nothing?</h1>
-    <p class="dek">Answer five questions and find out whether the incumbent or doing nothing is beating you.</p>
+    <p class="dek">Five questions that tell you whether the incumbent, or doing nothing, is beating you.</p>
     <button class="btn btn-primary btn-lg btn-full" id="prep" type="button">Check my position</button>
     <p class="startnote">5 taps · about a minute · nothing stored</p>
     <p class="pillars">Nothing · Switch · Preference · Proof · Access</p></div>
@@ -202,7 +202,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-16.1700';
+window.QB_BUILD = '2026-10-17.0900';
 CheckTool({
   slug: 'competition', name: 'Competition Check', url: 'https://quotabird.com/competition/',
   questions: [
@@ -239,7 +239,7 @@ CheckTool({
     ? { overline: 'Now the deal itself', text: 'Position is about them. Deal Check is about the deal: customer, money, power, path, now.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'Do you know the account?', text: 'Being behind usually means the other side knows the account better. Account Check finds where.', href: '/account/', label: 'Check my account' },
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've lost to incumbents I never saw and to nothing more times than I'd like. Send me one line about where you stand, no company names." },
-  dm: (s) => `Mark, ran a deal through Competition Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure I'm actually ahead. Worth 20 minutes?`,
+  dm: (s) => `Mark, ran a deal through Competition Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure I'm ahead. Worth 20 minutes?`,
 });
 </script>
 </body>

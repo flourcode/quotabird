@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-16.1700**
+**Current build: 2026-10-17.0900**
 
 ## Naming: checks, not kills
 
@@ -311,6 +311,20 @@ site should sound like one veteran seller talking, not a manual:
 - **No AI vocabulary** (leverage, robust, navigate, journey, unlock...) and no
   dashes. A quick check: search the built pages for those words and for "do not",
   "is not", "make sure" and "you should".
+- **The site's one idea: every tool is the question you're hoping nobody asks.**
+  Tool headlines are that question (*Is it a deal, or is it hopium? Is it the
+  rep, or the patch? Can this patch make the number? Will your case survive
+  the room?*), not instructions ("Before you X, test Y"). Intros are one
+  sentence starting "Five questions…" with different endings; never the same
+  sentence on seven pages.
+- **Warm about the person, unsentimental about the deal.** The edge lives in
+  the verdicts (*Doing nothing is beating you, and it isn't even trying*;
+  *Pick one account and one date, or stop pretending this is a partnership*)
+  and is aimed at the deal, the pipeline or the case, never at the reader.
+  The explanations around the tools stay plain and even-tempered.
+- **"Actually" only when it's the point** (what the customer *actually* said
+  versus what's in the CRM). Not as padding ("when they're actually in the
+  room"). Fifteen padding uses came out in October.
 - **Write like a 58-year-old sales manager who's seen this movie before, not a
   28-year-old copywriter describing what sales managers experience.** In
   practice: assume the reader has been in sales a while; prefer the sentence
@@ -1570,3 +1584,20 @@ the home page's share/search description. Two kit lines rewritten (the
 calibration room as a person; a wrap-up in the Leadership kit). Lines Mark or
 his reviewers kept were left alone. Kits still 4, 8 and 3 pages; previews and
 share cards refreshed.
+
+**2026-10-16.1900** — About page order fixed: Mark's story and the booking
+section come first, then one quiet line to the Field Kits, then *Why the
+bird?*. No kit cards on About (they were landing above the story because the
+cards are injected above the About section on every listed page). Decided
+against: the easter egg in every footer (it's an easter egg; repeated on 30
+pages it's a slogan) and a kit call to action in the footer (every footer
+already links to Field Kits, and the right kit card already sits on the pages
+where it fits).
+
+**2026-10-17.0900** — third read-through, for cohesion and edge. Five "Before
+you…" tool headlines became the question the tool answers; seven identical
+"Answer five questions and find out…" intros rewritten to differ; Deal
+Check's leftover "Federal Sales Pipeline Review Tool" title and the OLR title
+brought into the "X Check: question" pattern; five share cards redrawn with
+the new headlines; fifteen padding "actually"s removed. Verdict lines left
+alone: they already carry the edge, aimed at the deal.

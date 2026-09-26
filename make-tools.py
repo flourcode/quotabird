@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-16.1700'
+BUILD = '2026-10-17.0900'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -148,8 +148,8 @@ REP = dict(
     title='Rep Check: Is It the Rep or the Territory?',
     desc='Is it the rep, the patch, a skill gap or an effort gap? Five questions for sales managers. No names, nothing stored.',
     ogdesc='Before you write them up, figure out what you inherited. Five questions, one minute, no names.',
-    h1='Before you write them up, figure out what you inherited.',
-    dek='Answer five questions about the rep and find out whether it\'s the rep, the patch, a skill gap or an effort gap.',
+    h1='Is it the rep, or the patch?',
+    dek='Five questions to tell a rep problem from a territory problem, a skill gap, or somebody who\'s stopped trying.',
     cta='Check my rep',
     questions=[
         dict(k='patch', n='PATCH', q='Could a good rep make this number in this territory, on this plan?'),
@@ -184,7 +184,7 @@ REP = dict(
     <p><strong>Capable rep, effort gap.</strong> Manage them. Expectations in writing, with dates.</p>
     <p><strong>Wrong rep, reasonable situation.</strong> Start the process. If they're the wrong rep, six more months won't fix it.</p>
     <p><strong>They're fine.</strong> Leave them alone. Don't invent a management problem because they don't love
-      one-on-ones. Figure out what visibility you actually need and let them sell.</p>
+      one-on-ones. Figure out what visibility you need and let them sell.</p>
     <p>The mistake this tool exists to prevent is spending six months coaching a territory problem, or redesigning a
       territory to avoid dealing with a performance problem. Nobody sells the same way, and the job isn't to make everybody look
       alike. It's to figure out which differences matter to selling and which do not.</p>
@@ -216,7 +216,7 @@ REP = dict(
     const no = (k) => a[k] === 'no', yes = (k) => a[k] === 'yes';
     const K = ['patch','customers','pipeline','craft','will'];
     if (K.every(yes))
-      return { label: "They're fine", cls: 'ready', attack: 'Leave them alone.', sub: "Don't invent a management problem because they don't love one-on-ones. Decide what visibility you actually need and let them sell." };
+      return { label: "They're fine", cls: 'ready', attack: 'Leave them alone.', sub: "Don't invent a management problem because they don't love one-on-ones. Decide what visibility you need and let them sell." };
     if (no('patch'))
       return { label: 'The situation', cls: 'prove', attack: 'Good rep, bad situation.', sub: 'Nobody makes a number in a patch that can\\'t produce one. Fix the territory, the number or the plan. Writing them up fixes none of them.' };
     if (no('craft') && no('will'))
@@ -257,8 +257,8 @@ PARTNER = dict(
     title='Partner Check: Is This Partnership Real?',
     desc='Five questions that separate a partner who sells with you from a logo on a slide. For partner managers. One minute, nothing stored.',
     ogdesc='Before you renew the partnership, test it. Five questions, one minute, no names.',
-    h1='Before you renew the partnership, test it.',
-    dek='Answer five questions and find out whether this partner sells with you or just sits on your slide.',
+    h1='Real partner, or a logo on a slide?',
+    dek='Five questions that separate a partner who sells with you from a logo on a slide.',
     cta='Check my partner',
     questions=[
         dict(k='sourced', n='SOURCED', q="Have they brought you an opportunity you didn't find yourself?"),
@@ -340,8 +340,8 @@ TERRITORY = dict(
     title='Territory Check: Can This Patch Make the Number?',
     desc='Can the patch make the number, or are you being asked to grow where nobody could? Five questions for sellers. Nothing stored.',
     ogdesc='Before you sign up for the number, test the territory. Five questions, one minute, no account names.',
-    h1='Before you sign up for the number, test the territory.',
-    dek='Answer five questions and find out whether this patch can make the number.',
+    h1='Can this patch make the number?',
+    dek='Five questions before you sign up for a number the patch may not be able to produce.',
     cta='Check my territory',
     questions=[
         dict(k='spend', n='SPEND', q='Is there enough addressable spend in the territory to make the number twice over?'),
@@ -419,11 +419,11 @@ TERRITORY = dict(
 
 OLR = dict(
     slug='olr', name='OLR Check',
-    title='OLR Prep: Will Your Case Survive Calibration? | OLR Check',
+    title='OLR Check: Will Your Case Survive Calibration?',
     desc="Five questions that test the case you're making for a rep in OLR, then the room grills you. No names, no ratings, nothing stored.",
     ogdesc='Before you walk into OLR, test your case. Five questions, then the room grills you. No names, no ratings.',
-    h1='Before you walk into OLR, test your case.',
-    dek='Answer five questions about your case and find out whether it survives the room.',
+    h1='Will your case survive the room?',
+    dek='Five questions about your case, before the room asks them.',
     cta='Check my case',
     questions=[
         dict(k='receipts', n='RECEIPTS', q='Can you name three things they delivered this year, each with a number on it?'),
@@ -433,7 +433,7 @@ OLR = dict(
         dict(k='next', n='NEXT', q="Can you name the harder thing you'd hand them next year, and why?"),
     ],
     bands=[
-        ('room', 'What the room is actually testing', '''    <p class="lede">The form is the easy part of a talent review. The hard part is explaining a human being in sixty
+        ('room', 'What the room is testing', '''    <p class="lede">The form is the easy part of a talent review. The hard part is explaining a human being in sixty
       seconds to managers who don't know them, and having the explanation survive their questions.</p>
     <p>Every calibration room runs the same way: you propose, they probe, the evaluation moves if you can't hold it.
       The managers across the table aren't hostile. They just haven't seen your rep's year, so all they can test is
@@ -535,7 +535,7 @@ BRIEF = dict(
     desc="Five questions about the doc, deck or QBR you're about to present, then the room grills you. Nothing uploaded, nothing stored.",
     ogdesc="What's the question you're hoping nobody asks? Brief Check finds it before the meeting does.",
     h1="What's the question you're hoping nobody asks?",
-    dek='Answer five questions about the doc, deck or QBR and find out before the meeting does.',
+    dek='Five questions about the doc, the deck or the QBR, before the meeting asks them.',
     cta='Check my brief',
     questions=[
         dict(k='point', n='POINT', q='Can you say in one sentence what you want them to decide, and why now?'),
@@ -652,7 +652,7 @@ ACCOUNT = dict(
     desc='Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. One minute, nothing stored.',
     ogdesc='Do you know the account, or just your contact? Five questions, one minute, no names.',
     h1='Do you know the account, or just your contact?',
-    dek="Answer five questions and find out where you're single-threaded.",
+    dek="Five questions. They'll show you where you're single-threaded.",
     cta='Check my account',
     questions=[
         dict(k='mission', n='MISSION', q='Can you say what this account is trying to get done this year, in their words?'),
@@ -719,7 +719,7 @@ ACCOUNT = dict(
     money: 'Find the program line and the fiscal calendar. Know when money moves before it does.',
     power: 'Ask your one contact for one introduction, upward or sideways, this week.',
     incumbent: 'List who owns the contracts and the workloads, and what each would lose if you won.',
-    path: 'Find the contracting office and the vehicle they used last time. Ask how the last buy actually happened.',
+    path: 'Find the contracting office and the vehicle they used last time. Ask how the last buy happened.',
   },
   noMove: 'Write the account down on one page while you still know it. Accounts change; the page is what survives the reorg.',
   handoff: (s) => s.total >= 55
@@ -737,7 +737,7 @@ RISK = dict(
     desc='Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored.',
     ogdesc='4X coverage can still be a house of cards. Five questions, one minute, no deal names.',
     h1='4X coverage can still be a house of cards.',
-    dek='Answer five questions and find out how fragile the pipeline you have really is.',
+    dek='Five questions about the shape of your pipeline, not the size.',
     cta='Check my risk',
     questions=[
         dict(k='spread', n='SPREAD', q='Would you still make the number if your biggest deal slipped a quarter?'),
@@ -818,7 +818,7 @@ COMPETITION = dict(
     desc='Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. One minute, nothing stored.',
     ogdesc='Why you, instead of nothing? Five questions, one minute, no names.',
     h1='Why you, instead of nothing?',
-    dek='Answer five questions and find out whether the incumbent or doing nothing is beating you.',
+    dek='Five questions that tell you whether the incumbent, or doing nothing, is beating you.',
     cta='Check my position',
     questions=[
         dict(k='nothing', n='NOTHING', q='Do you know what it costs them to do nothing, in their numbers?'),
@@ -894,7 +894,7 @@ COMPETITION = dict(
     ? { overline: 'Now the deal itself', text: 'Position is about them. Deal Check is about the deal: customer, money, power, path, now.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'Do you know the account?', text: 'Being behind usually means the other side knows the account better. Account Check finds where.', href: '/account/', label: 'Check my account' },
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've lost to incumbents I never saw and to nothing more times than I'd like. Send me one line about where you stand, no company names." },
-  dm: (s) => `Mark, ran a deal through Competition Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure I'm actually ahead. Worth 20 minutes?`,
+  dm: (s) => `Mark, ran a deal through Competition Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure I'm ahead. Worth 20 minutes?`,
 });''',
 )
 
@@ -971,8 +971,7 @@ NOTES = [
       you want to know about in January, not in October.</p>
     <p>So do the boring arithmetic first. Divide the new number by your on-target earnings. Somewhere between 4 and
       6 is the range I've usually seen for mid-market cloud and SaaS reps; 6 to 8 is enterprise at a big provider;
-      above 10 the plan is asking the territory for something it may not have. Then divide the number by what you
-      actually closed last year. That's the growth the plan is assuming, and it's the real measure of how much
+      above 10 the plan is asking the territory for something it may not have. Then divide the number by what you closed last year. That's the growth the plan is assuming, and it's the real measure of how much
       harder this year is.</p>
     <p>Then look at the patch the same way a stranger would. Has anyone ever made this number in it? What's the
       addressable spend, and how much of it is already committed to somebody else? If the number went up and the
@@ -1002,7 +1001,7 @@ NOTES = [
       which don't. Do customers choose to spend time with her? Is there pipeline that exists only because she's
       here? When she's in front of a customer, can she sell? Is she still trying to win? If the answers are yes,
       you don't have a performance problem. You have a visibility problem, and it's yours to solve, not hers.</p>
-    <p>Decide what visibility you actually need. Usually it's less than the process asks for: the five deals that
+    <p>Decide what visibility you need. Usually it's less than the process asks for: the five deals that
       matter, a straight answer on where each one stands, and a heads-up before something moves in the forecast.
       Get that, and let her sell. The polished rep with immaculate CRM hygiene and no customer pull is the one who
       should worry you, and he's the one the dashboard likes.</p>
@@ -1229,7 +1228,7 @@ CALCS = [
     <p>The percentage you set aside is a planning buffer, not a withholding rate. For commissions paid separately from salary, the IRS lets employers withhold federal income tax at a flat 22% (up to a million dollars a year), and payroll taxes and state withholding come on top of that, so a W-2 check often lands with roughly 30% gone. High earners tend to owe closer to 40% once the year is reconciled. A 1099 contractor has nothing withheld and should set aside 20% or more. Your real number depends on your state, your filing status and everything else you earned this year, which is why the field is editable.</p>
     <p>Use it to plan, not to argue with payroll. And once you know what a deal pays, the more useful question is whether the plan behind it is sane: <a href="/quota/">Quota Check</a>.</p>''')],
   faq=[('Does anything I enter leave my device?','No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.'),
-       ('Is this tax advice?','No. The percentage is a planning buffer you can change; it\'s not a withholding rate. Federal withholding on separately paid commissions is typically a flat 22%, with payroll and state taxes on top, and what you actually owe is settled at tax time. For anything that matters, ask an accountant.'),
+       ('Is this tax advice?','No. The percentage is a planning buffer you can change; it\'s not a withholding rate. Federal withholding on separately paid commissions is typically a flat 22%, with payroll and state taxes on top, and what you owe is settled at tax time. For anything that matters, ask an accountant.'),
        ('What about accelerators and clawbacks?','Enter the rate that applies to this deal. If your plan has accelerators above quota, use the accelerated rate; if it has clawbacks, remember the take-home is provisional until the clawback window closes.')],
   config='''CalcTool({
   slug: 'commission', name: 'Commission Check', url: 'https://quotabird.com/commission/',
@@ -1571,11 +1570,11 @@ KIT_BODY = '''
       look at the patch before the person.</p>
     <p>Before I decide a rep has a performance problem, I want to know whether the territory is any good, what's
       installed already, whether the quota is remotely reasonable, what the last rep did there, what the comp plan
-      rewards, and whether there are enough customers who can actually buy what we sell.</p>
+      rewards, and whether there are enough customers who can buy what we sell.</p>
     <p>If three good people have failed in the same patch, I probably don't have three bad salespeople. I have a bad
       patch.</p>
     <p>Then I look at the rep. Not the CRM first. The rep. Do customers want to spend time with them? Have they
-      created anything that wouldn't exist without them? Can they sell when they're actually in the room? Are they
+      created anything that wouldn't exist without them? Can they sell when they're in the room? Are they
       still trying?</p>
     <p>One of the most useful things I ever did with a new team was sit with each rep and go through five real deals.
       You learn a lot from how somebody talks about a customer. And every once in a while, the rep who drives you nuts
@@ -1665,7 +1664,7 @@ KIT_BODY = '''
       <tr><td>33%</td><td>3.0X</td></tr><tr><td>40%</td><td>2.5X</td></tr>
     </tbody></table></div>
     <p><strong>Sturdy.</strong> A team can have 4X coverage and still be in trouble. So I also ask what happens if our
-      biggest deal slips, whether the commit deals are actually moving, whether each one has a next step the customer
+      biggest deal slips, whether the commit deals are moving, whether each one has a next step the customer
       owns, how much is back-loaded into the last month, and whether we're creating new pipeline or just aging the old
       stuff.</p>
     <p>One habit I like: run the forecast once without your biggest deal. That's the plan I'd want to manage.</p>
@@ -1909,7 +1908,7 @@ LEADER_BODY = '''
     <p>It doesn't need to be polished. It needs to be useful enough that another manager uses it next week. When it
       spreads, your name travels with it.</p>
     <p>Then offer to teach it. Thirty minutes at a leadership meeting, lunch with two newer managers, a session at the
-      next kickoff. Teaching is also how you find out what you actually know.</p>
+      next kickoff. Teaching is also how you find out what you know.</p>
   </section>
 
   <section class="kit-ch" id="l-rooms">
@@ -2078,7 +2077,7 @@ SELLER_BODY = '''
     <p>Write your forecast without it. That's your real plan. If the plan doesn't work without it, you need a second way to
       the number now, not the week it slips.</p>
     <p>Then look hard at the big one. Who set the close date, you or the customer? What happens in procurement, and who
-      else has to sign? Two smaller deals you can actually move are often worth more than one big one you're hoping about.</p>
+      else has to sign? Two smaller deals you can move are often worth more than one big one you're hoping about.</p>
   </section>
 
   <section class="kit-ch" id="s-thread">
@@ -2255,6 +2254,13 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
 
 <section class="band" id="about"></section>
 
+<section class="band about-kits">
+  <div class="band-inner">
+    <p>If you want something to print, the <a href="/kits/">Field Kits</a> are three short, free printables: one for
+      sellers, one for managers, and one for leaders.</p>
+  </div>
+</section>
+
 <section class="band bird-egg" aria-labelledby="bird-h">
   <div class="band-inner">
     <picture><source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/logo.svg" alt="" width="48" height="42"></picture>
@@ -2273,10 +2279,10 @@ MARK_SRC = open('partials/mark.html').read()
 MADEBY_SRC = open('partials/made-by.html').read()
 KITCARD_SRC = open('partials/kit-card.html').read()
 LEADERCARD_SRC = open('partials/leader-card.html').read()
-LEADERCARD_PAGES = {'about/index.html', 'notes/index.html'}
+LEADERCARD_PAGES = {'notes/index.html'}
 SELLERCARD_SRC = open('partials/seller-card.html').read()
 SELLERCARD_PAGES = {'deal/index.html', 'quota/index.html', 'territory/index.html', 'discount/index.html', 'commission/index.html', 'account/index.html', 'competition/index.html'}
-KITCARD_PAGES = {'index.html', 'rep/index.html', 'partner/index.html', 'olr/index.html', 'risk/index.html', 'notes/index.html', 'math/index.html', 'about/index.html'}
+KITCARD_PAGES = {'index.html', 'rep/index.html', 'partner/index.html', 'olr/index.html', 'risk/index.html', 'notes/index.html', 'math/index.html'}
 def root_of(path):
     if path == '404.html': return '/'
     return '../' * path.count('/')
