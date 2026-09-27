@@ -8,98 +8,11 @@
   },
   "entries": [
     {
-      "identifier": "urn:air:quotabird.com:tools:deal-check",
-      "displayName": "Deal Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/deal/",
-      "description": "Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.",
-      "tags": [
-        "your-deal",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "DealCheck"
-      ],
-      "representativeQueries": [
-        "is my deal real or hopium",
-        "qualify a federal sales deal before commit",
-        "what will my manager ask about this deal"
-      ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your deal"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:account-check",
-      "displayName": "Account Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/account/",
-      "description": "Account Check: Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. One minute, nothing stored.",
-      "tags": [
-        "your-deal",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "AccountCheck"
-      ],
-      "representativeQueries": [
-        "do I know the account or just my contact",
-        "am I single-threaded in this account",
-        "federal account check"
-      ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your deal"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:competition-check",
-      "displayName": "Competition Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/competition/",
-      "description": "Competition Check: Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. One minute, nothing stored.",
-      "tags": [
-        "your-deal",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "CompetitionCheck"
-      ],
-      "representativeQueries": [
-        "why would they pick us over doing nothing",
-        "am I beating the incumbent",
-        "competitive position check for a deal"
-      ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your deal"
-      }
-    },
-    {
       "identifier": "urn:air:quotabird.com:tools:quota-check",
       "displayName": "Quota Check",
       "type": "text/html",
       "url": "https://quotabird.com/quota/",
-      "description": "Quota Check: Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book. Free, in your browser, nothing stored.",
+      "description": "Quota Check: Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book.",
       "tags": [
         "your-number",
         "sales",
@@ -114,8 +27,38 @@
         "quota to OTE ratio for cloud sales",
         "is my sales quota fair"
       ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your number"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:quota-case-check",
+      "displayName": "Quota Case",
+      "type": "text/html",
+      "url": "https://quotabird.com/quota-case/",
+      "description": "Quota Case: Build the bridge from last year to this year's quota: run rate, pipeline at your real win rate, headcount, one-time deals. Find the gap nobody has explained, and take it to your boss calmly.",
+      "tags": [
+        "your-number",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "QuotaCase"
+      ],
+      "representativeQueries": [
+        "how to push back on a quota that is too high",
+        "is my sales quota realistic compared to last year",
+        "build a quota bridge from last year to this year",
+        "my quota went up and my territory did not"
+      ],
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -128,7 +71,7 @@
       "displayName": "Territory Check",
       "type": "text/html",
       "url": "https://quotabird.com/territory/",
-      "description": "Territory Check: Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers. Nothing stored.",
+      "description": "Territory Check: Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers.",
       "tags": [
         "your-number",
         "sales",
@@ -143,37 +86,8 @@
         "is my sales territory viable",
         "new territory sizing check"
       ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your number"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:discount-check",
-      "displayName": "Discount Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/discount/",
-      "description": "Discount Check: How much discount is too much? See what it costs in your commission and the company's margin before you say yes. Free, in your browser, nothing stored.",
-      "tags": [
-        "your-number",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "DiscountCheck"
-      ],
-      "representativeQueries": [
-        "what does a discount cost me in commission",
-        "should I give a 15 percent discount",
-        "discount impact on margin and commission"
-      ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -186,7 +100,7 @@
       "displayName": "Commission Check",
       "type": "text/html",
       "url": "https://quotabird.com/commission/",
-      "description": "Commission Check: Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes. Free, in your browser, nothing stored.",
+      "description": "Commission Check: Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes.",
       "tags": [
         "your-number",
         "sales",
@@ -201,8 +115,37 @@
         "commission take home after taxes",
         "commission check calculator"
       ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your number"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:discount-check",
+      "displayName": "Discount Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/discount/",
+      "description": "Discount Check: How much discount is too much? See what it costs in your commission and the company's margin before you say yes.",
+      "tags": [
+        "your-number",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "DiscountCheck"
+      ],
+      "representativeQueries": [
+        "what does a discount cost me in commission",
+        "should I give a 15 percent discount",
+        "discount impact on margin and commission"
+      ],
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -230,8 +173,8 @@
         "pipeline coverage calculator with my win rate",
         "is 3X pipeline coverage enough"
       ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -244,7 +187,7 @@
       "displayName": "Risk Check",
       "type": "text/html",
       "url": "https://quotabird.com/risk/",
-      "description": "Risk Check: Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored.",
+      "description": "Risk Check: Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation.",
       "tags": [
         "your-team",
         "sales",
@@ -259,8 +202,8 @@
         "pipeline concentration and aging risk",
         "4X coverage but still at risk"
       ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -273,7 +216,7 @@
       "displayName": "Rep Check",
       "type": "text/html",
       "url": "https://quotabird.com/rep/",
-      "description": "Rep Check: Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers. No names, nothing stored.",
+      "description": "Rep Check: Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers that look at the territory before the person.",
       "tags": [
         "your-team",
         "sales",
@@ -288,8 +231,8 @@
         "why is my sales rep underperforming",
         "rep problem or territory problem"
       ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -302,7 +245,7 @@
       "displayName": "Partner Check",
       "type": "text/html",
       "url": "https://quotabird.com/partner/",
-      "description": "Partner Check: Five questions that separate a real partnership from promises. For partner managers. One minute, nothing stored.",
+      "description": "Partner Check: Five questions that separate a real partnership from promises: sourced deals, a named account, an owner who gets paid, a plan with dates, and pull.",
       "tags": [
         "your-team",
         "sales",
@@ -317,8 +260,8 @@
         "is my channel partner actually selling",
         "partner check for co-sell"
       ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -331,7 +274,7 @@
       "displayName": "Talent Review",
       "type": "text/html",
       "url": "https://quotabird.com/olr/",
-      "description": "Talent Review Check: Five questions that test the assessment you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you. No names, no ratings, nothing stored.",
+      "description": "Talent Review Check: Five questions that test the assessment you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you.",
       "tags": [
         "your-team",
         "sales",
@@ -346,8 +289,8 @@
         "will my case for a rep survive talent review",
         "Amazon OLR prep for managers"
       ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -356,11 +299,98 @@
       }
     },
     {
+      "identifier": "urn:air:quotabird.com:tools:deal-check",
+      "displayName": "Deal Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/deal/",
+      "description": "Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.",
+      "tags": [
+        "your-deal",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "DealCheck"
+      ],
+      "representativeQueries": [
+        "is my deal real or hopium",
+        "qualify a federal sales deal before commit",
+        "what will my manager ask about this deal"
+      ],
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your deal"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:account-check",
+      "displayName": "Account Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/account/",
+      "description": "Account Check: Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy.",
+      "tags": [
+        "your-deal",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "AccountCheck"
+      ],
+      "representativeQueries": [
+        "do I know the account or just my contact",
+        "am I single-threaded in this account",
+        "federal account check"
+      ],
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your deal"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:competition-check",
+      "displayName": "Competition Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/competition/",
+      "description": "Competition Check: Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now.",
+      "tags": [
+        "your-deal",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "CompetitionCheck"
+      ],
+      "representativeQueries": [
+        "why would they pick us over doing nothing",
+        "am I beating the incumbent",
+        "competitive position check for a deal"
+      ],
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your deal"
+      }
+    },
+    {
       "identifier": "urn:air:quotabird.com:tools:brief-check",
       "displayName": "Brief Check",
       "type": "text/html",
       "url": "https://quotabird.com/brief/",
-      "description": "Brief Check: Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. Nothing uploaded, nothing stored.",
+      "description": "Brief Check: Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you.",
       "tags": [
         "any-meeting",
         "sales",
@@ -375,8 +405,8 @@
         "pressure test my brief before the meeting",
         "what question am I hoping nobody asks"
       ],
-      "version": "2026.10.25",
-      "updatedAt": "2026-10-25T00:00:00Z",
+      "version": "2026.10.27",
+      "updatedAt": "2026-10-27T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,

@@ -3,20 +3,21 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-25.1700'
+BUILD = '2026-10-27.2100'
 TOOLS = [
-    ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
-    ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
-    ('Your deal', '/competition/', 'Competition Check', 'When you\'re not sure you\'re ahead'),
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
+    ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
     ('Your number', '/territory/', 'Territory Check', 'Month one in a new territory'),
-    ('Your number', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
     ('Your number', '/commission/', 'Commission Check', 'When it closes'),
+    ('Your number', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
     ('Your team', '/pipeline/', 'Pipeline Check', 'Quarterly, before the review'),
     ('Your team', '/risk/', 'Risk Check', 'When coverage looks fine and you don\'t trust it'),
     ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
     ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
     ('Your team', '/olr/', 'Talent Review', 'Review season'),
+    ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
+    ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
+    ('Your deal', '/competition/', 'Competition Check', 'When you\'re not sure you\'re ahead'),
     ('Any meeting', '/brief/', 'Brief Check', 'When someone in the room can say no'),
 ]
 
@@ -77,7 +78,7 @@ def page(t):
 <meta name="twitter:image" content="https://quotabird.com/card-{t['slug']}.jpg">
 <meta name="twitter:image:alt" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
 <script type="application/ld+json">
 {{
@@ -117,7 +118,7 @@ def page(t):
     <h1>{t['h1']}</h1>
     <p class="dek">{t['dek']}</p>
     <button class="btn btn-primary btn-lg btn-full" id="prep" type="button">{t['cta']}</button>
-    <p class="startnote">5 taps · about a minute · nothing stored</p>
+    <p class="startnote">5 taps · about a minute</p>
     <p class="pillars">{' · '.join(q['n'].title() for q in t['questions'])}</p></div>
 </div>
 
@@ -145,7 +146,7 @@ window.QB_BUILD = '{BUILD}';
 REP = dict(
     slug='rep', name='Rep Check',
     title='Rep Check: Is It the Rep or the Territory?',
-    desc='Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers. No names, nothing stored.',
+    desc='Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers that look at the territory before the person.',
     ogdesc='Before you write them up, figure out what you inherited. Five questions, one minute, no names.',
     h1='Is it the rep, or the territory?',
     dek='Five questions to tell a rep problem from a territory problem, a skill gap, or somebody who\'s stopped trying.',
@@ -235,7 +236,7 @@ REP = dict(
 PARTNER = dict(
     slug='partner', name='Partner Check',
     title='Partner Check: Is This Partner Doing Anything?',
-    desc='Five questions that separate a real partnership from promises. For partner managers. One minute, nothing stored.',
+    desc='Five questions that separate a real partnership from promises: sourced deals, a named account, an owner who gets paid, a plan with dates, and pull.',
     ogdesc='Before you renew the partnership, test it. Five questions, one minute, no names.',
     h1='Is this partner doing anything?',
     dek='Five questions that separate a real partnership from promises.',
@@ -312,7 +313,7 @@ PARTNER = dict(
 TERRITORY = dict(
     slug='territory', name='Territory Check',
     title='Territory Check: Does This Territory Suck?',
-    desc='Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers. Nothing stored.',
+    desc='Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers.',
     ogdesc='Before you sign up for the number, test the territory. Five questions, one minute, no account names.',
     h1='Does this territory suck?',
     dek='Five questions before you sign up for a number the territory may not be able to produce.',
@@ -387,7 +388,7 @@ TERRITORY = dict(
 OLR = dict(
     slug='olr', name='Talent Review Check',
     title='Talent Review Check: Can You Defend Your People? (OLR Prep)',
-    desc="Five questions that test the assessment you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you. No names, no ratings, nothing stored.",
+    desc="Five questions that test the assessment you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you.",
     ogdesc='Before you walk into calibration, test your assessment. Five questions, then the room pressure-tests you. No names, no ratings.',
     h1='Can you defend your people?',
     dek='Five questions about your assessment, before the room asks them.',
@@ -491,7 +492,7 @@ OLR = dict(
 BRIEF = dict(
     slug='brief', name='Brief Check',
     title='Brief Check: Will Your Brief Survive the Room?',
-    desc="Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. Nothing uploaded, nothing stored.",
+    desc="Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you.",
     ogdesc="Will your brief survive the room? Brief Check finds it before the meeting does.",
     h1="Will your brief survive the room?",
     dek='Five questions about the doc, the deck or the QBR, before the meeting asks them.',
@@ -603,7 +604,7 @@ BRIEF = dict(
 ACCOUNT = dict(
     slug='account', name='Account Check',
     title='Account Check: Do You Know Your Customer?',
-    desc='Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. One minute, nothing stored.',
+    desc='Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy.',
     ogdesc='Do you know your customer? Five questions, one minute, no names.',
     h1='Do you know your customer?',
     dek="Five questions. They'll show you where you're single-threaded.",
@@ -677,10 +678,10 @@ ACCOUNT = dict(
 # ────────────────────────────── RISK CHECK ──────────────────────────────
 RISK = dict(
     slug='risk', name='Risk Check',
-    title='Risk Check: Are You Winging It This Quarter?',
-    desc='Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored.',
-    ogdesc='Are you winging it this quarter? Five questions, one minute, no deal names.',
-    h1='Are you winging it this quarter?',
+    title='Risk Check: Are Two Deals Carrying Your Year?',
+    desc='Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation.',
+    ogdesc='Are two deals carrying your year? Five questions, one minute, no deal names.',
+    h1='Are two deals carrying your year?',
     dek='Five questions about the shape of your pipeline, not the size.',
     cta='Check my risk',
     questions=[
@@ -751,7 +752,7 @@ RISK = dict(
 COMPETITION = dict(
     slug='competition', name='Competition Check',
     title='Competition Check: Why You and Not Them?',
-    desc='Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. One minute, nothing stored.',
+    desc='Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now.',
     ogdesc='Why you and not them? Five questions, one minute, no names.',
     h1='Why you and not them?',
     dek='Five questions that tell you whether the incumbent, or doing nothing, is beating you.',
@@ -867,6 +868,55 @@ NOTES = [
       make the reps more productive. It can write the follow-up email. It can't make the customer care.</p>
     <p>If only 20% of the team hits quota year after year, it's probably not a performance problem.</p>''',
          tool=('/quota/', 'Quota Check', 'does the multiple and the implied rate in about ten seconds. Pipeline Check and Territory Check cover the rest of the bridge.')),
+    dict(slug='the-number-isnt-changing', title="The number isn't changing. Now what?",
+         dek="You made the case. It didn't move. Fine. Now figure out what it takes.",
+         body='''    <p class="lede">You brought the bridge, you asked what assumption you were missing, and the answer was some
+      version of "the number is the number." Fine. The number's ugly. Now figure out what it requires.</p>
+    <h3>Stop relitigating it</h3>
+    <p>This is mostly for managers. Once the quota is set and you've made your case, stop arguing about it with the
+      team every Monday. They already know it's big. Hearing you complain about it just tells them you don't think it's
+      hittable, and they'll believe you.</p>
+    <p>A manager's job isn't to complain upward or enforce downward. It's to translate the number in both directions:
+      explain to your boss what the territory can actually do, and explain to your team what the number actually
+      requires.</p>
+    <h3>Work backward</h3>
+    <p>Start from the quota and walk it down: required bookings, then the pipeline that takes at your real win rate,
+      then how many opportunities that is at your average deal size, then what it means per rep, per month. Keep the
+      math simple enough to put on one whiteboard.</p>
+    <ul>
+      <li>What's already coming in: renewals, run rate, deals that are genuinely late-stage</li>
+      <li>What existing accounts can grow into, with names</li>
+      <li>What has to come from new logos, and how many that is</li>
+      <li>What partners have actually brought in before, not what they promised</li>
+      <li>Whether you have the reps to cover it, counting ramp time honestly</li>
+    </ul>
+    <p>Somewhere in that list is the part nobody can see yet. That's where the plan goes. It's usually new pipeline, and
+      it's usually needed earlier than anybody wants to admit.</p>
+    <h3>A hard number can still be a fair one</h3>
+    <p>Some quotas are crazy. A lot of them are just hard. The difference is whether you can draw a line from where you
+      are to the number, even if the line is steep. If you can, it's a plan. If you can't, go back to the bridge.</p>''',
+         tool=('/pipeline/', 'Pipeline Check', 'works backward from the quota to the pipeline and deals it takes, per rep and per month.')),
+    dict(slug='read-your-comp-plan', title="Before you decide the comp plan sucks, figure out how it pays",
+         dek="Most reps read the quota and the OTE and stop. The money is in the rest of it.",
+         body='''    <p class="lede">Most people read two lines of a comp plan: the quota and the OTE. Then they decide whether it
+      sucks. The part that decides what you actually take home is usually further down.</p>
+    <h3>What to read, in order</h3>
+    <ul>
+      <li><strong>Quota and OTE.</strong> Divide one by the other. That multiple tells you more than either number alone.</li>
+      <li><strong>Base and variable split.</strong> The more of your pay that's variable, the more the quota matters.</li>
+      <li><strong>Accelerators.</strong> Where they start, and what they pay. Past 100% is where plans are either generous or not.</li>
+      <li><strong>Decelerators.</strong> What you get paid below a threshold. Some plans pay nearly nothing under 50%.</li>
+      <li><strong>Caps.</strong> Whether there's a ceiling on what you can earn, stated or buried.</li>
+      <li><strong>Multipliers.</strong> Extra credit for new logos or certain products. This is where the plan tells you what the company actually wants.</li>
+      <li><strong>Crediting and splits.</strong> Who gets credit when two people touch a deal, and what happens to a territory that changes mid-year.</li>
+      <li><strong>Clawbacks and payout timing.</strong> When you actually get paid, and what they can take back if a customer leaves.</li>
+    </ul>
+    <h3>Then decide</h3>
+    <p>A plan with a hard quota and real accelerators can be a good plan. A plan with an ordinary quota, a cap and a
+      fat decelerator can be a bad one. You won't know which you have until you've read the whole thing.</p>
+    <p>None of this is legal or tax advice. If something in the plan doesn't make sense, ask whoever runs comp to walk
+      you through it, in writing. If they can't explain it, that's worth knowing too.</p>''',
+         tool=('/quota/', 'Quota Check', 'does the multiple and the implied rate. Commission Check shows what a closed deal actually pays you.')),
     dict(slug='3x-is-a-win-rate', title='3X is a win rate in disguise',
          dek='Everybody plans to it. Almost nobody asks where it came from.',
          body='''    <p class="lede">Everybody plans to 3X. Almost nobody asks why.</p>
@@ -954,7 +1004,7 @@ def note_head(title, desc, url):
 <meta name="twitter:description" content="{desc}">
 <meta name="twitter:image" content="https://quotabird.com/card.jpg">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
 <link rel="stylesheet" href="/site.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
@@ -1031,9 +1081,37 @@ os.makedirs('notes', exist_ok=True)
 open('notes/index.html', 'w').write(idx)
 print('notes', len(NOTES))
 
+# ────────────────────────────── QUOTA SHORTS (home strip + /shorts/) ──────────────────────────────
+# Snack-size facts. One idea per card, one line under it, a source, and the tool that does the math.
+# Every number here is sourced on /quota-by-the-numbers/. Colours are the shelf's.
+from html import escape as esc_html
+SHORTS = [
+    dict(tag='Attainment', num='48', unit='%', fact='of AEs hit quota in 2026.', line='It was 66% in 2022.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', bg='#E07A5F', ink='#2B1B1B'),
+    dict(tag='The median', num='$960', unit='K', fact='is the median SaaS quota.', line='On a $200K OTE.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', bg='#F4E1C1', ink='#2B2B2B'),
+    dict(tag='The multiple', num='4.6', unit='×', fact='quota to OTE, the median.', line='It was 4.2 two years ago.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', bg='#F2C14E', ink='#1B1B1B'),
+    dict(tag='Planning', num='20-30', unit='%', fact="more quota gets handed out than the company needs.", line='Planners over-assign to cover misses.', src='Mostly Metrics', href='/how-quotas-get-built/', go='How quotas get built', bg='#1C3D5A', ink='#FFFFFF'),
+    dict(tag='Your boss', num='', unit='', fact='Your boss may be paid on something else.', line='Growth rate, new logos, a strategic product.', src='', href='/how-quotas-get-built/', go='How quotas get built', bg='#C35037', ink='#FFFFFF'),
+    dict(tag='Ramp', num='6.2', unit='mo', fact='for a new AE to ramp.', line='A rep hired in March is a fall rep.', src='Bridge Group, 2026', href='/quota-case/', go='Build the bridge', bg='#388073', ink='#FFFFFF'),
+    dict(tag='Vacancies', num='', unit='', fact='A vacant territory still has quota.', line="Somebody's carrying it.", src='', href='/quota-case/', go='Build the bridge', bg='#2E2E3A', ink='#F2C14E'),
+    dict(tag='Coverage', num='3', unit='X', fact='is a 33% win rate wearing a nicer shirt.', line='Win 20% and you need 5X.', src='The math', href='/pipeline/', go='Check my pipeline', bg='#6C5B7B', ink='#FFFFFF'),
+    dict(tag='Cloud', num='', unit='', fact="A commit nobody uses doesn't retire much quota.", line='Cloud quotas count what customers run.', src='Microsoft Partner Center', href='/quota/', go='Check my quota', bg='#9DD2FF', ink='#12324F'),
+    dict(tag='Comp', num='1.5-2', unit='×', fact='is what most accelerators pay above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan', bg='#567E55', ink='#FFFFFF'),
+    dict(tag='Federal', num='46', unit='%', fact='of federal AEs say they hit quota.', line='The most of any AE role. SLED is 45%.', src='RepVue, 2026', href='/territory/', go='Check my territory', bg='#264653', ink='#E9C46A'),
+]
+def _short(s, i):
+    src = f'<span class="short-src">{esc_html(s["src"])}</span>' if s['src'] else ''
+    num = (f'<span class="short-num">{esc_html(s["num"])}<span class="short-unit">{esc_html(s["unit"])}</span></span>' if s['num'] else '')
+    return (f'<a class="short{" has-num" if s["num"] else ""}" href="{s["href"]}" style="--bg:{s["bg"]};--ink:{s["ink"]}" data-short="{i+1}">'
+            f'<span class="short-tag">{esc_html(s["tag"])}</span>{num}<span class="short-fact">{esc_html(s["fact"])}</span>'
+            f'<span class="short-line">{esc_html(s["line"])}</span><span class="short-foot">{src}<span class="short-go">{esc_html(s["go"])} →</span></span></a>')
+def shorts_strip():
+    return ('<section class="shorts-band" aria-labelledby="shorts-h"><div class="shorts-head"><h2 id="shorts-h">Quota Shorts</h2>'
+            '<a class="shorts-all" href="/shorts/">All of them</a></div>'
+            '<div class="shorts-row" role="list">' + ''.join(f'<div role="listitem">{_short(s, i)}</div>' for i, s in enumerate(SHORTS)) + '</div></section>')
+
 # ────────────────────────────── HOME ──────────────────────────────
 # The home page source lives in home.src.html; this fills in the note list and build stamp.
-home = open('home.src.html').read().replace('__NOTES__', note_list()).replace('__BUILD__', BUILD)
+home = open('home.src.html').read().replace('__NOTES__', note_list()).replace('__BUILD__', BUILD).replace('<!--shorts-->', shorts_strip())
 open('index.html', 'w').write(home)
 # Pipeline Check lives at /pipeline/ again (it was the home page until the shelf took over)
 os.makedirs('pipeline', exist_ok=True)
@@ -1042,9 +1120,67 @@ open('pipeline/index.html', 'w').write(open('pipeline.src.html').read().replace(
 # ────────────────────────────── CALCULATORS (Quota, Discount, Commission) ──────────────────────────────
 # Rebuilt from the old Fedmo tools: Is My Quota Crazy?, They Want a Discount, Commissions Take-Home.
 CALCS = [
+ dict(slug='quota-case', name='Quota Case',
+  title='Quota Case: What Has to Be True for This Quota to Work?',
+  desc='Build the bridge from last year to this year\'s quota: run rate, pipeline at your real win rate, headcount, one-time deals. Find the gap nobody has explained, and take it to your boss calmly.',
+  ogdesc='What has to be true for this quota to work? Last year, run rate, pipeline and headcount in; the bridge and the gap out.',
+  h1='What has to be true for this quota to work?', dek='Last year, your run rate, your pipeline and the new number. It builds the bridge and shows you the gap nobody has explained yet.',
+  fields=[dict(id='lastyear',kind='money',label='What the team closed last year',example='$8,200,000'),
+          dict(id='oneoff',kind='money',label='One-time deals in that number',example='',placeholder='$0 (optional)'),
+          dict(id='runrate',kind='money',label='Current run rate, annualized (monthly × 12)',example='$8,700,000'),
+          dict(id='pipeline',kind='money',label='Qualified pipeline for this year',example='$37,600,000'),
+          dict(id='win',kind='pct',label='Your historical win rate',example='25%'),
+          dict(id='repsthen',kind='count',label='Reps last year',example='',placeholder='optional'),
+          dict(id='repsnow',kind='count',label='Fully ramped reps now',example='',placeholder='optional'),
+          dict(id='quota',kind='money',label='The new number',example='$12,000,000')],
+  card=dict(headline=['What has to be true', 'for this quota to work?'],dek='Last year, run rate, pipeline, headcount and the new number. The bridge, and the gap.',pillars=['LAST YEAR','RUN RATE','PIPELINE','THE GAP']),
+  bands=[('how','How the bridge works','''    <p class="lede">It takes the better of two views of this year: your run rate at today's headcount, and your qualified pipeline at your real win rate. Whatever's left between that and the new number is the gap somebody needs to explain.</p>
+    <p>Take one-time deals out of last year. If a single giant deal made last year's number, building this year's quota on it is how a team ends up at 60% attainment and a lot of meetings about effort.</p>
+    <p>If you lost reps or have open territories, put in the headcount. A vacant territory still has quota. That's the problem. And a rep hired in March doesn't sell much until summer, so count them when they're ramped, not when they start.</p>'''),
+         ('conversation','Taking it to your boss','''    <p class="lede">Don't walk in upset. Walk in with the bridge and one question: what assumption am I missing?</p>
+    <p>Sometimes there's a real answer: new territory, a big renewal you didn't know about, a product launch, partner help with names attached. Then the number's hard but fair, and your job changes to helping the team hit it, which means you stop relitigating it every Monday. Sometimes nobody has an answer. Then at least everybody knows where the number came from, and it's in writing before the year starts.</p>
+    <p><a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> has the longer version, including why the best time to have this fight is the year before.</p>''')],
+  faq=[('Does anything I enter leave my device?','No. The math runs right here in your browser. There\'s no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result.'),
+       ('Is this the company\'s formula?','No. Nobody outside finance has that, and some years nobody inside does either. This is the evidence you have: history, capacity and pipeline. It\'s the part of the conversation you control.'),
+       ('What if I don\'t know my win rate?','Count it: of last year\'s qualified deals, how much closed, by value. Or leave pipeline and win rate blank and it\'ll use your run rate alone.'),
+       ('Rep or manager?','Either. A manager uses it to take the team\'s number upstairs. A rep can run it on their own territory before the one-on-one where the number gets explained.')],
+  config="""CalcTool({
+  slug: 'quota-case', name: 'Quota Case', url: 'https://quotabird.com/quota-case/',
+  fields: [{ id: 'lastyear', kind: 'money' }, { id: 'oneoff', kind: 'money' }, { id: 'runrate', kind: 'money' }, { id: 'pipeline', kind: 'money' }, { id: 'win', kind: 'pct' }, { id: 'repsthen', kind: 'count' }, { id: 'repsnow', kind: 'count' }, { id: 'quota', kind: 'money' }],
+  compute(v) {
+    if (!(v.quota > 0 && v.lastyear > 0 && (v.runrate > 0 || (v.pipeline > 0 && v.win > 0)))) return null;
+    const money = (n) => { const a = Math.abs(n); return (n < 0 ? '-' : '') + (a >= 1e6 ? '$' + (a / 1e6).toFixed(1).replace(/\\.0$/, '') + 'M' : a >= 1e3 ? '$' + Math.round(a / 1e3) + 'K' : '$' + Math.round(a)); };
+    const pct = (r) => Math.round(r * 100) + '%';
+    const last = v.lastyear - (v.oneoff || 0);
+    const cap = (v.repsthen > 0 && v.repsnow > 0) ? v.repsnow / v.repsthen : 1;
+    const run = v.runrate > 0 ? v.runrate * cap : 0;
+    const pipe = (v.pipeline > 0 && v.win > 0) ? v.pipeline * v.win : 0;
+    const best = Math.max(run, pipe), gap = v.quota - best, share = gap / v.quota, growth = (v.quota - last) / last;
+    let t;
+    if (gap <= 0) t = ['Supported', 'ready', `The evidence supports ${money(v.quota)}. Hard, maybe, but defensible.`, 'Stop arguing about it with the team and build the plan.'];
+    else if (share <= .10) t = ['Tight', 'proof', `${money(gap)} short of what the evidence supports. That's a stretch, not a scandal.`, `Find the ${money(gap)} with names attached, then build the plan.`];
+    else if (share <= .25) t = ['Needs a bridge', 'prove', `${money(gap)} of this number that nobody has explained yet.`, 'Ask what has to be true for it to work, and bring the bridge below.'];
+    else t = ["Can't see it", 'dont', `${money(gap)}, ${pct(share)} of the number, with nothing in the evidence to fill it.`, 'Take the bridge to your boss before you sign anything.'];
+    const rows = [['Last year', money(v.lastyear)]];
+    if (v.oneoff > 0) rows.push(['Without one-time deals', money(last)]);
+    if (run) rows.push([cap !== 1 ? "Run rate at today's headcount" : 'Current run rate', money(run)]);
+    if (pipe) rows.push([`Pipeline at your ${pct(v.win)} win rate`, money(pipe)]);
+    rows.push(['The new number', money(v.quota)]);
+    rows.push([v.oneoff > 0 ? 'Growth over last year, without one-offs' : 'Growth over last year', (growth >= 0 ? '+' : '') + pct(growth), growth > .25 ? 'v-no' : '']);
+    rows.push(['Gap nobody has explained', gap > 0 ? money(gap) : 'None', gap > 0 ? 'v-no' : '']);
+    const note = gap > 0 ? `What to say: "Here's last year, here's what we're running at, and here's a ${money(gap)} gap I can't explain. What assumption am I missing?"` : "The number holds up against the evidence. Now it's about the plan.";
+    return { label: t[0], cls: t[1], attack: t[2], sub: t[3], big: gap > 0 ? money(gap) : 'Covered', rows, note, gap, quota: v.quota, best, growth, gapm: money(gap), quotam: money(v.quota), bestm: money(best) };
+  },
+  handoff: (s) => s.gap > 0
+    ? { overline: 'Before you take it upstairs', text: 'How to walk in with this, and what to do when they push back.', href: '/notes/prove-the-quota-is-crazy/', label: 'Read the playbook' }
+    : { overline: 'Okay. How do we hit it?', text: `Pipeline Check works backward from ${s.quotam} to the pipeline and deals it takes.`, href: `/pipeline/#t=${Math.round(s.quota)}&y=cy`, label: 'Check my pipeline' },
+  mark: { title: () => 'Want a second look at the bridge?', body: "I'm Mark. I've taken a bridge like this to my boss and had the number move, and I've had it not move. Either way it was a better conversation than 'this feels high.' Send me the numbers, no company name." },
+  dm: (s) => `Mark, ran our quota through Quota Case. The new number is ${s.quotam}, the evidence supports about ${s.bestm}, so a ${s.gap > 0 ? s.gapm : '$0'} gap. Not sure how to take it upstairs. Worth 20 minutes?`,
+  bookNote: (s) => `Quota Case: quota ${s.quotam}, evidence supports ${s.bestm}, gap ${s.gap > 0 ? s.gapm : 'none'}.`,
+});"""),
  dict(slug='quota', name='Quota Check',
   title='Quota Check: Is My Quota Crazy?',
-  desc='Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book. Free, in your browser, nothing stored.',
+  desc='Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book.',
   ogdesc='Is my quota crazy? Base, variable, quota and what it\'s measured in. A straight answer out.',
   h1='Is my quota crazy?', dek='Plug in your base, your variable and the number they handed you to find out.',
   fields=[dict(id='basis',kind='choice',label='What the number is measured in',example='cloud',options=[('saas','New bookings'),('cloud','Cloud consumption growth'),('book','Whole book')]),
@@ -1098,7 +1234,7 @@ CALCS = [
 });"""),
  dict(slug='discount', name='Discount Check',
   title='Discount Check: How Much Discount Is Too Much?',
-  desc='How much discount is too much? See what it costs in your commission and the company\'s margin before you say yes. Free, in your browser, nothing stored.',
+  desc='How much discount is too much? See what it costs in your commission and the company\'s margin before you say yes.',
   ogdesc='How much discount is too much? Here is exactly what it costs you before you sharpen the pencil.',
   h1='How much discount is too much?', dek='Plug in the price and the discount to see what it costs you before you say yes.',
   fields=[dict(id='list',kind='money',label='Full list price',example='$500,000'),dict(id='disc',kind='pct',label='Discount they want',example='15%'),
@@ -1141,7 +1277,7 @@ CALCS = [
 });'''),
  dict(slug='commission', name='Commission Check',
   title='Commission Check: Your Take-Home on a Deal',
-  desc='Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes. Free, in your browser, nothing stored.',
+  desc='Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes.',
   ogdesc='It closed. Here is roughly what you actually take home.',
   h1="It closed. What do I actually keep?", dek='Plug in the deal and your rate to find out, roughly, before the check lands.',
   fields=[dict(id='deal',kind='money',label='Deal size',example='$500,000'),dict(id='rate',kind='pct',label='Your commission rate',example='8%'),
@@ -1226,7 +1362,7 @@ def calc_page(t):
 <meta name="twitter:image" content="https://quotabird.com/card-{t['slug']}.jpg">
 <meta name="twitter:image:alt" content="{t['name']}: {t.get('ogh1', t['h1'])}">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
 <script type="application/ld+json">
 {{
@@ -1711,7 +1847,7 @@ _kit = note_head("The Manager's Field Kit", _kit_desc, _kit_url).replace("| Quot
     </div>
     <div class="kit-promo-body">
       <span class="pill">Free printable</span>
-      <p class="kit-hero-meta">8 pages, prints on letter or A4. Ten short chapters and six worksheets, and you don't have to give anybody your email.</p>
+      <p class="kit-hero-meta">8 pages, prints on letter or A4. Ten short chapters and six worksheets.</p>
       <div class="kit-promo-actions">
         <a class="btn btn-primary btn-lg btn-icon" id="kitBookDl" href="/kit/managers-field-kit.pdf" download>Download the PDF<svg aria-hidden="true" viewBox="0 -960 960 960" width="20" height="20"><path fill="currentColor" d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"/></svg></a>
         <button class="btn btn-text" id="kitPrint" type="button">Print this page</button>
@@ -1843,7 +1979,7 @@ _leader = note_head("The Leadership Field Kit", _ld_desc, _ld_url).replace("| Qu
     </div>
     <div class="kit-promo-body">
       <span class="pill">Free printable</span>
-      <p class="kit-hero-meta">__PAGES__ pages, prints on letter or A4. Six short chapters and two worksheets, and you don't have to give anybody your email.</p>
+      <p class="kit-hero-meta">__PAGES__ pages, prints on letter or A4. Six short chapters and two worksheets.</p>
       <div class="kit-promo-actions">
         <a class="btn btn-primary btn-lg btn-icon" href="/leader/leader-field-kit.pdf" download>Download the PDF{_DL_ICON}</a>
         <button class="btn btn-text" id="kitPrint" type="button">Print this page</button>
@@ -2035,7 +2171,7 @@ _seller = note_head("The Seller's Field Kit", _sl_desc, _sl_url).replace("| Quot
     </div>
     <div class="kit-promo-body">
       <span class="pill">Free printable</span>
-      <p class="kit-hero-meta">__PAGES__ pages, prints on letter or A4. Eight short chapters and five worksheets, and you don't have to give anybody your email.</p>
+      <p class="kit-hero-meta">__PAGES__ pages, prints on letter or A4. Eight short chapters and five worksheets.</p>
       <div class="kit-promo-actions">
         <a class="btn btn-primary btn-lg btn-icon" href="/seller/seller-field-kit.pdf" download>Download the PDF{_DL_ICON}</a>
         <button class="btn btn-text" id="kitPrint" type="button">Print this page</button>
@@ -2066,7 +2202,7 @@ _kits = note_head('Field Kits', 'Three free printables for the job you have now 
   <div id="screen">
     <span class="overline tool-name">Free printables</span>
     <h1>Field Kits</h1>
-    <p class="dek">Three short printables for the job you have now and the one you might want next. No email.</p>
+    <p class="dek">Three short printables for the job you have now and the one you might want next.</p>
   </div>
 </div>
 
@@ -2089,9 +2225,9 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
 </div>
 <article class="note ask">
   <span class="overline">Ask Mark</span>
-  <h1>Want to talk it through?</h1>
-  <p class="dek">If a deal, a rep, a territory or a number is bugging you, tell me about it. I'll know pretty quickly
-    whether I can help, and I'll say so.</p>
+  <h1>Got a quota problem?</h1>
+  <p class="dek">Your quota went up. Your pipeline didn't. Your boss says the number isn't moving. Bring the math, and
+    we'll look at what changed, what didn't, and whether you've got a quota problem or a planning problem.</p>
 
   <div class="ask-cta">
     <a class="btn btn-primary btn-lg" id="askBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=ask&amp;utm_content=ask" target="_blank" rel="noopener">Grab 20 minutes</a>
@@ -2112,9 +2248,10 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
 
   <h2>What people usually bring me</h2>
   <ul class="ask-list">
+    <li>A quota that came from somebody who's never seen your territory.</li>
+    <li>A comp plan nobody can explain, including the person who sent it.</li>
     <li>A deal everybody thinks will close, and nobody on the customer side has committed to anything.</li>
     <li>A rep you're not sure about. Or maybe it's the territory.</li>
-    <li>A quota that came from somebody who's never seen your territory.</li>
     <li>A forecast call you're dreading, or a review where you have to defend somebody.</li>
   </ul>
 
@@ -2146,6 +2283,198 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
 assert '—' not in _ask and '–' not in _ask
 os.makedirs('ask', exist_ok=True)
 open('ask/index.html', 'w').write(_ask)
+
+# ────────────────────────────── HOW QUOTAS GET BUILT (/how-quotas-get-built/) ──────────────────────────────
+_how = note_head('How Quotas Usually Get Built', "Where your sales quota probably came from: last year plus a growth rate, the corporate plan, headcount, territory, overlays. And why your boss may not even be goaled on your number.", 'https://quotabird.com/how-quotas-get-built/') + '''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note">
+  <span class="overline">Understand it</span>
+  <h1>How quotas usually get built</h1>
+  <p class="dek">Nobody hands you the spreadsheet. Here's roughly what's in it.</p>
+
+  <p>Most reps have no idea how their number was made, and a lot of managers only know their half. I can't tell you
+    your company's formula. Nobody outside finance can, and some years nobody inside can either. But most of them
+    start from the same handful of things.</p>
+
+  <h2>How a big company builds your number</h2>
+  <p>At a company the size of AWS, Microsoft or Google, your quota is the last step of a long chain. It usually runs in
+    this order:</p>
+  <ol class="chain">
+    <li><strong>The company number.</strong> Leadership commits to a growth target. Everything after this is that number, divided.</li>
+    <li><strong>Capacity.</strong> Finance counts sellers: who's here, who's ramping, who's leaving, and what each seat is supposed to produce.</li>
+    <li><strong>Territories.</strong> Accounts get carved up among the seats, including the empty ones.</li>
+    <li><strong>Quotas.</strong> The number gets handed down through each layer of management until it reaches you.</li>
+    <li><strong>The comp plan.</strong> Last, somebody decides what you get paid for hitting it.</li>
+  </ol>
+  <p>Your territory and your number are usually settled before anybody asks you about either one.</p>
+
+  <h2>Why the quotas add up to more than the plan</h2>
+  <p>Planners over-assign. The quotas across a sales team typically total 20 to 30% more than the company actually
+    needs, and more in enterprise, to cover the reps who miss, leave or ramp slowly. If your number feels like it's
+    carrying somebody else's, it probably is.</p>
+
+  <h2>Cloud quotas count consumption</h2>
+  <p>At the cloud providers, a lot of quota is measured in what customers actually run, month after month, not what they
+    sign. Microsoft, for one, ties its field incentives to Azure consumed revenue. A big commit nobody uses doesn't
+    retire much quota, which is also why cloud multiples look enormous next to SaaS benchmarks.</p>
+
+  <h2>The calendar matters</h2>
+  <p>Amazon and Google plan on the calendar year. Microsoft's fiscal year runs July through June. Either way, next year's
+    number is being built months before the year starts, which is the only time a manager can still change it.</p>
+
+  <h2>Where the number usually comes from</h2>
+  <ul>
+    <li>Last year's revenue, plus a growth rate somebody picked</li>
+    <li>The corporate plan: what the company told the board, divided down</li>
+    <li>Market assumptions: how big somebody thinks your segment is</li>
+    <li>Headcount: the number gets split across however many reps are budgeted, whether the seats are filled or not</li>
+    <li>Territory potential, when anybody bothered to size it</li>
+    <li>Product priorities: the thing the company needs sold this year</li>
+    <li>New business, often carried separately from renewals</li>
+    <li>Renewals, which are either counted in your number or quietly aren't</li>
+    <li>Management overlays: a little extra added at each level, just in case</li>
+  </ul>
+  <p>That last one adds up. Every layer pads it a few percent, and by the time it reaches a rep, the number is carrying
+    everybody's cushion.</p>
+
+  <h2>Your boss may not be goaled on your number</h2>
+  <p>This explains a lot of strange quotas. Your manager's boss might be measured on something else entirely: growth
+    rate, new business, a strategic product, bookings, margin, market share, or what partners bring in. If they're paid
+    on new logos and your territory is mostly renewals, your number is going to look odd from where you sit, and
+    nobody will think to tell you why.</p>
+  <p>So ask. "What's our leader actually measured on this year?" is a fair question, and the answer tells you which
+    parts of your quota will get attention and which won't.</p>
+
+  <h2>What you can usually find out</h2>
+  <ul>
+    <li>How your number compares to last year's actuals, yours and the team's</li>
+    <li>Whether renewals are in it, and at what rate</li>
+    <li>Whether a vacant territory's number got spread across everybody else</li>
+    <li>Whether last year included one big deal the plan assumes will happen again</li>
+    <li>What the comp plan pays extra for, which tells you what the company actually wants</li>
+  </ul>
+
+  <h2>Then decide</h2>
+  <p>If the number holds up, build the plan. If it doesn't, bring the math. <a href="/quota/">Quota Check</a> tells you
+    how your multiple compares, <a href="/quota-case/">Quota Case</a> builds the bridge from last year to this year, and
+    <a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> covers the conversation. If the
+    number isn't moving, <a href="/notes/the-number-isnt-changing/">here's what I'd do instead</a>. The benchmarks are all on
+    <a href="/quota-by-the-numbers/">Quota by the numbers</a>.</p>
+</article>
+
+<section class="band" id="about"></section>
+
+''' + NOTE_TAIL
+assert '—' not in _how and '–' not in _how
+os.makedirs('how-quotas-get-built', exist_ok=True)
+open('how-quotas-get-built/index.html', 'w').write(_how)
+
+# ────────────────────────────── QUOTA SHORTS PAGE (/shorts/) ──────────────────────────────
+_sh = note_head('Quota Shorts', 'Quota, pay and attainment in one-minute pieces: who hits quota, how quotas get built, what comp plans pay. Each one sourced, each one linked to the tool that does the math.', 'https://quotabird.com/shorts/') + '''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note shorts-page">
+  <span class="overline">Quota Shorts</span>
+  <h1>One minute each.</h1>
+  <p class="dek">What the data says about quota, one card at a time.</p>
+  <div class="shorts-grid" role="list">''' + ''.join(f'<div role="listitem">{_short(s, i)}</div>' for i, s in enumerate(SHORTS)) + '''</div>
+  <p class="fine" style="margin-top:22px;">Sources and the full tables are on <a href="/quota-by-the-numbers/">Quota by the numbers</a>.</p>
+</article>
+
+<section class="band" id="about"></section>
+
+''' + NOTE_TAIL
+os.makedirs('shorts', exist_ok=True)
+open('shorts/index.html', 'w').write(_sh)
+
+# ────────────────────────────── QUOTA BY THE NUMBERS (/quota-by-the-numbers/) ──────────────────────────────
+# Magazine-style "By the Numbers" panel: big stats, donuts and paired bars. Mobile first.
+import math as _m
+def bn_big(num, unit, cap):
+    u = f'<span class="bn-unit">{unit}</span>' if unit else ''
+    return f'<div class="bn-big"><div class="bn-num">{num}{u}</div><div class="bn-cap">{cap}</div></div>'
+def bn_donut(pct, legend):
+    r, w = 46, 20; c = 2 * _m.pi * r; a = c * pct / 100
+    svg = (f'<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-b" cx="60" cy="60" r="{r}" fill="none" stroke-width="{w}"/>'
+           f'<circle class="ring-line" cx="60" cy="60" r="{r + w/2}" stroke-width="1.5"/><circle class="ring-line" cx="60" cy="60" r="{r - w/2}" stroke-width="1.5"/>'
+           f'<circle class="ring-a" cx="60" cy="60" r="{r}" fill="none" stroke-width="{w}" stroke-dasharray="{a:.1f} {c:.1f}" transform="rotate(-90 60 60)"/>'
+           f'<text x="60" y="68" text-anchor="middle">{pct}%</text></svg>')
+    leg = ''.join(f'<div><span class="bn-sw {k}"></span><b>{v}</b>{t}</div>' for k, v, t in legend)
+    return f'<div class="bn-donut">{svg}<div class="bn-legend">{leg}</div></div>'
+def bn_bars(rows, scale=100):
+    out = []
+    for label, series in rows:
+        bars = ''.join(f'<div class="bn-bar {k}" style="width:{max(v / scale * 100, 12):.1f}%">{shown}</div>' for k, v, shown in series)
+        out.append(f'<div class="bn-stack">{bars}<div class="bn-bar-label">{label}</div></div>')
+    return '<div class="bn-bars">' + ''.join(out) + '</div>'
+
+_panel = ('<section class="bynum" aria-labelledby="bn-title"><div class="bn-label">By the Numbers</div>'
+  '<h1 class="bn-title" id="bn-title">Quota</h1><div class="bn-kicker">Bridge Group and RepVue data, 2026</div>'
+  '<div class="bn-cols"><div>'
+  '<div class="bn-sec"><h2 class="bn-h">AEs who hit 100% of quota in 2026</h2>'
+  + bn_donut(48, [('a', '48%', 'hit it'), ('b', '52%', "didn't")]) + '</div>'
+  '<div class="bn-sec"><h2 class="bn-h">Same question, three different years</h2>'
+  + bn_bars([('2026', [('a', 48, '48%')]), ('2024', [('b', 51, '51%')]), ('2022', [('b', 66, '66%')])]) + '</div>'
+  '<div class="bn-sec"><h2 class="bn-h">The median SaaS AE</h2><div class="bn-pair">'
+  + bn_big('$960', 'K', 'quota') + bn_big('$200', 'K', 'on-target earnings') + bn_big('4.6', '×', 'quota ÷ OTE, up from 4.2× in 2024') + bn_big('53:47', '', 'base to variable') + '</div></div>'
+  '<div class="bn-sec"><h2 class="bn-h">How fast each one grows, per year</h2>'
+  + bn_bars([('Pay (OTE)', [('a', 4.9, '4.9%')]), ('Quota', [('b', 2.4, '2.4%')])], scale=5) + '</div>'
+  '</div><div>'
+  '<div class="bn-sec"><h2 class="bn-h">Who says they hit quota</h2>'
+  + bn_bars([('Federal AEs', [('a', 46, '46%')]), ('SLED AEs', [('a', 45, '45%')]), ('All AEs', [('b', 42, '42%')]), ('Enterprise AEs', [('b', 41, '41%')])]) +
+  '<div class="bn-src">Self-reported on RepVue, September 2026.</div></div>'
+  '<div class="bn-sec"><h2 class="bn-h">At the big cloud providers</h2>'
+  + bn_bars([('Microsoft SLED AEs', [('a', 67, '67%')]), ('AWS Account Managers', [('a', 64, '64%')]), ('Microsoft Enterprise AEs', [('a', 56, '56%')])]) +
+  '<div class="bn-pair" style="margin-top:14px;">' + bn_big('$280', 'K', 'AWS Account Manager OTE') + bn_big('54:46', '', 'AWS Account Manager pay mix') + '</div>'
+  '<div class="bn-src">Share who say they hit quota. Self-reported on RepVue, 2026.</div></div>'
+  '<div class="bn-sec"><h2 class="bn-h">How plans get built</h2><div class="bn-pair">'
+  + bn_big('20-30', '%', 'more quota handed out than the company needs') + bn_big('6.2', 'mo', 'for a new AE to ramp')
+  + bn_big('1.5-2', '×', 'typical first accelerator above quota') + bn_big('80', '%', 'of plans use accelerators') + '</div></div>'
+  '</div></div></section>')
+_num = note_head('Quota by the Numbers', 'Sales quota and comp benchmarks with sources: how many reps hit quota, median quota and OTE, quota-to-OTE, pay mix, ramp, over-assignment, accelerators, and what reps at AWS and Microsoft report.', 'https://quotabird.com/quota-by-the-numbers/') + '''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note numbers">
+''' + _panel + '''
+  <p>Two different numbers both get called attainment: the share of reps who hit 100%, and the average share of quota reps
+    reach. RepVue's average across 246 cloud and software companies was 42.7% in mid-2025. They aren't the same number,
+    and people swap them in meetings.</p>
+  <p>The cloud provider figures are reps rating their own employers, so treat them as a rough read. Cloud quotas are
+    usually measured in consumption growth, which is why their multiples run far higher than SaaS.
+    <a href="/how-quotas-get-built/">How quotas get built</a> explains that part; <a href="/quota/">Quota Check</a>
+    puts your own multiple next to these.</p>
+
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li><a href="https://blog.bridgegroupinc.com/2026-ae-compensation-quota-ai-metrics" rel="noopener">Bridge Group, AE Models, Motions and Metrics, 2026</a></li>
+    <li><a href="https://blog.bridgegroupinc.com/2024-ae-metrics-compensation-benchmark" rel="noopener">Bridge Group, SaaS AE Metrics and Compensation, 2024</a></li>
+    <li><a href="https://www.repvue.com/salaries/account-executive" rel="noopener">RepVue, Account Executive salaries and attainment, 2026</a></li>
+    <li><a href="https://www.repvue.com/blog/sales-salary-guide" rel="noopener">RepVue, Sales Salary Guide, 2026</a></li>
+    <li><a href="https://www.repvue.com/companies/Amazonwebservices/salaries" rel="noopener">RepVue, Amazon Web Services salaries</a></li>
+    <li><a href="https://www.repvue.com/companies/Microsoft/salaries" rel="noopener">RepVue, Microsoft salaries</a></li>
+    <li><a href="https://lative.ai/blog/quota-attainment-benchmarks/" rel="noopener">RepVue Cloud Sales Index Q2 2025, as reported by Lative</a></li>
+    <li><a href="https://www.mostlymetrics.com/p/your-complete-guide-to-annual-planning" rel="noopener">Mostly Metrics, Annual Planning: Building Sales Capacity</a></li>
+    <li><a href="https://learn.microsoft.com/en-us/partner-center/referrals/partner-reported-azure-consumed-revenue" rel="noopener">Microsoft Learn, Partner Reported Azure Consumed Revenue</a></li>
+    <li><a href="https://www.prowi.io/en/post/commission-accelerators-guide" rel="noopener">Prowi, Commission accelerators</a></li>
+  </ul>
+</article>
+
+<section class="band" id="about"></section>
+
+''' + NOTE_TAIL
+os.makedirs('quota-by-the-numbers', exist_ok=True)
+open('quota-by-the-numbers/index.html', 'w').write(_num)
+
 
 # ────────────────────────────── STUFF I LIKE (/stuff/) ──────────────────────────────
 # Mark's books and podcasts. No affiliate links, no links at all: the value is that it's his.
@@ -2229,7 +2558,7 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
     <picture><source srcset="/logo-dark.svg" media="(prefers-color-scheme: dark)"><img src="/logo.svg" alt="" width="48" height="42"></picture>
     <div>
       <h2 id="bird-h">Why the bird?</h2>
-      <p>If you carry a number, sooner or later the Quota Bird lands in your territory. Like Santa, but with quota.</p>
+      <p>Everybody in sales loves a bluebird. Usually it's just the Quota Bird, dropping off more quota.</p>
     </div>
   </div>
 </section>
@@ -2266,7 +2595,7 @@ def header(path):
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/', 'stuff/')) else '/' + path.split('/')[0] + '/')}
+      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/')) else '/' + path.split('/')[0] + '/')}
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
@@ -2294,7 +2623,7 @@ def chrome(path):
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
 PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION)] \
-        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html'] + ['404.html']
+        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html'] + ['404.html']
 for _p in PAGES:
     chrome(_p)
 print('chrome', len(PAGES))
@@ -2329,7 +2658,8 @@ DESC = {'/pipeline/': 'Pipeline Check: target, pipeline and win rate in, the gap
         '/deal/': 'Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.'}
 for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
 for c in CALCS: DESC['/' + c['slug'] + '/'] = c['name'] + ': ' + c['desc']
-QUERIES = {'/pipeline/': ['do I have enough pipeline to make my number', 'pipeline coverage calculator with my win rate', 'is 3X pipeline coverage enough'],
+QUERIES = {'/quota-case/': ['how to push back on a quota that is too high', 'is my sales quota realistic compared to last year', 'build a quota bridge from last year to this year', 'my quota went up and my territory did not'],
+           '/pipeline/': ['do I have enough pipeline to make my number', 'pipeline coverage calculator with my win rate', 'is 3X pipeline coverage enough'],
            '/deal/': ['is my deal real or hopium', 'qualify a federal sales deal before commit', 'what will my manager ask about this deal'],
            '/quota/': ['is my quota crazy', 'quota to OTE ratio for cloud sales', 'is my sales quota fair'],
            '/territory/': ['can my territory make the number', 'is my sales territory viable', 'new territory sizing check'],

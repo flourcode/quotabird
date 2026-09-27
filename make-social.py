@@ -11,7 +11,7 @@ from fontTools.varLib import instancer
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 OUT = 'social'; os.makedirs(OUT, exist_ok=True)
-SURF = (0xF9, 0xFC, 0xFF); INK = (0x13, 0x16, 0x19); VAR = (0x55, 0x62, 0x70); ACC = (0x0A, 0x71, 0xB1); LINE = (0xDD, 0xE3, 0xEA)
+SURF = (0xFF, 0xFF, 0xFF); INK = (0x13, 0x16, 0x19); VAR = (0x55, 0x62, 0x70); ACC = (0x0A, 0x71, 0xB1); LINE = (0xDD, 0xE4, 0xEA)
 hexc = lambda h: tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
 _WOFF = open('inter.woff2', 'rb').read(); _cache = {}
 def font(w, size):
@@ -23,9 +23,9 @@ BIRD = Image.open('logo.png').convert('RGBA'); MASK = BIRD.split()[3]
 
 # the shelf's covers, same words and colours as the site
 COVERS = {
-    'deal': ("Real deal or hopium?", '#1C3D5A', '#FFFFFF'), 'pipeline': ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
-    'quota': ("Crazy quota?", '#E07A5F', '#2B1B1B'), 'rep': ("Rep or territory?", '#388073', '#FFFFFF'),
-    'partner': ("Doing anything?", '#F28482', '#2B1B1B'), 'discount': ("How much is too much?", '#9DD2FF', '#12324F'),
+    'deal': ("Is this even a deal?", '#1C3D5A', '#FFFFFF'), 'pipeline': ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
+    'quota': ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), 'rep': ("Rep or territory?", '#388073', '#FFFFFF'),
+    'partner': ("Is this partner doing anything?", '#F28482', '#2B1B1B'), 'discount': ("They want a discount.", '#9DD2FF', '#12324F'),
 }
 
 def wrap(d, text, f, width):
@@ -75,11 +75,11 @@ def save(im, name):
 # ── posts ──
 def post_shelf():
     im, d = canvas()
-    d.text((M, M + 120), 'A LITTLE HELP WITH SALES', font=font(700, 26), fill=ACC)
+    d.text((M, M + 120), 'THE QUOTA LANDED', font=font(700, 26), fill=ACC)
     y = M + 162
-    for line in ['Pick the problem', "you've got."]:
+    for line in ['Is your quota', 'crazy?']:
         d.text((M - 3, y), line, font=font(800, 84), fill=INK); y += 96
-    keys = ['deal', 'pipeline', 'quota', 'rep', 'partner', 'discount']; bw = 236; gap = 25; x0 = (W - 3 * bw - 2 * gap) // 2; y0 = y + 44
+    keys = ['quota', 'pipeline', 'deal', 'rep', 'partner', 'discount']; bw = 236; gap = 25; x0 = (W - 3 * bw - 2 * gap) // 2; y0 = y + 44
     for i, k in enumerate(keys):
         cover(im, x0 + (i % 3) * (bw + gap), y0 + (i // 3) * (int(bw * 4 / 3) + gap), bw, k, 30)
     footer(d, 'Free. A few questions or a few numbers.', 'quotabird.com')
@@ -134,8 +134,8 @@ def post_kit():
         ImageDraw.Draw(sh).rectangle((40, 48, 40 + pg.width, 48 + pg.height), fill=(0, 0, 0, alpha)); sh = sh.filter(ImageFilter.GaussianBlur(14))
         layer = Image.new('RGBA', sh.size, (0, 0, 0, 0)); layer.alpha_composite(sh); layer.paste(pg, (40, 40)); layer = layer.rotate(angle, resample=Image.BICUBIC, expand=True)
         im.paste(layer, (x - 40 - (layer.width - sh.width) // 2, yy - 40 - (layer.height - sh.height) // 2), layer)
-    shadowed(back, -4, px + 52, py + 18, 45); fr = front.copy(); ImageDraw.Draw(fr).rectangle((0, ph - 10, pw, ph), fill=(0x1D, 0xA1, 0xF2)); shadowed(fr, 0, px, py)
-    footer(d, '8 pages. No email required.', 'quotabird.com/kit')
+    shadowed(back, -4, px + 52, py + 18, 45); fr = front.copy(); ImageDraw.Draw(fr).rectangle((0, ph - 10, pw, ph), fill=(0x88, 0xB1, 0xCB)); shadowed(fr, 0, px, py)
+    footer(d, '8 pages.', 'quotabird.com/kit')
     return save(im, 'post-6-managers-kit.jpg')
 
 # ── carousel: where deals break ──
@@ -173,9 +173,9 @@ def carousel():
     y += 20
     for l in wrap(d, "Otherwise you've got hopium. Just don't forecast it yet.", font(400, 40), W - 2 * M):
         d.text((M, y), l, font=font(400, 40), fill=VAR); y += 56
-    y += 70; d.rounded_rectangle((M, y, W - M, y + 250), 28, fill=(0xED, 0xF2, 0xF7))
+    y += 70; d.rounded_rectangle((M, y, W - M, y + 250), 28, fill=(0xF1, 0xF5, 0xF8))
     d.text((M + 40, y + 42), 'Deal Check', font=font(800, 44), fill=INK)
-    for i, l in enumerate(["Five taps, about a minute, nothing stored.", "No login. No CRM. Nothing your boss can see."]):
+    for i, l in enumerate(["Five taps, about a minute.", "No login. No CRM. Nothing your boss can see."]):
         d.text((M + 40, y + 108 + i * 48), l, font=font(400, 32), fill=VAR)
     footer(d, f'{total} / {total}', 'quotabird.com/deal'); pages.append(im)
     p = os.path.join(OUT, 'carousel-where-deals-break.pdf')
@@ -194,9 +194,9 @@ def signature():
     im = im.resize((600, 150), Image.LANCZOS); p = os.path.join(OUT, 'email-signature.png'); im.save(p, optimize=True); return p
 
 made = [post_shelf(),
-        post_one('deal', 'post-2-deal.jpg', ["Real deal or hopium?", "Customer, money, power, path, now. Five taps, a straight answer."], 'quotabird.com/deal', 'Free. Nothing stored.'),
+        post_one('deal', 'post-2-deal.jpg', ["Is this even a deal?", "Customer, money, power, path, now. Five taps, a straight answer."], 'quotabird.com/deal', 'Free.'),
         post_3x(),
-        post_one('quota', 'post-4-quota.jpg', ["Just got your quota letter?", "Base, variable and the number. Ten seconds to find out if it's crazy."], 'quotabird.com/quota', 'Free. Nothing stored.'),
-        post_one('rep', 'post-5-rep.jpg', ["Before you write them up.", "Five questions to tell a rep problem from a territory problem."], 'quotabird.com/rep', 'Free. Nothing stored.'),
+        post_one('quota', 'post-4-quota.jpg', ["Just got your quota letter?", "Base, variable and the number. Ten seconds to find out if it's crazy."], 'quotabird.com/quota', 'Free.'),
+        post_one('rep', 'post-5-rep.jpg', ["Before you write them up.", "Five questions to tell a rep problem from a territory problem."], 'quotabird.com/rep', 'Free.'),
         post_kit(), carousel(), signature()]
 for p in made: print(p)
