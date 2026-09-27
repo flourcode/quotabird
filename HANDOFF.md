@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-21.1500**
+**Current build: 2026-10-23.1700**
 
 ## Naming: checks, not kills
 
@@ -361,6 +361,19 @@ site should sound like one veteran seller talking, not a manual:
 - **"Actually" only when it's the point** (what the customer *actually* said
   versus what's in the CRM). Not as padding ("when they're actually in the
   room"). Fifteen padding uses came out in October.
+- **Mark's rules, in his words (Oct 23):** plainspoken, literal, jaded
+  salesperson. No "it's not this, it's that". No third sentence that states
+  the obvious. Short sentences and fragments are fine ("No login. No AI.").
+- **Mark's own voice (from his first round of edits, Oct 22).** Plain seller
+  words, not insider ones: *territory* not *patch*, *customer* not *account*
+  when it means the buyer. Literal over clever: he replaced every metaphor he
+  touched (*a logo on a slide* became *just promises*). Blunt with some edge
+  (*Does my territory suck? Is your pipeline just a pipe dream?*). Fewer
+  disclaimers: cut "no deck", "no methodology", "no names"; result cards end
+  "Send me your problem." except where money is involved (Commission, Quota,
+  Discount, Pipeline, Risk keep "no dollar figures"). Warm and personal
+  (*I'll do my homework before we talk. Can you defend your people?*).
+  Amazon-specific where it fits (*an Amazon doc read*).
 - **Write like a 58-year-old sales manager who's seen this movie before, not a
   28-year-old copywriter describing what sales managers experience.** In
   practice: assume the reader has been in sales a while; prefer the sentence
@@ -1795,8 +1808,7 @@ don't grow it. Linked from the About story and the footer. **Who I've helped**
 on About, and one line near the paid offers on Ask Mark: names in plain text
 ("people I've helped have worked at…"), never a logo wall and never "trusted
 by", which implies the companies engaged Mark. No "used by" claim on the home
-page: the tools store nothing, so usage can't be backed up. **Mark: confirm
-the company list is accurate.** Amplify: add `/stuff` → `/stuff/`.
+page: the tools store nothing, so usage can't be backed up. The company list is Mark's: Amazon, Microsoft, Google, Oracle. Amplify: add `/stuff` → `/stuff/`.
 
 **2026-10-19.1500** — from a web-design principles review: contrast audit
 (29 failing text styles, all real ones fixed: the brand blue failed as button
@@ -1902,3 +1914,77 @@ the signature. Same fonts, colours and 3:4 covers as the site. Every link is
 UTM-tagged (`utm_source` linkedin or email; `utm_campaign` per post), so GA4's
 Traffic acquisition report shows which post or email sent each visitor. Re-run
 after cover or wording changes.
+
+**Wordsmithing workbook (Oct 21).** `extract-copy.py` (repo only; the deploy
+strips it) pulls every visible string on the site into rows, 1,361 of them:
+page, where it appears, current text, limit. `QuotaBird-your-words.xlsx` is
+built from that for Mark to fill in "Your version" in Google Sheets. When it
+comes back, import by matching each row's *current text* in the sources
+(make-tools.py, home.src.html, pipeline.src.html, deal/index.html, check.js,
+calc.js, partials/), escaping apostrophes for the context they sit in (the
+contraction pass has the logic), then rebuild, run every tool, re-render the
+kits and check their page counts. Rows' IDs (QB-0001…) are stable only for
+this export; re-run the extractor for a fresh sheet after big changes.
+
+**2026-10-22.0900** — Mark's first round of copy edits (23 rows: the home
+shelf, Ask Mark, four result cards, the Made-by card) applied, and extrapolated:
+every tool headline now matches its new cover (and so do the context line,
+tab titles, share cards, the home card, the banner and the social collateral);
+"patch" became "territory" in all visible text (53 places plus Rep Check's
+first question label; scoring keys, share links and the Field Note's URL are
+unchanged); the "no names" caveats on the other result cards became "Send me
+your problem."; About's company list matches Ask Mark's. Verdict lines were
+left for his next round. Card headlines now shrink to fit. Fixed a bug in the
+copy-import helper (an apostrophe written unescaped into code); it now
+re-parses the generators after every replacement.
+
+**2026-10-22.1300** — voice pass across the site in Mark's style. Account's
+cover is "Do you know your customer?". Plain lines replaced ornament: Risk is
+"Does your forecast ride on two deals?" with the verdict *Won't hold* (was
+*House of cards*); Partner's worst verdict is *Just promises* ("Lots of
+meetings. No deals."); Deal's "tour guide" and "fan club" lines became "Your
+champion likes you. They can't sign." and "The people who like you aren't the
+people who can spend."; "another set of eyes" became "talk it through"
+(About, kits, FAQ); home's how-it-works lost its disclaimer list and the
+napkin line; Ask Mark's "One session, not a rollout" is "One session with
+your team"; the Seller's kit opens "No sales methodology here." Colourful lines
+that earn their place stayed ("The room wants receipts", "parked" deals).
+The copy helper now picks the right apostrophe escape from the quote that
+opens the string (it had written "Won't" unescaped into Risk's code).
+`QuotaBird-your-words-round2.xlsx` is the fresh workbook for Mark's next round.
+
+**2026-10-23.0900** — Mark's round 2: 128 edits (kits, tool explanations,
+result cards, Ask Mark, About, Stuff, Field Notes, Sales Math). Covers changed
+again, so headlines, tab titles and share cards follow: *You sure that's
+enough pipeline? Why you and not them? Are two deals carrying your year? Is
+this partner doing anything? Will your brief survive the room?* Home label *A
+little help with your quota* (title, share text, card, banner). New footer on
+every page: "QuotaBird is a pile of free sales tools I built because I wanted
+them myself." Tweaks to his edits, by his own rules: three "not this, that"
+lines rewritten; "patch" back to "territory" in one Field Note. The copy
+helper now also handles text with inline tags (bold lead-ins, links) and
+escapes apostrophes correctly for code inside HTML pages (it broke Deal Check
+once this round; fixed before packaging). `QuotaBird-your-words-round3.xlsx` is
+current for any next round.
+
+**2026-10-23.1100** — About page rewritten from Mark's own draft, made plainer
+and more literal by his rules: "I'm retired." up top; the career in one
+paragraph; "These days I help people figure out what's stuck"; five things he
+sees a lot, each with a bold lead-in, plus "I love ugly deals." Metaphors made
+literal ("the quota that came from somebody who's never seen your territory"),
+no "X is not Y" lines, triplets cut to two. The Stuff I Like pointer was
+dropped from the story (his draft left it out; the footer still links there).
+Who I've helped and the ask are unchanged.
+
+**2026-10-23.1300** — About: "The deal everybody thinks should close but really needs to be killed." (Mark's line; "kill" is a deliberate exception to the old no-kill-language rule from the Kill My Deal days.)
+
+**2026-10-23.1700** — the Manager's and Seller's kits, the posts and emails,
+and the carousel rewritten to Mark's rules (the Leadership kit was already in
+his voice from round 2). 27 kit lines: "X, not Y" contrasts rewritten, metaphors
+made literal ("some flavor of hope" → "a guess"; the "archaeological dig"),
+clever chapter titles made plain (3. What commit means; 6. Before you write up
+a rep), obvious third sentences cut, closing cards end "good enough." Kept on
+purpose, as lines earlier reviews singled out: "a couple I made worse before I
+made them better", "terrible close rate", "explaining that sentence",
+"improving them to death", "I'd like those months back. So would the rep".
+Kits still 4, 8 and 3 pages. Workbook for round 3 regenerated.

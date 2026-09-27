@@ -23,9 +23,9 @@ BIRD = Image.open('logo.png').convert('RGBA'); MASK = BIRD.split()[3]
 
 # the shelf's covers, same words and colours as the site
 COVERS = {
-    'deal': ("Is it a deal, or is it hopium?", '#1C3D5A', '#FFFFFF'), 'pipeline': ("You sure that's enough pipeline?", '#F2C14E', '#1B1B1B'),
-    'quota': ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), 'rep': ("Is it the rep, or the patch?", '#388073', '#FFFFFF'),
-    'partner': ("Real partner, or a logo on a slide?", '#F28482', '#2B1B1B'), 'discount': ("They want a discount.", '#9DD2FF', '#12324F'),
+    'deal': ("Is it real, or is it hopium?", '#1C3D5A', '#FFFFFF'), 'pipeline': ("You sure that's enough pipeline?", '#F2C14E', '#1B1B1B'),
+    'quota': ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), 'rep': ("Is it the rep, or the territory?", '#388073', '#FFFFFF'),
+    'partner': ("Is this partner doing anything?", '#F28482', '#2B1B1B'), 'discount': ("They want a discount.", '#9DD2FF', '#12324F'),
 }
 
 def wrap(d, text, f, width):
@@ -162,10 +162,10 @@ def carousel():
     cover(im, x, M + 440, bw, 'deal', 64)
     d.text((W - M - d.textlength('Swipe for the five', font=font(700, 30)), H - M - 40), 'Swipe for the five', font=font(700, 30), fill=ACC)
     d.text((M, H - M - 40), f'1 / {total}', font=font(600, 26), fill=VAR); pages.append(im)
-    pages.append(slide(2, total, 'Customer', "Have they said, in their words, that they want to solve this?", "Your diagnosis isn't their need. If they haven't said it, it's your idea."))
+    pages.append(slide(2, total, 'Customer', "Have they said, in their words, that they want to solve this?", "If they haven't said it out loud, it's still your idea."))
     pages.append(slide(3, total, 'Money', "Does the money have a name: a budget line, a program, a fiscal year?", '"They have budget" isn\'t an answer until it has a name.'))
-    pages.append(slide(4, total, 'Power', "Have you met someone who can make it happen, not just someone who likes you?", "A fan isn't a buyer. Ask for the introduction this week."))
-    pages.append(slide(5, total, 'Path', "Do you know how they'll actually buy it?", "Procurement is where good deals go to wait. Know the vehicle and the approvals before you forecast."))
+    pages.append(slide(4, total, 'Power', "Have you met someone who can sign, or just someone who likes you?", "Somebody who likes you still can't sign. Ask for the introduction this week."))
+    pages.append(slide(5, total, 'Path', "Do you know how they'll actually buy it?", "Procurement adds months. Know the vehicle and the approvals before you forecast."))
     pages.append(slide(6, total, 'Now', "What makes it happen this period instead of next?", "No reason for now means it's next quarter's problem, however real it is."))
     im, d = canvas(); y = M + 200
     for l in wrap(d, "Answer all five with a name and a date, and you've got a deal.", font(800, 64), W - 2 * M):
@@ -187,14 +187,14 @@ def signature():
     S = 2; w, h = 600 * S, 150 * S; im = Image.new('RGB', (w, h), SURF); d = ImageDraw.Draw(im)
     b = BIRD.resize((int(40 * S * BIRD.width / BIRD.height), 40 * S), Image.LANCZOS); im.paste(b, (22 * S, 26 * S), b)
     d.text((22 * S + b.width + 10 * S, 30 * S), 'QuotaBird', font=font(700, 22 * S), fill=INK)
-    d.text((22 * S, 80 * S), 'A little help with sales', font=font(400, 17 * S), fill=VAR)
+    d.text((22 * S, 80 * S), 'A little help with your quota', font=font(400, 17 * S), fill=VAR)
     d.text((22 * S, 106 * S), 'quotabird.com', font=font(700, 17 * S), fill=ACC)
     for i, k in enumerate(['deal', 'pipeline', 'quota', 'rep']):
         cover(im, (292 + i * 74) * S, 22 * S, 62 * S, k, 9 * S)
     im = im.resize((600, 150), Image.LANCZOS); p = os.path.join(OUT, 'email-signature.png'); im.save(p, optimize=True); return p
 
 made = [post_shelf(),
-        post_one('deal', 'post-2-deal.jpg', ["Is it a deal, or is it hopium?", "Customer, money, power, path, now. Five taps, a straight answer."], 'quotabird.com/deal', 'Free. Nothing stored.'),
+        post_one('deal', 'post-2-deal.jpg', ["Is it real, or is it hopium?", "Customer, money, power, path, now. Five taps, a straight answer."], 'quotabird.com/deal', 'Free. Nothing stored.'),
         post_3x(),
         post_one('quota', 'post-4-quota.jpg', ["Just got your quota letter?", "Base, variable and the number. Ten seconds to find out if it's crazy."], 'quotabird.com/quota', 'Free. Nothing stored.'),
         post_one('rep', 'post-5-rep.jpg', ["Before you write them up.", "Five questions to tell a rep problem from a territory problem."], 'quotabird.com/rep', 'Free. Nothing stored.'),

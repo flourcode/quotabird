@@ -13,18 +13,18 @@
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://quotabird.com/brief/">
-<meta property="og:title" content="Brief Check: What's the question you're hoping nobody asks?">
+<meta property="og:title" content="Brief Check: Will your brief survive the room?">
 <meta property="og:description" content="Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. Nothing uploaded, nothing stored.">
 <meta property="og:site_name" content="QuotaBird">
-<meta property="og:image" content="https://quotabird.com/card-brief.jpg?v=8794cf1a">
+<meta property="og:image" content="https://quotabird.com/card-brief.jpg?v=0d292104">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Brief Check: What's the question you're hoping nobody asks?">
+<meta property="og:image:alt" content="Brief Check: Will your brief survive the room?">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Brief Check: What's the question you're hoping nobody asks?">
+<meta name="twitter:title" content="Brief Check: Will your brief survive the room?">
 <meta name="twitter:description" content="Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. Nothing uploaded, nothing stored.">
-<meta name="twitter:image" content="https://quotabird.com/card-brief.jpg?v=8794cf1a">
-<meta name="twitter:image:alt" content="Brief Check: What's the question you're hoping nobody asks?">
+<meta name="twitter:image" content="https://quotabird.com/card-brief.jpg?v=0d292104">
+<meta name="twitter:image:alt" content="Brief Check: Will your brief survive the room?">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101418">
@@ -39,7 +39,7 @@
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Any",
       "description": "Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. Nothing uploaded, nothing stored.",
-      "image": "https://quotabird.com/card-brief.jpg?v=8794cf1a",
+      "image": "https://quotabird.com/card-brief.jpg?v=0d292104",
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -113,7 +113,7 @@
   </header>
   <div id="screen">
     <span class="overline tool-name">Brief Check</span>
-    <h1>What's the question you're hoping nobody asks?</h1>
+    <h1>Will your brief survive the room?</h1>
     <p class="dek">Five questions about the doc, the deck or the QBR, before the meeting asks them.</p>
     <button class="btn btn-primary btn-lg btn-full" id="prep" type="button">Check my brief</button>
     <p class="startnote">5 taps · about a minute · nothing stored</p>
@@ -131,8 +131,7 @@
     <p><strong>RECEIPTS: Evidence for the three claims it depends on.</strong> Not every claim. The three that, if
       false, take the recommendation down with them. Data, customer evidence, financials, documented behavior. And
       at least one piece that didn't come from your own team, because the room discounts everything that did.</p>
-    <p><strong>ALTERNATIVE: The other option, including nothing.</strong> This is where most executive documents
-      fall apart. Why this instead of doing nothing? Why build instead of buy? Why us instead of them? Someone in that room already prefers another answer. If you don't deal with it in the brief, they'll bring it up for you.</p>
+    ALTERNATIVE: What else could they do, including nothing? Why this instead of waiting? Why build instead of buy? Why you instead of them? Somebody in the room already likes another answer. Deal with it before they do.
     <p><strong>HOLE: Your own weakest assumption, and who will find it.</strong> If you know the weak spot, say it before somebody else does. If you don't, somebody whose incentives differ from yours will find it, and they won't be gentle.</p>
     <p><strong>ASK: What you need today, and who owns what next.</strong> A shocking number of decks survive thirty
       slides and end with no decision. Is this an FYI, a discussion, a recommendation or a decision? What resource,
@@ -165,7 +164,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed the people who did, and spent six years leading federal partner sales teams at AWS. I make these because they're the things I wish we'd had. Most of it is free; when a problem needs more than a check, I work with managers and teams directly.</p>
+      <p>I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I built these because I wish we'd had them. Most are free. If the problem needs an actual conversation, I do that too.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -187,14 +186,13 @@
 
 <footer class="sitefoot">
   <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/ask/">Ask Mark</a></p>
-  <p>Brief Check is one of the free <a href="/">QuotaBird</a> tools by
-    <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
+  <p><a href="/">QuotaBird</a> is a pile of free sales tools I built because I wanted them myself.</p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-21.1300';
+window.QB_BUILD = '2026-10-23.1700';
 CheckTool({
   slug: 'brief', name: 'Brief Check', url: 'https://quotabird.com/brief/',
   questions: [
@@ -254,7 +252,7 @@ CheckTool({
   handoff: (s) => s.total >= 75
     ? { overline: 'If the brief is about a deal', text: 'The room will ask whether the deal underneath it is real. Deal Check is that question.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'If the brief is about the number', text: 'Vague impact usually means the coverage math is missing. Pipeline Check puts a number on it.', href: '/pipeline/', label: 'Check my pipeline' },
-  mark: { title: (s) => 'Stuck on the ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I have written the doc that got shredded and the one that got funded, and the difference was always one question I hadn't asked myself. Send me one line about the brief. No document, no company name." },
+  mark: { title: (s) => 'Stuck on the ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've written the doc that got shredded and the one that got funded. Usually the bad one had a question I hadn't asked myself. Send me yours." },
   dm: (s) => `Mark, ran a brief through Brief Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is the ${s.weak.n.toLowerCase()}. Meeting is coming and I'm not sure it holds. Worth 20 minutes?`,
   dmGrill: (s, missed) => `Mark, ran a brief through Brief Check and couldn't answer ${missed} of the room's 3 questions about the ${s.weak.n.toLowerCase()}. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
 });

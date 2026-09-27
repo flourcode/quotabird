@@ -16,14 +16,14 @@
 <meta property="og:title" content="Discount Check: They want a discount.">
 <meta property="og:description" content="They want a discount. See what it costs in your commission and the company's margin before you say yes. Free, in your browser, nothing stored.">
 <meta property="og:site_name" content="QuotaBird">
-<meta property="og:image" content="https://quotabird.com/card-discount.jpg?v=f5e02689">
+<meta property="og:image" content="https://quotabird.com/card-discount.jpg?v=3e1df2b3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Discount Check: They want a discount.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Discount Check: They want a discount.">
 <meta name="twitter:description" content="They want a discount. See what it costs in your commission and the company's margin before you say yes. Free, in your browser, nothing stored.">
-<meta name="twitter:image" content="https://quotabird.com/card-discount.jpg?v=f5e02689">
+<meta name="twitter:image" content="https://quotabird.com/card-discount.jpg?v=3e1df2b3">
 <meta name="twitter:image:alt" content="Discount Check: They want a discount.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F9FCFF">
@@ -39,7 +39,7 @@
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Any",
       "description": "They want a discount. See what it costs in your commission and the company's margin before you say yes. Free, in your browser, nothing stored.",
-      "image": "https://quotabird.com/card-discount.jpg?v=f5e02689",
+      "image": "https://quotabird.com/card-discount.jpg?v=3e1df2b3",
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -161,7 +161,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed the people who did, and spent six years leading federal partner sales teams at AWS. I make these because they're the things I wish we'd had. Most of it is free; when a problem needs more than a check, I work with managers and teams directly.</p>
+      <p>I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I built these because I wish we'd had them. Most are free. If the problem needs an actual conversation, I do that too.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -181,14 +181,13 @@
 
 <footer class="sitefoot">
   <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/ask/">Ask Mark</a></p>
-  <p>Discount Check is one of the free <a href="/">QuotaBird</a> tools by
-    <a href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">Mark Flournoy</a>.</p>
+  <p><a href="/">QuotaBird</a> is a pile of free sales tools I built because I wanted them myself.</p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script src="../calc.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-21.1300';
+window.QB_BUILD = '2026-10-23.1700';
 CalcTool({
   slug: 'discount', name: 'Discount Check', url: 'https://quotabird.com/discount/',
   fields: [{ id: 'list', kind: 'money' }, { id: 'disc', kind: 'pct' }, { id: 'margin', kind: 'pct' }, { id: 'rate', kind: 'pct' }],
@@ -213,7 +212,7 @@ CalcTool({
     return { label: t[0], cls: t[1], attack, sub: t[2], big: v.rate > 0 ? money(commLost) : money(given), rows, disc: v.disc, margin: v.margin, newMargin, stripText: '' };
   },
   handoff: { overline: 'Before you discount', text: 'Is it the price, or the deal? A discount fixes exactly one of those.', href: '/deal/', label: 'Check my deal' },
-  mark: { title: () => 'Stuck on the price?', body: "I'm Mark. Most of the discounts I've watched given away bought nothing but a warmer feeling. If you're being asked to sharpen the pencil, send me one line about why. No customer names, no dollar figures." },
+  mark: { title: () => 'Stuck on the price?', body: "I'm Mark. I've watched a lot of discounts buy absolutely nothing. If somebody wants you to sharpen the pencil, send me one line about why. No customer names. No dollars." },
   dm: (s) => `Mark, ran a discount through Discount Check. ${Math.round(s.disc * 100)}% off costs me ${Math.round(s.disc * 100)}% of my commission${s.newMargin != null ? ' and takes margin from ' + Math.round(s.margin * 100) + '% to ' + Math.round(s.newMargin * 100) + '%' : ''}. Not sure it's worth it. Worth 20 minutes?`,
   bookNote: (s) => `Discount Check: ${Math.round(s.disc * 100)}% off${s.newMargin != null ? ', margin ' + Math.round(s.margin * 100) + '% to ' + Math.round(s.newMargin * 100) + '%' : ''}, ${s.label.toLowerCase()}.`,
 });
