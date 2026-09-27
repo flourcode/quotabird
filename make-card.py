@@ -2,7 +2,7 @@
 """Regenerate the 1200x630 OpenGraph cards in the site's own palette and typeface.
   python3 make-card.py deal       -> card.jpg
   python3 make-card.py pipeline   -> card-pipeline.jpg
-Run from the web-root folder. Needs: pillow, fonttools, brotli. Uses inter.woff2 so the cards cannot drift from the pages."""
+Run from the web-root folder. Needs: pillow, fonttools, brotli. Uses gsf.woff2 (Google Sans Flex) so the cards cannot drift from the pages."""
 import re, base64, io, os
 from PIL import Image, ImageDraw, ImageFont
 from fontTools.ttLib import TTFont
@@ -68,14 +68,14 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'banner':
     from PIL import ImageFilter
     S = 2; W, H = 1584 * S, 396 * S
     SURF=(0xFF,0xFF,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x0A,0x71,0xB1)
-    woff2 = open('inter.woff2', 'rb').read()
+    woff2 = open('gsf.woff2', 'rb').read()
     def font(w, size):
-        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
+        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': max(300, min(900, w)), 'opsz': max(12, min(72, size))}, inplace=False)
         inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
         return ImageFont.truetype(buf, size * S)
     hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
-    books = [("Is my quota crazy?", '#E07A5F', '#2B1B1B'), ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
-             ("Does this territory suck?", '#F4E1C1', '#2B2B2B'), ("What do I actually keep?", '#567E55', '#FFFFFF')]
+    books = [("Is my quota crazy?", '#EAF4FF', '#131619'), ("Enough pipeline?", '#F6F9FC', '#131619'),
+             ("Does this territory suck?", '#F6F9FC', '#131619'), ("What do I actually keep?", '#F6F9FC', '#131619')]
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
     # covers, right side
@@ -90,19 +90,17 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'banner':
         return lines + [cur]
     for i, (title, bg, ink) in enumerate(books):
         x = x0 + i * (bw + gap); y = y0; pad = 20 * S
-        sh = Image.new('RGBA', (bw + 2 * pad, bh + 2 * pad), (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((pad, pad + 5 * S, pad + bw, pad + 5 * S + bh), 6 * S, fill=(0, 0, 0, 60))
-        sh = sh.filter(ImageFilter.GaussianBlur(7 * S)); im.paste(sh, (x - pad, y - pad), sh)
         cover = Image.new('RGBA', (bw, bh), hexc(bg) + (255,)); cd = ImageDraw.Draw(cover)
-        cd.rectangle((0, 0, 5 * S, bh), fill=tuple(int(v * .86) for v in hexc(bg)) + (255,))
         bm = mask.resize((int(bw * .8), int(bw * .8 * mask.height / mask.width)), Image.LANCZOS)
-        tint = Image.new('RGBA', bm.size, hexc(ink) + (0,)); tint.putalpha(bm.point(lambda a: int(a * .13)))
+        tint = Image.new('RGBA', bm.size, (0x9D, 0xD2, 0xFF, 0)); tint.putalpha(bm.point(lambda a: int(a * .55)))
         cover.alpha_composite(tint, (int(bw * .32), bh - int(bm.height * .9)))
         ty = 13 * S
         for line in wrap(title, bw - 24 * S):
             cd.text((12 * S, ty), line, font=tf, fill=hexc(ink)); ty += lh
         cd.text((12 * S, bh - 19 * S), 'QUOTABIRD', font=font(700, 8), fill=hexc(ink) + (170,))
-        rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), 6 * S, fill=255)
+        rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), 10 * S, fill=255)
         im.paste(cover, (x, y), rm)
+        ImageDraw.Draw(im).rounded_rectangle((x, y, x + bw - 1, y + bh - 1), 10 * S, outline=(0xC9, 0xE1, 0xF7) if bg == '#EAF4FF' else (0xDD, 0xE4, 0xEA), width=2 * S // 2 + 1)
     # the pitch, middle third
     tx = 575 * S
     lb = bird.resize((int(34 * S * bird.width / bird.height), 34 * S), Image.LANCZOS)
@@ -122,15 +120,15 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
     from PIL import ImageFilter
     S = 2; W, H, M = 1200 * S, 630 * S, 64 * S
     SURF=(0xFF,0xFF,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x0A,0x71,0xB1)
-    woff2 = open('inter.woff2', 'rb').read()
+    woff2 = open('gsf.woff2', 'rb').read()
     def font(w, size):
-        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
+        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': max(300, min(900, w)), 'opsz': max(12, min(72, size))}, inplace=False)
         inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
         return ImageFont.truetype(buf, size * S)
     hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
-    books = [("Is my quota crazy?", '#E07A5F', '#2B1B1B'), ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
-             ("Does this territory suck?", '#F4E1C1', '#2B2B2B'), ("What do I actually keep?", '#567E55', '#FFFFFF'),
-             ("Rep or territory?", '#388073', '#FFFFFF'), ("They want a discount.", '#9DD2FF', '#12324F')]
+    books = [("Is my quota crazy?", '#EAF4FF', '#131619'), ("Enough pipeline?", '#F6F9FC', '#131619'),
+             ("Does this territory suck?", '#F6F9FC', '#131619'), ("What do I actually keep?", '#F6F9FC', '#131619'),
+             ("Rep or territory?", '#F6F9FC', '#131619'), ("They want a discount.", '#F6F9FC', '#131619')]
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
     cols, gap, bw = 3, 18 * S, 172 * S; bh = int(bw * 4 / 3); x0 = W - M - cols * bw - (cols - 1) * gap; y0 = (H - 2 * bh - gap) // 2
@@ -145,19 +143,18 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
     for i, (title, bg, ink) in enumerate(books):
         x = x0 + (i % cols) * (bw + gap); y = y0 + (i // cols) * (bh + gap)
         pad = 24 * S
-        sh = Image.new('RGBA', (bw + 2 * pad, bh + 2 * pad), (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((pad, pad + 6 * S, pad + bw, pad + 6 * S + bh), 7 * S, fill=(0, 0, 0, 60))
-        sh = sh.filter(ImageFilter.GaussianBlur(8 * S)); im.paste(sh, (x - pad, y - pad), sh)
         cover = Image.new('RGBA', (bw, bh), hexc(bg) + (255,)); cd = ImageDraw.Draw(cover)
         cd.rectangle((0, 0, 6 * S, bh), fill=tuple(int(v * .86) for v in hexc(bg)) + (255,))
         bm = mask.resize((int(bw * .8), int(bw * .8 * mask.height / mask.width)), Image.LANCZOS)
-        tint = Image.new('RGBA', bm.size, hexc(ink) + (0,)); tint.putalpha(bm.point(lambda a: int(a * .13)))
+        tint = Image.new('RGBA', bm.size, (0x9D, 0xD2, 0xFF, 0)); tint.putalpha(bm.point(lambda a: int(a * .55)))
         cover.alpha_composite(tint, (int(bw * .32), bh - int(bm.height * .9)))
         ty = 18 * S
         for line in wrap(title, bw - 34 * S):
             cd.text((17 * S, ty), line, font=tf, fill=hexc(ink)); ty += lh
         cd.text((17 * S, bh - 26 * S), 'QUOTABIRD', font=font(700, 11), fill=hexc(ink) + (170,))
-        rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), 7 * S, fill=255)
+        rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), 10 * S, fill=255)
         im.paste(cover, (x, y), rm)
+        ImageDraw.Draw(im).rounded_rectangle((x, y, x + bw - 1, y + bh - 1), 10 * S, outline=(0xC9, 0xE1, 0xF7) if bg == '#EAF4FF' else (0xDD, 0xE4, 0xEA), width=2 * S // 2 + 1)
     lb = bird.resize((int(46 * S * bird.width / bird.height), 46 * S), Image.LANCZOS); im.paste(lb, (M, M - 4 * S), lb)
     d.text((M + lb.width + 14 * S, M + 1 * S), 'QuotaBird', font=font(700, 28), fill=INK)
     d.text((M, M + 96 * S), 'THE QUOTA LANDED', font=font(700, 17), fill=ACC)
@@ -182,9 +179,9 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') in KITCARDS:
     from PIL import ImageFilter
     W, H, M = 1200, 630, 72
     SURF=(0xFF,0xFF,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); ACC=(0x0A,0x71,0xB1); SOFT=(0xD3,0xE7,0xFF); ONSOFT=(0x00,0x18,0x2B)
-    woff2 = open('inter.woff2', 'rb').read()
+    woff2 = open('gsf.woff2', 'rb').read()
     def font(w, size):
-        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
+        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': max(300, min(900, w)), 'opsz': max(12, min(72, size))}, inplace=False)
         inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
         return ImageFont.truetype(buf, size)
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
@@ -225,9 +222,9 @@ W, H, M = 1200, 630, 72
 SURF=(0xFF,0xFF,0xFF); INK=(0x13,0x16,0x19); VAR=(0x55,0x62,0x70); PINK=(0x0A,0x71,0xB1)
 PRIMC=(0xED,0xF2,0xF7); ONPRIMC=(0x13,0x16,0x19)
 
-woff2 = open('inter.woff2', 'rb').read()
+woff2 = open('gsf.woff2', 'rb').read()
 def font(w, size):
-    inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
+    inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': max(300, min(900, w)), 'opsz': max(12, min(72, size))}, inplace=False)
     inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
     return ImageFont.truetype(buf, size)
 

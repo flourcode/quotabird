@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-27.2100'
+BUILD = '2026-10-28.0900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -1086,23 +1086,22 @@ print('notes', len(NOTES))
 # Every number here is sourced on /quota-by-the-numbers/. Colours are the shelf's.
 from html import escape as esc_html
 SHORTS = [
-    dict(tag='Attainment', num='48', unit='%', fact='of AEs hit quota in 2026.', line='It was 66% in 2022.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', bg='#E07A5F', ink='#2B1B1B'),
-    dict(tag='The median', num='$960', unit='K', fact='is the median SaaS quota.', line='On a $200K OTE.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', bg='#F4E1C1', ink='#2B2B2B'),
-    dict(tag='The multiple', num='4.6', unit='×', fact='quota to OTE, the median.', line='It was 4.2 two years ago.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', bg='#F2C14E', ink='#1B1B1B'),
-    dict(tag='Planning', num='20-30', unit='%', fact="more quota gets handed out than the company needs.", line='Planners over-assign to cover misses.', src='Mostly Metrics', href='/how-quotas-get-built/', go='How quotas get built', bg='#1C3D5A', ink='#FFFFFF'),
-    dict(tag='Your boss', num='', unit='', fact='Your boss may be paid on something else.', line='Growth rate, new logos, a strategic product.', src='', href='/how-quotas-get-built/', go='How quotas get built', bg='#C35037', ink='#FFFFFF'),
-    dict(tag='Ramp', num='6.2', unit='mo', fact='for a new AE to ramp.', line='A rep hired in March is a fall rep.', src='Bridge Group, 2026', href='/quota-case/', go='Build the bridge', bg='#388073', ink='#FFFFFF'),
-    dict(tag='Vacancies', num='', unit='', fact='A vacant territory still has quota.', line="Somebody's carrying it.", src='', href='/quota-case/', go='Build the bridge', bg='#2E2E3A', ink='#F2C14E'),
-    dict(tag='Coverage', num='3', unit='X', fact='is a 33% win rate wearing a nicer shirt.', line='Win 20% and you need 5X.', src='The math', href='/pipeline/', go='Check my pipeline', bg='#6C5B7B', ink='#FFFFFF'),
-    dict(tag='Cloud', num='', unit='', fact="A commit nobody uses doesn't retire much quota.", line='Cloud quotas count what customers run.', src='Microsoft Partner Center', href='/quota/', go='Check my quota', bg='#9DD2FF', ink='#12324F'),
-    dict(tag='Comp', num='1.5-2', unit='×', fact='is what most accelerators pay above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan', bg='#567E55', ink='#FFFFFF'),
-    dict(tag='Federal', num='46', unit='%', fact='of federal AEs say they hit quota.', line='The most of any AE role. SLED is 45%.', src='RepVue, 2026', href='/territory/', go='Check my territory', bg='#264653', ink='#E9C46A'),
+    dict(tag='Attainment', fact='48% of AEs hit quota in 2026.', line='It was 66% in 2022.', src='Bridge Group, 2026', href='/quota/', go='Check my quota'),
+    dict(tag='The median', fact='The median SaaS quota is $960K.', line='On a $200K OTE.', src='Bridge Group, 2026', href='/quota/', go='Check my quota'),
+    dict(tag='The multiple', fact='The median quota is 4.6 times OTE.', line='It was 4.2 two years ago.', src='Bridge Group, 2026', href='/quota/', go='Check my quota'),
+    dict(tag='Planning', fact="Teams get 20 to 30% more quota than the company needs.", line='Planners over-assign to cover misses.', src='Mostly Metrics', href='/how-quotas-get-built/', go='How quotas get built'),
+    dict(tag='Your boss', fact='Your boss may be paid on something else.', line='Growth rate, new logos, a strategic product.', src='', href='/how-quotas-get-built/', go='How quotas get built'),
+    dict(tag='Ramp', fact='New AEs take 6.2 months to ramp.', line='A rep hired in March is a fall rep.', src='Bridge Group, 2026', href='/quota-case/', go='Build the bridge'),
+    dict(tag='Vacancies', fact='A vacant territory still has quota.', line="Somebody's carrying it.", src='', href='/quota-case/', go='Build the bridge'),
+    dict(tag='Coverage', fact='3X is a 33% win rate wearing a nicer shirt.', line='Win 20% and you need 5X.', src='The math', href='/pipeline/', go='Check my pipeline'),
+    dict(tag='Cloud', fact="A commit nobody uses doesn't retire much quota.", line='Cloud quotas count what customers run.', src='Microsoft Partner Center', href='/quota/', go='Check my quota'),
+    dict(tag='Comp', fact='Most accelerators pay 1.5 to 2 times above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan'),
+    dict(tag='Federal', fact='46% of federal AEs say they hit quota.', line='The most of any AE role. SLED is 45%.', src='RepVue, 2026', href='/territory/', go='Check my territory'),
 ]
 def _short(s, i):
     src = f'<span class="short-src">{esc_html(s["src"])}</span>' if s['src'] else ''
-    num = (f'<span class="short-num">{esc_html(s["num"])}<span class="short-unit">{esc_html(s["unit"])}</span></span>' if s['num'] else '')
-    return (f'<a class="short{" has-num" if s["num"] else ""}" href="{s["href"]}" style="--bg:{s["bg"]};--ink:{s["ink"]}" data-short="{i+1}">'
-            f'<span class="short-tag">{esc_html(s["tag"])}</span>{num}<span class="short-fact">{esc_html(s["fact"])}</span>'
+    return (f'<a class="short" href="{s["href"]}" data-short="{i+1}">'
+            f'<span class="short-tag">{esc_html(s["tag"])}</span><span class="short-fact">{esc_html(s["fact"])}</span>'
             f'<span class="short-line">{esc_html(s["line"])}</span><span class="short-foot">{src}<span class="short-go">{esc_html(s["go"])} →</span></span></a>')
 def shorts_strip():
     return ('<section class="shorts-band" aria-labelledby="shorts-h"><div class="shorts-head"><h2 id="shorts-h">Quota Shorts</h2>'
@@ -1337,7 +1336,7 @@ def calc_page(t):
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/gsf.woff2" as="font" type="font/woff2" crossorigin>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{t['title']}</title>
@@ -2395,49 +2394,11 @@ os.makedirs('shorts', exist_ok=True)
 open('shorts/index.html', 'w').write(_sh)
 
 # ────────────────────────────── QUOTA BY THE NUMBERS (/quota-by-the-numbers/) ──────────────────────────────
-# Magazine-style "By the Numbers" panel: big stats, donuts and paired bars. Mobile first.
-import math as _m
-def bn_big(num, unit, cap):
-    u = f'<span class="bn-unit">{unit}</span>' if unit else ''
-    return f'<div class="bn-big"><div class="bn-num">{num}{u}</div><div class="bn-cap">{cap}</div></div>'
-def bn_donut(pct, legend):
-    r, w = 46, 20; c = 2 * _m.pi * r; a = c * pct / 100
-    svg = (f'<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ring-b" cx="60" cy="60" r="{r}" fill="none" stroke-width="{w}"/>'
-           f'<circle class="ring-line" cx="60" cy="60" r="{r + w/2}" stroke-width="1.5"/><circle class="ring-line" cx="60" cy="60" r="{r - w/2}" stroke-width="1.5"/>'
-           f'<circle class="ring-a" cx="60" cy="60" r="{r}" fill="none" stroke-width="{w}" stroke-dasharray="{a:.1f} {c:.1f}" transform="rotate(-90 60 60)"/>'
-           f'<text x="60" y="68" text-anchor="middle">{pct}%</text></svg>')
-    leg = ''.join(f'<div><span class="bn-sw {k}"></span><b>{v}</b>{t}</div>' for k, v, t in legend)
-    return f'<div class="bn-donut">{svg}<div class="bn-legend">{leg}</div></div>'
-def bn_bars(rows, scale=100):
-    out = []
-    for label, series in rows:
-        bars = ''.join(f'<div class="bn-bar {k}" style="width:{max(v / scale * 100, 12):.1f}%">{shown}</div>' for k, v, shown in series)
-        out.append(f'<div class="bn-stack">{bars}<div class="bn-bar-label">{label}</div></div>')
-    return '<div class="bn-bars">' + ''.join(out) + '</div>'
-
-_panel = ('<section class="bynum" aria-labelledby="bn-title"><div class="bn-label">By the Numbers</div>'
-  '<h1 class="bn-title" id="bn-title">Quota</h1><div class="bn-kicker">Bridge Group and RepVue data, 2026</div>'
-  '<div class="bn-cols"><div>'
-  '<div class="bn-sec"><h2 class="bn-h">AEs who hit 100% of quota in 2026</h2>'
-  + bn_donut(48, [('a', '48%', 'hit it'), ('b', '52%', "didn't")]) + '</div>'
-  '<div class="bn-sec"><h2 class="bn-h">Same question, three different years</h2>'
-  + bn_bars([('2026', [('a', 48, '48%')]), ('2024', [('b', 51, '51%')]), ('2022', [('b', 66, '66%')])]) + '</div>'
-  '<div class="bn-sec"><h2 class="bn-h">The median SaaS AE</h2><div class="bn-pair">'
-  + bn_big('$960', 'K', 'quota') + bn_big('$200', 'K', 'on-target earnings') + bn_big('4.6', '×', 'quota ÷ OTE, up from 4.2× in 2024') + bn_big('53:47', '', 'base to variable') + '</div></div>'
-  '<div class="bn-sec"><h2 class="bn-h">How fast each one grows, per year</h2>'
-  + bn_bars([('Pay (OTE)', [('a', 4.9, '4.9%')]), ('Quota', [('b', 2.4, '2.4%')])], scale=5) + '</div>'
-  '</div><div>'
-  '<div class="bn-sec"><h2 class="bn-h">Who says they hit quota</h2>'
-  + bn_bars([('Federal AEs', [('a', 46, '46%')]), ('SLED AEs', [('a', 45, '45%')]), ('All AEs', [('b', 42, '42%')]), ('Enterprise AEs', [('b', 41, '41%')])]) +
-  '<div class="bn-src">Self-reported on RepVue, September 2026.</div></div>'
-  '<div class="bn-sec"><h2 class="bn-h">At the big cloud providers</h2>'
-  + bn_bars([('Microsoft SLED AEs', [('a', 67, '67%')]), ('AWS Account Managers', [('a', 64, '64%')]), ('Microsoft Enterprise AEs', [('a', 56, '56%')])]) +
-  '<div class="bn-pair" style="margin-top:14px;">' + bn_big('$280', 'K', 'AWS Account Manager OTE') + bn_big('54:46', '', 'AWS Account Manager pay mix') + '</div>'
-  '<div class="bn-src">Share who say they hit quota. Self-reported on RepVue, 2026.</div></div>'
-  '<div class="bn-sec"><h2 class="bn-h">How plans get built</h2><div class="bn-pair">'
-  + bn_big('20-30', '%', 'more quota handed out than the company needs') + bn_big('6.2', 'mo', 'for a new AE to ramp')
-  + bn_big('1.5-2', '×', 'typical first accelerator above quota') + bn_big('80', '%', 'of plans use accelerators') + '</div></div>'
-  '</div></div></section>')
+# Plain stat cards: value, label. One card system with the rest of the site; the headline stat gets the emphasis container.
+def stat(value, label, emph=False):
+    return f'<div class="stat{" emph" if emph else ""}"><div class="stat-value">{value}</div><div class="stat-label">{label}</div></div>'
+def stat_grid(cards):
+    return '<div class="stat-grid">' + ''.join(stat(*c) for c in cards) + '</div>'
 _num = note_head('Quota by the Numbers', 'Sales quota and comp benchmarks with sources: how many reps hit quota, median quota and OTE, quota-to-OTE, pay mix, ramp, over-assignment, accelerators, and what reps at AWS and Microsoft report.', 'https://quotabird.com/quota-by-the-numbers/') + '''</head>
 <body>
 
@@ -2445,14 +2406,36 @@ _num = note_head('Quota by the Numbers', 'Sales quota and comp benchmarks with s
   <header class="appbar"></header>
 </div>
 <article class="note numbers">
-''' + _panel + '''
+  <span class="overline">Understand it</span>
+  <h1>Quota by the numbers</h1>
+  <p class="dek">Who hits quota, what it pays, and how the number gets built.</p>
+
+  <h2>Who hits quota</h2>
+  ''' + stat_grid([('48%', 'of AEs hit 100% of quota in 2026', True), ('51%', 'did in 2024'), ('66%', 'did in 2022'),
+                   ('42%', 'of all AEs say they hit quota'), ('41%', 'of enterprise AEs say they did'), ('46%', 'of federal AEs say they did'),
+                   ('45%', 'of SLED AEs say they did'), ('42.7%', 'average attainment across 246 cloud and software companies')]) + '''
+  <p class="fine">Bridge Group 2026 (158 B2B companies) for the first three; RepVue, September 2026, self-reported, for the next four; RepVue Cloud Sales Index, Q2 2025, for the average.</p>
   <p>Two different numbers both get called attainment: the share of reps who hit 100%, and the average share of quota reps
-    reach. RepVue's average across 246 cloud and software companies was 42.7% in mid-2025. They aren't the same number,
-    and people swap them in meetings.</p>
-  <p>The cloud provider figures are reps rating their own employers, so treat them as a rough read. Cloud quotas are
-    usually measured in consumption growth, which is why their multiples run far higher than SaaS.
-    <a href="/how-quotas-get-built/">How quotas get built</a> explains that part; <a href="/quota/">Quota Check</a>
-    puts your own multiple next to these.</p>
+    reach. They aren't the same number, and people swap them in meetings.</p>
+
+  <h2>What the number is and what it pays</h2>
+  ''' + stat_grid([('$960K', 'median SaaS AE quota'), ('$200K', 'median SaaS AE OTE'), ('4.6×', 'quota to OTE, up from 4.2× in 2024', True),
+                   ('2.4%', 'quota growth per year'), ('4.9%', 'OTE growth per year'), ('53:47', 'base to variable')]) + '''
+  <p class="fine">Bridge Group 2026 and 2024 SaaS AE reports.</p>
+  <p>Pay has grown about twice as fast as quota for a decade, and the share of reps hitting quota fell by a quarter in four
+    years. <a href="/quota/">Quota Check</a> puts your multiple next to these.</p>
+
+  <h2>At the big cloud providers</h2>
+  ''' + stat_grid([('$280K', 'AWS Account Manager OTE'), ('$150K', 'AWS Account Manager base'), ('54:46', 'AWS Account Manager pay mix'),
+                   ('64%', 'of AWS Account Managers say they hit quota'), ('56%', 'of Microsoft Enterprise AEs say they did'), ('67%', 'of Microsoft SLED AEs say they did')]) + '''
+  <p class="fine">RepVue, self-reported by current and former employees, 2026.</p>
+  <p>These are reps rating their own employers, so treat them as a rough read. Cloud quotas are usually measured in
+    consumption growth, which is why their multiples run far higher than SaaS; <a href="/how-quotas-get-built/">here's why</a>.</p>
+
+  <h2>How plans get built</h2>
+  ''' + stat_grid([('20-30%', 'more quota handed out than the company needs'), ('6.2 mo', 'for a new AE to ramp'),
+                   ('1.5-2×', 'typical first accelerator above quota'), ('80%', 'of plans use accelerators')]) + '''
+  <p class="fine">Mostly Metrics on over-assignment; Bridge Group 2026 on ramp; accelerator ranges from 2026 comp plan surveys (Everstage, Prowi, QuotaPath, CaptivateIQ).</p>
 
   <h2>Sources</h2>
   <ul class="sources">
@@ -2472,8 +2455,10 @@ _num = note_head('Quota by the Numbers', 'Sales quota and comp benchmarks with s
 <section class="band" id="about"></section>
 
 ''' + NOTE_TAIL
+assert '—' not in _num and '–' not in _num
 os.makedirs('quota-by-the-numbers', exist_ok=True)
 open('quota-by-the-numbers/index.html', 'w').write(_num)
+
 
 
 # ────────────────────────────── STUFF I LIKE (/stuff/) ──────────────────────────────
@@ -2605,8 +2590,8 @@ def header(path):
 def chrome(path):
     s = open(path).read()
     # preload the one font every page uses, so headlines don't flash in a fallback face
-    if 'rel="preload" href="/inter.woff2"' not in s:
-        s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
+    if 'rel="preload" href="/gsf.woff2"' not in s:
+        s = s.replace('<meta name="viewport"', '<link rel="preload" href="/gsf.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
     ask = '/ask/'
     nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>'

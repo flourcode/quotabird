@@ -13,19 +13,19 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 OUT = 'social'; os.makedirs(OUT, exist_ok=True)
 SURF = (0xFF, 0xFF, 0xFF); INK = (0x13, 0x16, 0x19); VAR = (0x55, 0x62, 0x70); ACC = (0x0A, 0x71, 0xB1); LINE = (0xDD, 0xE4, 0xEA)
 hexc = lambda h: tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
-_WOFF = open('inter.woff2', 'rb').read(); _cache = {}
+_WOFF = open('gsf.woff2', 'rb').read(); _cache = {}
 def font(w, size):
     if (w, size) not in _cache:
-        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(_WOFF)), {'wght': w}, inplace=False)
+        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(_WOFF)), {'wght': max(300, min(900, w)), 'opsz': max(12, min(72, size))}, inplace=False)
         inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0); _cache[(w, size)] = ImageFont.truetype(buf, size)
     return _cache[(w, size)]
 BIRD = Image.open('logo.png').convert('RGBA'); MASK = BIRD.split()[3]
 
 # the shelf's covers, same words and colours as the site
 COVERS = {
-    'deal': ("Is this even a deal?", '#1C3D5A', '#FFFFFF'), 'pipeline': ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
-    'quota': ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), 'rep': ("Rep or territory?", '#388073', '#FFFFFF'),
-    'partner': ("Is this partner doing anything?", '#F28482', '#2B1B1B'), 'discount': ("They want a discount.", '#9DD2FF', '#12324F'),
+    'deal': ("Is this even a deal?", '#F6F9FC', '#131619'), 'pipeline': ("Enough pipeline?", '#F6F9FC', '#131619'),
+    'quota': ("Is my quota crazy?", '#EAF4FF', '#131619'), 'rep': ("Rep or territory?", '#F6F9FC', '#131619'),
+    'partner': ("Is this partner doing anything?", '#F6F9FC', '#131619'), 'discount': ("They want a discount.", '#F6F9FC', '#131619'),
 }
 
 def wrap(d, text, f, width):
@@ -37,15 +37,11 @@ def wrap(d, text, f, width):
     return lines + [cur]
 
 def cover(im, x, y, bw, key, title_size, sub=None):
-    """A book cover: spine, title, faint bird mark, stamp, soft shadow. 3:4, like the site."""
+    """A book cover, like the site: flat fill, thin outline, title, the bird mark in brand blue, stamp. 3:4."""
     title, bg, ink = COVERS[key]; bh = int(bw * 4 / 3); s = bw / 172
-    pad = int(26 * s); sh = Image.new('RGBA', (bw + 2 * pad, bh + 2 * pad), (0, 0, 0, 0))
-    ImageDraw.Draw(sh).rounded_rectangle((pad, pad + int(7 * s), pad + bw, pad + int(7 * s) + bh), int(8 * s), fill=(0, 0, 0, 62))
-    sh = sh.filter(ImageFilter.GaussianBlur(int(9 * s) or 1)); im.paste(sh, (x - pad, y - pad), sh)
     cv = Image.new('RGBA', (bw, bh), hexc(bg) + (255,)); cd = ImageDraw.Draw(cv)
-    cd.rectangle((0, 0, max(3, int(6 * s)), bh), fill=tuple(int(v * .86) for v in hexc(bg)) + (255,))
     bm = MASK.resize((int(bw * .8), int(bw * .8 * MASK.height / MASK.width)), Image.LANCZOS)
-    tint = Image.new('RGBA', bm.size, hexc(ink) + (0,)); tint.putalpha(bm.point(lambda a: int(a * .13)))
+    tint = Image.new('RGBA', bm.size, (0x9D, 0xD2, 0xFF, 0)); tint.putalpha(bm.point(lambda a: int(a * .55)))
     cv.alpha_composite(tint, (int(bw * .32), bh - int(bm.height * .9)))
     tf = font(800, title_size); ty = int(18 * s)
     for line in wrap(cd, title, tf, bw - int(34 * s)):
@@ -55,8 +51,9 @@ def cover(im, x, y, bw, key, title_size, sub=None):
         for line in wrap(cd, sub, sf, bw - int(34 * s)):
             cd.text((int(17 * s), ty), line, font=sf, fill=hexc(ink) + (215,)); ty += int(title_size * .66)
     cd.text((int(17 * s), bh - int(26 * s)), 'QUOTABIRD', font=font(700, max(9, int(11 * s))), fill=hexc(ink) + (170,))
-    rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), int(8 * s), fill=255)
+    rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), int(14 * s), fill=255)
     im.paste(cv, (x, y), rm)
+    ImageDraw.Draw(im).rounded_rectangle((x, y, x + bw - 1, y + bh - 1), int(14 * s), outline=(0xC9, 0xE1, 0xF7) if bg == '#EAF4FF' else (0xDD, 0xE4, 0xEA), width=max(2, int(2 * s)))
     return bh
 
 W, H, M = 1080, 1350, 84

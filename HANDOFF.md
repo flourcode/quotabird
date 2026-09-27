@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-10-27.2100** This file has two parts. Part one is the site as it is today; work from it. Part two is an archive of how it got here; read it for the reasoning, never as instructions.
+**Current build: 2026-10-28.0900** This file has two parts. Part one is the site as it is today; work from it. Part two is an archive of how it got here; read it for the reasoning, never as instructions.
 
 ## North star (Mark's words, Oct 27)
 
@@ -30,7 +30,13 @@ QuotaBird is primarily about helping sales reps and managers **understand quota,
 - Verdict pastels: green #C6EBC9, yellow #FFF982, orange #FFCF8A, red #F5B3AD.
 - Colour lives on the book covers; the interface stays blue and ink.
 
-**By the Numbers panels** (the Inc. 5000 "By the Numbers" pages are the reference): a bird-blue panel (`.bynum`) with a small "By the Numbers" label, a huge uppercase title, and sections separated by ink rules, each with an uppercase heading. Components in `make-tools.py`: `bn_big(num, unit, caption)` for giant stats with a small unit, `bn_donut(pct, legend)`, `bn_bars(rows, scale)` for horizontal bars with values at the end (ink bars for the highlighted series, white bars with an ink outline for comparison). All text on the panel is full ink (grey fails on blue); dark mode uses a navy panel with blue and cream bars. Big numbers never wrap, and scale down in narrow columns (checked at 320 to 1280px). Use this style wherever stats are displayed; the Quota Shorts lead with a big number the same way.
+**One system (Oct 28). The site used to look like three design systems sharing a page (app UI, editorial data graphics, poster-like books). Now everything follows one set of M3-style rules:**
+- **Type:** Google Sans Flex (SIL OFL 1.1, `gsf-OFL.txt`), self-hosted as `gsf.woff2`, subset to the site's characters with the weight (300-900) and optical-size (12-72) axes kept; 63 KB. The share cards and social images use the same file. Inter is retired.
+- **Shape:** 16px for cards (question cards, verdicts, lists, paths, offers, Quota Shorts, stat cards, the featured book); 12px for controls (buttons, answer choices, inputs, chips, menu items, small books). Circles stay circles (avatars, step numbers, progress dots).
+- **One container:** light cool fill #F6F9FC with a thin cool outline #DDE4EA, no shadows. **One emphasis container:** light bird blue #EAF4FF with #C9E1F7 outline, used only for the featured Quota book, the booking card, and the headline stat. Otherwise colour only where it means something: the primary button (#0A71B1) and the verdict tints.
+- **The shelf is one family of books:** every cover the same container, the bird mark in brand blue, only the Quota book tinted. No per-tool colours (Mark decided against semantic colours per tool: they made the shelf lively but weakened the identity).
+- **Stats are plain cards** (`stat()` / `stat_grid()` in `make-tools.py`): value, label, a source line per section. No editorial giant numbers, donuts or bar charts. Quota Shorts are plain cards with the number inside the sentence.
+- The rules live in one block at the end of `site.css` ("One system"), which wins over older rules above it.
 
 **The shelf** uses Mark's original multicoloured covers in their original order, led by the Quota book (Oct 27): Quota coral #E07A5F (featured), Pipeline #F2C14E, Deal navy #1C3D5A, Rep teal #388073, Territory #F4E1C1, Account #6C5B7B, Competition #C35037, Risk #2E2E3A with gold type, Discount #9DD2FF, Commission #567E55, Partner #F28482, Talent Review #264653 with gold type, Brief #E9C46A, Field Kits #EDEDE9, Sales Math #1D3557. Quota Shorts use the same colours. Share card, banner and social images match.
 
@@ -102,7 +108,7 @@ Header: Tools ▾ · Field Kits · Field Notes · About · Ask Mark (chip). Do n
 
 ## Design rules that hold
 
-One font (Inter, self-hosted). One type scale: 11, 13, 15, 17, 22, 28, 36 (h1 36; section h2 22; intro line 22 in `--ink-2`; body 17). Monochrome plus the bird's yellow (see the north star); one ink button per screen. Every tap target 44px; every button has hover, pressed and focus states. Receipt-style rows: labels left, values right; centering only for fine print. Mark's photo: round, floated left, text wraps with a straight edge (same on About and Ask Mark). Example values in calculators are grey until edited. Covers are 3:4. Kits print to 4, 8 and 3 pages (Seller / Manager / Leadership); re-check after any kit copy change.
+One font (Google Sans Flex, self-hosted). One type scale: 11, 13, 15, 17, 22, 28, 36 (h1 36; section h2 22; intro line 22 in `--ink-2`; body 17). Monochrome plus the bird's yellow (see the north star); one ink button per screen. Every tap target 44px; every button has hover, pressed and focus states. Receipt-style rows: labels left, values right; centering only for fine print. Mark's photo: round, floated left, text wraps with a straight edge (same on About and Ask Mark). Example values in calculators are grey until edited. Covers are 3:4. Kits print to 4, 8 and 3 pages (Seller / Manager / Leadership); re-check after any kit copy change.
 
 ## Build and deploy: which files to edit
 
