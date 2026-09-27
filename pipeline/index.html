@@ -200,12 +200,12 @@
 
 <footer class="sitefoot">
   <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/ask/">Ask Mark</a></p>
-  <p><a href="/">QuotaBird</a> is a pile of free sales tools I built because I wanted them myself.</p>
+  <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-25.1100';
+window.QB_BUILD = '2026-10-25.1500';
 const track = (n) => { if (typeof window.qbTrack === 'function') window.qbTrack(n); else (window.qbTrackQ = window.qbTrackQ || []).push(n); };
 const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const $ = (id) => document.getElementById(id);
@@ -419,7 +419,7 @@ function render() {
 <div class="card mark-card" style="margin-top:20px;">
       <h3>Stuck on where it comes from?</h3>
       <p>I'm Mark. The math shows you how big the hole is. "Prospect harder" isn't a plan. Send me the multiples and where you think the rest is coming from.</p>
-      <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=pipeline&utm_content=after_score&a1=${encodeURIComponent(bookNote(s))}" target="_blank" rel="noopener" style="margin-top:14px;">Book 20 minutes</a>
+      <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=pipeline&utm_content=after_score&a1=${encodeURIComponent(bookNote(s))}" target="_blank" rel="noopener" style="margin-top:14px;">Grab 20 minutes</a>
       <button class="btn btn-lg btn-full" id="dmBtn" type="button" style="margin-top:8px;">DM me on LinkedIn</button>
       <p class="fine" style="text-align:center;margin:8px 0 0;">It's free, and if I can't help, I'll say so. The DM button copies a short note you can paste.</p>
     </div>

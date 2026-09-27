@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-25.1100'
+BUILD = '2026-10-25.1500'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -128,7 +128,7 @@ def page(t):
 </section>
 
 <footer class="sitefoot">
-  <p><a href="/">QuotaBird</a> is a pile of free sales tools I built because I wanted them myself.</p>
+  <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script src="../check.js"></script>
@@ -263,7 +263,7 @@ PARTNER = dict(
     ],
     faq=[
         ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('Does this work for the partner running it on me?', 'Yes. Run it on each other and compare answers. The disagreement is probably the useful part.'),
+        ('Does this work for the partner running it on me?', 'Yes. Run it on each other and compare answers. Where you disagree is where I\'d start.'),
         ('What about a partner that\'s strategic but not producing yet?', 'Then the answer to SOURCED and ACCOUNTS is no, and the tool will say so. "Strategic" is what people call a partnership before it\'s produced anything.'),
         ('Can I use it on a distributor or an SI?', 'Yes. The questions don\'t care which direction the paper flows. They care whether anyone on the other side is accountable for a deal with your name on it.'),
     ],
@@ -928,7 +928,7 @@ def note_head(title, desc, url):
 <script src="/analytics.js" defer></script>
 '''
 NOTE_TAIL = '''<footer class="sitefoot">
-  <p><a href="/">QuotaBird</a> is a pile of free sales tools I built because I wanted them myself.</p>
+  <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script>
@@ -1240,7 +1240,7 @@ def calc_page(t):
 </section>
 
 <footer class="sitefoot">
-  <p><a href="/">QuotaBird</a> is a pile of free sales tools I built because I wanted them myself.</p>
+  <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script src="../calc.js"></script>
@@ -2059,7 +2059,7 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
     whether I can help, and I'll say so.</p>
 
   <div class="ask-cta">
-    <a class="btn btn-primary btn-lg" id="askBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=ask&amp;utm_content=ask" target="_blank" rel="noopener">Book 20 minutes</a>
+    <a class="btn btn-primary btn-lg" id="askBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=ask&amp;utm_content=ask" target="_blank" rel="noopener">Grab 20 minutes</a>
     <a class="ask-alt" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">or DM me on LinkedIn</a>
   </div>
   <ol class="how">
@@ -2088,8 +2088,7 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
     <div class="offer">
       <h3>Manager Wingman</h3>
       <p class="offer-when">Monthly</p>
-      <p>A couple of calls a month about the stuff you can't work through with your boss or your team: a rep decision, a
-        forecast you don't trust, a plan you have to defend, a promotion.</p>
+      <p>A couple of calls a month when you need somebody outside the org chart. Bring the rep, the forecast, the ugly deal, or the thing you have to explain to your boss.</p>
       <p class="offer-link"><a href="mailto:mark@quotabird.com?subject=Manager%20Wingman">Ask about Wingman</a></p>
     </div>
     <div class="offer">

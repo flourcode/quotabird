@@ -1,4 +1,94 @@
-# KillMyDeal.com — handoff
+# QuotaBird — handoff
+
+**Current build: 2026-10-25.1500** This file has two parts. Part one is the site as it is today; work from it. Part two is an archive of how it got here; read it for the reasoning, never as instructions.
+
+## What QuotaBird is
+
+quotabird.com, a shelf of free sales tools by Mark Flournoy for sellers and sales managers (mostly cloud, AI, cyber and data, many selling to government). Nine question tools (five yes / sort of / no questions, a verdict, one thing to go do), four calculators, three printable Field Kits, six Field Notes, four Sales Math pages, About, Stuff I Like, and Ask Mark, which is the consulting funnel. No login, no AI, nothing stored, nothing typed into a system a boss can see. Not affiliated with the U.S. government or Amazon.
+
+**Positioning:** *A little help with your quota.* Pick the problem you've got. The tools earn trust by being useful and blunt; the money is Mark's time (a free twenty-minute call first, then Manager Wingman or a Team session).
+
+## QuotaBird voice
+
+Mark is retired, experienced, mildly jaded, curious, and likes helping people get unstuck. He sounds like a former sales leader talking to one person, not a copywriter writing for an audience.
+
+Short is good, but don't manufacture punchiness. Avoid tidy three-sentence conclusions, résumé triplets, "That matters," "the useful part," "here's why," "the point is," and neat X-not-Y constructions. Don't explain the joke. Don't make every paragraph land.
+
+Mild profanity-adjacent words like "suck," "crazy," "ugly," and "hopium" are fine when they sound natural. No weapons/death/kill language (one deliberate exception on About, Mark's own line; don't add more).
+
+Prefer the thing a seller would actually say: "Does this territory suck?" over "Assess territory viability."
+
+**The coffee test:** would Mark say it to one person over coffee? If it reads like website copy, a LinkedIn bio, a keynote intro or a founder statement, rewrite it. Remove performative summary sentences: if a passage compresses credentials, motivation and an offer into a neat run of short declaratives, rewrite it as something a person would say out loud. One plain thought at a time, uneven rhythm, specific words, mild informality. If a sentence sounds designed to prove credibility, simplify it until the facts carry it. Model line (Made by Mark): "I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through."
+
+Mechanics: contractions always; "territory" not "patch"; "customer" not "account" when it means the buyer; no em or en dashes anywhere; American spelling; buttons 18 characters or fewer; Mark's bio wording is exactly "six years leading federal partner sales teams at AWS"; company list is Amazon, Microsoft, Google, Oracle (his).
+
+## The 13 tools
+
+| URL | Tool | Kind | Headline on the page |
+|---|---|---|---|
+| /deal/ | Deal Check | questions (hand-written page) | Is it real, or is it hopium? |
+| /pipeline/ | Pipeline Check | calculator (pipeline.src.html) | You sure that's enough pipeline? |
+| /quota/ | Quota Check | calculator | Is my quota crazy? |
+| /rep/ | Rep Check | questions | Is it the rep, or the territory? |
+| /territory/ | Territory Check | questions | Does this territory suck? |
+| /account/ | Account Check | questions | Do you know your customer? |
+| /competition/ | Competition Check | questions | Why you and not them? |
+| /risk/ | Risk Check | questions | Are you winging it this quarter? |
+| /discount/ | Discount Check | calculator | How much discount is too much? |
+| /commission/ | Commission Check | calculator | It closed. What do I actually keep? |
+| /partner/ | Partner Check | questions | Is this partner doing anything? |
+| /olr/ | Talent Review Check | questions (nav says "Talent Review") | Can you defend your people? |
+| /brief/ | Brief Check | questions, with Pressure test | Will your brief survive the room? |
+
+Question tools run on `check.js`; calculators on `calc.js`; Deal and Pipeline carry their own scripts. Five questions per tool, in a fixed order (scoring and shared links depend on it); every question answerable with yes, sort of, or no. Deal, Talent Review and Brief have a Pressure test (three hard questions from the room).
+
+## The shelf (home page, 15 covers)
+
+Start here: Real deal or hopium? · Pipeline: Enough pipeline? · Quota: Crazy quota? · Rep: Rep or territory? · Territory: Does this territory suck? · Account: Do you know them? · Competition: Why you? · Risk: Winging it this quarter? · Discount: How much is too much? · Commission: What do I actually keep? · Partner: Doing anything? · Talent Review: Can you defend them? · Brief: Will this survive? · Field Kits: Worth printing. · Sales Math: Why 3X?
+
+Covers are the short version; each opens on the fuller question (the tool's h1, repeated on the question screens). Covers live in `home.src.html`; the share card, banner and social images carry their own copies in `make-card.py` and `make-social.py`. Fifteen fills the grid exactly: replace covers, don't add. The 404 page shows the same shelf, pulled at build time.
+
+## The consulting funnel
+
+Every result screen, in order: verdict → what to fix → (Pressure test, tonal button) → **Mark's card** ("Stuck on …?", one blue button *Grab 20 minutes* to Calendly with the verdict pre-filled, a secondary *DM me on LinkedIn* that copies a short note, fine print "It's free, and if I can't help, I'll say so.") → next-step card to another tool → fedhoo line (federal-relevant weak answers only) → Share · Start over. Same card after a finished Pressure test. One blue button per result.
+
+Ask Mark (`/ask/`): "Want to talk it through?" → one sentence → *Grab 20 minutes* + "or DM me on LinkedIn" → three steps (Pick a time / I read it before we talk / Twenty minutes, free; if I can't help, I'll say so in the first five) → Mark's photo and one line of background plus the company names → "What people usually bring me" (four problems) → Manager Wingman and Team session side by side (no prices yet; "If we keep going, I'll tell you what it costs before we do anything.") → a line for people not ready.
+
+Kits end with the same offer and a bridge line ("Used this with your team and found something ugly? That's most of the stuff I help managers with."). Every page carries the Made by Mark card. Calendly: calendly.com/markflournoy/chat-with-mark with utm_source=quotabird and utm_medium=<page>. Email mark@quotabird.com. LinkedIn linkedin.com/in/markflournoy/.
+
+Analytics (GA4 `G-BG9NR9GXQZ`, `analytics.js`): `front_pick`, `<slug>_start`, `verdict`, `<slug>_book` (Deal: `book`), `<slug>_book_after_grill`, `<slug>_dm_copy`, `<slug>_share`, `ask_book`, `kit_download`/`seller_download`/`leader_download`, `<slug>_fedhoo`. The "Useful?" row and its events are gone.
+
+## Navigation
+
+Header: Tools ▾ · Field Kits · Field Notes · About · Ask Mark (chip). Do not add to it. Footer: Tools · Field Kits · Sales Math · Field Notes · Stuff I Like · About · Ask Mark, then "QuotaBird is a pile of free sales tools. I built them because they helped me, and maybe they'll help you." and "Not affiliated with the U.S. government or Amazon." The Tools menu lists the tools by audience; on desktop it drops the rows the header already shows.
+
+## Design rules that hold
+
+One font (Inter, self-hosted). One type scale: 11, 13, 15, 17, 22, 28, 36 (h1 36; section h2 22; intro line 22 in `--ink-2`; body 17). Two blues: `--accent` #0A71B1 for text, links and buttons (WCAG AA), `--accent-bright` #1DA1F2 only for decoration. Every tap target 44px; every button has hover, pressed and focus states. Receipt-style rows: labels left, values right; centering only for fine print. Mark's photo: round, floated left, text wraps with a straight edge (same on About and Ask Mark). Example values in calculators are grey until edited. Covers are 3:4. Kits print to 4, 8 and 3 pages (Seller / Manager / Leadership); re-check after any kit copy change.
+
+## Build and deploy: which files to edit
+
+- **Edit:** `make-tools.py` (every generated page's copy and structure), `home.src.html`, `pipeline.src.html`, `deal/index.html`, `check.js`, `calc.js`, `analytics.js`, `site.css`, `partials/*.html`, `404.html`, `make-card.py`, `make-social.py`.
+- **Never edit by hand:** `index.html`, every other `*/index.html`, `sitemap.xml`, `llms.txt`, `ai-catalog.json`, the hashed `site.<hash>.css` / `check.<hash>.js` / `calc.<hash>.js` / `analytics.<hash>.js` (the build writes them and links every page to them; stale ones are removed), `card*.jpg`.
+- **Build:** `python3 make-tools.py` (regenerates all pages, sitemap, llms.txt, ai-catalog, fingerprints, share-tag hygiene). Cards: `python3 make-card.py <slug|home|banner>` then rebuild so fingerprints match. Collateral: `python3 make-social.py`. Copy workbook: `python3 extract-copy.py`.
+- **Deploy:** AWS Amplify from GitHub; `amplify.yml` strips the build tools and sources; `customHttp.yml` caches css/js for a year (safe: names change) and html not at all; rewrites in `amplify-rewrites.json` (36 rules, 404 catch-all last). New pages need a `/<slug>` → `/<slug>/` rule.
+- **Never edit the live site directly;** the next deploy overwrites it. Send copy changes through the build (or the workbook).
+
+## What not to change
+
+The shelf (15 covers, one Start here). The five questions per tool and their order. The "nothing stored / no AI / no login" promises (the fedhoo line is a plain link; nothing is sent). The header. Mark's bio wording and company list. `/olr/` as Talent Review's URL and `/kit/` as the Manager's kit's. The voice rules above.
+
+## Pending (Mark)
+
+Replace `mark.jpg` (background-removal artifacts; it now sits beside the booking button). Prices for Wingman and Team session. Calendly: 20-minute event, one intake question, no automated marketing emails. Submit the sitemap in Search Console. Then: post the Field Notes; write new notes before new tools (candidates: the deal that's been "closing this month" for three months; ask the partner to name three relationships; is no pipeline really a prospecting problem; everybody likes your champion, can they buy anything).
+
+---
+
+## Archive: history and decisions already made (do not rebuild from this)
+
+Everything below is the record of how the site got here, kept for the reasoning behind decisions. It is not a description of the current site; the section above is. Where the two disagree, the section above wins.
+
+### Original handoff (KillMyDeal → SellClouds → QuotaBird)
 
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
