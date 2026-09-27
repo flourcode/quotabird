@@ -575,7 +575,6 @@ details.exp.quiet summary { font-size:15px; color:var(--accent); min-height:44px
 .who img { float:left; width:112px; height:112px; border-radius:var(--r-full); object-fit:cover; margin:4px 24px 10px 0; }
 .who h1 { margin:0 0 10px; font-size:36px; line-height:1.1; letter-spacing:-.02em; }
 .who p { margin:0 0 14px; }
-.who p.lede { font-size:22px; line-height:1.35; color:var(--ink-2); margin:0 0 14px; }
 .who::after { content:''; display:block; clear:both; }
 @media (max-width:560px) { .who img { width:88px; height:88px; margin:2px 16px 8px 0; } .who h1 { font-size:28px; } }
 /* the About page opens straight on Mark: no header block, no gap above */
