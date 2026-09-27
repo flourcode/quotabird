@@ -23,9 +23,9 @@ BIRD = Image.open('logo.png').convert('RGBA'); MASK = BIRD.split()[3]
 
 # the shelf's covers, same words and colours as the site
 COVERS = {
-    'deal': ("Is it real, or is it hopium?", '#1C3D5A', '#FFFFFF'), 'pipeline': ("You sure that's enough pipeline?", '#F2C14E', '#1B1B1B'),
-    'quota': ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), 'rep': ("Is it the rep, or the territory?", '#388073', '#FFFFFF'),
-    'partner': ("Is this partner doing anything?", '#F28482', '#2B1B1B'), 'discount': ("They want a discount.", '#9DD2FF', '#12324F'),
+    'deal': ("Real deal or hopium?", '#1C3D5A', '#FFFFFF'), 'pipeline': ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
+    'quota': ("Crazy quota?", '#E07A5F', '#2B1B1B'), 'rep': ("Rep or territory?", '#388073', '#FFFFFF'),
+    'partner': ("Doing anything?", '#F28482', '#2B1B1B'), 'discount': ("How much is too much?", '#9DD2FF', '#12324F'),
 }
 
 def wrap(d, text, f, width):
@@ -194,7 +194,7 @@ def signature():
     im = im.resize((600, 150), Image.LANCZOS); p = os.path.join(OUT, 'email-signature.png'); im.save(p, optimize=True); return p
 
 made = [post_shelf(),
-        post_one('deal', 'post-2-deal.jpg', ["Is it real, or is it hopium?", "Customer, money, power, path, now. Five taps, a straight answer."], 'quotabird.com/deal', 'Free. Nothing stored.'),
+        post_one('deal', 'post-2-deal.jpg', ["Real deal or hopium?", "Customer, money, power, path, now. Five taps, a straight answer."], 'quotabird.com/deal', 'Free. Nothing stored.'),
         post_3x(),
         post_one('quota', 'post-4-quota.jpg', ["Just got your quota letter?", "Base, variable and the number. Ten seconds to find out if it's crazy."], 'quotabird.com/quota', 'Free. Nothing stored.'),
         post_one('rep', 'post-5-rep.jpg', ["Before you write them up.", "Five questions to tell a rep problem from a territory problem."], 'quotabird.com/rep', 'Free. Nothing stored.'),

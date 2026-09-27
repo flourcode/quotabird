@@ -168,30 +168,27 @@
       <span class="overline" style="margin-top:16px;">Do this first</span>
       <p class="lede">${esc(firstMove)}</p>
     </div>
+    ${cfg.grillSet ? `<button class="btn btn-tonal btn-lg btn-full" id="grill" type="button" style="margin-top:16px;">${esc(cfg.grillLabel || 'Grill me')}</button>` : ''}
+    
+    <div class="card mark-card" style="margin-top:20px;">
+      <h3>${esc(cfg.mark.title(s))}</h3>
+      <p>${esc(cfg.mark.body)}</p>
+      <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_score&a1=${encodeURIComponent(cfg.name + ': ' + s.label.toLowerCase() + '. ' + s.meta)}" target="_blank" rel="noopener" style="margin-top:14px;">Book 20 minutes</a>
+      <button class="btn btn-lg btn-full" id="dmBtn" type="button" style="margin-top:8px;">DM me on LinkedIn</button>
+      <p class="fine" style="text-align:center;margin:8px 0 0;">It's free, and if I can't help, I'll say so. The DM button copies a short note you can paste.</p>
+    </div>
     ${(() => { const h = typeof cfg.handoff === 'function' ? cfg.handoff(s, answers) : cfg.handoff; return h ? `<div class="card card-accent">
       <span class="overline">${esc(h.overline)}</span>
       <p class="lede">${esc(h.text)}</p>
       <a class="btn btn-tonal btn-full" href="${h.href}" style="margin-top:14px;">${esc(h.label)}</a>
     </div>` : ''; })()}
     ${(() => { const a = typeof cfg.aside === 'function' ? cfg.aside(s, answers) : null; return a ? `<p class="aside-link">${esc(a.text)} <a href="${a.href}" target="_blank" rel="noopener" data-aside="1">${esc(a.label)} ↗</a></p>` : ''; })()}
-    ${cfg.grillSet ? `<button class="btn btn-primary btn-lg btn-full" id="grill" type="button" style="margin-top:16px;">${esc(cfg.grillLabel || 'Grill me')}</button>` : ''}
-    <div class="btn-row center" style="margin-top:8px;">
+        <div class="btn-row center" style="margin-top:14px;">
       <button class="btn btn-text" id="copy" type="button">Share</button>
       <button class="btn btn-text" id="again" type="button">Start over</button>
-    </div>
-    <div class="useful" id="useful"><span>Useful?</span><button class="btn btn-text" data-u="yes" type="button">Yes</button><button class="btn btn-text" data-u="no" type="button">Not really</button></div>
-    <div class="card" style="margin-top:24px;">
-      <h3>${esc(cfg.mark.title(s))}</h3>
-      <p>${esc(cfg.mark.body)}</p>
-      <div class="preview mono" title="Tap to select">${esc(cfg.dm(s))}</div>
-      <button class="btn btn-primary btn-lg btn-full" id="dmBtn" type="button" style="margin-top:14px;">Copy this &amp; DM me</button>
-      <div class="btn-row center" style="margin-top:4px;">
-        <a class="btn btn-text" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_score&a1=${encodeURIComponent(cfg.name + ': ' + s.label.toLowerCase() + '. ' + s.meta)}" target="_blank" rel="noopener">Or book a call</a>
-      </div>
-      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. For bigger things, <a href="/ask/">here\'s how I work with teams</a>.</p>
     </div>`);
       const rm = document.getElementById('runMine'); if (rm) rm.onclick = () => { answers = {}; clearHash(); ask(0); };
-      const u = document.getElementById('useful'); if (u) u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track(cfg.slug + '_useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; });
+      const bk = document.getElementById('bookBtn'); if (bk) bk.addEventListener('click', () => track(cfg.slug + '_book'));
       const g = document.getElementById('grill'); if (g) g.onclick = () => { track(cfg.slug + '_grill'); grillStep = 0; grillOuch = 0; shark = null; if (cfg.sharks) pickShark(); else grill(); };
       document.getElementById('again').onclick = () => { answers = {}; clearHash(); ask(0); };
       document.getElementById('copy').onclick = (e) => {
@@ -204,7 +201,6 @@
         copyText(cfg.dm(s)).then(() => { btn.textContent = 'Copied ✓'; window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener'); })
           .catch(() => { btn.textContent = "Couldn't copy"; });
       };
-      el().querySelector('.preview').onclick = (e) => { const r = document.createRange(); r.selectNodeContents(e.currentTarget); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); };
     }
 
     /* Grill: the room asks three questions about the weakest pillar */
@@ -258,21 +254,18 @@
     <div class="btn-row center" style="margin-top:8px;">
       <button class="btn btn-text" id="back2" type="button">← The verdict</button>
     </div>
-    <div class="card" style="margin-top:24px;">
+    <div class="card mark-card" style="margin-top:20px;">
       <h3>${esc(cfg.mark.title(s))}</h3>
       <p>${esc(cfg.mark.body)}</p>
-      <div class="preview mono" title="Tap to select">${esc(cfg.dmGrill ? cfg.dmGrill(s, grillOuch) : cfg.dm(s))}</div>
-      <button class="btn btn-primary btn-lg btn-full" id="dmBtn" type="button" style="margin-top:14px;">Copy this &amp; DM me</button>
-      <div class="btn-row center" style="margin-top:4px;">
-        <a class="btn btn-text" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_grill&a1=${encodeURIComponent(cfg.name + ': ' + s.label.toLowerCase() + '. ' + s.meta)}" target="_blank" rel="noopener">Or book a call</a>
-      </div>
-      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. For bigger things, <a href="/ask/">here\'s how I work with teams</a>.</p>
+      <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_grill&a1=${encodeURIComponent(cfg.name + ': ' + s.label.toLowerCase() + '. ' + s.meta)}" target="_blank" rel="noopener" style="margin-top:14px;">Book 20 minutes</a>
+      <button class="btn btn-lg btn-full" id="dmBtn" type="button" style="margin-top:8px;">DM me on LinkedIn</button>
+      <p class="fine" style="text-align:center;margin:8px 0 0;">It's free, and if I can't help, I'll say so. The DM button copies a short note you can paste.</p>
     </div>`);
       document.getElementById('back2').onclick = () => result(false);
+      { const bk = document.getElementById('bookBtn'); if (bk) bk.addEventListener('click', () => track(cfg.slug + '_book_after_grill')); }
       const text = cfg.dmGrill ? cfg.dmGrill(s, grillOuch) : cfg.dm(s);
       document.getElementById('dmBtn').onclick = (e) => { const btn = e.currentTarget; track(cfg.slug + '_dm_copy');
         copyText(text).then(() => { btn.textContent = 'Copied ✓'; window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener'); }).catch(() => { btn.textContent = "Couldn't copy"; }); };
-      el().querySelector('.preview').onclick = (e) => { const r = document.createRange(); r.selectNodeContents(e.currentTarget); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); };
     }
 
     /* Boot */

@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-24.0900**
+**Current build: 2026-10-24.1700**
 
 ## Naming: checks, not kills
 
@@ -2017,3 +2017,54 @@ removed ("you need both to sleep", "columns don't win", "favors do not scale",
 reference tables, and short jaded lines that sound spoken. The Leadership
 kit's "good enough" is Mark's own and stayed. Kits still 4, 8 and 3 pages
 (four wrapped lines were tightened to hold the Manager's kit at 8 on Letter).
+
+**2026-10-24.1100** — shelf covers are Mark's short titles (Real deal or
+hopium? / Enough pipeline? / Crazy quota? / Rep or territory? / Does this
+territory suck? / Do you know them? / Why you? / Winging it this quarter? / How
+much is too much? / What do I actually keep? / Doing anything? / Can you defend
+them? / Will this survive? / Worth printing. / Why 3X?). **Covers and tool
+headlines are now deliberately different:** the cover is the short version,
+the tool page opens on the fuller question (its h1, which the question screens
+repeat). Four headlines changed to match their new covers: Territory "Does this
+territory suck?", Risk "Are you winging it this quarter?", Discount "How much
+discount is too much?", Commission "It closed. What do I actually keep?" (tab
+titles and share cards follow). The cover titles live in home.src.html; the
+share card, banner and social images carry their own copies in make-card.py
+and make-social.py.
+
+**2026-10-24.1300** — Ask Mark rebuilt for conversion. Order: headline "Want to
+talk it through?", one plain sentence, the button ("Book 20 minutes", full
+width on phones, above the fold on an iPhone SE) with "or DM me on LinkedIn"
+beside it and one line of fine print; then proof at the point of decision
+(Mark's photo, one sentence of background, the company names); then "What
+people usually bring me" (four specific problems, ruled list); then Wingman
+and Team session side by side, same structure; then a last line for people
+not ready to talk. Removed: the "Start here" card, the repeated "Twenty
+minutes, free", and the "How the call works" steps (two of the three had lost
+their list markup in the round-2 import, which is why the page looked broken).
+The booking click still counts as `ask_book`. The headshot still has the old
+background-removal artifacts; now that it sits beside the button, replacing it
+matters more.
+
+**2026-10-24.1500** — About opens straight on Mark: the generic header block
+("QuotaBird / About Mark / A bit about me…") and the gap under it are gone.
+"Hi, I'm Mark." is now the page's only h1, beside the photo (flex row, 104px
+photo, 80px on phones), and the story runs full width underneath instead of
+wrapping around the photo. The tab title is still "About Mark | QuotaBird".
+
+**2026-10-24.1700** — friction pass on every result screen (all four engines:
+check.js, calc.js, Deal Check, Pipeline Check):
+- **"Useful? Yes / Not really" removed** everywhere (it sat between the verdict
+  and Mark's card). The `<slug>_useful_*` events no longer fire.
+- **Mark's card moved up:** verdict → fixes → (Pressure test) → **Mark's card** →
+  next-step card to another tool → fedhoo line → Share · Start over. It used to
+  come last, after three other actions.
+- **One blue button per result:** "Book 20 minutes" (Calendly, with the verdict
+  pre-filled). "DM me on LinkedIn" is a secondary button that still copies the
+  note; the monospace draft box is gone. Pressure test is now a tonal button.
+  Fine print: "It's free, and if I can't help, I'll say so. The DM button copies
+  a short note you can paste." (no link away to /ask/).
+- Same card after a finished Pressure test (Deal, Talent Review, Brief).
+- New events: `<slug>_book` (Deal: `book`), `<slug>_book_after_grill`; `*_dm_copy`
+  unchanged.
+Earlier today: Ask Mark rebuilt; About opens straight on Mark.

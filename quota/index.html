@@ -126,7 +126,6 @@
         <label class="tf"><span class="tf-label">What you closed last year</span><input id="closed" type="text" inputmode="decimal" autocomplete="off" placeholder="$0 (optional)"></label>
       </form>
       <div class="calc-out2" id="out2"></div>
-      <div class="useful" id="useful"><span>Useful?</span><button class="btn btn-text" data-u="yes" type="button">Yes</button><button class="btn btn-text" data-u="no" type="button">Not really</button></div>
     </div>
   </div>
 </div>
@@ -209,7 +208,7 @@
 <script src="../calc.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-24.0900';
+window.QB_BUILD = '2026-10-24.1700';
 CalcTool({
   slug: 'quota', name: 'Quota Check', url: 'https://quotabird.com/quota/',
   fields: [{ id: 'basis', kind: 'choice', example: 'cloud' }, { id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],

@@ -31,7 +31,7 @@ CARDS = {
     foot='For partner managers. No names. Nothing stored.', url='quotabird.com/partner',
     pillars=['SOURCED', 'ACCOUNTS', 'OWNER', 'PLAN', 'PULL']),
   'territory': dict(out='card-territory.jpg', wordmark='TERRITORY CHECK',
-    headline=['Does my', 'territory suck?'],
+    headline=['Does this', 'territory suck?'],
     dek='Can the territory make the number, or are you being asked to grow where nobody could?',
     foot='For sellers. No account names. Nothing stored.', url='quotabird.com/territory',
     pillars=['SPEND', 'ACCOUNTS', 'BASE', 'ACCESS', 'HISTORY']),
@@ -44,13 +44,13 @@ CARDS = {
     foot='Free. In your browser. Nothing stored.', url='quotabird.com/pipeline', pillars=['TARGET', 'PIPELINE', 'WIN RATE', 'THE GAP']),
   'quota': dict(out='card-quota.jpg', wordmark='QUOTA CHECK', headline=['Is my quota crazy?', ''], dek='Your number against your on-target earnings, and what it asks of your territory.',
     foot='Free. In your browser. Nothing stored.', url='quotabird.com/quota', pillars=['OTE', 'MULTIPLE', 'VARIABLE', 'GROWTH']),
-  'discount': dict(out='card-discount.jpg', wordmark='DISCOUNT CHECK', headline=['They want a discount.', ''], dek='What it costs you in commission, and the company in margin, before you say yes.',
+  'discount': dict(out='card-discount.jpg', wordmark='DISCOUNT CHECK', headline=['How much discount', 'is too much?'], dek='What it costs you in commission, and the company in margin, before you say yes.',
     foot='Free. In your browser. Nothing stored.', url='quotabird.com/discount', pillars=['PRICE', 'DISCOUNT', 'MARGIN', 'YOUR CUT']),
-  'commission': dict(out='card-commission.jpg', wordmark='COMMISSION CHECK', headline=['It closed.', "What's my actual take home?"], dek='A planning estimate of the check after withholding, in about ten seconds.',
+  'commission': dict(out='card-commission.jpg', wordmark='COMMISSION CHECK', headline=['It closed.', "What do I actually keep?"], dek='A planning estimate of the check after withholding, in about ten seconds.',
     foot='Free. In your browser. Nothing stored. Not tax advice.', url='quotabird.com/commission', pillars=['DEAL', 'RATE', 'WITHHELD', 'TAKE-HOME']),
   'account': dict(out='card-account.jpg', wordmark='ACCOUNT CHECK', headline=['Do you know', 'your customer?'], dek="Five questions, then the room pressure-tests you. Finds where you're single-threaded.",
     foot='For sellers. No names. Nothing stored.', url='quotabird.com/account', pillars=['MISSION', 'MONEY', 'POWER', 'INCUMBENT', 'PATH']),
-  'risk': dict(out='card-risk.jpg', wordmark='RISK CHECK', headline=['Are two deals', 'carrying your year?'], dek='Five questions about the shape of your pipeline, not the size.',
+  'risk': dict(out='card-risk.jpg', wordmark='RISK CHECK', headline=['Are you winging it', 'this quarter?'], dek='Five questions about the shape of your pipeline, not the size.',
     foot='For sellers and managers. No deal names. Nothing stored.', url='quotabird.com/risk', pillars=['SPREAD', 'MOTION', 'NEXT', 'TIMING', 'FRESH']),
   'competition': dict(out='card-competition.jpg', wordmark='COMPETITION CHECK', headline=['Why you', 'and not them?'], dek='Five questions that tell you whether the incumbent, or doing nothing, is beating you.',
     foot='For sellers. No names. Nothing stored.', url='quotabird.com/competition', pillars=['NOTHING', 'SWITCH', 'PREFERENCE', 'PROOF', 'ACCESS']),
@@ -72,8 +72,8 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'banner':
         inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
         return ImageFont.truetype(buf, size * S)
     hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
-    books = [("Is it real, or is it hopium?", '#1C3D5A', '#FFFFFF'), ("You sure that's enough pipeline?", '#F2C14E', '#1B1B1B'),
-             ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), ("Is it the rep, or the territory?", '#388073', '#FFFFFF')]
+    books = [("Real deal or hopium?", '#1C3D5A', '#FFFFFF'), ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
+             ("Crazy quota?", '#E07A5F', '#2B1B1B'), ("Rep or territory?", '#388073', '#FFFFFF')]
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
     # covers, right side
@@ -126,9 +126,9 @@ if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
         inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
         return ImageFont.truetype(buf, size * S)
     hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
-    books = [("Is it real, or is it hopium?", '#1C3D5A', '#FFFFFF'), ("You sure that's enough pipeline?", '#F2C14E', '#1B1B1B'),
-             ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), ("Is it the rep, or the territory?", '#388073', '#FFFFFF'),
-             ("Is this partner doing anything?", '#F28482', '#2B1B1B'), ("They want a discount.", '#9DD2FF', '#12324F')]
+    books = [("Real deal or hopium?", '#1C3D5A', '#FFFFFF'), ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
+             ("Crazy quota?", '#E07A5F', '#2B1B1B'), ("Rep or territory?", '#388073', '#FFFFFF'),
+             ("Doing anything?", '#F28482', '#2B1B1B'), ("How much is too much?", '#9DD2FF', '#12324F')]
     im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
     bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
     cols, gap, bw = 3, 18 * S, 172 * S; bh = int(bw * 4 / 3); x0 = W - M - cols * bw - (cols - 1) * gap; y0 = (H - 2 * bh - gap) // 2

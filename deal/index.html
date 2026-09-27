@@ -583,19 +583,17 @@ function result(shared) {
       <p class="lede">${esc(firstMove)}</p>
     </div>
 
-    <button class="btn btn-primary btn-lg btn-full" id="grill" type="button" style="margin-top:20px;">Pressure test</button>
-    <div class="btn-row center" style="margin-top:8px;">
+    <button class="btn btn-tonal btn-lg btn-full" id="grill" type="button" style="margin-top:20px;">Pressure test</button>
+    <div class="btn-row center" id="shareRow" style="margin-top:14px;">
       <button class="btn btn-text" id="copy" type="button">Share</button>
       <button class="btn btn-text" id="again" type="button">Start over</button>
-    </div>
-    <div class="useful" id="useful"><span>Useful?</span><button class="btn btn-text" data-u="yes" type="button">Yes</button><button class="btn btn-text" data-u="no" type="button">Not really</button></div>`);
+    </div>`);
 
   document.getElementById('grill').onclick = () => { track('grill'); grillStep = 0; grillOuch = 0; grill(); };
   document.getElementById('again').onclick = () => { answers = {}; clearHash(); ask(0); };
   const rm = document.getElementById('runMine');
   if (rm) rm.onclick = () => { answers = {}; clearHash(); ask(0); };
   
-  { const u = document.getElementById('useful'); if (u) u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track('useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; }); }
   document.getElementById('copy').onclick = (e) => {
     const btn = e.currentTarget;
     // Sharing is the one moment the verdict is allowed into the address bar.
@@ -657,24 +655,21 @@ function mountMark(text) {
   if (document.getElementById('markBlock')) return;
   const w = document.createElement('div');
   w.id = 'markBlock';
-  w.className = 'card';
-  w.style.marginTop = '24px';
+  w.className = 'card mark-card';
+  w.style.marginTop = '20px';
   const s = lastScore;
   const dm = text || dmText(s);
   w.innerHTML = `
     <h3>Stuck on ${esc(s.weak.n.toLowerCase())}?</h3>
     <p>I'm Mark. I've been the seller defending the deal, and later the manager poking holes in it. Tell me about yours.</p>
-    <div class="preview mono" title="Tap to select">${esc(dm)}</div>
-    <button class="btn btn-primary btn-lg btn-full" id="dmBtn" type="button" style="margin-top:14px;">Copy this &amp; DM me</button>
-    <div class="btn-row center" style="margin-top:4px;">
-      <a class="btn btn-text" href="${bookLink('result', bookNote(s))}"
-         target="_blank" rel="noopener">Or book a call</a>
-    </div>
-    <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. For bigger things, <a href="/ask/">here\'s how I work with teams</a>.</p>`;
-  el().appendChild(w);
+    <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="${bookLink('result', bookNote(s))}" target="_blank" rel="noopener" style="margin-top:14px;">Book 20 minutes</a>
+    <button class="btn btn-lg btn-full" id="dmBtn" type="button" style="margin-top:8px;">DM me on LinkedIn</button>
+    <p class="fine" style="text-align:center;margin:8px 0 0;">It\'s free, and if I can\'t help, I\'ll say so. The DM button copies a short note you can paste.</p>`;
+  const row = document.getElementById('shareRow');
+  if (row) el().insertBefore(w, row); else el().appendChild(w);
+  const bk = document.getElementById('bookBtn'); if (bk) bk.addEventListener('click', () => track('book'));
   const btn = document.getElementById('dmBtn');
   if (btn) btn.onclick = () => copyDM(btn, dm);
-  w.querySelector('.preview').onclick = (e) => selectPreview(e.currentTarget.nextElementSibling);
 }
 
 /* Boot */

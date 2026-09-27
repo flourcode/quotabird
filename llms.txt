@@ -14,7 +14,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 - [Quota Check](https://quotabird.com/quota/): Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book. Free, in your browser, nothing stored. (the day the number lands.)
 - [Territory Check](https://quotabird.com/territory/): Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers. Nothing stored. (month one in a new territory.)
-- [Discount Check](https://quotabird.com/discount/): They want a discount. See what it costs in your commission and the company's margin before you say yes. Free, in your browser, nothing stored. (when they ask you to sharpen the pencil.)
+- [Discount Check](https://quotabird.com/discount/): How much discount is too much? See what it costs in your commission and the company's margin before you say yes. Free, in your browser, nothing stored. (when they ask you to sharpen the pencil.)
 - [Commission Check](https://quotabird.com/commission/): Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes. Free, in your browser, nothing stored. (when it closes.)
 
 ## Your team

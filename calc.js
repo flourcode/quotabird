@@ -89,19 +89,19 @@
       out2.innerHTML = `
     <div class="list" aria-label="The numbers">${s.rows.map(r => `<div class="list-item"><span class="headline">${esc(r[0])}</span><span class="trailing strong${r[2] ? ' ' + r[2] : ''}">${esc(r[1])}</span></div>`).join('')}</div>
     ${s.note ? `<p class="clock">${esc(s.note)}</p>` : ''}
-    ${h ? `<div class="card card-accent"><span class="overline">${esc(h.overline)}</span><p class="lede">${esc(h.text)}</p><a class="btn btn-tonal btn-full" href="${h.href}" style="margin-top:14px;">${esc(h.label)}</a></div>` : ''}
-    <div class="btn-row center" style="margin-top:8px;"><button class="btn btn-text" id="copy" type="button">Share</button></div>
-    <div class="card" style="margin-top:20px;">
+<div class="card mark-card" style="margin-top:20px;">
       <h3>${esc(cfg.mark.title(s))}</h3>
       <p>${esc(cfg.mark.body)}</p>
-      <div class="preview mono" title="Tap to select">${esc(cfg.dm(s))}</div>
-      <button class="btn btn-primary btn-lg btn-full" id="dmBtn" type="button" style="margin-top:14px;">Copy this &amp; DM me</button>
-      <div class="btn-row center" style="margin-top:4px;"><a class="btn btn-text" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_score&a1=${encodeURIComponent(cfg.bookNote(s))}" target="_blank" rel="noopener">Or book a call</a></div>
-      <p class="fine" style="text-align:center;margin:4px 0 0;">Free either way. For bigger things, <a href="/ask/">here\'s how I work with teams</a>.</p>
-    </div>`;
+      <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_score&a1=${encodeURIComponent(cfg.bookNote(s))}" target="_blank" rel="noopener" style="margin-top:14px;">Book 20 minutes</a>
+      <button class="btn btn-lg btn-full" id="dmBtn" type="button" style="margin-top:8px;">DM me on LinkedIn</button>
+      <p class="fine" style="text-align:center;margin:8px 0 0;">It's free, and if I can't help, I'll say so. The DM button copies a short note you can paste.</p>
+    </div>
+        ${h ? `<div class="card card-accent"><span class="overline">${esc(h.overline)}</span><p class="lede">${esc(h.text)}</p><a class="btn btn-tonal btn-full" href="${h.href}" style="margin-top:14px;">${esc(h.label)}</a></div>` : ''}
+    <div class="btn-row center" style="margin-top:8px;"><button class="btn btn-text" id="copy" type="button">Share</button></div>
+    `;
       $('copy').onclick = (e) => { track(cfg.slug + '_share'); try { history.replaceState(null, '', '#' + encode()); } catch {} shareOut(e.currentTarget, shareBlock(s), cfg.name); };
-      $('dmBtn').onclick = (e) => { const btn = e.currentTarget; track(cfg.slug + '_dm_copy'); copyText(cfg.dm(s)).then(() => { btn.textContent = 'Copied ✓'; window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener'); }).catch(() => { btn.textContent = "Couldn't copy"; }); };
-      out2.querySelector('.preview').onclick = (e) => { const r = document.createRange(); r.selectNodeContents(e.currentTarget); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+      { const bk = document.getElementById('bookBtn'); if (bk) bk.addEventListener('click', () => track(cfg.slug + '_book')); }
+  $('dmBtn').onclick = (e) => { const btn = e.currentTarget; track(cfg.slug + '_dm_copy'); copyText(cfg.dm(s)).then(() => { btn.textContent = 'Copied ✓'; window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener'); }).catch(() => { btn.textContent = "Couldn't copy"; }); };
       strip(s);
     }
     /* the summary strip: on a phone the answer stays visible while you type */
@@ -121,7 +121,6 @@
     document.querySelectorAll('[data-choice]').forEach(b => b.onclick = () => { document.querySelectorAll(`[data-choice="${b.dataset.choice}"]`).forEach(x => x.classList.toggle('on', x === b)); onEdit(); });
     // preset chips fill a field the user can still edit
     document.querySelectorAll('[data-preset-for]').forEach(b => b.onclick = () => { const el = $(b.dataset.presetFor); el.value = b.dataset.v; el.dispatchEvent(new Event('input')); });
-    const u = $('useful'); if (u) u.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { track(cfg.slug + '_useful_' + b.dataset.u); u.innerHTML = '<span>Thanks.</span>'; });
     const form = $('f'); if (form) form.addEventListener('submit', (e) => e.preventDefault());
     if (readHash()) { shared = true; touched = true; const n = $('exnote'); if (n) n.textContent = ''; track(cfg.slug + '_verdict_shared'); }
     // Example values look like defaults (quiet grey) until the user types in that field, so their own numbers stand out.

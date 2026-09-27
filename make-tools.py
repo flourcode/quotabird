@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-24.0900'
+BUILD = '2026-10-24.1700'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -311,10 +311,10 @@ PARTNER = dict(
 # ────────────────────────────── TERRITORY CHECK ──────────────────────────────
 TERRITORY = dict(
     slug='territory', name='Territory Check',
-    title='Territory Check: Does My Territory Suck?',
+    title='Territory Check: Does This Territory Suck?',
     desc='Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers. Nothing stored.',
     ogdesc='Before you sign up for the number, test the territory. Five questions, one minute, no account names.',
-    h1='Does my territory suck?',
+    h1='Does this territory suck?',
     dek='Five questions before you sign up for a number the territory may not be able to produce.',
     cta='Check my territory',
     questions=[
@@ -677,10 +677,10 @@ ACCOUNT = dict(
 # ────────────────────────────── RISK CHECK ──────────────────────────────
 RISK = dict(
     slug='risk', name='Risk Check',
-    title='Risk Check: Are Two Deals Carrying Your Year?',
+    title='Risk Check: Are You Winging It This Quarter?',
     desc='Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. Five questions, one minute, nothing stored.',
-    ogdesc='Are two deals carrying your year? Five questions, one minute, no deal names.',
-    h1='Are two deals carrying your year?',
+    ogdesc='Are you winging it this quarter? Five questions, one minute, no deal names.',
+    h1='Are you winging it this quarter?',
     dek='Five questions about the shape of your pipeline, not the size.',
     cta='Check my risk',
     questions=[
@@ -1062,13 +1062,13 @@ CALCS = [
   bookNote: (s) => `Quota Check: ${s.big} OTE on ${s.basis}, implied rate ${s.ratePct}, ${s.label.toLowerCase()}.`,
 });"""),
  dict(slug='discount', name='Discount Check',
-  title='Discount Check: What a Discount Costs You',
-  desc='They want a discount. See what it costs in your commission and the company\'s margin before you say yes. Free, in your browser, nothing stored.',
-  ogdesc='They want a discount. Here is exactly what it costs you before you sharpen the pencil.',
-  h1='They want a discount.', dek='Plug in the price and the discount to see what it costs you before you say yes.',
+  title='Discount Check: How Much Discount Is Too Much?',
+  desc='How much discount is too much? See what it costs in your commission and the company\'s margin before you say yes. Free, in your browser, nothing stored.',
+  ogdesc='How much discount is too much? Here is exactly what it costs you before you sharpen the pencil.',
+  h1='How much discount is too much?', dek='Plug in the price and the discount to see what it costs you before you say yes.',
   fields=[dict(id='list',kind='money',label='Full list price',example='$500,000'),dict(id='disc',kind='pct',label='Discount they want',example='15%'),
           dict(id='margin',kind='pct',label="Company gross margin",example='40%'),dict(id='rate',kind='pct',label='Your commission rate',example='8%')],
-  card=dict(headline=['They want a discount.',''],dek='What it costs you in commission, and the company in margin, before you say yes.',pillars=['PRICE','DISCOUNT','MARGIN','YOUR CUT']),
+  card=dict(headline=['How much discount is too much?',''],dek='What it costs you in commission, and the company in margin, before you say yes.',pillars=['PRICE','DISCOUNT','MARGIN','YOUR CUT']),
   bands=[('how','A discount is a purchase','''    <p class="lede">Every point off the price is supposed to buy you something. Check whether it did.</p>
     <p>These are rough ranges from my own deals and the ones I've reviewed; yours may differ. Up to about 5% is normal negotiation. Nobody remembers it. Between 5 and 15% is meaningful, and it should buy something specific: a signature date, a larger scope, a reference, a multi-year term. Above 15% you're paying for a decision, so the decision had better come with it, this quarter, in writing. Above 25%, you're usually paying to be liked, and the customer will remember the number.</p>
     <p>Two things sellers forget. The discount comes out of your commission at exactly the same rate it comes out of revenue, so a 15% discount is a 15% pay cut on that deal. And it comes out of the company's margin much faster than 15%: cost of goods doesn't move, so every dollar off the price is a dollar off the margin.</p>
@@ -1108,7 +1108,7 @@ CALCS = [
   title='Commission Check: Your Take-Home on a Deal',
   desc='Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes. Free, in your browser, nothing stored.',
   ogdesc='It closed. Here is roughly what you actually take home.',
-  h1="It closed. What's my actual take home?", dek='Plug in the deal and your rate to find out, roughly, before the check lands.',
+  h1="It closed. What do I actually keep?", dek='Plug in the deal and your rate to find out, roughly, before the check lands.',
   fields=[dict(id='deal',kind='money',label='Deal size',example='$500,000'),dict(id='rate',kind='pct',label='Your commission rate',example='8%'),
           dict(id='buffer',kind='pct',label='Set aside for taxes',example='30%',presets=[('W-2 ~30%','30%'),('High bracket ~40%','40%'),('1099 ~20%','20%')])],
   card=dict(headline=['It closed.','What do I take home?'],dek='A planning estimate of the check after withholding, in about ten seconds.',pillars=['DEAL','RATE','WITHHELD','TAKE-HOME']),
@@ -1224,7 +1224,6 @@ def calc_page(t):
         <p class="startnote fields-note"><span id="exnote">Example numbers. Type yours over them.</span></p>
 {fields}      </form>
       <div class="calc-out2" id="out2"></div>
-      <div class="useful" id="useful"><span>Useful?</span><button class="btn btn-text" data-u="yes" type="button">Yes</button><button class="btn btn-text" data-u="no" type="button">Not really</button></div>
     </div>
   </div>
 </div>
@@ -2054,44 +2053,52 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
 </div>
 <article class="note ask">
   <span class="overline">Ask Mark</span>
-  <h1>Got a problem that doesn't fit in five questions?</h1>
-  <p class="dek">I help sales managers work through ugly deals, pipeline, reps, territories and QBRs.</p>
+  <h1>Want to talk it through?</h1>
+  <p class="dek">If a deal, a rep, a territory or a number is bugging you, tell me about it. I'll know pretty quickly
+    whether I can help, and I'll say so.</p>
 
-  <div class="offer offer-first">
-    <span class="overline">Start here</span>
-    <h2>Twenty minutes, free</h2>
-    <p>Bring the thing that's bugging you: a deal you don't trust, a rep you're worried about, a number that doesn't add up. If I can't help, I'll tell you.</p>
-    <div class="btn-row">
-      <a class="btn btn-primary btn-lg" id="askBook" href=\"https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=ask&amp;utm_content=ask" target="_blank" rel="noopener">Chat with Mark</a>
-      <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
+  <div class="ask-cta">
+    <a class="btn btn-primary btn-lg" id="askBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=ask&amp;utm_content=ask" target="_blank" rel="noopener">Book 20 minutes</a>
+    <a class="ask-alt" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">or DM me on LinkedIn</a>
+  </div>
+  <p class="ask-fine">It's free. Pick a time, send me a line about what's going on, and I'll read up before we talk.</p>
+
+  <div class="ask-me">
+    <img src="/mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
+    <p>I'm Mark. I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number
+      myself. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've
+      probably never heard of.</p>
+  </div>
+
+  <h2>What people usually bring me</h2>
+  <ul class="ask-list">
+    <li>A deal everybody thinks will close, and nobody on the customer side has committed to anything.</li>
+    <li>A rep you're not sure about. Or maybe it's the territory.</li>
+    <li>A quota that came from somebody who's never seen your territory.</li>
+    <li>A forecast call you're dreading, or a review where you have to defend somebody.</li>
+  </ul>
+
+  <h2>If twenty minutes isn't enough</h2>
+  <div class="offers">
+    <div class="offer">
+      <h3>Manager Wingman</h3>
+      <p class="offer-when">Monthly</p>
+      <p>A couple of calls a month about the stuff you can't work through with your boss or your team: a rep decision, a
+        forecast you don't trust, a plan you have to defend, a promotion.</p>
+      <p class="offer-link"><a href="mailto:mark@quotabird.com?subject=Manager%20Wingman">Ask about Wingman</a></p>
     </div>
-    <p class="steps-h">How the call works</p>
-    <ol class="steps">
-      Pick a time. Give me one line on what's going on.
-      <li><b>I'll do my homework before we talk.</b></li>
-      Twenty minutes. Free. Then decide if you need more. No strings.
-    </ol>
+    <div class="offer">
+      <h3>Team session</h3>
+      <p class="offer-when">One session</p>
+      <p>I work with your team on pipeline, deals, account planning or a manager workshop, using the same questions as the
+        tools. There's usually some arguing.</p>
+      <p class="offer-link"><a href="mailto:mark@quotabird.com?subject=Team%20session">Ask about a team session</a></p>
+    </div>
   </div>
+  <p class="fine ask-price">If we keep going, I'll tell you what it costs before we do anything.</p>
 
-  <p class="helped">People I've helped have worked at Amazon, Microsoft, Google, Oracle, and a bunch of smaller companies you've probably never heard of.</p>
-
-  <h2 class="offers-h">If twenty minutes isn't enough</h2>
-  <div class="offer">
-    <h3>Manager Wingman</h3>
-    <p class="offer-when">Monthly</p>
-    <p>A couple of calls a month for the stuff you don't want to work through with your boss or your team: a rep decision,
-      a forecast you don't trust, a plan you have to defend, the promotion conversation.</p>
-    <p><a href="mailto:mark@quotabird.com?subject=Manager%20Wingman">Ask about Wingman</a></p>
-  </div>
-  <div class="offer">
-    <h3>Team session</h3>
-    <p class="offer-when">One session with your team</p>
-    <p>One session with your team: pipeline, deals, account planning or a manager workshop. Same questions as the tools. More arguing.</p>
-    <p><a href="mailto:mark@quotabird.com?subject=Team%20session">Ask about a team session</a></p>
-  </div>
-  <p class="fine">If we keep going, I'll tell you what it costs before we do anything.</p>
-
-  <p class="ask-foot">Not ready to talk? Use the free <a href="/">tools</a> and <a href="/kits/">Field Kits</a>. Or email me: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
+  <p class="ask-foot">Not ready to talk? The <a href="/">tools</a> and the <a href="/kits/">Field Kits</a> are free. Or email
+    me at <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
 </article>
 
 ''' + NOTE_TAIL.replace('Field Notes are part of', 'Ask Mark is part of').replace('</script>\n</body>', """document.getElementById('askBook').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('ask_book'); });
@@ -2168,11 +2175,6 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
 
 <div class="wrap">
   <header class="appbar"></header>
-  <div id="screen">
-    <span class="overline tool-name">QuotaBird</span>
-    <h1>About Mark</h1>
-    <p class="dek">A bit about me, and how to get hold of me.</p>
-  </div>
 </div>
 
 <section class="band" id="about"></section>
