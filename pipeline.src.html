@@ -86,7 +86,7 @@
           "name": "Does anything I enter leave my device?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. Every tool runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers or your numbers. Nothing else leaves the page unless you choose to share a result."
+            "text": "No. Everything runs in your browser, so there's no account, no CRM connection and nothing sent to a server. I use Google Analytics to count page views, but it never sees your answers or your numbers. Nothing leaves the page unless you share a result."
           }
         }
       ]
@@ -147,15 +147,8 @@
   <div class="band-inner">
     <h2 id="threex-h">What 3X actually assumes</h2>
     <p class="lede">Everybody plans to 3X. Almost nobody asks why.</p>
-    <p>It came from a win rate. If a third of the qualified pipeline due in a period closes, 3X covers the
-      number exactly. So 3X is <strong>a 33% win rate written down without saying
-      so.</strong> A team that wins 20% of what it qualifies needs 5X. A team that wins half needs 2X. Planning
-      to 3X with a 20% win rate is hopium with a spreadsheet.</p>
-    <p>The other assumption is the word <em>qualified</em>. Coverage counts pipeline that would survive a
-      hard question about the customer, the money, the person you're talking to, the path to a purchase
-      order and the reason it happens now. Everything else in the CRM is a conversation. That's why the
-      verdict above ends by sending you to <a href="/deal/">Deal Check</a>: the multiple is only as good as
-      the deals inside it.</p>
+    It came from a win rate. If a third of the qualified pipeline due in a period closes, 3X covers the number exactly, so 3X is really just a 33% win rate that nobody says out loud. A team that wins 20% of what it qualifies needs 5X. A team that wins half needs 2X. Planning to 3X with a 20% win rate is hopium with a spreadsheet.
+    <p>The other assumption is the word <em>qualified</em>. Coverage counts pipeline that would survive a hard question about the customer, the money, the person you're talking to, the path to a purchase order and the reason it happens now. The rest of the CRM is conversations. So the verdict above sends you to <a href="/deal/">Deal Check</a>, since the multiple's only as good as the deals in it.</p>
     <h3>Where the rest realistically comes from</h3>
     <p>Being short on pipeline doesn't automatically mean everybody needs to prospect harder. First figure out where the missing pipeline is supposed to come from:
       <strong>new accounts</strong> and new buying centers, <strong>existing customers</strong> and adjacent
@@ -184,9 +177,7 @@
         want it, the money has a name, you have reached someone who can act, you know how they buy, and
         something forces action now. That's what <a href="/deal/">Deal Check</a> tests one deal at a time.</div></details>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
-      <div class="body">No. Every tool runs in your browser. No account, no CRM connection, no API call. The site
-        counts page views with Google Analytics and never sends your answers or your numbers. Nothing else leaves
-        the page unless you choose to share a result.</div></details>
+      <div class="body">No. Everything runs in your browser, so there's no account, no CRM connection and nothing sent to a server. I use Google Analytics to count page views, but it never sees your answers or your numbers. Nothing leaves the page unless you share a result.</div></details>
   </div>
 </section>
 
@@ -294,9 +285,9 @@ function compute(i) {
   else flip = `Covered either way: at 3X and at your ${pct(i.win)} win rate.`;
   const SUB = {
     COVERED: 'Coverage only counts if the deals are real. Check a few before you commit it.',
-    CLOSE: "Close, not covered. A couple of real deals would get you there.",
+    CLOSE: "Close. A couple of real deals would get you there.",
     'AT RISK': "Half the pipeline you need isn't there. Where does it come from?",
-    'SHORT': `Don't forecast this yet. That's a creation problem, not a closing problem.`,
+    'SHORT': `Don't forecast this yet. You don't have enough pipeline to close your way out of it.`,
   };
   return Object.assign({}, i, { cal, closed, base, cov, req3, gap3, covNeed, need, gap, ratio, deals, perRep, pace, threeOK, flip, label: tier[0], cls: tier[1], sub: SUB[tier[0]] });
 }
@@ -425,7 +416,7 @@ function render() {
     </div>
     <div class="card" style="margin-top:20px;">
       <h3>Stuck on where it comes from?</h3>
-      <p>I'm Mark. The math tells you how big the hole is. "Prospect harder" is not a plan. Send me the multiples and where you think the rest is supposed to come from.</p>
+      <p>I'm Mark. The math shows you how big the hole is. "Prospect harder" isn't a plan. Send me the multiples and where you think the rest is coming from.</p>
       <div class="preview mono" title="Tap to select">${esc(dmText(s))}</div>
       <button class="btn btn-primary btn-lg btn-full" id="dmBtn" type="button" style="margin-top:14px;">Copy this &amp; DM me</button>
       <div class="btn-row center" style="margin-top:4px;">

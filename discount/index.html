@@ -62,7 +62,7 @@
           "name": "Does anything I enter leave my device?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result."
+            "text": "No. The math runs right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result."
           }
         },
         {
@@ -127,10 +127,10 @@
 <section class="band" id="how">
   <div class="band-inner">
     <h2>A discount is a purchase</h2>
-    <p class="lede">Every point off the price buys something. The question is whether you got it.</p>
-    <p>These are rough ranges from my own deals and the ones I've reviewed; yours may differ. Up to about 5% is normal negotiation. Nobody remembers it. Between 5 and 15% is meaningful, and it should buy something specific: a signature date, a larger scope, a reference, a multi-year term. Above 15% you're paying for a decision, so the decision had better come with it, this quarter, in writing. Above 25%, you're usually paying to be liked, and the customer will remember the number, not the gesture.</p>
+    <p class="lede">Every point off the price is supposed to buy you something. Check whether it did.</p>
+    <p>These are rough ranges from my own deals and the ones I've reviewed; yours may differ. Up to about 5% is normal negotiation. Nobody remembers it. Between 5 and 15% is meaningful, and it should buy something specific: a signature date, a larger scope, a reference, a multi-year term. Above 15% you're paying for a decision, so the decision had better come with it, this quarter, in writing. Above 25%, you're usually paying to be liked, and the customer will remember the number.</p>
     <p>Two things sellers forget. The discount comes out of your commission at exactly the same rate it comes out of revenue, so a 15% discount is a 15% pay cut on that deal. And it comes out of the company's margin much faster than 15%: cost of goods doesn't move, so every dollar off the price is a dollar off the margin.</p>
-    <p>Before you discount at all, ask whether the objection is the price or the deal. A discount fixes exactly one of those. <a href="/deal/">Deal Check</a> tells you which one you have.</p>
+    Before you discount at all, figure out whether the objection is really the price or the deal. A discount only helps with the price. <a href="/deal/">Deal Check</a> can tell you which one you've got.
     <p><a href="/math/discount-math/">The full math, with tables and sources →</a></p>
   </div>
 </section>
@@ -161,7 +161,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I built these because I wish we'd had them. Most are free. If the problem needs an actual conversation, I do that too.</p>
+      <p>I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -171,7 +171,7 @@
   <div class="band-inner">
     <h2 id="faq-h">Questions</h2>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
-      <div class="body">No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.</div></details>
+      <div class="body">No. The math runs right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result.</div></details>
     <details class="exp"><summary>How is the new margin calculated?</summary>
       <div class="body">Cost of goods stays the same when the price drops, so the margin after discount is one minus cost divided by the discounted price. That's why a 15% discount on a 40% margin leaves about 29%, not 25%.</div></details>
     <details class="exp"><summary>What if I don't know the company margin?</summary>
@@ -187,7 +187,7 @@
 <script src="../calc.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-23.1700';
+window.QB_BUILD = '2026-10-24.0900';
 CalcTool({
   slug: 'discount', name: 'Discount Check', url: 'https://quotabird.com/discount/',
   fields: [{ id: 'list', kind: 'money' }, { id: 'disc', kind: 'pct' }, { id: 'margin', kind: 'pct' }, { id: 'rate', kind: 'pct' }],
@@ -211,8 +211,8 @@ CalcTool({
     if (newMargin != null) rows.push(['Company margin after', pct(newMargin), newMargin < .15 ? 'v-no' : '']);
     return { label: t[0], cls: t[1], attack, sub: t[2], big: v.rate > 0 ? money(commLost) : money(given), rows, disc: v.disc, margin: v.margin, newMargin, stripText: '' };
   },
-  handoff: { overline: 'Before you discount', text: 'Is it the price, or the deal? A discount fixes exactly one of those.', href: '/deal/', label: 'Check my deal' },
-  mark: { title: () => 'Stuck on the price?', body: "I'm Mark. I've watched a lot of discounts buy absolutely nothing. If somebody wants you to sharpen the pencil, send me one line about why. No customer names. No dollars." },
+  handoff: { overline: 'Before you discount', text: 'Is the problem the price, or the deal? A discount only helps with the price.', href: '/deal/', label: 'Check my deal' },
+  mark: { title: () => 'Stuck on the price?', body: "I'm Mark. I've watched a lot of discounts buy absolutely nothing. If somebody's asking you to sharpen the pencil, send me a line about why, no customer names or dollars." },
   dm: (s) => `Mark, ran a discount through Discount Check. ${Math.round(s.disc * 100)}% off costs me ${Math.round(s.disc * 100)}% of my commission${s.newMargin != null ? ' and takes margin from ' + Math.round(s.margin * 100) + '% to ' + Math.round(s.newMargin * 100) + '%' : ''}. Not sure it's worth it. Worth 20 minutes?`,
   bookNote: (s) => `Discount Check: ${Math.round(s.disc * 100)}% off${s.newMargin != null ? ', margin ' + Math.round(s.margin * 100) + '% to ' + Math.round(s.newMargin * 100) + '%' : ''}, ${s.label.toLowerCase()}.`,
 });

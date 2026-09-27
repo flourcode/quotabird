@@ -62,7 +62,7 @@
           "name": "Does anything I enter leave my device?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result."
+            "text": "No. The math runs right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result."
           }
         },
         {
@@ -127,7 +127,7 @@
 <section class="band" id="how">
   <div class="band-inner">
     <h2>Why the check is smaller than the math</h2>
-    <p class="lede">Gross commission is the number in the plan. Take-home is the number in your account. They're further apart than most sellers expect the first time.</p>
+    <p class="lede">The commission in your plan and the money that hits your account are further apart than most sellers expect, especially the first time.</p>
     <p>The percentage you set aside is a planning buffer, not a withholding rate. For commissions paid separately from salary, the IRS lets employers withhold federal income tax at a flat 22% (up to a million dollars a year), and payroll taxes and state withholding come on top of that, so a W-2 check often lands with roughly 30% gone. High earners tend to owe closer to 40% once the year is reconciled. A 1099 contractor has nothing withheld and should set aside 20% or more. Your real number depends on your state, your filing status and everything else you earned this year, which is why the field is editable.</p>
     <p>Use it to plan, not to argue with payroll. Then ask the better question: is the comp plan itself sane? That's <a href="/quota/">Quota Check</a>.</p>
     <p><a href="/math/commission-take-home/">The full math, with tables and sources →</a></p>
@@ -160,7 +160,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I built these because I wish we'd had them. Most are free. If the problem needs an actual conversation, I do that too.</p>
+      <p>I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -170,7 +170,7 @@
   <div class="band-inner">
     <h2 id="faq-h">Questions</h2>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
-      <div class="body">No. The arithmetic runs in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your numbers. Nothing else leaves the page unless you choose to share a result.</div></details>
+      <div class="body">No. The math runs right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result.</div></details>
     <details class="exp"><summary>Is this tax advice?</summary>
       <div class="body">No. It's just a planning buffer. Payroll and taxes are messier than this calculator. If the number actually matters, ask an accountant.</div></details>
     <details class="exp"><summary>What about accelerators and clawbacks?</summary>
@@ -186,7 +186,7 @@
 <script src="../calc.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-23.1700';
+window.QB_BUILD = '2026-10-24.0900';
 CalcTool({
   slug: 'commission', name: 'Commission Check', url: 'https://quotabird.com/commission/',
   fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'buffer', kind: 'pct' }],
@@ -199,7 +199,7 @@ CalcTool({
       sub: 'A planning buffer, not tax advice. Change the percentage to yours.', rows: [['Gross commission', money(gross)], ['Set aside, about', money(aside), 'v-no'], ['Take-home, about', money(net)]], keep: 1 - tax };
   },
   handoff: { overline: 'Is the plan sane?', text: 'Now that you know what a deal pays, check the number it has to cover.', href: '/quota/', label: 'Check my quota' },
-  mark: { title: () => 'Questions about the plan?', body: "I'm Mark. Comp plans are where you find out what the company really thinks your job is worth. If yours doesn't add up, send me one line. No company name. No dollars." },
+  mark: { title: () => 'Questions about the plan?', body: "I'm Mark. Comp plans tell you what the company actually thinks your job is worth. If yours doesn't add up, send me a line about it, and leave out the company name and the dollars." },
   dm: (s) => `Mark, ran a deal through Commission Check. I keep about ${Math.round(s.keep * 100)}% of gross. The question is whether the plan behind it is sane. Worth 20 minutes?`,
   bookNote: (s) => `Commission Check: keeps about ${Math.round(s.keep * 100)}% of gross.`,
 });

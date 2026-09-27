@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-23.1700**
+**Current build: 2026-10-24.0900**
 
 ## Naming: checks, not kills
 
@@ -361,6 +361,22 @@ site should sound like one veteran seller talking, not a manual:
 - **"Actually" only when it's the point** (what the customer *actually* said
   versus what's in the CRM). Not as padding ("when they're actually in the
   room"). Fifteen padding uses came out in October.
+- **The coffee test (Oct 24, the rule every line now follows):** remove
+  performative summary sentences. If a passage compresses credentials,
+  motivation and an offer into a neat run of short declarative sentences,
+  rewrite it as something a person would say out loud. No résumé triplets
+  ("I carried a number, managed people who did, and…"), no symmetrical pairs,
+  no "I did X, then Y, therefore Z", no tidy closers ("If you need more, I do
+  that too", "good enough", "That's what X is for"). One plain thought at a
+  time, uneven rhythm, specific words, mild informality; not every paragraph
+  has to land cleanly. If a sentence sounds designed to prove credibility,
+  simplify it until the facts carry it. Test: would Mark say it to one person
+  over coffee? If it sounds like website copy, a LinkedIn bio, a keynote intro
+  or a founder statement, rewrite it. Model line (Made by Mark): "I spent six
+  years leading federal partner sales teams at AWS, after plenty of years
+  carrying a number myself. QuotaBird is mostly stuff I wish we'd had back
+  then. Most of it's free. If the problem's messier than a little tool can
+  handle, we can talk it through."
 - **Mark's rules, in his words (Oct 23):** plainspoken, literal, jaded
   salesperson. No "it's not this, it's that". No third sentence that states
   the obvious. Short sentences and fragments are fine ("No login. No AI.").
@@ -1988,3 +2004,16 @@ purpose, as lines earlier reviews singled out: "a couple I made worse before I
 made them better", "terrible close rate", "explaining that sentence",
 "improving them to death", "I'd like those months back. So would the rep".
 Kits still 4, 8 and 3 pages. Workbook for round 3 regenerated.
+
+**2026-10-24.0900** — the coffee-test pass across the whole site: all 471
+prose passages read; about 150 rewritten (every result card, Made by Mark,
+home, About, Ask Mark, every tool page's explanation and FAQ, all three kits,
+Field Notes, Sales Math, the posts). The résumé line is gone everywhere
+(kit closing cards now "I spent six years leading federal partner sales teams
+at AWS, after plenty of years carrying a number myself."); the repeated
+privacy answer is one conversational version everywhere; quotable closers
+removed ("you need both to sleep", "columns don't win", "favors do not scale",
+"Everything else is adjectives"). Kept: Mark's own stories and fragments, the
+reference tables, and short jaded lines that sound spoken. The Leadership
+kit's "good enough" is Mark's own and stayed. Kits still 4, 8 and 3 pages
+(four wrapped lines were tightened to hold the Manager's kit at 8 on Letter).

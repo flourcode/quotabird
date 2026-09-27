@@ -62,7 +62,7 @@
           "name": "Does anything I enter leave my device?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result."
+            "text": "No. Your answers get scored right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result."
           }
         },
         {
@@ -102,7 +102,7 @@
           "name": "Why does it never ask the rep's name?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Because it doesn't need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, fix the assessment, and nothing about it is written down anywhere."
+            "text": "It doesn't need one, and I don't want a tool that stores opinions about named people. Run it, fix the assessment, and nothing gets written down."
           }
         }
       ]
@@ -141,9 +141,7 @@
     <h2>What the room is testing</h2>
     <p class="lede">The form is the easy part of a talent review. The hard part is explaining a human being in sixty
       seconds to managers who don't know them, and having the explanation survive their questions.</p>
-    <p>Every calibration room runs the same way: you propose, they probe, the evaluation moves if you can't hold it.
-      The managers across the table aren't hostile. They just haven't seen your rep's year, so all they can test is
-      your assessment. An assessment is receipts, ownership, scope, behavior and next scope. Everything else is adjectives.</p>
+    <p>Every calibration room runs the same way: you propose, they probe, and the evaluation moves if you can't hold it. The managers across the table aren't hostile. They just haven't seen your rep's year, so all they can test is your assessment. What holds up in that room is receipts, ownership, scope, behavior and what you'd hand them next. Adjectives get picked apart.</p>
     <p><strong>RECEIPTS: Three things, each with a number.</strong> Amazon's own self-review now asks for three to five
       accomplishments with measurable outcomes. If you can't name three with a number on them, the room hears "had a
       good year," and "had a good year" loses to anyone who brought a spreadsheet.</p>
@@ -153,12 +151,8 @@
     <p><strong>SCOPE: Their level, not the level below.</strong> "Strong L5 execution" is the polite way a room says no to
       an L6 assessment. What made the problem their-level sized: the ambiguity, the number of teams, the absence of a
       playbook, the decisions nobody else was going to make?</p>
-    <p><strong>HOW: One example per principle.</strong> Leadership principles are behavioral standards, not compliments.
-      The room will ask for the example. If you'll cite four principles, bring four examples, and drop the ones you
-      can't back.</p>
-    <p><strong>NEXT: The harder thing.</strong> Potential isn't "I think she's a future VP." It's the problem you would
-      hand them next year that you wouldn't have handed them last year, and what they've already done that makes you
-      sure. Scope, complexity, or impact, growing.</p>
+    HOW: One example per principle. The room is going to ask for the example. If you're citing four principles, bring four examples, and drop the ones you can't back.
+    NEXT: The harder thing. "I think she's a future VP" won't get you far. Say what problem you'd hand them next year that you wouldn't have handed them last year, and what they've already done that makes you sure.
   </div>
 </section>
 
@@ -201,7 +195,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I built these because I wish we'd had them. Most are free. If the problem needs an actual conversation, I do that too.</p>
+      <p>I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -211,7 +205,7 @@
   <div class="band-inner">
     <h2 id="faq-h">Questions</h2>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
-      <div class="body">No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.</div></details>
+      <div class="body">No. Your answers get scored right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.</div></details>
     <details class="exp"><summary>Does it predict a rating?</summary>
       <div class="body">No, and it never will. It grades whether you can defend the assessment. Your company already has plenty of machinery for the rating.</div></details>
     <details class="exp"><summary>What is OLR?</summary>
@@ -221,7 +215,7 @@
     <details class="exp"><summary>What does Pressure test do?</summary>
       <div class="body">It plays the room. Three hard questions about your weakest answer. If you can't answer two of them, the assessment isn't ready. Better to find that out here.</div></details>
     <details class="exp"><summary>Why does it never ask the rep's name?</summary>
-      <div class="body">Because it doesn't need it, and because a tool that stores judgments about named people is a different kind of tool. Run it, fix the assessment, and nothing about it is written down anywhere.</div></details>
+      <div class="body">It doesn't need one, and I don't want a tool that stores opinions about named people. Run it, fix the assessment, and nothing gets written down.</div></details>
   </div>
 </section>
 
@@ -233,7 +227,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-23.1700';
+window.QB_BUILD = '2026-10-24.0900';
 CheckTool({
   slug: 'olr', name: 'Talent Review Check', url: 'https://quotabird.com/olr/',
   questions: [
@@ -281,11 +275,11 @@ CheckTool({
     how: 'Cut every principle without an example. Keep the ones you can prove.',
     next: 'Name next year\'s harder assignment and the evidence that says they can carry it.',
   },
-  noMove: 'Put the weakest receipt first when you present. A soft spot you name first stops being a weakness.',
+  noMove: 'Put the weakest receipt first when you present. It\'s easier to defend once you\'ve said it yourself.',
   handoff: (s) => s.total >= 75
     ? { overline: 'The assessment is ready. Is the year set up?', text: "Next year's assessment starts now. Is the rep in a territory that can produce one? Rep Check asks that first.", href: '/rep/', label: 'Check my rep' }
-    : { overline: 'The fastest receipt', text: 'A deal you watched them run. Sit in their next customer meeting and run it through Deal Check together. That\'s evidence for both of you.', href: '/deal/', label: 'Check my deal' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've written glowing reviews that got blown apart in the room. Usually the rep wasn't the problem. The case was. Send me yours." },
+    : { overline: 'The fastest receipt', text: 'A deal you watched them run. Sit in their next customer meeting and go through it with Deal Check afterward.', href: '/deal/', label: 'Check my deal' },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've written glowing reviews that got taken apart in the room, and usually the problem was how I'd made the case. Tell me about yours." },
   dm: (s) => `Mark, ran a rep's talent review assessment through Talent Review Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. OLR is coming and I'm not sure it holds. Worth 20 minutes?`,
   dmGrill: (s, missed) => `Mark, ran a rep's talent review assessment through Talent Review Check and couldn't answer ${missed} of the room's 3 ${s.weak.n.toLowerCase()} questions. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
 });

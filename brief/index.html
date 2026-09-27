@@ -62,7 +62,7 @@
           "name": "Does anything I enter leave my device?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. The five answers are scored in your browser. No account, no upload, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result."
+            "text": "No. Your answers get scored right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result."
           }
         },
         {
@@ -86,7 +86,7 @@
           "name": "What does Pressure test do?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "It plays the room. Pick who is across the table, and it asks three of their questions about your weakest answer, one at a time. You say honestly whether you could answer. Better to find the hole here than in the meeting."
+            "text": "It plays the room. Pick who's across the table, and it asks three of their questions about your weakest answer, one at a time. You say honestly whether you could answer."
           }
         }
       ]
@@ -123,11 +123,8 @@
 <section class="band" id="how">
   <div class="band-inner">
     <h2>What the room goes after</h2>
-    <p class="lede">Nobody cares about your deck. They're going after the assumptions underneath it. Every brief that dies in a meeting dies the same way:
-      somebody asks the question the author was hoping nobody would.</p>
-    <p><strong>POINT: One sentence, and why now.</strong> If you can't say what you want the room to decide in one
-      sentence, the brief doesn't have a point yet, it has a topic. And "why now" is the second half of the
-      sentence, because a room that agrees with you and does nothing hasn't agreed with you.</p>
+    <p class="lede">Nobody in that room cares much about your deck. They're going after the assumptions underneath it, and most briefs die when somebody asks the question the author was hoping nobody would.</p>
+    POINT: One sentence, and why now. If you can't say what you want the room to decide in one sentence, you don't have a point yet. Put the why-now in the same sentence, too. A room can agree with you and still do nothing.
     <p><strong>RECEIPTS: Evidence for the three claims it depends on.</strong> Not every claim. The three that, if
       false, take the recommendation down with them. Data, customer evidence, financials, documented behavior. And
       at least one piece that didn't come from your own team, because the room discounts everything that did.</p>
@@ -154,8 +151,7 @@
       what is stopping the deal today.</p>
     <p><strong>The skeptic.</strong> Whoever in the room is accountable for something you're not. They know
       something you don't. Find out what before the meeting.</p>
-    <p>The brief lives in your head, not in a file. Nothing is uploaded, nothing is stored, and the tool never sees
-      a word of the document. It only asks whether you could answer for it.</p>
+    <p>You don't upload anything, and the tool never sees the document. It just asks whether you could answer for it.</p>
   </div>
 </section>
 
@@ -164,7 +160,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I built these because I wish we'd had them. Most are free. If the problem needs an actual conversation, I do that too.</p>
+      <p>I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -174,13 +170,13 @@
   <div class="band-inner">
     <h2 id="faq-h">Questions</h2>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
-      <div class="body">No. The five answers are scored in your browser. No account, no upload, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.</div></details>
+      <div class="body">No. Your answers get scored right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.</div></details>
     <details class="exp"><summary>What counts as a brief?</summary>
       <div class="body">Anything you're about to argue for in front of people who can say no: a narrative doc, a strategy deck, a QBR, an account plan, a proposal, an investment memo, a capture review, or a recommendation you will make out loud. If it has a point and an ask, it's a brief.</div></details>
     <details class="exp"><summary>Is this only for sales?</summary>
       <div class="body">No. It started with sales reviews, and the sales leader is one of the sharks. But a six-pager in front of a VP dies exactly the way a QBR does: on the question the author hoped nobody would ask.</div></details>
     <details class="exp"><summary>What does Pressure test do?</summary>
-      <div class="body">It plays the room. Pick who is across the table, and it asks three of their questions about your weakest answer, one at a time. You say honestly whether you could answer. Better to find the hole here than in the meeting.</div></details>
+      <div class="body">It plays the room. Pick who's across the table, and it asks three of their questions about your weakest answer, one at a time. You say honestly whether you could answer.</div></details>
   </div>
 </section>
 
@@ -192,7 +188,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-23.1700';
+window.QB_BUILD = '2026-10-24.0900';
 CheckTool({
   slug: 'brief', name: 'Brief Check', url: 'https://quotabird.com/brief/',
   questions: [
@@ -248,11 +244,11 @@ CheckTool({
     hole: 'Name your weakest assumption in the brief before they do.',
     ask: 'End with what you need, from whom, by when, and who owns what next.',
   },
-  noMove: 'Lead with the hole. Say your weakest assumption out loud in the first minute; the room will spend the rest of the meeting on your terms.',
+  noMove: 'Say your weakest assumption out loud in the first minute. Then the argument happens on your terms.',
   handoff: (s) => s.total >= 75
-    ? { overline: 'If the brief is about a deal', text: 'The room will ask whether the deal underneath it is real. Deal Check is that question.', href: '/deal/', label: 'Check my deal' }
+    ? { overline: 'If the brief is about a deal', text: 'Somebody\'s going to ask whether the deal underneath it is real. Deal Check will tell you before they do.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'If the brief is about the number', text: 'Vague impact usually means the coverage math is missing. Pipeline Check puts a number on it.', href: '/pipeline/', label: 'Check my pipeline' },
-  mark: { title: (s) => 'Stuck on the ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've written the doc that got shredded and the one that got funded. Usually the bad one had a question I hadn't asked myself. Send me yours." },
+  mark: { title: (s) => 'Stuck on the ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've written docs that got shredded and a few that got funded. The bad ones usually had a question I hadn't asked myself. Tell me about yours if you want." },
   dm: (s) => `Mark, ran a brief through Brief Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is the ${s.weak.n.toLowerCase()}. Meeting is coming and I'm not sure it holds. Worth 20 minutes?`,
   dmGrill: (s, missed) => `Mark, ran a brief through Brief Check and couldn't answer ${missed} of the room's 3 questions about the ${s.weak.n.toLowerCase()}. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
 });

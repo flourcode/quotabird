@@ -62,7 +62,7 @@
           "name": "Does anything I enter leave my device?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result."
+            "text": "No. Your answers get scored right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result."
           }
         },
         {
@@ -115,21 +115,12 @@
 <section class="band" id="how">
   <div class="band-inner">
     <h2>Where deals really get lost</h2>
-    <p class="lede">Most of the deals I've lost weren't lost to a competitor. They were lost to nothing: the customer keeps what they have,
-      the money goes elsewhere, the project waits a year. This checks whether you're beating nothing before it checks
-      whether you're beating anyone.</p>
+    <p class="lede">Most of the deals I've lost, I lost to nothing. The customer kept what they had, the money went somewhere else, the project waited a year. So this checks whether you're beating nothing before it checks anybody else.</p>
     NOTHING: What happens if they do nothing? If the answer is "not much," doing nothing is free and free usually wins. Sellers skip this because the answer lives in the customer's world, not ours.
-    <p><strong>SWITCH: What does leaving cost them?</strong> Incumbents don't win on merit. They win on the cost of
-      change: retraining, migration, the person whose job is the current system. Know that cost and who carries it, or
-      you'll lose to someone who never showed up to a meeting.</p>
-    <p><strong>PREFERENCE: Have they said it?</strong> Not "we like your solution." An unprompted reason, in their words,
-      why you instead of the alternative. Until you've heard it, you're a column in their comparison, and columns don't
-      win.</p>
-    <p><strong>PROOF: What can only you show?</strong> A reference they can call, a pilot in their environment, a result
-      at a customer they respect. Claims are free. Proof they can check is the only thing the incumbent can't copy.</p>
-    <p><strong>ACCESS: Who does the competitor own?</strong> Somewhere in the account there's a person the other side has
-      been having lunch with for three years. Knowing who tells you where the fight is; not knowing means you'll find
-      out in the debrief.</p>
+    SWITCH: What does leaving cost them? Incumbents mostly win because changing is a pain: retraining, migration, the person whose job is the current system. Know that cost and who carries it, or you'll lose to someone who never showed up to a meeting.
+    PREFERENCE: Have they said it? Not "we like your solution." An unprompted reason, in their words, why you instead of the alternative. Until you've heard it, you're one column in their comparison spreadsheet.
+    PROOF: What can only you show? A reference they can call, a pilot in their environment, a result at a customer they respect. Anybody can make claims. Something they can check is a lot harder for the incumbent to match.
+    ACCESS: Who does the competitor own? Somewhere in the account there's a person the other side has been having lunch with for three years. Find out who, or you'll find out in the loss review.
   </div>
 </section>
 
@@ -137,12 +128,10 @@
   <div class="band-inner">
     <h2>Four positions</h2>
     <p><strong>Preferred.</strong> They've told you why, you can prove it, and you know the cost of nothing. Close.</p>
-    <p><strong>In the mix.</strong> You're a real option. So is something else. Find the reason and get it in their
-      words.</p>
+    In the mix. You're a real option, but so is something else. Find the reason they'd pick you and get it in their words.
     <p><strong>Behind.</strong> The incumbent or the competitor has something you don't: access, proof, or a friend.
       Name it before you spend another quarter here.</p>
-    <p><strong>Nothing wins.</strong> Doing nothing is beating you, and it isn't even trying. Until inaction has a cost,
-      you don't have a competitor. You have a hobby.</p>
+    Nothing wins. Doing nothing is beating you. Until it costs them something they can count, they'll keep doing nothing.
   </div>
 </section>
 
@@ -172,7 +161,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I built these because I wish we'd had them. Most are free. If the problem needs an actual conversation, I do that too.</p>
+      <p>I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -182,7 +171,7 @@
   <div class="band-inner">
     <h2 id="faq-h">Questions</h2>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
-      <div class="body">No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.</div></details>
+      <div class="body">No. Your answers get scored right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.</div></details>
     <details class="exp"><summary>What if there's no competitor?</summary>
       <div class="body">There's always one: doing nothing. Most deals that are "uncontested" are lost to the status quo, which is why the first question is about the cost of inaction rather than a named rival. Answer it honestly and the tool will tell you whether nothing is winning.</div></details>
     <details class="exp"><summary>Is this a battlecard?</summary>
@@ -198,7 +187,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-23.1700';
+window.QB_BUILD = '2026-10-24.0900';
 CheckTool({
   aside: (s, a) => ['switch', 'access'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo shows who holds the incumbent contract, what it's worth, and when it ends.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=competition&utm_content=verdict', label: 'Look up the incumbent on fedhoo' } : null,
   slug: 'competition', name: 'Competition Check', url: 'https://quotabird.com/competition/',
@@ -214,7 +203,7 @@ CheckTool({
     if (total >= 75) return { label: 'Preferred', cls: 'ready', attack: "They've told you why, and you can prove it.", sub: 'Close it before the incumbent finds a friend.' };
     if (total >= 55) return { label: 'In the mix', cls: 'proof', attack: "You're a real option. So is something else.", sub: 'Find the reason they would pick you and get it in their words.' };
     if (total >= 35) return { label: 'Behind', cls: 'prove', attack: 'The other side has something you don\'t.', sub: 'Name it: access, proof, or a friend. Then decide whether to spend another quarter here.' };
-    return { label: 'Nothing wins', cls: 'dont', attack: "Doing nothing is beating you, and it isn't even trying.", sub: "Until inaction has a cost in their numbers, you don't have a competitor. You have a hobby." };
+    return { label: 'Nothing wins', cls: 'dont', attack: "Doing nothing is beating you, and it isn't even trying.", sub: "Until doing nothing costs them something they can count, they're going to keep doing nothing." };
   },
   askedBy: 'Your boss will ask',
   grill: {
@@ -233,9 +222,9 @@ CheckTool({
   },
   noMove: 'You\'re preferred. Write down why, in their words, so the reason survives the next reorg.',
   handoff: (s) => s.total >= 55
-    ? { overline: 'Now the deal itself', text: 'Position is about them. Deal Check is about the deal: customer, money, power, path, now.', href: '/deal/', label: 'Check my deal' }
+    ? { overline: 'Now the deal itself', text: 'Where you stand against them is one thing. Whether the deal is real is another, and that\'s Deal Check.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'Do you know your customer?', text: 'Being behind usually means the other side knows the account better. Account Check finds where.', href: '/account/', label: 'Check my account' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've lost to incumbents I never saw and to doing nothing more times than I'd like. Send me the problem." },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've lost to incumbents I never saw coming, and to customers who decided to do nothing, more often than I like to admit. Tell me what you're up against." },
   dm: (s) => `Mark, ran a deal through Competition Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure I'm ahead. Worth 20 minutes?`,
 });
 </script>

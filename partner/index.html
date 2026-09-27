@@ -62,7 +62,7 @@
           "name": "Does anything I enter leave my device?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result."
+            "text": "No. Your answers get scored right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result."
           }
         },
         {
@@ -78,7 +78,7 @@
           "name": "What about a partner that's strategic but not producing yet?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Then the answer to SOURCED and ACCOUNTS is no, and the tool will say so. Strategic is what people call a partnership before it has produced anything. The question is how long you're willing to say it."
+            "text": "Then the answer to SOURCED and ACCOUNTS is no, and the tool will say so. \"Strategic\" is what people call a partnership before it's produced anything."
           }
         },
         {
@@ -125,17 +125,11 @@
     <h2>What a real partner actually does</h2>
     <p class="lede">Everybody gets along. There have been plenty of meetings, maybe a joint slide deck. The question
       is whether anyone can point to the account where the two companies are actually trying to win something together.</p>
-    <p><strong>SOURCED: Have they brought you anything?</strong> A partner who has never handed you an opportunity
-      you didn't already have is a partner you're working for. One sourced deal is worth a year of joint webinars.</p>
-    <p><strong>ACCOUNTS: Is there a named account, right now?</strong> Not a target list. A customer, a requirement,
-      two sellers who know each other's names. If nobody can name one, the partnership exists on a slide.</p>
-    <p><strong>OWNER: Does someone on their side get paid when you win?</strong> Partnerships run on comp plans, not
-      goodwill. If nobody at the partner carries a number that includes you, your deals are a favor, and favors do
-      not scale.</p>
-    <p><strong>PLAN: Is there a plan with dates?</strong> A deck says what the partnership could be. A plan says three
-      accounts, two dates, and who owns each one. If it doesn't fit on a page, it's a deck.</p>
-    <p><strong>PULL: Would they call you first?</strong> Stop calling for two weeks and see what happens. A real
-      partner notices. The rest of them were waiting for you to do the work.</p>
+    SOURCED: Have they brought you anything? If they've never handed you a deal you didn't already have, you're working for them. One sourced deal is worth more than a year of joint webinars.
+    ACCOUNTS: Is there a named account, right now? Not a target list. A customer, a requirement, two sellers who know each other's names. If nobody can name one, it's a partnership on paper.
+    OWNER: Does someone on their side get paid when you win? Partnerships mostly run on comp plans. If nobody at the partner carries a number that includes you, every deal is a favor, and people run out of favors.
+    PLAN: Is there a plan with dates? A plan is three accounts, two dates and who owns each one. If it takes a deck to explain, it probably isn't a plan.
+    PULL: Would they call you first? Stop calling for two weeks and see what happens. A real partner will notice. Most won't.
   </div>
 </section>
 
@@ -143,8 +137,7 @@
   <div class="band-inner">
     <h2>Four kinds of partner</h2>
     <p><strong>Real.</strong> Deals are moving with both names on them. Feed it.</p>
-    <p><strong>All talk.</strong> Lots of activity, no deals. Everybody is busy and nothing closes. Most
-      partnerships live here, and most of them never leave.</p>
+    All talk. Lots of activity, no deals. Most partnerships end up here and stay here.
     <p><strong>Neighbors.</strong> You get along. That's all that's happening.</p>
     <p><strong>Just promises.</strong> Plenty of meetings and co-branded slides, no deals. Stop
       spending time on it and say so.</p>
@@ -176,7 +169,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I built these because I wish we'd had them. Most are free. If the problem needs an actual conversation, I do that too.</p>
+      <p>I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -186,11 +179,11 @@
   <div class="band-inner">
     <h2 id="faq-h">Questions</h2>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
-      <div class="body">No. The five answers are scored in your browser. No account, no CRM connection, no API call. The site counts page views with Google Analytics and never sends your answers. Nothing else leaves the page unless you choose to share a result.</div></details>
+      <div class="body">No. Your answers get scored right here in your browser. There's no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.</div></details>
     <details class="exp"><summary>Does this work for the partner running it on me?</summary>
       <div class="body">Yes. Run it on each other and compare answers. The disagreement is probably the useful part.</div></details>
     <details class="exp"><summary>What about a partner that's strategic but not producing yet?</summary>
-      <div class="body">Then the answer to SOURCED and ACCOUNTS is no, and the tool will say so. Strategic is what people call a partnership before it has produced anything. The question is how long you're willing to say it.</div></details>
+      <div class="body">Then the answer to SOURCED and ACCOUNTS is no, and the tool will say so. "Strategic" is what people call a partnership before it's produced anything.</div></details>
     <details class="exp"><summary>Can I use it on a distributor or an SI?</summary>
       <div class="body">Yes. The questions don't care which direction the paper flows. They care whether anyone on the other side is accountable for a deal with your name on it.</div></details>
   </div>
@@ -204,7 +197,7 @@
 <script src="../check.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-23.1700';
+window.QB_BUILD = '2026-10-24.0900';
 CheckTool({
   aside: (s, a) => ['accounts', 'pull'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo ranks which primes actually pass work to subs and which resellers hold the right vehicles.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=partner&utm_content=verdict', label: 'Find a better route on fedhoo' } : null,
   slug: 'partner', name: 'Partner Check', url: 'https://quotabird.com/partner/',
@@ -241,7 +234,7 @@ CheckTool({
   handoff: (s) => s.total >= 55
     ? { overline: 'Is there a deal inside this partnership?', text: 'Run it through Deal Check. A real partner deal survives the same five questions any deal does.', href: '/deal/', label: 'Check my deal' }
     : { overline: 'How much of your number is leaning on them?', text: 'If this partner is in your coverage math, the math is wrong. Pipeline Check shows you by how much.', href: '/pipeline/', label: 'Check my pipeline' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I spent six years leading federal partner sales teams at AWS and sat on the other side before that. I've seen plenty of partnerships that looked great in the QBR and produced nothing. Send me yours." },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I spent six years leading federal partner sales teams at AWS, and I sat on the partner side before that. Plenty of partnerships look great in the QBR and never produce anything. Tell me about yours." },
   dm: (s) => `Mark, ran a partner through Partner Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure what to do with it. Worth 20 minutes?`,
 });
 </script>

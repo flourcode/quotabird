@@ -77,7 +77,7 @@
           "name": "Does anything I enter leave my device?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Your answers stay in your browser. The scoring is JavaScript running on this page: no account, no database, no CRM connection, no API call. The site counts page views with Google Analytics, and that's all it sends. It never sends your answers, and it never sends the part of the link where a shared verdict lives. If you press Share, your five answers go into the link so you can send the result to somebody, and that's the only time they leave the page. It never asks for the customer or the dollar value, because it doesn't need them and your employer may not want them typed anywhere."
+            "text": "Your answers stay in your browser. The scoring runs right on this page, so there's no account, no database and nothing sent to your CRM. I count page views with Google Analytics, and that's all that gets sent. If you hit Share, your five answers go into the link so you can send it to somebody. It never asks for the customer or the dollar value, because it doesn't need them and your employer probably wouldn't want them typed anywhere."
           }
         },
         {
@@ -85,7 +85,7 @@
           "name": "How is the score calculated?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Each answer maps to a number (yes 92, sort of 50, no 8), weighted money 26, power 22, customer 20, path 16, now 16. Three caps apply when money, power or customer is a flat no, and no deal with any no can score above 74. Thresholds: healthy from 75, hopium from 55, at risk from 35, not a deal yet below. The number you see on the card is simpler: how many of the five you can defend, with a sort of counting as a half. It's a heuristic, not a forecast model: use it to find the hole, not to set the number."
+            "text": "Each answer maps to a number (yes 92, sort of 50, no 8), weighted money 26, power 22, customer 20, path 16, now 16. Three caps apply when money, power or customer is a flat no, and no deal with any no can score above 74. Thresholds: healthy from 75, hopium from 55, at risk from 35, not a deal yet below. The number you see on the card is simpler: how many of the five you can defend, with a sort of counting as a half. It's a rough heuristic. Use it to find the hole, and don't set your number with it."
           }
         },
         {
@@ -109,7 +109,7 @@
           "name": "What does Pressure test do?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "It plays the manager. Three hard questions drawn from your weakest answer, one at a time, and you say whether you could answer each one. If you can't answer two of three about the money, that deal doesn't belong in commit yet. Better to learn that here than in the meeting."
+            "text": "It plays the manager. Three hard questions drawn from your weakest answer, one at a time, and you say whether you could answer each one. If you can't answer two of three about the money, that deal doesn't belong in commit yet."
           }
         }
       ]
@@ -148,10 +148,7 @@
     <h2 id="how-h">Where deals break</h2>
     <p class="lede">Most federal pipeline dies in one of these five places. Usually the seller already knows which one. This just makes you say it out loud.</p>
     <h3>CUSTOMER: Has anyone said out loud that they want this?</h3>
-    <p>A requirement you inferred from a good meeting isn't a requirement. What you're looking for is the
-      customer describing the problem in their own words, ideally in writing, and deciding something has to
-      change. If the only person who has articulated the need is you, we may be inventing it. Is there pull,
-      or are we pushing?</p>
+    <p>A good meeting doesn't give you a requirement. You want the customer describing the problem in their own words, ideally in writing, and deciding something has to change. If you're the only one who's put the need into words, you might be inventing it. Is there pull, or are you pushing?</p>
     <h3>MONEY: Where does the funding come from?</h3>
     <p>Federal money has a name: an appropriation, a program line, an O&amp;M budget, a color of money with a
       fiscal year attached. <strong>"They have budget"</strong> with no source is the most common thing a
@@ -159,16 +156,9 @@
       vehicle, and still no money that can be applied to the buy. The question your manager will ask is who
       told you, and what is it called.</p>
     <h3>POWER: Have you met anyone who can make it happen?</h3>
-    <p>Understanding the requirement and controlling the acquisition are different jobs, often different
-      people, sometimes different buildings. Sellers mistake access for influence and enthusiasm for
-      authority; a technical evaluator can love you and still not move a dollar. Progress means a program
-      manager, a contracting officer, or a budget holder, somebody who can cause something to happen when
-      it gets difficult.</p>
+    <p>Understanding the requirement and controlling the purchase are usually different jobs, often different people, sometimes different buildings. A technical evaluator can love you and still not move a dollar. You're looking for a program manager, a contracting officer or a budget holder, somebody who can make something happen when it gets difficult.</p>
     <h3>PATH: How would they actually buy it?</h3>
-    <p>Every federal purchase arrives through a mechanism: an existing contract, a GWAC or IDIQ, a task order,
-      a set-aside, a recompete, a sole-source justification. If nobody has named the vehicle and the
-      contracting office, the timeline is guesswork, because acquisition lead time is the timeline. Until
-      somebody can describe how a purchase order eventually appears, you have demand rather than a deal.</p>
+    <p>Every federal purchase arrives through a mechanism: an existing contract, a GWAC or IDIQ, a task order, a set-aside, a recompete, a sole-source justification. If nobody has named the vehicle and the contracting office, the timeline is guesswork, because acquisition lead time is the timeline. If nobody can tell you how a purchase order actually gets cut, what you have is interest.</p>
     <h3>NOW: What forces action this year?</h3>
     <p>Agencies are very good at doing nothing for another year. A forcing function is specific: a contract
       expiring, a product going end of life, a mandate with a date, an incident, or money that expires
@@ -226,7 +216,7 @@
     <img src="../mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I carried a number, managed people who did, and spent six years leading federal partner sales teams at AWS. I built these because I wish we'd had them. Most are free. If the problem needs an actual conversation, I do that too.</p>
+      <p>I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
       <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
@@ -236,17 +226,9 @@
   <div class="band-inner">
     <h2 id="faq-h">Questions</h2>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
-      <div class="body">Your answers stay in your browser. The scoring is JavaScript running on this page:
-        no account, no database, no CRM connection, no API call. The site counts page views with Google
-        Analytics, and that's all it sends. It never sends your answers, and it never sends the part of
-        the link where a shared verdict lives. If you press Share, your five answers go into the link so
-        you can send the result to somebody, and that's the only time they leave the page. It never asks for the customer or the dollar value, because it doesn't need them and your employer may not want them typed anywhere.</div></details>
+      <div class="body">Your answers stay in your browser. The scoring runs right on this page, so there's no account, no database and nothing sent to your CRM. I count page views with Google Analytics, and that's all that gets sent. If you hit Share, your five answers go into the link so you can send it to somebody. It never asks for the customer or the dollar value, because it doesn't need them and your employer probably wouldn't want them typed anywhere.</div></details>
     <details class="exp"><summary>How is the score calculated?</summary>
-      <div class="body">Each answer maps to a number (yes 92, sort of 50, no 8), weighted money 26, power 22,
-        customer 20, path 16, now 16. Three caps apply when money, power or customer is a flat no, and no deal
-        with any no can score above 74. Thresholds: healthy from 75, hopium from 55, at risk from 35,
-        not a deal yet below. The number you see on the card is simpler: how many of the five you can
-        defend, with a sort of counting as a half. It's a heuristic, not a forecast model: use it to find the hole, not to set the number.</div></details>
+      <div class="body">Each answer maps to a number (yes 92, sort of 50, no 8), weighted money 26, power 22, customer 20, path 16, now 16. Three caps apply when money, power or customer is a flat no, and no deal with any no can score above 74. Thresholds: healthy from 75, hopium from 55, at risk from 35, not a deal yet below. The number you see on the card is simpler: how many of the five you can defend, with a sort of counting as a half. It's a rough heuristic. Use it to find the hole, and don't set your number with it.</div></details>
     <details class="exp"><summary>Is this AI?</summary>
       <div class="body">No. It's a fixed rubric: each answer maps to a number, the numbers are weighted, three caps
         apply, and thresholds produce the verdict. The weights are visible in the page source. A language model
@@ -257,10 +239,7 @@
         <strong>At risk:</strong> something important is still an assumption.
         <strong>Not a deal yet:</strong> this is a conversation, not a deal.</div></details>
     <details class="exp"><summary>What does Pressure test do?</summary>
-      <div class="body">It plays the manager. Three hard questions drawn from your weakest answer, one at a
-        time, and you say whether you could answer each one. If you can't answer two of three
-        about the money, that deal doesn't belong in commit yet. Better to learn that here than in
-        the meeting.</div></details>
+      <div class="body">It plays the manager. Three hard questions drawn from your weakest answer, one at a time, and you say whether you could answer each one. If you can't answer two of three about the money, that deal doesn't belong in commit yet.</div></details>
   </div>
 </section>
 
@@ -684,7 +663,7 @@ function mountMark(text) {
   const dm = text || dmText(s);
   w.innerHTML = `
     <h3>Stuck on ${esc(s.weak.n.toLowerCase())}?</h3>
-    <p>I'm Mark. I've been the seller defending the deal and the manager poking holes in it. Send me yours.</p>
+    <p>I'm Mark. I've been the seller defending the deal, and later the manager poking holes in it. Tell me about yours.</p>
     <div class="preview mono" title="Tap to select">${esc(dm)}</div>
     <button class="btn btn-primary btn-lg btn-full" id="dmBtn" type="button" style="margin-top:14px;">Copy this &amp; DM me</button>
     <div class="btn-row center" style="margin-top:4px;">
