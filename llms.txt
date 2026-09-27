@@ -52,6 +52,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 ## Field Notes
 
+- [Your quota is crazy. Now prove it.](https://quotabird.com/notes/prove-the-quota-is-crazy/): Saying it feels too high has never moved a number. Math sometimes does.
 - [3X is a win rate in disguise](https://quotabird.com/notes/3x-is-a-win-rate/): Everybody plans to it. Almost nobody asks where it came from.
 - [Why I don't start with BANT or MEDDIC](https://quotabird.com/notes/why-not-bant-or-meddic/): They're useful when you're working a deal. The trouble is the moment before that.
 - [If three people failed in the same territory](https://quotabird.com/notes/three-people-same-patch/): You probably don't have three bad reps.

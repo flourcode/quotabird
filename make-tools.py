@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-25.1500'
+BUILD = '2026-10-25.1700'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -834,6 +834,39 @@ for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION):
 # Short reads in Mark's voice. Each ends with the tool that does the math.
 # Add a note here, run the script, commit notes/<slug>/index.html.
 NOTES = [
+    dict(slug='prove-the-quota-is-crazy', title='Your quota is crazy. Now prove it.',
+         dek="Saying it feels too high has never moved a number. Math sometimes does.",
+         body='''    <p class="lede">Saying the quota feels too high has never moved a number. I've watched plenty of managers try.
+      What sometimes moves it is math that's hard to wave off.</p>
+    <h3>The best time to fight it is the year before</h3>
+    <p>If you wait until January to argue about quota, you're already late. The number gets built during planning, by
+      people who usually know less about your territory than you do. If you manage a team, get into that room while
+      somebody still has the spreadsheet open, and bring what you know:</p>
+    <ul>
+      <li>Last year's sales, and the monthly and quarterly run rate</li>
+      <li>Qualified pipeline, your real win rate, and your average deal size</li>
+      <li>Headcount and ramp time. A rep hired in March doesn't sell much until summer.</li>
+      <li>The renewal base, and what in it is actually at risk</li>
+      <li>What partners brought in last year, as opposed to what they promised</li>
+      <li>When your customers' money moves (for federal, that's the fiscal year, not your quarter)</li>
+      <li>What changed in the market, and what changed in the territory</li>
+    </ul>
+    <p>Then ask one question: what has to be true for this number to be reasonable? Make somebody say it out loud.
+      Half the time nobody has actually thought about it.</p>
+    <h3>If the number is already set</h3>
+    <p>Don't walk in upset. Walk in with a model, something like this:</p>
+    <div class="bridge">Last year we did $8.2M.<br>Our current run rate gets us to $8.7M.<br>Qualified pipeline supports
+      $9.4M at our historical win rate.<br>We lost a rep, added no territory, and the new hire won't be productive
+      until Q3.<br>The quota is $12M.<br><b>Show me the bridge.</b></div>
+    <p>Then stop talking. Either somebody fills the gap with something real (new territory, a renewal you didn't know
+      about, a partner with names attached), or the number moves, or at least everybody knows where it came from. Any of
+      those beats signing up quietly and explaining the miss in October.</p>
+    <h3>What doesn't work</h3>
+    <p>Complaining about it in the team meeting. Telling your boss the reps are upset. Saying "we'll find a way," which I
+      used to say, and then spent the year explaining. And don't let anybody close the gap on paper by assuming AI will
+      make the reps more productive. It can write the follow-up email. It can't make the customer care.</p>
+    <p>If only 20% of the team hits quota year after year, it's probably not a performance problem.</p>''',
+         tool=('/quota/', 'Quota Check', 'does the multiple and the implied rate in about ten seconds. Pipeline Check and Territory Check cover the rest of the bridge.')),
     dict(slug='3x-is-a-win-rate', title='3X is a win rate in disguise',
          dek='Everybody plans to it. Almost nobody asks where it came from.',
          body='''    <p class="lede">Everybody plans to 3X. Almost nobody asks why.</p>
@@ -847,7 +880,7 @@ NOTES = [
          dek="They're useful when you're working a deal. The trouble is the moment before that.",
          body='''    <p class="lede">I've used both, and plenty of versions of both. They're useful when you're working a deal.
       The trouble is the moment before that.</p>
-    <p>I've used both. I just don't start there.</p>
+    <p>I just don't start there.</p>
     <p>BANT gets you close, but its need is usually something the seller diagnosed, and its timeline is a date in
       the CRM rather than a reason anything happens. It also skips the biggest federal question: how does a
       purchase order actually appear? Contract vehicle, contracting office, acquisition lead time. That's the
@@ -1018,7 +1051,8 @@ CALCS = [
           dict(id='base',kind='money',label='Base salary',example='$150,000'),dict(id='variable',kind='money',label='Target variable at 100%',example='$130,000'),
           dict(id='quota',kind='money',label='Your quota for the year',example='$6,000,000'),dict(id='closed',kind='money',label='What you closed last year',example='',placeholder='$0 (optional)')],
   card=dict(headline=['Is my quota crazy?',''],dek='Your number against your on-target earnings, judged by what it\'s measured in.',pillars=['OTE','MULTIPLE','RATE','GROWTH']),
-  bands=[('how','Why the multiple depends on what you sell','''    <p class="lede">Divide your quota by your on-target earnings. That one number tells you a lot about the plan, once you know what the quota is measured in.</p>
+  bands=[('pushback','If the number is crazy','''    <p class="lede">Saying it feels too high won't move it. Bring the math: last year's sales, your run rate, qualified pipeline at your real win rate, headcount and ramp time. Then ask what has to be true for the number to be reasonable.</p>
+    <p>Better yet, get into planning the year before, while somebody still has the spreadsheet open. <a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> walks through it, with an example you can steal.</p>'''),('how','Why the multiple depends on what you sell','''    <p class="lede">Divide your quota by your on-target earnings. That one number tells you a lot about the plan, once you know what the quota is measured in.</p>
     <p>For SaaS reps carrying new bookings, the published benchmarks agree: 4 to 6 times OTE, with 5 as the steady state and enterprise roles a little higher. That range is really a commission rate in disguise. At a 50/50 pay mix and roughly 10% on new ARR, quota works out to about five times OTE. Below 3 is unusual and usually means a ramp, an overlay, or a plan with a condition in it. Above 8 the plan is asking for something the territory may not have.</p>
     <p>Cloud consumption is a different animal, and it's the one most people on this site carry. The number is incremental revenue growth on a book, paid at a fraction of a percent, so the same arithmetic gives 15 to 30 times OTE at a big cloud provider and higher in strategic accounts. A rep carrying a $6M growth target on a $280K OTE is at 21×, and in my experience that's ordinary, not crazy. Whole-book targets (retention plus growth on the full run rate) run higher still, 40 to 80 times OTE, because most of that revenue would have happened anyway.</p>
     <p>The number to watch across all three is the implied rate: your variable divided by your quota. If it's well under what your peers are paid on the same kind of number, the plan is heavier than the multiple alone suggests. And if you closed last year, the growth the new number implies is the real measure of how much harder this year is. Whether the territory can produce it is <a href="/territory/">Territory Check</a>; how much pipeline it takes is <a href="/pipeline/">Pipeline Check</a>.</p>'''),
@@ -1547,7 +1581,7 @@ KIT_BODY = '''
     <p>I learned another one the expensive way. When somebody above me handed me a number I couldn't see, I used to
       say, "We'll find a way." Sometimes we did. Sometimes I spent the rest of the year explaining that sentence. Now
       I'd say, "Here's what I can commit to with what we have. Here's what would have to be true to get to your
-      number." Then I show the math.</p>
+      number." Then I show the math. Longer version: <a href="/notes/prove-the-quota-is-crazy/">quotabird.com/notes/prove-the-quota-is-crazy</a></p>
     <div class="sheet">
       <h3>Worksheet: The five-minute boss update</h3>
       <p class="sheet-meta">Week of __________</p>
@@ -1642,7 +1676,7 @@ KIT_BODY = '''
 KIT_CTA = '''
   <section class="kit-cta" aria-labelledby="kit-cta-h">
     <h2 id="kit-cta-h">Sometimes you just need another set of eyes</h2>
-    <p>I'm Mark. I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. If you're staring at a deal, a forecast, a rep problem or a number that doesn't make sense, I'm happy to talk it through.</p>
+    <p>I'm Mark. I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. If you're staring at a deal, a forecast, a rep problem or a number that doesn't make sense, tell me about it.</p>
     <p class="kit-cta-terms">A free twenty-minute call, no pitch.</p>
     <div class="btn-row kit-cta-row">
       <a class="btn btn-primary btn-lg" id="kitBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=kit&amp;utm_content=kit_cta" target="_blank" rel="noopener">Chat with Mark</a>
@@ -1747,7 +1781,7 @@ LEADER_BODY = '''
   <section class="kit-ch" id="l-rooms">
     <h2>5. Get into the right rooms</h2>
     <p>Start close to the work: your boss, your boss's peers, and the leaders you depend on in partners, marketing, finance and customer success. Then go wider.</p>
-    <p>The rooms you want are the ones where somebody is making decisions about your world without you: territories, headcount, your team's story, customers, industry stuff.</p>
+    <p>The rooms you want are the ones where somebody is making decisions about your world without you: territories, headcount, your team's story, customers, industry stuff. Quota planning is the big one. How to walk in with the math: <a href="/notes/prove-the-quota-is-crazy/">quotabird.com/notes/prove-the-quota-is-crazy</a></p>
     <p>Usually the way in is simple: help somebody who's already in the room. Bring the template, the analysis, or the answer they keep getting asked for.</p>
   </section>
 
@@ -1933,6 +1967,7 @@ SELLER_BODY = '''
   <section class="kit-ch" id="s-behind">
     <h2>7. You're behind the number</h2>
     <p>Stop treating every deal the same. Three piles: can close, can close with help, can't close this period. Spend your time on the middle pile and tell your manager exactly what help you need.</p>
+    <p>And if the number itself is the problem, don't just complain about it. Show your manager the math: <a href="/notes/prove-the-quota-is-crazy/">quotabird.com/notes/prove-the-quota-is-crazy</a></p>
     <div class="sheet">
       <h3>Worksheet: Quarter rescue plan</h3>
       <p class="sheet-meta">Days left __________</p>
@@ -1963,7 +1998,7 @@ SELLER_BODY = '''
 SELLER_CTA = '''
   <section class="kit-cta" aria-labelledby="seller-cta-h">
     <h2 id="seller-cta-h">Sometimes you just need another set of eyes</h2>
-    <p>I'm Mark. I spent a lot of years carrying a number before I ever managed anybody. If you're staring at a deal, a forecast or a number that doesn't make sense, I'm happy to talk it through.</p>
+    <p>I'm Mark. I spent a lot of years carrying a number before I ever managed anybody. If you're staring at a deal, a forecast or a number that doesn't make sense, tell me about it.</p>
     <p class="kit-cta-terms">A free twenty-minute call, no pitch.</p>
     <div class="btn-row kit-cta-row">
       <a class="btn btn-primary btn-lg" id="sellerBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=seller&amp;utm_content=seller_cta" target="_blank" rel="noopener">Chat with Mark</a>

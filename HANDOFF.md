@@ -1,22 +1,20 @@
 # QuotaBird — handoff
 
-**Current build: 2026-10-25.1500** This file has two parts. Part one is the site as it is today; work from it. Part two is an archive of how it got here; read it for the reasoning, never as instructions.
+**Current build: 2026-10-25.1700** This file has two parts. Part one is the site as it is today; work from it. Part two is an archive of how it got here; read it for the reasoning, never as instructions.
 
 ## What QuotaBird is
 
-quotabird.com, a shelf of free sales tools by Mark Flournoy for sellers and sales managers (mostly cloud, AI, cyber and data, many selling to government). Nine question tools (five yes / sort of / no questions, a verdict, one thing to go do), four calculators, three printable Field Kits, six Field Notes, four Sales Math pages, About, Stuff I Like, and Ask Mark, which is the consulting funnel. No login, no AI, nothing stored, nothing typed into a system a boss can see. Not affiliated with the U.S. government or Amazon.
+quotabird.com, a shelf of free sales tools by Mark Flournoy for sellers and sales managers (mostly cloud, AI, cyber and data, many selling to government). Nine question tools (five yes / sort of / no questions, a verdict, one thing to go do), four calculators, three printable Field Kits, seven Field Notes (including "Your quota is crazy. Now prove it.", linked from Quota Check and all three kits), four Sales Math pages, About, Stuff I Like, and Ask Mark, which is the consulting funnel. No login, no AI, nothing stored, nothing typed into a system a boss can see. Not affiliated with the U.S. government or Amazon.
 
 **Positioning:** *A little help with your quota.* Pick the problem you've got. The tools earn trust by being useful and blunt; the money is Mark's time (a free twenty-minute call first, then Manager Wingman or a Team session).
 
 ## QuotaBird voice
 
-Mark is retired, experienced, mildly jaded, curious, and likes helping people get unstuck. He sounds like a former sales leader talking to one person, not a copywriter writing for an audience.
+**Tone reference: the Stuff I Like page.** Mark is older, mildly grumpy, somewhat jaded, dry, concise, and occasionally funny. Seen a lot, skeptical by default, mildly amused by how sales organizations behave. He does not perform wisdom, optimism, warmth, toughness, or expertise. He assumes the reader is an adult who has been in sales a while. He can call something stupid, corny, flaky, ugly, or a bad idea when that's the simplest description. Humor comes as an aside, not a punchline ("Twenty-some minutes and you know enough about the economy to sound less surprised."). Advice sounds earned, not packaged. Understatement is fine ("Pretty much what it says."), and some sentences can be dismissive ("Your library or podcast app can find them."). Not every page needs to reveal a philosophy; sometimes the answer is "this pipeline is thin."
 
-Short is good, but don't manufacture punchiness. Avoid tidy three-sentence conclusions, résumé triplets, "That matters," "the useful part," "here's why," "the point is," and neat X-not-Y constructions. Don't explain the joke. Don't make every paragraph land.
+**Mark knows bullshit when he sees it.** Low patience for fake pipeline, fake urgency, fake partner activity, fake coaching and management theater. Especially skeptical of sales programs that ask more from reps while making comp plans worse, quotas less attainable and territories less coherent. He does not treat AI as magic: if it helps a rep research, write or prepare faster, fine; if a company thinks it can replace trust, judgment, customer context, negotiation or an experienced seller with a bot, he's skeptical. He sides with evidence over management fashion. He is not anti-company, anti-management, or anti-AI. He is anti-bullshit.
 
-Mild profanity-adjacent words like "suck," "crazy," "ugly," and "hopium" are fine when they sound natural. No weapons/death/kill language (one deliberate exception on About, Mark's own line; don't add more).
-
-Prefer the thing a seller would actually say: "Does this territory suck?" over "Assess territory viability."
+Short is good, but don't manufacture punchiness. Avoid tidy three-sentence conclusions, résumé triplets, "That matters," "the useful part," "here's why," "the point is," and neat X-not-Y constructions. Don't explain the joke. Don't make every paragraph land. Mild words like "suck," "crazy," "ugly," "stupid," and "hopium" are fine when they sound natural. No weapons/death/kill language (one deliberate exception on About, Mark's own line; don't add more). Prefer the thing a seller would actually say: "Does this territory suck?" over "Assess territory viability." Keep "QuotaBird is mostly stuff I wish we'd had back then."
 
 **The coffee test:** would Mark say it to one person over coffee? If it reads like website copy, a LinkedIn bio, a keynote intro or a founder statement, rewrite it. Remove performative summary sentences: if a passage compresses credentials, motivation and an offer into a neat run of short declaratives, rewrite it as something a person would say out loud. One plain thought at a time, uneven rhythm, specific words, mild informality. If a sentence sounds designed to prove credibility, simplify it until the facts carry it. Model line (Made by Mark): "I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through."
 
@@ -71,7 +69,7 @@ One font (Inter, self-hosted). One type scale: 11, 13, 15, 17, 22, 28, 36 (h1 36
 - **Edit:** `make-tools.py` (every generated page's copy and structure), `home.src.html`, `pipeline.src.html`, `deal/index.html`, `check.js`, `calc.js`, `analytics.js`, `site.css`, `partials/*.html`, `404.html`, `make-card.py`, `make-social.py`.
 - **Never edit by hand:** `index.html`, every other `*/index.html`, `sitemap.xml`, `llms.txt`, `ai-catalog.json`, the hashed `site.<hash>.css` / `check.<hash>.js` / `calc.<hash>.js` / `analytics.<hash>.js` (the build writes them and links every page to them; stale ones are removed), `card*.jpg`.
 - **Build:** `python3 make-tools.py` (regenerates all pages, sitemap, llms.txt, ai-catalog, fingerprints, share-tag hygiene). Cards: `python3 make-card.py <slug|home|banner>` then rebuild so fingerprints match. Collateral: `python3 make-social.py`. Copy workbook: `python3 extract-copy.py`.
-- **Deploy:** AWS Amplify from GitHub; `amplify.yml` strips the build tools and sources; `customHttp.yml` caches css/js for a year (safe: names change) and html not at all; rewrites in `amplify-rewrites.json` (36 rules, 404 catch-all last). New pages need a `/<slug>` → `/<slug>/` rule.
+- **Deploy:** AWS Amplify from GitHub; `amplify.yml` strips the build tools and sources; `customHttp.yml` caches css/js for a year (safe: names change) and html not at all; rewrites in `amplify-rewrites.json` (37 rules, 404 catch-all last). New pages need a `/<slug>` → `/<slug>/` rule.
 - **Never edit the live site directly;** the next deploy overwrites it. Send copy changes through the build (or the workbook).
 
 ## What not to change
