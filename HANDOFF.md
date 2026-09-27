@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-21.1300**
+**Current build: 2026-10-21.1500**
 
 ## Naming: checks, not kills
 
@@ -1892,3 +1892,13 @@ squircles (distinctive, and already the brand across card and banner); the
 shorter shape recovers most of the space: the shelf is about 12% shorter, an
 iPhone SE reads six problems before scrolling instead of three, and desktop
 shows all fifteen on the first screen. Every title fits from 320px up.
+
+**2026-10-21.1500** — **social and email collateral**, `python3 make-social.py`
+(writes `social/`, which the deploy strips): six 1080×1350 LinkedIn post images
+(the shelf, Deal, 3X is a win rate, Quota, Rep, the Manager's kit), a 7-slide
+*Where deals break* carousel PDF for a LinkedIn document post, a 600×150 email
+signature, and `QuotaBird-posts-and-emails.md` with eight posts, four emails and
+the signature. Same fonts, colours and 3:4 covers as the site. Every link is
+UTM-tagged (`utm_source` linkedin or email; `utm_campaign` per post), so GA4's
+Traffic acquisition report shows which post or email sent each visitor. Re-run
+after cover or wording changes.
