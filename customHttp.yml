@@ -19,11 +19,11 @@ customHeaders:
   - pattern: '*.css'
     headers:
       - key: 'Cache-Control'
-        value: 'public, max-age=3600'
+        value: 'public, max-age=31536000, immutable'
   - pattern: '*.js'
     headers:
       - key: 'Cache-Control'
-        value: 'public, max-age=3600'
+        value: 'public, max-age=31536000, immutable'
   - pattern: '*.woff2'
     headers:
       - key: 'Cache-Control'

@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-24.1700'
+BUILD = '2026-10-24.2100'
 TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
@@ -985,6 +985,7 @@ idx = note_head('Field Notes', 'Short reads on sales things people repeat withou
   <header class="appbar"></header>
 </div>
 <article class="note">
+  <span class="overline">QuotaBird</span>
   <h1>Field Notes</h1>
   <p class="dek">Short reads on sales things people repeat without thinking about much. Most end with a tool that does the math.</p>
   ''' + note_list() + '''
@@ -2061,10 +2062,14 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
     <a class="btn btn-primary btn-lg" id="askBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=ask&amp;utm_content=ask" target="_blank" rel="noopener">Book 20 minutes</a>
     <a class="ask-alt" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">or DM me on LinkedIn</a>
   </div>
-  <p class="ask-fine">It's free. Pick a time, send me a line about what's going on, and I'll read up before we talk.</p>
+  <ol class="how">
+    <li><b>Pick a time.</b> Add one line about what's going on.</li>
+    <li><b>I read it before we talk.</b> No deck needed.</li>
+    <li><b>Twenty minutes, free.</b> If I can't help, I'll say so in the first five.</li>
+  </ol>
 
-  <div class="ask-me">
-    <img src="/mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
+  <div class="who ask-me">
+    <img src="/mark.jpg" alt="Mark Flournoy" width="96" height="96" loading="lazy" decoding="async">
     <p>I'm Mark. I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number
       myself. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've
       probably never heard of.</p>
@@ -2338,6 +2343,24 @@ def _pri(p): return '1.0' if p == 'index.html' else '0.6' if p.startswith('notes
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     + ''.join(f'  <url><loc>{_loc(p)}</loc><lastmod>{BUILD[:10]}</lastmod><priority>{_pri(p)}</priority></url>\n' for p in _urls) + '</urlset>\n')
 print('sitemap', len(_urls), 'urls')
+
+# ── fingerprinted stylesheet and scripts, so a deploy can never serve stale CSS or JS with new HTML ──
+# site.css -> site.<hash>.css (and check.js, calc.js, analytics.js likewise); every page links to the hashed name.
+# The plain files stay for editing; only the current hashed copies are kept.
+import hashlib as _hl, glob as _g
+_ASSETS = {}
+for _f in ('site.css', 'check.js', 'calc.js', 'analytics.js'):
+    _h = _hl.sha1(open(_f, 'rb').read()).hexdigest()[:8]; _base, _ext = _f.rsplit('.', 1)
+    _name = f'{_base}.{_h}.{_ext}'
+    for _old in _g.glob(f'{_base}.*.{_ext}'):
+        if _old != _name: os.remove(_old)
+    open(_name, 'wb').write(open(_f, 'rb').read()); _ASSETS[_f] = _name
+for _p in ['index.html', '404.html'] + _g.glob('*/index.html') + _g.glob('*/*/index.html'):
+    _s = open(_p, encoding='utf-8').read(); _o = _s
+    for _f, _name in _ASSETS.items():
+        _s = re.sub(r'((?:href|src)=")((?:\.\./)*|/?)' + re.escape(_f.rsplit('.', 1)[0]) + r'(?:\.[0-9a-f]{8})?\.' + _f.rsplit('.', 1)[1] + '"', lambda mm: mm.group(1) + mm.group(2) + _name + '"', _s)
+    if _s != _o: open(_p, 'w', encoding='utf-8').write(_s)
+print('assets:', ', '.join(_ASSETS.values()))
 
 # ── share-tag hygiene, run on every built page ──
 # 1. LinkedIn wants 100+ characters: a short og/twitter description falls back to the page's search description.

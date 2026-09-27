@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-24.1700**
+**Current build: 2026-10-24.2100**
 
 ## Naming: checks, not kills
 
@@ -2068,3 +2068,22 @@ check.js, calc.js, Deal Check, Pipeline Check):
 - New events: `<slug>_book` (Deal: `book`), `<slug>_book_after_grill`; `*_dm_copy`
   unchanged.
 Earlier today: Ask Mark rebuilt; About opens straight on Mark.
+
+**2026-10-24.1900** — deploy fix and consistency pass. Root cause of the
+"hack job" screenshots: stale cached CSS with new HTML (see Architecture).
+Then: Mark's photo floats left with a straight text edge on About and Ask
+Mark (same size, round, no shape-outside); one intro style (22px, ink-2) on
+every page (article pages had a `.note p` rule overriding it to 17px black);
+one section-heading size (22px, was 28 on tool pages); the QuotaBird label
+above Field Notes like every other page. Ask Mark's button still on the
+first screen of an iPhone SE. Kits still 4/8/3.
+
+**2026-10-24.2100** — UX/UI sources read in full (Web Design Principles, perfect
+UI, A complete breakdown, ux2 (A/B tests), ux_ui (psychology)). Applied where
+they fit: Ask Mark has "how the call works" back as a three-step row (the
+paywall test: a plain timeline plus a safety-net line converts; ours ends "If
+I can't help, I'll say so in the first five"). Already in place and confirmed
+against the sources: value before any ask (no gates), smart defaults (grey
+examples), progress never at zero, one number per verdict, the visitor's own
+verdict pre-filled into Calendly, no fake urgency or scarcity. Not applied:
+price anchoring (no prices yet; don't fake a reference price later).
