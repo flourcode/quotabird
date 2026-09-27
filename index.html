@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<link rel="preload" href="/gsf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>QuotaBird: Is Your Quota Crazy?</title>
 <meta name="description" content="Is your quota crazy? Maybe. Check it against last year&#39;s sales, run rate, pipeline, win rate, territory and headcount, then push back with evidence or build the plan to hit it.">
@@ -16,14 +16,14 @@
 <meta property="og:title" content="QuotaBird: Is your quota crazy?">
 <meta property="og:description" content="Maybe. Let&#39;s do the math: last year&#39;s sales, run rate, pipeline, win rate and headcount. Then push back with evidence, or build the plan to hit it.">
 <meta property="og:site_name" content="QuotaBird">
-<meta property="og:image" content="https://quotabird.com/card.jpg?v=e3b9d983">
+<meta property="og:image" content="https://quotabird.com/card.jpg?v=a2e21c43">
 <meta property="og:image:width" content="2400">
 <meta property="og:image:height" content="1260">
 <meta property="og:image:alt" content="Is your quota crazy? The QuotaBird shelf, with the quota book first.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="QuotaBird: Is your quota crazy?">
 <meta name="twitter:description" content="Maybe. Let&#39;s do the math: last year&#39;s sales, run rate, pipeline, win rate and headcount. Then push back with evidence, or build the plan to hit it.">
-<meta name="twitter:image" content="https://quotabird.com/card.jpg?v=e3b9d983">
+<meta name="twitter:image" content="https://quotabird.com/card.jpg?v=a2e21c43">
 <meta name="twitter:image:alt" content="Is your quota crazy? The QuotaBird shelf, with the quota book first.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
@@ -197,7 +197,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="site.e96fbac8.css">
+<link rel="stylesheet" href="site.648b4ba4.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -216,35 +216,85 @@
   </header>
   <div class="front" id="front">
     <span class="overline tool-name">The quota landed</span>
-    <h1>Is your quota <span class="hl">crazy?</span></h1>
-    <p class="dek">Maybe. Let's do the math.<br>Push back or build a plan.</p>
-    <div class="front-cta">
-      <a class="btn btn-primary btn-lg" href="/quota/">Check my quota</a>
-      <a class="front-alt" href="/how-quotas-get-built/">or see how quotas get built</a>
+    <h1>Is your quota crazy?</h1>
+    <p class="dek">Maybe. Let's do the math.</p>
+    <div class="hero-calc" id="heroCalc">
+      <div class="hc-out ready" id="hcOut" aria-live="polite">
+        <div class="hc-num" id="hcNum">21×</div>
+        <div class="hc-label" id="hcLabel">Standard</div>
+        <div class="hc-line" id="hcLine">Inside the 15 to 30 I usually see for cloud consumption growth.</div>
+      </div>
+      <div class="hc-chips" role="group" aria-label="What the number is measured in">
+        <button class="chip" type="button" data-hb="saas">Bookings</button>
+        <button class="chip on" type="button" data-hb="cloud">Cloud growth</button>
+        <button class="chip" type="button" data-hb="book">Whole book</button>
+      </div>
+      <div class="hc-grid">
+        <label class="tf hc-q"><span class="tf-label">Your quota</span><input id="hcQuota" type="text" inputmode="decimal" value="$6,000,000" class="is-example"></label>
+        <label class="tf"><span class="tf-label">Base</span><input id="hcBase" type="text" inputmode="decimal" value="$150,000" class="is-example"></label>
+        <label class="tf"><span class="tf-label">Variable</span><input id="hcVar" type="text" inputmode="decimal" value="$130,000" class="is-example"></label>
+      </div>
+      <p class="hc-note" id="hcNote">Example numbers. Type yours over them.</p>
+      <a class="btn btn-primary btn-lg btn-full" id="hcGo" href="/quota/">See the whole plan</a>
     </div>
+    <script>
+    (function () {
+      var $ = function (id) { return document.getElementById(id); };
+      var basis = 'cloud', touched = {}, tracked = false;
+      var B = { saas: { name: 'new bookings', cuts: [3, 4, 6, 8, 12] }, cloud: { name: 'cloud consumption growth', cuts: [8, 15, 30, 45, 60] }, book: { name: 'a whole book', cuts: [20, 40, 80, 120, 160] } };
+      function money(s) { s = String(s || '').toLowerCase().replace(/[$,\s]/g, ''); var m = /^([0-9]*\.?[0-9]+)([km]?)$/.exec(s); if (!m) return 0; var n = parseFloat(m[1]); return m[2] === 'm' ? n * 1e6 : m[2] === 'k' ? n * 1e3 : n; }
+      function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+      function render() {
+        var q = money($('hcQuota').value), ote = money($('hcBase').value) + money($('hcVar').value), b = B[basis], c = b.cuts;
+        if (!(q > 0 && ote > 0)) { $('hcNum').textContent = '?'; $('hcLabel').textContent = 'Add your numbers'; $('hcLine').textContent = 'Quota, base and variable.'; $('hcOut').className = 'hc-out proof'; return; }
+        var m = q / ote, X = (m >= 10 ? Math.round(m) : m.toFixed(1)) + '×', std = c[1] + ' to ' + c[2], t;
+        if (m < c[0]) t = ['Low', 'proof', 'Unusually low for ' + b.name + '. Read the plan twice.'];
+        else if (m < c[1]) t = ['Favorable', 'ready', 'Below the ' + std + ' I usually see for ' + b.name + '.'];
+        else if (m <= c[2]) t = ['Standard', 'ready', 'Inside the ' + std + ' I usually see for ' + b.name + '.'];
+        else if (m <= c[3]) t = ['A stretch', 'proof', 'Above the ' + std + ' I usually see for ' + b.name + '.'];
+        else if (m <= c[4]) t = ['Aggressive', 'prove', 'Well above the ' + std + ' I usually see for ' + b.name + '.'];
+        else t = ['Crazy', 'dont', 'The plan is asking for something the territory may not have.'];
+        $('hcNum').textContent = X; $('hcLabel').textContent = t[0]; $('hcLine').textContent = t[2]; $('hcOut').className = 'hc-out ' + t[1];
+        var p = new URLSearchParams(); p.set('basis', basis);
+        [['quota', 'hcQuota'], ['base', 'hcBase'], ['variable', 'hcVar']].forEach(function (f) { if (touched[f[1]] && money($(f[1]).value) > 0) p.set(f[0], Math.round(money($(f[1]).value))); });
+        $('hcGo').href = '/quota/' + (Object.keys(touched).length || basis !== 'cloud' ? '#' + p.toString() : '');
+      }
+      ['hcQuota', 'hcBase', 'hcVar'].forEach(function (id) {
+        var el = $(id);
+        el.addEventListener('focus', function () { setTimeout(function () { el.select(); }, 0); });
+        el.addEventListener('input', function () { el.classList.remove('is-example'); touched[id] = 1; $('hcNote').textContent = ''; if (!tracked) { tracked = true; if (window.qbTrack) qbTrack('hero_calc_edit'); } render(); });
+        el.addEventListener('blur', function () { var n = money(el.value); if (n > 0 && touched[id]) el.value = fmt(n); });
+      });
+      document.querySelectorAll('[data-hb]').forEach(function (btn) { btn.addEventListener('click', function () {
+        basis = btn.getAttribute('data-hb'); document.querySelectorAll('[data-hb]').forEach(function (x) { x.classList.toggle('on', x === btn); }); render(); }); });
+      $('hcGo').addEventListener('click', function () { if (window.qbTrack) qbTrack('hero_calc_go'); });
+      render();
+    })();
+    </script>
+    <h2 class="paths-h">Push back or build a plan.</h2>
     <div class="paths">
       <a class="path" href="/how-quotas-get-built/"><span class="path-n">1</span><span class="path-t">Understand it</span><span class="path-d">Where the number probably came from, and why your boss may not even be goaled on it.</span></a>
       <a class="path" href="/quota-case/"><span class="path-n">2</span><span class="path-t">Push back</span><span class="path-d">Build the bridge from last year to this year, and find the gap nobody has explained.</span></a>
       <a class="path" href="/notes/the-number-isnt-changing/"><span class="path-n">3</span><span class="path-t">Accept it and plan</span><span class="path-d">Fine. The number's ugly. Work out what it takes to hit it.</span></a>
     </div>
-    <section class="shorts-band" aria-labelledby="shorts-h"><div class="shorts-head"><h2 id="shorts-h">Quota Shorts</h2><a class="shorts-all" href="/shorts/">All of them</a></div><div class="shorts-row" role="list"><div role="listitem"><a class="short" href="/quota/" data-short="1"><span class="short-tag">Attainment</span><span class="short-fact">48% of AEs hit quota in 2026.</span><span class="short-line">It was 66% in 2022.</span><span class="short-foot"><span class="short-src">Bridge Group, 2026</span><span class="short-go">Check my quota →</span></span></a></div><div role="listitem"><a class="short" href="/quota/" data-short="2"><span class="short-tag">The median</span><span class="short-fact">The median SaaS quota is $960K.</span><span class="short-line">On a $200K OTE.</span><span class="short-foot"><span class="short-src">Bridge Group, 2026</span><span class="short-go">Check my quota →</span></span></a></div><div role="listitem"><a class="short" href="/quota/" data-short="3"><span class="short-tag">The multiple</span><span class="short-fact">The median quota is 4.6 times OTE.</span><span class="short-line">It was 4.2 two years ago.</span><span class="short-foot"><span class="short-src">Bridge Group, 2026</span><span class="short-go">Check my quota →</span></span></a></div><div role="listitem"><a class="short" href="/how-quotas-get-built/" data-short="4"><span class="short-tag">Planning</span><span class="short-fact">Teams get 20 to 30% more quota than the company needs.</span><span class="short-line">Planners over-assign to cover misses.</span><span class="short-foot"><span class="short-src">Mostly Metrics</span><span class="short-go">How quotas get built →</span></span></a></div><div role="listitem"><a class="short" href="/how-quotas-get-built/" data-short="5"><span class="short-tag">Your boss</span><span class="short-fact">Your boss may be paid on something else.</span><span class="short-line">Growth rate, new logos, a strategic product.</span><span class="short-foot"><span class="short-go">How quotas get built →</span></span></a></div><div role="listitem"><a class="short" href="/quota-case/" data-short="6"><span class="short-tag">Ramp</span><span class="short-fact">New AEs take 6.2 months to ramp.</span><span class="short-line">A rep hired in March is a fall rep.</span><span class="short-foot"><span class="short-src">Bridge Group, 2026</span><span class="short-go">Build the bridge →</span></span></a></div><div role="listitem"><a class="short" href="/quota-case/" data-short="7"><span class="short-tag">Vacancies</span><span class="short-fact">A vacant territory still has quota.</span><span class="short-line">Somebody&#x27;s carrying it.</span><span class="short-foot"><span class="short-go">Build the bridge →</span></span></a></div><div role="listitem"><a class="short" href="/pipeline/" data-short="8"><span class="short-tag">Coverage</span><span class="short-fact">3X is a 33% win rate wearing a nicer shirt.</span><span class="short-line">Win 20% and you need 5X.</span><span class="short-foot"><span class="short-src">The math</span><span class="short-go">Check my pipeline →</span></span></a></div><div role="listitem"><a class="short" href="/quota/" data-short="9"><span class="short-tag">Cloud</span><span class="short-fact">A commit nobody uses doesn&#x27;t retire much quota.</span><span class="short-line">Cloud quotas count what customers run.</span><span class="short-foot"><span class="short-src">Microsoft Partner Center</span><span class="short-go">Check my quota →</span></span></a></div><div role="listitem"><a class="short" href="/notes/read-your-comp-plan/" data-short="10"><span class="short-tag">Comp</span><span class="short-fact">Most accelerators pay 1.5 to 2 times above quota.</span><span class="short-line">Where they start matters more than the rate.</span><span class="short-foot"><span class="short-src">Comp plan surveys, 2026</span><span class="short-go">Read your comp plan →</span></span></a></div><div role="listitem"><a class="short" href="/territory/" data-short="11"><span class="short-tag">Federal</span><span class="short-fact">46% of federal AEs say they hit quota.</span><span class="short-line">The most of any AE role. SLED is 45%.</span><span class="short-foot"><span class="short-src">RepVue, 2026</span><span class="short-go">Check my territory →</span></span></a></div></div></section>
+    <section class="shorts-band" aria-labelledby="shorts-h"><div class="shorts-head"><h2 id="shorts-h">Quota Shorts</h2><a class="shorts-all" href="/shorts/">All of them</a></div><div class="shorts-row" role="list"><div role="listitem"><a class="short" href="/quota/" style="--k:#E07A5F;--on-k:#2B1B1B" data-short="1"><span class="short-tag">Attainment</span><span class="short-fact">48% of AEs hit quota in 2026.</span><span class="short-line">It was 66% in 2022.</span><span class="short-foot"><span class="short-src">Bridge Group, 2026</span><span class="short-go">Check my quota →</span></span></a></div><div role="listitem"><a class="short" href="/quota/" style="--k:#F4E1C1;--on-k:#2B2B2B" data-short="2"><span class="short-tag">The median</span><span class="short-fact">The median SaaS quota is $960K.</span><span class="short-line">On a $200K OTE.</span><span class="short-foot"><span class="short-src">Bridge Group, 2026</span><span class="short-go">Check my quota →</span></span></a></div><div role="listitem"><a class="short" href="/quota/" style="--k:#F2C14E;--on-k:#1B1B1B" data-short="3"><span class="short-tag">The multiple</span><span class="short-fact">The median quota is 4.6 times OTE.</span><span class="short-line">It was 4.2 two years ago.</span><span class="short-foot"><span class="short-src">Bridge Group, 2026</span><span class="short-go">Check my quota →</span></span></a></div><div role="listitem"><a class="short" href="/how-quotas-get-built/" style="--k:#1C3D5A;--on-k:#FFFFFF" data-short="4"><span class="short-tag">Planning</span><span class="short-fact">Teams get 20 to 30% more quota than the company needs.</span><span class="short-line">Planners over-assign to cover misses.</span><span class="short-foot"><span class="short-src">Mostly Metrics</span><span class="short-go">How quotas get built →</span></span></a></div><div role="listitem"><a class="short" href="/how-quotas-get-built/" style="--k:#C35037;--on-k:#FFFFFF" data-short="5"><span class="short-tag">Your boss</span><span class="short-fact">Your boss may be paid on something else.</span><span class="short-line">Growth rate, new logos, a strategic product.</span><span class="short-foot"><span class="short-go">How quotas get built →</span></span></a></div><div role="listitem"><a class="short" href="/quota-case/" style="--k:#388073;--on-k:#FFFFFF" data-short="6"><span class="short-tag">Ramp</span><span class="short-fact">New AEs take 6.2 months to ramp.</span><span class="short-line">A rep hired in March is a fall rep.</span><span class="short-foot"><span class="short-src">Bridge Group, 2026</span><span class="short-go">Build the bridge →</span></span></a></div><div role="listitem"><a class="short" href="/quota-case/" style="--k:#2E2E3A;--on-k:#F2C14E" data-short="7"><span class="short-tag">Vacancies</span><span class="short-fact">A vacant territory still has quota.</span><span class="short-line">Somebody&#x27;s carrying it.</span><span class="short-foot"><span class="short-go">Build the bridge →</span></span></a></div><div role="listitem"><a class="short" href="/pipeline/" style="--k:#6C5B7B;--on-k:#FFFFFF" data-short="8"><span class="short-tag">Coverage</span><span class="short-fact">3X is a 33% win rate wearing a nicer shirt.</span><span class="short-line">Win 20% and you need 5X.</span><span class="short-foot"><span class="short-src">The math</span><span class="short-go">Check my pipeline →</span></span></a></div><div role="listitem"><a class="short" href="/quota/" style="--k:#9DD2FF;--on-k:#12324F" data-short="9"><span class="short-tag">Cloud</span><span class="short-fact">A commit nobody uses doesn&#x27;t retire much quota.</span><span class="short-line">Cloud quotas count what customers run.</span><span class="short-foot"><span class="short-src">Microsoft Partner Center</span><span class="short-go">Check my quota →</span></span></a></div><div role="listitem"><a class="short" href="/notes/read-your-comp-plan/" style="--k:#567E55;--on-k:#FFFFFF" data-short="10"><span class="short-tag">Comp</span><span class="short-fact">Most accelerators pay 1.5 to 2 times above quota.</span><span class="short-line">Where they start matters more than the rate.</span><span class="short-foot"><span class="short-src">Comp plan surveys, 2026</span><span class="short-go">Read your comp plan →</span></span></a></div><div role="listitem"><a class="short" href="/territory/" style="--k:#264653;--on-k:#E9C46A" data-short="11"><span class="short-tag">Federal</span><span class="short-fact">46% of federal AEs say they hit quota.</span><span class="short-line">The most of any AE role. SLED is 45%.</span><span class="short-foot"><span class="short-src">RepVue, 2026</span><span class="short-go">Check my territory →</span></span></a></div></div></section>
     <h2 class="shelf-h">The quota isn't the only problem.</h2>
     <div class="shelf-grid">
-      <a class="bk feat" href="/quota/"><span class="bk-label">Start here</span><span class="bk-cover"><span class="bk-title">Is my quota crazy?</span><span class="bk-sub">Maybe. Let's do the math.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/pipeline/"><span class="bk-label">Pipeline</span><span class="bk-cover"><span class="bk-title">Enough pipeline?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/deal/#start"><span class="bk-label">Deal</span><span class="bk-cover"><span class="bk-title">Is this even a deal?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/rep/#start"><span class="bk-label">Rep</span><span class="bk-cover"><span class="bk-title">Rep or territory?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/territory/#start"><span class="bk-label">Territory</span><span class="bk-cover"><span class="bk-title">Does this territory suck?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/account/#start"><span class="bk-label">Account</span><span class="bk-cover"><span class="bk-title">Do you know them?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/competition/#start"><span class="bk-label">Competition</span><span class="bk-cover"><span class="bk-title">Why you?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/risk/#start"><span class="bk-label">Risk</span><span class="bk-cover"><span class="bk-title">Too much riding on two deals?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/discount/"><span class="bk-label">Discount</span><span class="bk-cover"><span class="bk-title">They want a discount.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/commission/"><span class="bk-label">Commission</span><span class="bk-cover"><span class="bk-title">What do I actually keep?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/partner/#start"><span class="bk-label">Partner</span><span class="bk-cover"><span class="bk-title">Is this partner doing anything?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/olr/#start"><span class="bk-label">Talent Review</span><span class="bk-cover"><span class="bk-title">Can you defend them?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/brief/#start"><span class="bk-label">Brief</span><span class="bk-cover"><span class="bk-title">Will this survive?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/kits/"><span class="bk-label">Field Kits</span><span class="bk-cover"><span class="bk-title">Worth printing.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/math/"><span class="bk-label">Sales Math</span><span class="bk-cover"><span class="bk-title">Why 3X?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk feat" href="/quota/"><span class="bk-label">Start here</span><span class="bk-cover" style="--bg:#E07A5F;--on-k:#2B1B1B"><span class="bk-title">Is my quota crazy?</span><span class="bk-sub">Maybe. Let's do the math.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/pipeline/"><span class="bk-label">Pipeline</span><span class="bk-cover" style="--bg:#F2C14E;--on-k:#1B1B1B"><span class="bk-title">Enough pipeline?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/deal/#start"><span class="bk-label">Deal</span><span class="bk-cover" style="--bg:#1C3D5A;--on-k:#FFFFFF"><span class="bk-title">Is this even a deal?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/rep/#start"><span class="bk-label">Rep</span><span class="bk-cover" style="--bg:#388073;--on-k:#FFFFFF"><span class="bk-title">Rep or territory?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/territory/#start"><span class="bk-label">Territory</span><span class="bk-cover" style="--bg:#F4E1C1;--on-k:#2B2B2B"><span class="bk-title">Does this territory suck?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/account/#start"><span class="bk-label">Account</span><span class="bk-cover" style="--bg:#6C5B7B;--on-k:#FFFFFF"><span class="bk-title">Do you know them?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/competition/#start"><span class="bk-label">Competition</span><span class="bk-cover" style="--bg:#C35037;--on-k:#FFFFFF"><span class="bk-title">Why you?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/risk/#start"><span class="bk-label">Risk</span><span class="bk-cover" style="--bg:#2E2E3A;--on-k:#F2C14E"><span class="bk-title">Too much riding on two deals?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/discount/"><span class="bk-label">Discount</span><span class="bk-cover" style="--bg:#9DD2FF;--on-k:#12324F"><span class="bk-title">They want a discount.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/commission/"><span class="bk-label">Commission</span><span class="bk-cover" style="--bg:#567E55;--on-k:#FFFFFF"><span class="bk-title">What do I actually keep?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/partner/#start"><span class="bk-label">Partner</span><span class="bk-cover" style="--bg:#F28482;--on-k:#2B1B1B"><span class="bk-title">Is this partner doing anything?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/olr/#start"><span class="bk-label">Talent Review</span><span class="bk-cover" style="--bg:#264653;--on-k:#E9C46A"><span class="bk-title">Can you defend them?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/brief/#start"><span class="bk-label">Brief</span><span class="bk-cover" style="--bg:#E9C46A;--on-k:#2B2B2B"><span class="bk-title">Will this survive?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/kits/"><span class="bk-label">Field Kits</span><span class="bk-cover" style="--bg:#EDEDE9;--on-k:#1C3D5A"><span class="bk-title">Worth printing.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/math/"><span class="bk-label">Sales Math</span><span class="bk-cover" style="--bg:#1D3557;--on-k:#A8DADC"><span class="bk-title">Why 3X?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
     </div>
   </div>
 </div>
@@ -320,7 +370,7 @@
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-28.0900';
+window.QB_BUILD = '2026-10-28.1500';
 // the Tools menu closes on an outside tap or Escape (the tool pages get this from their engines)
 document.addEventListener('click', (e) => { document.querySelectorAll('details.menu[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; }); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('details.menu[open]').forEach(d => { d.open = false; d.querySelector('summary').focus(); }); });

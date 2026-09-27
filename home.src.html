@@ -194,12 +194,62 @@
   <header class="appbar"></header>
   <div class="front" id="front">
     <span class="overline tool-name">The quota landed</span>
-    <h1>Is your quota <span class="hl">crazy?</span></h1>
-    <p class="dek">Maybe. Let's do the math.<br>Push back or build a plan.</p>
-    <div class="front-cta">
-      <a class="btn btn-primary btn-lg" href="/quota/">Check my quota</a>
-      <a class="front-alt" href="/how-quotas-get-built/">or see how quotas get built</a>
+    <h1>Is your quota crazy?</h1>
+    <p class="dek">Maybe. Let's do the math.</p>
+    <div class="hero-calc" id="heroCalc">
+      <div class="hc-out ready" id="hcOut" aria-live="polite">
+        <div class="hc-num" id="hcNum">21×</div>
+        <div class="hc-label" id="hcLabel">Standard</div>
+        <div class="hc-line" id="hcLine">Inside the 15 to 30 I usually see for cloud consumption growth.</div>
+      </div>
+      <div class="hc-chips" role="group" aria-label="What the number is measured in">
+        <button class="chip" type="button" data-hb="saas">Bookings</button>
+        <button class="chip on" type="button" data-hb="cloud">Cloud growth</button>
+        <button class="chip" type="button" data-hb="book">Whole book</button>
+      </div>
+      <div class="hc-grid">
+        <label class="tf hc-q"><span class="tf-label">Your quota</span><input id="hcQuota" type="text" inputmode="decimal" value="$6,000,000" class="is-example"></label>
+        <label class="tf"><span class="tf-label">Base</span><input id="hcBase" type="text" inputmode="decimal" value="$150,000" class="is-example"></label>
+        <label class="tf"><span class="tf-label">Variable</span><input id="hcVar" type="text" inputmode="decimal" value="$130,000" class="is-example"></label>
+      </div>
+      <p class="hc-note" id="hcNote">Example numbers. Type yours over them.</p>
+      <a class="btn btn-primary btn-lg btn-full" id="hcGo" href="/quota/">See the whole plan</a>
     </div>
+    <script>
+    (function () {
+      var $ = function (id) { return document.getElementById(id); };
+      var basis = 'cloud', touched = {}, tracked = false;
+      var B = { saas: { name: 'new bookings', cuts: [3, 4, 6, 8, 12] }, cloud: { name: 'cloud consumption growth', cuts: [8, 15, 30, 45, 60] }, book: { name: 'a whole book', cuts: [20, 40, 80, 120, 160] } };
+      function money(s) { s = String(s || '').toLowerCase().replace(/[$,\s]/g, ''); var m = /^([0-9]*\.?[0-9]+)([km]?)$/.exec(s); if (!m) return 0; var n = parseFloat(m[1]); return m[2] === 'm' ? n * 1e6 : m[2] === 'k' ? n * 1e3 : n; }
+      function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+      function render() {
+        var q = money($('hcQuota').value), ote = money($('hcBase').value) + money($('hcVar').value), b = B[basis], c = b.cuts;
+        if (!(q > 0 && ote > 0)) { $('hcNum').textContent = '?'; $('hcLabel').textContent = 'Add your numbers'; $('hcLine').textContent = 'Quota, base and variable.'; $('hcOut').className = 'hc-out proof'; return; }
+        var m = q / ote, X = (m >= 10 ? Math.round(m) : m.toFixed(1)) + '×', std = c[1] + ' to ' + c[2], t;
+        if (m < c[0]) t = ['Low', 'proof', 'Unusually low for ' + b.name + '. Read the plan twice.'];
+        else if (m < c[1]) t = ['Favorable', 'ready', 'Below the ' + std + ' I usually see for ' + b.name + '.'];
+        else if (m <= c[2]) t = ['Standard', 'ready', 'Inside the ' + std + ' I usually see for ' + b.name + '.'];
+        else if (m <= c[3]) t = ['A stretch', 'proof', 'Above the ' + std + ' I usually see for ' + b.name + '.'];
+        else if (m <= c[4]) t = ['Aggressive', 'prove', 'Well above the ' + std + ' I usually see for ' + b.name + '.'];
+        else t = ['Crazy', 'dont', 'The plan is asking for something the territory may not have.'];
+        $('hcNum').textContent = X; $('hcLabel').textContent = t[0]; $('hcLine').textContent = t[2]; $('hcOut').className = 'hc-out ' + t[1];
+        var p = new URLSearchParams(); p.set('basis', basis);
+        [['quota', 'hcQuota'], ['base', 'hcBase'], ['variable', 'hcVar']].forEach(function (f) { if (touched[f[1]] && money($(f[1]).value) > 0) p.set(f[0], Math.round(money($(f[1]).value))); });
+        $('hcGo').href = '/quota/' + (Object.keys(touched).length || basis !== 'cloud' ? '#' + p.toString() : '');
+      }
+      ['hcQuota', 'hcBase', 'hcVar'].forEach(function (id) {
+        var el = $(id);
+        el.addEventListener('focus', function () { setTimeout(function () { el.select(); }, 0); });
+        el.addEventListener('input', function () { el.classList.remove('is-example'); touched[id] = 1; $('hcNote').textContent = ''; if (!tracked) { tracked = true; if (window.qbTrack) qbTrack('hero_calc_edit'); } render(); });
+        el.addEventListener('blur', function () { var n = money(el.value); if (n > 0 && touched[id]) el.value = fmt(n); });
+      });
+      document.querySelectorAll('[data-hb]').forEach(function (btn) { btn.addEventListener('click', function () {
+        basis = btn.getAttribute('data-hb'); document.querySelectorAll('[data-hb]').forEach(function (x) { x.classList.toggle('on', x === btn); }); render(); }); });
+      $('hcGo').addEventListener('click', function () { if (window.qbTrack) qbTrack('hero_calc_go'); });
+      render();
+    })();
+    </script>
+    <h2 class="paths-h">Push back or build a plan.</h2>
     <div class="paths">
       <a class="path" href="/how-quotas-get-built/"><span class="path-n">1</span><span class="path-t">Understand it</span><span class="path-d">Where the number probably came from, and why your boss may not even be goaled on it.</span></a>
       <a class="path" href="/quota-case/"><span class="path-n">2</span><span class="path-t">Push back</span><span class="path-d">Build the bridge from last year to this year, and find the gap nobody has explained.</span></a>
@@ -208,21 +258,21 @@
     <!--shorts-->
     <h2 class="shelf-h">The quota isn't the only problem.</h2>
     <div class="shelf-grid">
-      <a class="bk feat" href="/quota/"><span class="bk-label">Start here</span><span class="bk-cover"><span class="bk-title">Is my quota crazy?</span><span class="bk-sub">Maybe. Let's do the math.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/pipeline/"><span class="bk-label">Pipeline</span><span class="bk-cover"><span class="bk-title">Enough pipeline?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/deal/#start"><span class="bk-label">Deal</span><span class="bk-cover"><span class="bk-title">Is this even a deal?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/rep/#start"><span class="bk-label">Rep</span><span class="bk-cover"><span class="bk-title">Rep or territory?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/territory/#start"><span class="bk-label">Territory</span><span class="bk-cover"><span class="bk-title">Does this territory suck?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/account/#start"><span class="bk-label">Account</span><span class="bk-cover"><span class="bk-title">Do you know them?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/competition/#start"><span class="bk-label">Competition</span><span class="bk-cover"><span class="bk-title">Why you?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/risk/#start"><span class="bk-label">Risk</span><span class="bk-cover"><span class="bk-title">Too much riding on two deals?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/discount/"><span class="bk-label">Discount</span><span class="bk-cover"><span class="bk-title">They want a discount.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/commission/"><span class="bk-label">Commission</span><span class="bk-cover"><span class="bk-title">What do I actually keep?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/partner/#start"><span class="bk-label">Partner</span><span class="bk-cover"><span class="bk-title">Is this partner doing anything?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/olr/#start"><span class="bk-label">Talent Review</span><span class="bk-cover"><span class="bk-title">Can you defend them?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/brief/#start"><span class="bk-label">Brief</span><span class="bk-cover"><span class="bk-title">Will this survive?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/kits/"><span class="bk-label">Field Kits</span><span class="bk-cover"><span class="bk-title">Worth printing.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
-      <a class="bk" href="/math/"><span class="bk-label">Sales Math</span><span class="bk-cover"><span class="bk-title">Why 3X?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk feat" href="/quota/"><span class="bk-label">Start here</span><span class="bk-cover" style="--bg:#E07A5F;--on-k:#2B1B1B"><span class="bk-title">Is my quota crazy?</span><span class="bk-sub">Maybe. Let's do the math.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/pipeline/"><span class="bk-label">Pipeline</span><span class="bk-cover" style="--bg:#F2C14E;--on-k:#1B1B1B"><span class="bk-title">Enough pipeline?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/deal/#start"><span class="bk-label">Deal</span><span class="bk-cover" style="--bg:#1C3D5A;--on-k:#FFFFFF"><span class="bk-title">Is this even a deal?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/rep/#start"><span class="bk-label">Rep</span><span class="bk-cover" style="--bg:#388073;--on-k:#FFFFFF"><span class="bk-title">Rep or territory?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/territory/#start"><span class="bk-label">Territory</span><span class="bk-cover" style="--bg:#F4E1C1;--on-k:#2B2B2B"><span class="bk-title">Does this territory suck?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/account/#start"><span class="bk-label">Account</span><span class="bk-cover" style="--bg:#6C5B7B;--on-k:#FFFFFF"><span class="bk-title">Do you know them?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/competition/#start"><span class="bk-label">Competition</span><span class="bk-cover" style="--bg:#C35037;--on-k:#FFFFFF"><span class="bk-title">Why you?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/risk/#start"><span class="bk-label">Risk</span><span class="bk-cover" style="--bg:#2E2E3A;--on-k:#F2C14E"><span class="bk-title">Too much riding on two deals?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/discount/"><span class="bk-label">Discount</span><span class="bk-cover" style="--bg:#9DD2FF;--on-k:#12324F"><span class="bk-title">They want a discount.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/commission/"><span class="bk-label">Commission</span><span class="bk-cover" style="--bg:#567E55;--on-k:#FFFFFF"><span class="bk-title">What do I actually keep?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/partner/#start"><span class="bk-label">Partner</span><span class="bk-cover" style="--bg:#F28482;--on-k:#2B1B1B"><span class="bk-title">Is this partner doing anything?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/olr/#start"><span class="bk-label">Talent Review</span><span class="bk-cover" style="--bg:#264653;--on-k:#E9C46A"><span class="bk-title">Can you defend them?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/brief/#start"><span class="bk-label">Brief</span><span class="bk-cover" style="--bg:#E9C46A;--on-k:#2B2B2B"><span class="bk-title">Will this survive?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/kits/"><span class="bk-label">Field Kits</span><span class="bk-cover" style="--bg:#EDEDE9;--on-k:#1C3D5A"><span class="bk-title">Worth printing.</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
+      <a class="bk" href="/math/"><span class="bk-label">Sales Math</span><span class="bk-cover" style="--bg:#1D3557;--on-k:#A8DADC"><span class="bk-title">Why 3X?</span><span class="bk-foot" aria-hidden="true">QuotaBird</span></span></a>
     </div>
   </div>
 </div>

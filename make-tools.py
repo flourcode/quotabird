@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-28.0900'
+BUILD = '2026-10-28.1500'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -1086,21 +1086,21 @@ print('notes', len(NOTES))
 # Every number here is sourced on /quota-by-the-numbers/. Colours are the shelf's.
 from html import escape as esc_html
 SHORTS = [
-    dict(tag='Attainment', fact='48% of AEs hit quota in 2026.', line='It was 66% in 2022.', src='Bridge Group, 2026', href='/quota/', go='Check my quota'),
-    dict(tag='The median', fact='The median SaaS quota is $960K.', line='On a $200K OTE.', src='Bridge Group, 2026', href='/quota/', go='Check my quota'),
-    dict(tag='The multiple', fact='The median quota is 4.6 times OTE.', line='It was 4.2 two years ago.', src='Bridge Group, 2026', href='/quota/', go='Check my quota'),
-    dict(tag='Planning', fact="Teams get 20 to 30% more quota than the company needs.", line='Planners over-assign to cover misses.', src='Mostly Metrics', href='/how-quotas-get-built/', go='How quotas get built'),
-    dict(tag='Your boss', fact='Your boss may be paid on something else.', line='Growth rate, new logos, a strategic product.', src='', href='/how-quotas-get-built/', go='How quotas get built'),
-    dict(tag='Ramp', fact='New AEs take 6.2 months to ramp.', line='A rep hired in March is a fall rep.', src='Bridge Group, 2026', href='/quota-case/', go='Build the bridge'),
-    dict(tag='Vacancies', fact='A vacant territory still has quota.', line="Somebody's carrying it.", src='', href='/quota-case/', go='Build the bridge'),
-    dict(tag='Coverage', fact='3X is a 33% win rate wearing a nicer shirt.', line='Win 20% and you need 5X.', src='The math', href='/pipeline/', go='Check my pipeline'),
-    dict(tag='Cloud', fact="A commit nobody uses doesn't retire much quota.", line='Cloud quotas count what customers run.', src='Microsoft Partner Center', href='/quota/', go='Check my quota'),
-    dict(tag='Comp', fact='Most accelerators pay 1.5 to 2 times above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan'),
-    dict(tag='Federal', fact='46% of federal AEs say they hit quota.', line='The most of any AE role. SLED is 45%.', src='RepVue, 2026', href='/territory/', go='Check my territory'),
+    dict(tag='Attainment', fact='48% of AEs hit quota in 2026.', line='It was 66% in 2022.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', k='#E07A5F', ink='#2B1B1B'),
+    dict(tag='The median', fact='The median SaaS quota is $960K.', line='On a $200K OTE.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', k='#F4E1C1', ink='#2B2B2B'),
+    dict(tag='The multiple', fact='The median quota is 4.6 times OTE.', line='It was 4.2 two years ago.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', k='#F2C14E', ink='#1B1B1B'),
+    dict(tag='Planning', fact="Teams get 20 to 30% more quota than the company needs.", line='Planners over-assign to cover misses.', src='Mostly Metrics', href='/how-quotas-get-built/', go='How quotas get built', k='#1C3D5A', ink='#FFFFFF'),
+    dict(tag='Your boss', fact='Your boss may be paid on something else.', line='Growth rate, new logos, a strategic product.', src='', href='/how-quotas-get-built/', go='How quotas get built', k='#C35037', ink='#FFFFFF'),
+    dict(tag='Ramp', fact='New AEs take 6.2 months to ramp.', line='A rep hired in March is a fall rep.', src='Bridge Group, 2026', href='/quota-case/', go='Build the bridge', k='#388073', ink='#FFFFFF'),
+    dict(tag='Vacancies', fact='A vacant territory still has quota.', line="Somebody's carrying it.", src='', href='/quota-case/', go='Build the bridge', k='#2E2E3A', ink='#F2C14E'),
+    dict(tag='Coverage', fact='3X is a 33% win rate wearing a nicer shirt.', line='Win 20% and you need 5X.', src='The math', href='/pipeline/', go='Check my pipeline', k='#6C5B7B', ink='#FFFFFF'),
+    dict(tag='Cloud', fact="A commit nobody uses doesn't retire much quota.", line='Cloud quotas count what customers run.', src='Microsoft Partner Center', href='/quota/', go='Check my quota', k='#9DD2FF', ink='#12324F'),
+    dict(tag='Comp', fact='Most accelerators pay 1.5 to 2 times above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan', k='#567E55', ink='#FFFFFF'),
+    dict(tag='Federal', fact='46% of federal AEs say they hit quota.', line='The most of any AE role. SLED is 45%.', src='RepVue, 2026', href='/territory/', go='Check my territory', k='#264653', ink='#E9C46A'),
 ]
 def _short(s, i):
     src = f'<span class="short-src">{esc_html(s["src"])}</span>' if s['src'] else ''
-    return (f'<a class="short" href="{s["href"]}" data-short="{i+1}">'
+    return (f'<a class="short" href="{s["href"]}" style="--k:{s.get("k", "#F7F8F9")};--on-k:{s.get("ink", "#1B1F23")}" data-short="{i+1}">'
             f'<span class="short-tag">{esc_html(s["tag"])}</span><span class="short-fact">{esc_html(s["fact"])}</span>'
             f'<span class="short-line">{esc_html(s["line"])}</span><span class="short-foot">{src}<span class="short-go">{esc_html(s["go"])} →</span></span></a>')
 def shorts_strip():
@@ -1336,7 +1336,7 @@ def calc_page(t):
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="preload" href="/gsf.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{t['title']}</title>
@@ -2590,8 +2590,8 @@ def header(path):
 def chrome(path):
     s = open(path).read()
     # preload the one font every page uses, so headlines don't flash in a fallback face
-    if 'rel="preload" href="/gsf.woff2"' not in s:
-        s = s.replace('<meta name="viewport"', '<link rel="preload" href="/gsf.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
+    if 'rel="preload" href="/inter.woff2"' not in s:
+        s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
     ask = '/ask/'
     nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>'
