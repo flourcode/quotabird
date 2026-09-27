@@ -3,7 +3,7 @@
 Everything needed to maintain, extend or rebuild this. One directory, two
 pages, one shared stylesheet and font, no build step, no server, no dependencies.
 
-**Current build: 2026-10-24.2100**
+**Current build: 2026-10-25.0900**
 
 ## Naming: checks, not kills
 
@@ -2087,3 +2087,5 @@ against the sources: value before any ask (no gates), smart defaults (grey
 examples), progress never at zero, one number per verdict, the visitor's own
 verdict pre-filled into Calendly, no fake urgency or scarcity. Not applied:
 price anchoring (no prices yet; don't fake a reference price later).
+
+**2026-10-25.0900** — About lead: "Hi, I'm Mark. / I'm retired, but I still love ugly sales problems." (Mark's line, as a 22px lede under the headline). The later "I love ugly deals" item became "Ugly deals especially." so it doesn't repeat the lead.
