@@ -104,7 +104,7 @@
   <header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/quota-case/">Quota Case</a><a href="/territory/" class="current">Territory Check</a><a href="/commission/">Commission Check</a><a href="/discount/">Discount Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-g menu-wide"><div class="menu-group">Your team</div><a href="/pipeline/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">Talent Review</a></div><div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div></div></details>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/quota-case/">Quota Case</a><a href="/territory/" class="current">Territory Check</a><a href="/commission/">Commission Check</a><a href="/discount/">Discount Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check (federal)</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-g menu-wide"><div class="menu-group">Your team</div><a href="/pipeline/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">Talent Review</a></div><div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div></div></details>
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
@@ -124,7 +124,7 @@
   <div class="band-inner">
     <h2>What a territory has to have</h2>
     <p class="lede">Your quota assumes a lot about your territory. Check those assumptions before you sign up for it.</p>
-    SPEND: Is the money there twice over? Agency budgets, program lines, contract ceilings. If the total addressable spend isn't at least double the number, you're counting on share you have no real reason to expect.
+    SPEND: Is the money there twice over? Spend you can actually sell into, by named account. Selling government: agency budgets, program lines, contract ceilings. If the total addressable spend isn't at least double the number, you're counting on share you have no real reason to expect.
     <p><strong>ACCOUNTS: Can you name ten?</strong> Not a list from the CRM. Ten accounts you personally expect to
       buy this year, with a reason for each. If you can't get to ten, your manager should hear that in January,
       not October.</p>
@@ -197,7 +197,7 @@
 <script src="../check.f6df73a1.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-31.0900';
+window.QB_BUILD = '2026-10-31.1800';
 CheckTool({
   aside: (s, a) => ['spend', 'access'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo shows what each agency in your territory actually spends, who's winning it, and what's expiring.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=territory&utm_content=verdict', label: 'Look up your territory on fedhoo' } : null,
   slug: 'territory', answers: {"Workable": "No. It's workable.", "Thin": "A little. It's thin.", "A stretch": "Mostly, yes.", "Nobody could": "Yes. Nobody could hit this."}, name: 'Territory Check', url: 'https://quotabird.com/territory/',
@@ -224,7 +224,7 @@ CheckTool({
     history: "Who's made this number here before, and how?",
   },
   moves: {
-    spend: 'Size the territory: agency budgets, program lines, contract ceilings. One page.',
+    spend: 'Size the territory: the spend you can actually sell into, account by account. One page.',
     accounts: "Write the ten. If you can't get to ten, tell your manager now.",
     base: 'Separate inherited from created. Put the inherited number on paper.',
     access: 'Map one route per account: a relationship, a partner, or a vehicle.',

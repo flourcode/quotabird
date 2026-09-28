@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-10-31.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-10-31.1800** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -25,12 +25,19 @@ Free tools, no login, no AI, nothing stored. The consulting offer (a free 20-min
 1. **Tools speak to "you".** Your quota, your territory, your deal, your number. No "I", "my" or "this number" in any result, next step, row or share text. Tool questions are in second person too ("Is your quota crazy?", "What do you actually keep?"). Buttons say "Check your quota", not "Check my quota".
 2. **Mark's "I" lives only where he is clearly the speaker:** his card after each result, About, Ask Mark, Field Notes, and his DM and booking templates. Quoted lines stay in their speaker's voice: "Your VP will ask" questions are the VP talking; Quota Case's push-back script is what the rep says out loud.
 3. **Every verdict answers its tool's question**, starting with the answer: "Does this territory suck?" gets "Yes. Nobody could hit this." Each tool keeps a short internal tag (At risk, HOPIUM) for the sticky bar, booking notes and lookups, and an `answers` map (in each tool's config; `ANSWER` in the Pipeline and Deal pages) that turns the tag into the answer shown on the card and in share text. **Add an answer for every new tag.**
-4. **No unsourced authority.** The cloud (15 to 30) and whole-book (40 to 80) ranges come from Mark's experience: say "the typical range", never "reported". Only the SaaS range (4 to 6x OTE) is published consensus and may be called that.
+4. **No unsourced authority.** Keep published fact and QuotaBird interpretation visibly separate:
+   - The quota-multiple ranges are **QuotaBird's working ranges** (say that), not industry benchmarks. Bookings 4 to 6× is a working range built around published data (Bridge Group 2026 median 4.6×, 158 B2B companies). Cloud 15 to 30× and whole book 40 to 80× come from cloud-provider plans Mark has seen, not a survey.
+   - Bridge Group's sample is B2B, not "SaaS": "$960K median AE quota", never "median SaaS quota".
+   - Over-assignment (20 to 30%) and accelerators (1.5 to 2×) are practitioner rules of thumb: "a common rule of thumb", "a common range", never "most" or a market fact.
+   - Consumption claims apply to consumption plans, not all cloud quotas ("On a consumption plan, a commit nobody uses…").
+   - Live self-reported figures (RepVue) carry their snapshot date next to the number, and no "the most of any" superlatives that can go stale.
+   - Don't write "CSP" alone: it means Microsoft's Cloud Solution Provider program to many readers. Say "cloud provider".
+5. **Federal-only content is labeled.** Deal Check is federal (appropriations, contract vehicles) and says so in the menu, the home card, its page and its share card. Federal specifics elsewhere are marked as a "Federal wrinkle" or "Selling government:" aside rather than stated as the general rule. A commercial Deal Check (same five questions: customer, money, power, path, now; "path" becomes security, legal, procurement and vendor onboarding) is a good next build.
 
 | Tool | Answers (green → red) |
 |---|---|
 | Quota Check | No. It's favorable. / No. It's standard. / It's unusually low. / Not crazy. A stretch. / Close. It's aggressive. / Yes. It's crazy. |
-| Quota Case | It already adds up. / You're a little short. / You've got a gap. / You've got a big gap. |
+| Quota Case | Yes. It already adds up. / You're a little short. / You've got a gap. / You've got a big gap. |
 | Pipeline | Yes. You're covered. / Close. Not quite. / Not really. You're at risk. / No. You're short. |
 | Discount | This much is normal. / This much needs a trade. / This much is expensive. / This much is too much. |
 | Commission | That's your take-home. |
@@ -46,7 +53,13 @@ Free tools, no login, no AI, nothing stored. The consulting offer (a free 20-min
 
 ## Share cards
 
+- **Every share card follows one structure: problem, tool, inputs, output.** Someone scrolling gets about a second. The left side says what it's for in plain words (Quota Case: "Build the case against a crazy quota." / "Last year. Run rate. Pipeline. Win rate."); the right side shows a real output (the gap, and the pipeline it takes to close it). Keep abstract, in-product questions off the cards.
 - **Share cards for Quota Check and home use a warm result on purpose.** A green "Standard" gives nobody a reason to click; a believable warm result makes people check their own. Home: red **68×, Yes. It's crazy.** Quota Check: yellow **47×, Close. It's aggressive.** Both sit inside the real bands for cloud run rate, so a visitor who enters them gets the same verdict. Keep numbers specific and plausible (never absurd like 571×), and keep "Maybe. Let's do the math." under the question.
+
+**Quota Case model (fixed Oct 31):** first question is what the quota is measured on (Bookings / Run rate / Whole book).
+- *Run rate or whole book:* evidence = current run rate as entered (it already reflects today's team) + new pipeline × win rate. Without a run rate, last year (minus one-time revenue, scaled by ramped headcount) is the baseline. Headcount is shown as context and **never** adjusts a run rate the user entered (the old code did, which counted headcount twice).
+- *Bookings:* evidence = the stronger of last year's bookings (minus one-time deals) × ramped reps now ÷ reps last year, and this year's pipeline × win rate. Run rate is ignored.
+- Gap = quota − evidence; new pipeline to close it = gap ÷ win rate. Example numbers give a $1.8M gap and $7.2M of new pipeline, matching the kits.
 
 ## Language reps actually use
 
@@ -115,7 +128,7 @@ Built from the 2026 palettes Mark supplied (@346eur): flat, confident colour on 
 | URL | Tool | Kind | Headline |
 |---|---|---|---|
 | /quota/ | Quota Check | calculator | Is my quota crazy? |
-| /quota-case/ | Quota Case | calculator | What has to be true for this quota to work? (the gap, and the pipeline that closes it) |
+| /quota-case/ | Quota Case | calculator | Is your quota actually possible? (the gap, and the pipeline that closes it) |
 | /pipeline/ | Pipeline Check | calculator (pipeline.src.html) | You sure that's enough pipeline? |
 | /discount/ | Discount Check | calculator | How much discount is too much? |
 | /commission/ | Commission Check | calculator | It closed. What do I actually keep? |

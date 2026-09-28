@@ -300,7 +300,7 @@
     },
     {
       "identifier": "urn:air:quotabird.com:tools:deal-check",
-      "displayName": "Deal Check",
+      "displayName": "Deal Check (federal)",
       "type": "text/html",
       "url": "https://quotabird.com/deal/",
       "description": "Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.",
@@ -311,7 +311,7 @@
         "no-login"
       ],
       "capabilities": [
-        "DealCheck"
+        "DealCheck(federal)"
       ],
       "representativeQueries": [
         "is my deal real or hopium",

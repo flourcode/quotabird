@@ -15,7 +15,7 @@ CARDS = {
     dek='Put in your win rate and find out.',
     foot='', url='quotabird.com',
     pillars=['TARGET', 'PIPELINE', 'WIN RATE', 'THE GAP']),
-  'deal': dict(out='card-deal.jpg', wordmark='DEAL CHECK',
+  'deal': dict(out='card-deal.jpg', wordmark='FEDERAL DEAL CHECK',
     headline=['Is it real,', 'or is it hopium?'],
     dek='Ask these questions before your manager does.',
     foot='', url='quotabird.com/deal',
@@ -42,7 +42,7 @@ CARDS = {
     pillars=['RECEIPTS', 'OWNERSHIP', 'SCOPE', 'HOW', 'NEXT']),
   'pipeline': dict(out='card-pipeline.jpg', wordmark='PIPELINE CHECK', headline=["You sure that's", 'enough pipeline?'], dek='3X is a rule of thumb. Put in your win rate and see what you really need.',
     foot='', url='quotabird.com/pipeline', pillars=['TARGET', 'PIPELINE', 'WIN RATE', 'THE GAP']),
-  'quota-case': dict(out='card-quota-case.jpg', wordmark='QUOTA CASE', headline=['What has to be true', 'for this quota to work?'], dek='Last year, run rate, pipeline and headcount in. The gap, and what closes it.',
+  'quota-case': dict(out='card-quota-case.jpg', wordmark='QUOTA CASE', headline=['Build the case', 'against a crazy quota.'], tagline='Last year. Run rate. Pipeline. Win rate.', dek='Last year. Run rate. Pipeline. Win rate.',
     foot='', url='quotabird.com/quota-case', pillars=['LAST YEAR', 'RUN RATE', 'PIPELINE', 'THE GAP']),
   'quota': dict(out='card-quota.jpg', wordmark='QUOTA CHECK', headline=['Is your quota crazy?', ''], dek='Your number against your on-target earnings, and what it asks of your territory.',
     foot='', url='quotabird.com/quota', pillars=['OTE', 'MULTIPLE', 'VARIABLE', 'GROWTH']),
@@ -72,9 +72,9 @@ KITCARDS = {
 # What the result card shows: the page's own default answer (calculators) or a real verdict word (question tools).
 TINT = {'green': ('#AAD576', '#0B1215'), 'yellow': ('#FCEC60', '#0B1215'), 'red': ('#FF7F50', '#0B1215'), 'grey': ('#EEF2F8', '#0B1215')}   # Bold: the word is always ink
 RESULTS = {   # each result is worded as the answer to the tool's question, exactly as the page says it
-  'home':        ('68×', "Yes. It's crazy.", 'Your quota is 68× your OTE. The typical range is 15 to 30.', 'red'),   # a warm, believable result makes people check their own
-  'quota':       ('47×', "Close. It's aggressive.", 'Well above the typical 15 to 30 for cloud run rate.', 'yellow'),
-  'quota-case':  ('$2.6M', "You've got a gap.", 'Push back with it, or close it with $10.4M of new pipeline.', 'yellow'),
+  'home':        ('68×', "Yes. It's crazy.", 'Your quota is 68× your OTE. The working range is 15 to 30.', 'red'),   # a warm, believable result makes people check their own
+  'quota':       ('47×', "Close. It's aggressive.", 'Well above the 15 to 30 working range for cloud run rate.', 'yellow'),
+  'quota-case':  ('$1.8M', "You've got a gap.", 'At your win rate, you need another $7.2M of qualified pipeline to close it.', 'yellow'),
   'discount':    ('$6K', 'This much needs a trade.', 'What 15% off costs you in commission.', 'yellow'),
   'commission':  ('$28K', "That's your take-home.", 'About 70 cents of every commission dollar.', 'green'),
   'pipeline':    ('3.2X', "Not really. You're at risk.", 'A 20% win rate says you need 5X.', 'yellow'),
@@ -121,7 +121,9 @@ def result_card(im, d, box, big, word, line, tint, big_lines=2, scale=1.0):
     f, lines, s = fit(d, big, 900, int((170 if len(big) <= 5 else 104) * scale), w, big_lines, int(56 * scale))
     lf = font(500, int(26 * scale)); wf = font(800, int(40 * scale)); body = wrap(d, line, lf, w)[:4]
     wlines, wf2, ws = ([], None, 0)
-    if word: wf2, wlines, ws = fit(d, word, 850, int(46 * scale), w, 2, int(30 * scale))
+    if word:
+        wf2, wlines, ws = fit(d, word, 850, int(46 * scale), w, 1, int(36 * scale))       # one line if it fits at a readable size
+        if len(wlines) > 1 or d.textlength(wlines[0], font=wf2) > w: wf2, wlines, ws = fit(d, word, 850, int(46 * scale), w, 2, int(30 * scale))
     hgt = len(lines) * int(s * .98) + int(14 * scale) + len(wlines) * int(ws * 1.12) + (int(10 * scale) if word else 0) + len(body) * int(36 * scale)
     y = y0 + (y1 - y0 - hgt) // 2 - int(8 * scale)          # the result sits in the middle of its card
     for l in lines: d.text((x0 + pad - 4, y), l, font=f, fill=INK); y += int(s * .98)
@@ -164,6 +166,7 @@ if label: d.text((M, y), label, font=font(700, 22), fill=MUT); y += 44
 f, lines, s = fit(d, title, 900, 84, LW, 3, 48)
 for l in lines: d.text((M - 3, y), l, font=f, fill=INK); y += int(s * 1.02)
 if arg in ('home', 'quota'): d.text((M, y + 14), "Maybe. Let's do the math.", font=font(500, 30), fill=MUT)
+elif arg in CARDS and CARDS[arg].get('tagline'): d.text((M, y + 14), CARDS[arg]['tagline'], font=font(500, 30), fill=MUT)   # inputs line: what goes in
 d.text((M, H - M - 28), url, font=font(700, 28), fill=INK)
 result_card(im, d, (W - M - 440, M + 20, W - M, H - M - 20), *card, big_lines=1 if arg in KITCARDS else 2)
 out = KITCARDS[arg]['out'] if arg in KITCARDS else C['out']

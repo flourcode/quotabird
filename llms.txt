@@ -22,7 +22,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 ## Your deal
 
-- [Deal Check](https://quotabird.com/deal/): Five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal. (before you put it in commit.)
+- [Deal Check (federal)](https://quotabird.com/deal/): Five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal. (before you put it in commit.)
 - [Account Check](https://quotabird.com/account/): Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. (when you only know one person there.)
 - [Competition Check](https://quotabird.com/competition/): Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. (when you're not sure you're ahead.)
 

@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-31.0900'
+BUILD = '2026-10-31.1800'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -15,7 +15,7 @@ TOOLS = [
     ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
     ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
     ('Your team', '/olr/', 'Talent Review', 'Review season'),
-    ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
+    ('Your deal', '/deal/', 'Deal Check (federal)', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
     ('Your deal', '/competition/', 'Competition Check', 'When you\'re not sure you\'re ahead'),
     ('Any meeting', '/brief/', 'Brief Check', 'When someone in the room can say no'),
@@ -331,7 +331,7 @@ TERRITORY = dict(
     ],
     bands=[
         ('how', 'What a territory has to have', '''    <p class="lede">Your quota assumes a lot about your territory. Check those assumptions before you sign up for it.</p>
-    SPEND: Is the money there twice over? Agency budgets, program lines, contract ceilings. If the total addressable spend isn't at least double the number, you're counting on share you have no real reason to expect.
+    SPEND: Is the money there twice over? Spend you can actually sell into, by named account. Selling government: agency budgets, program lines, contract ceilings. If the total addressable spend isn't at least double the number, you're counting on share you have no real reason to expect.
     <p><strong>ACCOUNTS: Can you name ten?</strong> Not a list from the CRM. Ten accounts you personally expect to
       buy this year, with a reason for each. If you can't get to ten, your manager should hear that in January,
       not October.</p>
@@ -374,7 +374,7 @@ TERRITORY = dict(
     history: "Who's made this number here before, and how?",
   },
   moves: {
-    spend: 'Size the territory: agency budgets, program lines, contract ceilings. One page.',
+    spend: 'Size the territory: the spend you can actually sell into, account by account. One page.',
     accounts: "Write the ten. If you can't get to ten, tell your manager now.",
     base: 'Separate inherited from created. Put the inherited number on paper.',
     access: 'Map one route per account: a relationship, a partner, or a vehicle.',
@@ -702,7 +702,7 @@ RISK = dict(
       why they ask about it in the review.</p>
     MOTION: Is it moving? A deal that hasn't changed stage in sixty days is parked, whatever stage the CRM says, and parked deals leave the forecast all at once, usually in the last week of the quarter.
     NEXT: Whose calendar is the next step on? If you're the only one who scheduled it, it's a task on your list. You want the customer to have put it on their calendar, and if none of your commit deals have that, worry.
-    TIMING: When is it due? If most of the number lands in the last month of the period, you've built a year that only December can save. Federal money makes it worse, because a September close has nowhere to slip.
+    TIMING: When is it due? If most of the number lands in the last month of the period, you've built a year that only December can save. Federal wrinkle: a September close has nowhere to slip.
     FRESH: Are you still creating? Pipeline you inherited or carried over runs out. If a quarter of what you're carrying wasn't created this quarter, next year is already in trouble.'''),
         ('verdicts', 'Four states of a pipeline', '''    <p><strong>Sturdy.</strong> Spread out, moving, with customers on the calendar. Go get the coverage number too.</p>
     Lopsided. There's one weakness, so fix it before the review finds it.
@@ -870,7 +870,7 @@ NOTES = [
     <p>Complaining about it in the team meeting. Telling your boss the reps are upset. Saying "we'll find a way," which I
       used to say, and then spent the year explaining. And don't let anybody close the gap on paper by assuming AI will
       make the reps more productive. It can write the follow-up email. It can't make the customer care.</p>
-    <p>If only 20% of the team hits quota year after year, it's probably not a performance problem.</p>''',
+    <p>If only 20% of a reasonably tenured team hits quota year after year, stop assuming every miss is its own rep problem.</p>''',
          tool=('/quota/', 'Quota Check', 'does the multiple and the implied rate in about ten seconds. Pipeline Check and Territory Check cover the rest of the math.')),
     dict(slug='push-back-as-a-rep', title="You're the rep and the number is crazy",
          dek="You don't set the number. You can still make a case, if you bring the right one.",
@@ -1133,16 +1133,16 @@ print('notes', len(NOTES))
 from html import escape as esc_html
 SHORTS = [
     dict(tag='Attainment', num='48%', fact='of AEs hit quota in 2026.', line='It was 66% in 2022.', src='Bridge Group, 2026', href='/quota/', go='Check your quota', k='#E77A3C', ink='#282C2F'),
-    dict(tag='The median', num='$960K', fact='is the median SaaS quota.', line='On a $200K OTE.', src='Bridge Group, 2026', href='/quota/', go='Check your quota', k='#D9B265', ink='#282C2F'),
+    dict(tag='The median', num='$960K', fact='is the median AE quota.', line='On a $200K OTE, across 158 B2B companies.', src='Bridge Group, 2026', href='/quota/', go='Check your quota', k='#D9B265', ink='#282C2F'),
     dict(tag='The multiple', num='4.6×', fact='is the median quota to OTE.', line='It was 4.2 two years ago.', src='Bridge Group, 2026', href='/quota/', go='Check your quota', k='#0A504B', ink='#FFFFFF'),
-    dict(tag='Planning', num='20-30%', fact='more quota gets handed out than the company needs.', line='Planners over-assign to cover misses.', src='Mostly Metrics', href='/how-quotas-get-built/', go='How quotas get built', k='#BEAAA3', ink='#282C2F'),
+    dict(tag='Planning', num='20-30%', fact='is a common over-assignment rule of thumb.', line='Plans hand out more quota than the company needs.', src='Mostly Metrics', href='/how-quotas-get-built/', go='How quotas get built', k='#BEAAA3', ink='#282C2F'),
     dict(tag='Your boss', fact='Your boss may be paid on something else.', line='Growth rate, new logos, a strategic product.', src='', href='/how-quotas-get-built/', go='How quotas get built', k='#282C2F', ink='#FFFFFF'),
     dict(tag='Ramp', num='6.2 mo', fact='for a new AE to ramp.', line='A rep hired in March is a fall rep.', src='Bridge Group, 2026', href='/quota-case/', go='Find the gap', k='#1B9ED8', ink='#282C2F'),
     dict(tag='Vacancies', fact='A vacant territory still has quota.', line="Somebody's carrying it.", src='', href='/quota-case/', go='Find the gap', k='#FFFFFF', ink='#282C2F'),
     dict(tag='Coverage', num='3X', fact='is a 33% win rate wearing a nicer shirt.', line='Win 20% and you need 5X.', src='The math', href='/pipeline/', go='Check your pipeline', k='#E77A3C', ink='#282C2F'),
-    dict(tag='Cloud', fact="A commit nobody uses doesn't retire much quota.", line='Cloud quotas count what customers run.', src='Microsoft Partner Center', href='/quota/', go='Check your quota', k='#D9B265', ink='#282C2F'),
-    dict(tag='Comp', num='1.5-2×', fact='is what most accelerators pay above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan', k='#0A504B', ink='#FFFFFF'),
-    dict(tag='Federal', num='46%', fact='of federal AEs say they hit quota.', line='The most of any AE role. SLED is 45%.', src='RepVue, 2026', href='/territory/', go='Check your territory', k='#BEAAA3', ink='#282C2F'),
+    dict(tag='Cloud', fact="On a consumption plan, a commit nobody uses doesn't retire much quota.", line='The customer has to run the stuff.', src='Microsoft Partner Center', href='/quota/', go='Check your quota', k='#D9B265', ink='#282C2F'),
+    dict(tag='Comp', num='1.5-2×', fact='is a common accelerator range above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan', k='#0A504B', ink='#FFFFFF'),
+    dict(tag='Federal', num='46%', fact='of federal AEs say they hit quota.', line='SLED is 45%. Self-reported.', src='RepVue, Sept. 2026', href='/territory/', go='Check your territory', k='#BEAAA3', ink='#282C2F'),
 ]
 def _short(s, i):
     src = f'<span class="short-src">{esc_html(s["src"])}</span>' if s['src'] else ''
@@ -1167,22 +1167,23 @@ open('pipeline/index.html', 'w').write(open('pipeline.src.html').read().replace(
 # Rebuilt from the old Fedmo tools: Is My Quota Crazy?, They Want a Discount, Commissions Take-Home.
 CALCS = [
  dict(slug='quota-case', name='Quota Case',
-  title='Quota Case: What Has to Be True for This Quota to Work?',
+  title='Quota Case: Is Your Quota Actually Possible?',
   desc='Find the gap between last year and this year\'s quota: run rate or ARR, pipeline at your real win rate, headcount, one-time deals. Then push back with it, or close it with growth in existing accounts and net-new ones.',
-  ogdesc='What has to be true for this quota to work? Last year, run rate, pipeline and headcount in; the gap, and the pipeline it takes to close it, out.',
-  h1='What has to be true for this quota to work?', dek='Last year, your run rate, your pipeline and the new number. It shows you the gap nobody has explained yet, and the new pipeline it would take to close it.',
-  fields=[dict(id='lastyear',kind='money',label='What the team closed last year',example='$8,200,000'),
+  ogdesc='Build the case before you push back. Last year, run rate, pipeline and win rate in; the gap, and the pipeline it takes to close it, out.',
+  h1='Is your quota actually possible?', dek='Use last year, your run rate, your pipeline and your win rate to find the gap. Build the case before you push back.',
+  fields=[dict(id='basis',kind='choice',label='What the quota is measured on',example='cloud',options=[('saas','Bookings'),('cloud','Run rate'),('book','Whole book')]),
+          dict(id='lastyear',kind='money',label='Last year, on the same measure',example='$8,200,000'),
           dict(id='oneoff',kind='money',label='One-time deals in that number',example='',placeholder='$0 (optional)'),
-          dict(id='runrate',kind='money',label='Current run rate or ARR (monthly × 12)',example='$8,700,000'),
-          dict(id='pipeline',kind='money',label='Qualified pipeline for this year',example='$37,600,000'),
+          dict(id='runrate',kind='money',label='Current run rate (MRR × 12)',example='$8,700,000'),
+          dict(id='pipeline',kind='money',label='New qualified pipeline this year',example='$6,000,000'),
           dict(id='win',kind='pct',label='Your historical win rate',example='25%'),
           dict(id='repsthen',kind='count',label='Reps last year',example='',placeholder='optional'),
           dict(id='repsnow',kind='count',label='Fully ramped reps now',example='',placeholder='optional'),
           dict(id='quota',kind='money',label='The new number',example='$12,000,000')],
-  card=dict(headline=['What has to be true', 'for this quota to work?'],dek='Last year, run rate, pipeline, headcount and the new number. The gap, and what closes it.',pillars=['LAST YEAR','RUN RATE','PIPELINE','THE GAP']),
-  bands=[('how','How the gap works','''    <p class="lede">It takes the better of two views of this year: your run rate at today's headcount, and your qualified pipeline at your real win rate. Whatever's left between that and the new number is the gap somebody needs to explain.</p>
+  card=dict(headline=['Build the case', 'against a crazy quota.'],dek='Last year. Run rate. Pipeline. Win rate.',pillars=['LAST YEAR','RUN RATE','PIPELINE','THE GAP']),
+  bands=[('how','How the gap works','''    <p class="lede">Start with what the quota is measured on, because the math changes. On a run-rate or whole-book number, the evidence is your current run rate, which already reflects today's team, plus the new pipeline you expect to win this year. On a bookings number, run rate doesn't tell you much, so it compares last year's bookings, adjusted for today's ramped headcount, with this year's pipeline at your real win rate, and takes the stronger of the two. Whatever's left between the evidence and the new number is the gap somebody needs to explain.</p>
     <p>Take one-time deals out of last year. If a single giant deal made last year's number, building this year's quota on it is how a team ends up at 60% attainment and a lot of meetings about effort.</p>
-    <p>If you lost reps or have open territories, put in the headcount. A vacant territory still has quota. That's the problem. And a rep hired in March doesn't sell much until summer, so count them when they're ramped, not when they start.</p>'''),
+    <p>If you lost reps or have open territories, put in the headcount. On a bookings number it changes the capacity math. On a run-rate number, your run rate already reflects today's team, so headcount shows up as context and is never counted twice. A vacant territory still has quota. That's the problem. And a rep hired in March doesn't sell much until summer, so count reps when they're ramped, not when they start.</p>'''),
          ('conversation','Taking it to your boss','''    <p class="lede">Don't walk in upset. Walk in with the gap and one question: what assumption am I missing?</p>
     <p>Sometimes there's a real answer: new territory, a big renewal you didn't know about, a product launch, partner help with names attached. Then the number's hard but fair, and your job changes to helping the team hit it (<a href="/notes/handing-down-a-tough-quota/">here's how to hand it down</a>), which means you stop relitigating it every Monday. Sometimes nobody has an answer. Then at least everybody knows where the number came from, and it's in writing before the year starts.</p>
     <p><a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> has the longer version, including why the best time to have this fight is the year before.</p>''')],
@@ -1191,17 +1192,23 @@ CALCS = [
        ('What if I don\'t know my win rate?','Count it: of last year\'s qualified deals, how much closed, by value. Or leave pipeline and win rate blank and it\'ll use your run rate alone.'),
        ('Rep or manager?','Either. A manager uses it to take the team\'s number upstairs. A rep can run it on their own territory before the one-on-one where the number gets explained.')],
   config="""CalcTool({
-  slug: 'quota-case', answers: {"Supported": "It already adds up.", "Tight": "You're a little short.", "You've got a gap": "You've got a gap.", "Can't see it": "You've got a big gap."}, name: 'Quota Case', url: 'https://quotabird.com/quota-case/',
-  fields: [{ id: 'lastyear', kind: 'money' }, { id: 'oneoff', kind: 'money' }, { id: 'runrate', kind: 'money' }, { id: 'pipeline', kind: 'money' }, { id: 'win', kind: 'pct' }, { id: 'repsthen', kind: 'count' }, { id: 'repsnow', kind: 'count' }, { id: 'quota', kind: 'money' }],
+  slug: 'quota-case', answers: {"Supported": "Yes. It already adds up.", "Tight": "You're a little short.", "You've got a gap": "You've got a gap.", "Can't see it": "You've got a big gap."}, name: 'Quota Case', url: 'https://quotabird.com/quota-case/',
+  fields: [{ id: 'basis', kind: 'choice' }, { id: 'lastyear', kind: 'money' }, { id: 'oneoff', kind: 'money' }, { id: 'runrate', kind: 'money' }, { id: 'pipeline', kind: 'money' }, { id: 'win', kind: 'pct' }, { id: 'repsthen', kind: 'count' }, { id: 'repsnow', kind: 'count' }, { id: 'quota', kind: 'money' }],
   compute(v) {
-    if (!(v.quota > 0 && v.lastyear > 0 && (v.runrate > 0 || (v.pipeline > 0 && v.win > 0)))) return null;
+    if (!(v.quota > 0 && v.lastyear > 0)) return null;
     const money = (n) => { const a = Math.abs(n); return (n < 0 ? '-' : '') + (a >= 1e6 ? '$' + (a / 1e6).toFixed(1).replace(/\\.0$/, '') + 'M' : a >= 1e3 ? '$' + Math.round(a / 1e3) + 'K' : '$' + Math.round(a)); };
     const pct = (r) => Math.round(r * 100) + '%';
+    const bookings = v.basis === 'saas';
     const last = v.lastyear - (v.oneoff || 0);
     const cap = (v.repsthen > 0 && v.repsnow > 0) ? v.repsnow / v.repsthen : 1;
-    const run = v.runrate > 0 ? v.runrate * cap : 0;
     const pipe = (v.pipeline > 0 && v.win > 0) ? v.pipeline * v.win : 0;
-    const best = Math.max(run, pipe), gap = v.quota - best, share = gap / v.quota, growth = (v.quota - last) / last;
+    // Bookings: the stronger of last year's bookings at today's headcount and this year's pipeline at your win rate.
+    // Run rate or whole book: today's run rate (it already reflects today's team) plus the new pipeline you expect to win.
+    // Headcount never adjusts a run rate the user entered; that would count it twice.
+    const hist = last * cap;
+    const run = !bookings && v.runrate > 0 ? v.runrate : 0;
+    const base = bookings ? 0 : (run || hist);
+    const best = bookings ? Math.max(hist, pipe) : base + pipe, gap = v.quota - best, share = gap / v.quota, growth = (v.quota - last) / last;
     let t;
     if (gap <= 0) t = ['Supported', 'ready', `The evidence supports ${money(v.quota)}. Hard, maybe, but defensible.`, 'Stop arguing about it with the team and build the plan.'];
     else if (share <= .10) t = ['Tight', 'proof', `${money(gap)} short of what the evidence supports. That's a stretch, not a scandal.`, `Find the ${money(gap)} with names attached, then build the plan.`];
@@ -1209,14 +1216,18 @@ CALCS = [
     else t = ["Can't see it", 'dont', `${money(gap)}, ${pct(share)} of the number, with nothing in the evidence to fill it.`, 'Take the gap to your boss before you sign anything.'];
     const rows = [['Last year', money(v.lastyear)]];
     if (v.oneoff > 0) rows.push(['Without one-time deals', money(last)]);
-    if (run) rows.push([cap !== 1 ? "Run rate or ARR at today's headcount" : 'Run rate or ARR', money(run)]);
-    if (pipe) rows.push([`Pipeline at your ${pct(v.win)} win rate`, money(pipe)]);
+    if (bookings) { if (cap !== 1) rows.push(["Last year at today's headcount", money(hist)]); }
+    else rows.push([run ? 'Run rate (MRR × 12)' : (cap !== 1 ? "Last year at today's headcount" : 'Last year, as your baseline'), money(base)]);
+    if (pipe) rows.push([bookings ? `Pipeline at your ${pct(v.win)} win rate` : `Plus new pipeline at your ${pct(v.win)} win rate`, money(pipe)]);
+    if (!bookings && run && cap !== 1) rows.push(['Ramped reps, now vs last year', `${v.repsnow} vs ${v.repsthen}`]);
+    rows.push(['What the evidence supports', money(best)]);
     rows.push(['The new number', money(v.quota)]);
     rows.push([v.oneoff > 0 ? 'Growth over last year, without one-offs' : 'Growth over last year', (growth >= 0 ? '+' : '') + pct(growth), growth > .25 ? 'v-no' : '']);
     rows.push(['Gap nobody has explained', gap > 0 ? money(gap) : 'None', gap > 0 ? 'v-no' : '']);
     const need = (gap > 0 && v.win > 0) ? gap / v.win : 0;
     if (need) rows.push([`New pipeline to close it, at ${pct(v.win)}`, money(need)]);
-    const note = gap > 0 ? `To push back: \"Here's last year, here's what we're running at, and here's a ${money(gap)} gap I can't explain. What assumption am I missing?\"` + (need ? ` To close it: about ${money(need)} of new pipeline at your win rate, from growth in existing accounts and net-new ones.` : '') : "The number holds up against the evidence. Now it's about the plan.";
+    const said = bookings ? "here's what the pipeline supports at our win rate" : "here's what we're running at";
+    const note = gap > 0 ? `To push back: \"Here's last year, ${said}, and here's a ${money(gap)} gap I can't explain. What assumption am I missing?\"` + (need ? ` To close it: about ${money(need)} of new pipeline at your win rate, from growth in existing accounts and net-new ones.` : '') : "The number holds up against the evidence. Now it's about the plan.";
     return { label: t[0], cls: t[1], attack: t[2], sub: t[3], bar: t[1] === 'prove' ? 'gap' : undefined, big: gap > 0 ? money(gap) : 'Covered', rows, note, gap, quota: v.quota, best, growth, gapm: money(gap), quotam: money(v.quota), bestm: money(best) };
   },
   handoff: (s) => s.gap > 0
@@ -1237,17 +1248,17 @@ CALCS = [
   card=dict(headline=['Is your quota crazy?',''],dek='Your number against your on-target earnings, judged by what it\'s measured in.',pillars=['OTE','MULTIPLE','RATE','GROWTH']),
   bands=[('pushback','If the number is crazy','''    <p class="lede">Saying it feels too high won't move it. Bring the math: last year's sales, your run rate, qualified pipeline at your real win rate, headcount and ramp time. Then ask what has to be true for the number to be reasonable.</p>
     <p>Better yet, get into planning the year before, while somebody still has the spreadsheet open. <a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> walks through it, with an example you can steal. If you're the rep, start with <a href="/notes/push-back-as-a-rep/">this one</a>. If you're the manager handing it down, <a href="/notes/handing-down-a-tough-quota/">this one</a>.</p>'''),('how','Why the multiple depends on what you sell','''    <p class="lede">Divide your quota by your on-target earnings. That one number tells you a lot about the plan, once you know what the quota is measured in.</p>
-    <p>For SaaS reps carrying new bookings, the published benchmarks agree: 4 to 6 times OTE, with 5 as the steady state and enterprise roles a little higher. That range is really a commission rate in disguise. At a 50/50 pay mix and roughly 10% on new ARR, quota works out to about five times OTE. Below 3 is unusual and usually means a ramp, an overlay, or a plan with a condition in it. Above 8 the plan is asking for something the territory may not have.</p>
+    <p>For a new-bookings AE, 4 to 6 times OTE is a useful working range. Bridge Group's 2026 median was 4.6, and enterprise roles run a little higher. That range is really a commission rate in disguise. At a 50/50 pay mix and roughly 10% on new ARR, quota works out to about five times OTE. Below 3 is unusual and usually means a ramp, an overlay, or a plan with a condition in it. Above 8 the plan is asking for something the territory may not have.</p>
     <p>Cloud consumption is a different animal, and it's the one most people on this site carry. The number is incremental revenue growth on a book, paid at a fraction of a percent, so the same arithmetic gives 15 to 30 times OTE at a big cloud provider and higher in strategic accounts. A rep carrying a $6M growth target on a $280K OTE is at 21×, and that's ordinary, not crazy. Whole-book targets (retention plus growth on the full run rate) run higher still, 40 to 80 times OTE, because most of that revenue would have happened anyway.</p>
     <p>The number to watch across all three is the implied rate: your variable divided by your quota. If it's well under what your peers are paid on the same kind of number, the plan is heavier than the multiple alone suggests. And if you closed last year, the growth the new number implies is the real measure of how much harder this year is. Whether the territory can produce it is <a href="/territory/">Territory Check</a>; how much pipeline it takes is <a href="/pipeline/">Pipeline Check</a>.</p>'''),
-         ('ranges','The typical ranges','''    <p>These ranges come from plans at cloud providers, SaaS companies and their partners. They're guides, not rules, and roles differ. Quota ÷ OTE:</p>
+         ('ranges',"QuotaBird's working ranges",'''    <p>These ranges come from plans at cloud providers, SaaS companies and their partners. They're guides, not rules, and roles differ. Quota ÷ OTE:</p>
     <p><strong>New bookings.</strong> Under 3: low. 3 to 4: favorable. 4 to 6: standard. 6 to 8: a stretch. 8 to 12: aggressive. Over 12: crazy.</p>
     <p><strong>Cloud consumption growth.</strong> Under 8: low. 8 to 15: favorable. 15 to 30: standard. 30 to 45: a stretch. 45 to 60: aggressive. Over 60: crazy.</p>
     <p><strong>Whole book.</strong> Under 20: low. 20 to 40: favorable. 40 to 80: standard. 80 to 120: a stretch. 120 to 160: aggressive. Over 160: crazy.</p>
     <p>If your plan sits somewhere else and the range looks wrong, tell Mark and he'll take a look.</p>''')],
   faq=[('Does anything I enter leave my device?','No. The math runs right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result.'),
        ('Why does it ask what the number is measured in?','Because the same multiple means different things. A $1.4M new-bookings quota on a $280K OTE is 5× and normal. A $1.4M cloud consumption growth target on the same OTE is 5× and unusually light, because consumption is paid at a fraction of the rate bookings are. Pick the basis your plan actually uses.'),
-       ('Where do the ranges come from?','The SaaS range is the published consensus (Bridge Group, RepVue, Pavilion and others put it at 4 to 6× OTE). The cloud and whole-book ranges come from plans at cloud providers and their partners, worked back from the commission rates those plans pay. They\'ll change if enough people report plans that sit somewhere else.'),
+       ('Where do the ranges come from?','The bookings range is a working range built around published data: Bridge Group\'s 2026 median was 4.6× OTE across 158 B2B companies. The cloud and whole-book ranges come from plans at cloud providers and their partners, worked back from the commission rates those plans pay. They\'ll change if enough people report plans that sit somewhere else.'),
        ('What if my variable is a bonus, not commission?','Use the target amount at 100% attainment either way. The tool cares about how much of your pay depends on the number, not what the plan calls it.')],
   config="""CalcTool({
   slug: 'quota', answers: {"Low": "It's unusually low.", "Favorable": "No. It's favorable.", "Standard": "No. It's standard.", "A stretch": "Not crazy. A stretch.", "Aggressive": "Close. It's aggressive.", "Crazy": "Yes. It's crazy."}, name: 'Quota Check', url: 'https://quotabird.com/quota/',
@@ -1264,10 +1275,10 @@ CALCS = [
     const c = B.cuts, std = c[1] + ' to ' + c[2];
     let t;
     if (mult < c[0]) t = ['Low', 'proof', `Your quota is ${X} your OTE. For ${B.name} that's unusually low: a ramp, an overlay, or a plan with a condition in it.`, 'Read the plan twice. Low multiples usually come with a catch.'];
-    else if (mult < c[1]) t = ['Favorable', 'ready', `Your quota is ${X} your OTE, below the typical ${std} for ${B.name}.`, 'Common in new territories, SMB and commercial. Enjoy it while it lasts.'];
-    else if (mult <= c[2]) t = ['Standard', 'ready', `Your quota is ${X} your OTE, inside the typical ${std} for ${B.name}.`, "The number is ordinary. Whether the territory can produce it is a different question."];
-    else if (mult <= c[3]) t = ['A stretch', 'proof', `Your quota is ${X} your OTE, above the typical ${std} for ${B.name}.`, 'Normal for enterprise and strategic roles, and it needs a strong pipeline behind it.'];
-    else if (mult <= c[4]) t = ['Aggressive', 'prove', `Your quota is ${X} your OTE, well above the typical ${std} for ${B.name}.`, 'Strategic-account territory. You need coverage and a territory that can produce it.'];
+    else if (mult < c[1]) t = ['Favorable', 'ready', `Your quota is ${X} your OTE, below QuotaBird's working range of ${std} for ${B.name}.`, 'Common in new territories, SMB and commercial. Enjoy it while it lasts.'];
+    else if (mult <= c[2]) t = ['Standard', 'ready', `Your quota is ${X} your OTE, inside QuotaBird's working range of ${std} for ${B.name}.`, "The number is ordinary. Whether the territory can produce it is a different question."];
+    else if (mult <= c[3]) t = ['A stretch', 'proof', `Your quota is ${X} your OTE, above QuotaBird's working range of ${std} for ${B.name}.`, 'Normal for enterprise and strategic roles, and it needs a strong pipeline behind it.'];
+    else if (mult <= c[4]) t = ['Aggressive', 'prove', `Your quota is ${X} your OTE, well above QuotaBird's working range of ${std} for ${B.name}.`, 'Strategic-account territory. You need coverage and a territory that can produce it.'];
     else t = ['Crazy', 'dont', `Your quota is ${X} your OTE. For ${B.name}, the plan is asking your territory for something it may not have.`, 'Check the territory before you sign, and get the sizing in writing.'];
     const growth = v.closed > 0 ? (v.quota - v.closed) / v.closed : null;
     const rows = [['On-target earnings', money(ote)], ['Quota ÷ OTE', X], ['Implied rate on quota', ratePct], ['Variable share of OTE', pct(share)]];
@@ -1665,7 +1676,7 @@ KIT_BODY = '''
   <section class="kit-ch" id="k-number">
     <h2>1. How your team's number got built</h2>
     <p>Your team's number wasn't built for your team. At a cloud provider it starts with prior year revenue plus a growth rate, usually set above the geo VP, then gets spread down by region, segment and territory. In SaaS it's last year's ARR or bookings plus whatever the company promised its board. Either way, nobody in your chain picked it. They split it.</p>
-    <p>Every layer adds cushion. Most companies hand out 20 to 30% more quota than they need. That's why your reps' quotas can add up to more than your own number, and why a team can miss while the region makes it.</p>
+    <p>Every layer adds cushion. Most sales plans are over-assigned, and a common planning rule of thumb is 20 to 30%. That's why your reps' quotas can add up to more than your own number, and why a team can miss while the region makes it.</p>
     <p>Then find out what your boss is actually paid on, because it often isn't your number. Your VP might be goaled on growth rate, new business, new logos, consumption, margin, or a strategic program you've never heard of. Ask directly: "What are you measured on this year?"</p>
     <p>It changes what you fight for. If your boss is paid on growth rate and your baseline includes a one-time spike, fixing that baseline helps both of you, and now you have an ally. If your boss is paid on new logos, a plan built entirely on expansion won't get much help from above.</p>
     <p>Before you argue with anything, know your own baseline: prior year revenue by territory, what in it won't repeat, accounts that moved in or out, vacant territories, and who's still ramping. A vacant territory still has quota. Somebody's carrying it.</p>
@@ -2154,7 +2165,7 @@ SELLER_BODY = '''
     <h2>1. Where your quota came from</h2>
     <p>Most reps get a number, a spreadsheet link and a kickoff slide, and never find out how any of it got made. Find out. You can't push back on a number you don't understand, and you can't plan against one either.</p>
     <p>At a cloud provider the number almost always starts with prior year revenue, with a growth rate on top. At AWS that growth rate was usually set above the geo VP. By the time it reached a territory, nobody in the chain had picked it. They'd spread it. SaaS works the same way with different words: last year's ARR or bookings, plus the growth the company promised its board.</p>
-    <p>Every layer on the way down adds a little cushion. Most companies hand out 20 to 30% more quota than they actually need, so a few misses don't sink the year. It's a big part of why only about half of AEs hit quota while the company still makes its number.</p>
+    <p>Every layer on the way down adds a little cushion. Most sales plans are over-assigned so a few misses don't sink the year, and a common planning rule of thumb is 20 to 30%. It's a big part of why only about half of AEs hit quota while the company still makes its number.</p>
     <p>Then find out what your number is measured in, because it changes everything:</p>
     <ul>
       <li><strong>New bookings or ACV.</strong> Contracts signed. Common in SaaS new business.</li>
@@ -2184,7 +2195,7 @@ SELLER_BODY = '''
   <section class="kit-ch" id="s-crazy">
     <h2>2. Is your quota crazy? Check it, then decide.</h2>
     <p>"This number is crazy" isn't an argument. Math is.</p>
-    <p>Start with the ratio: quota divided by on-target earnings. For SaaS new bookings, 4 to 6 times is normal. For cloud consumption growth, 15 to 30 times is typical, and strategic accounts run higher. <a href="/quota/">Quota Check</a> does it in ten seconds.</p>
+    <p>Start with the ratio: quota divided by on-target earnings. For SaaS new bookings, 4 to 6 times is a useful working range, and Bridge Group's 2026 median was 4.6. For cloud consumption growth, the plans I've seen mostly land between 15 and 30 times, higher in strategic accounts. That's experience, not a published survey. <a href="/quota/">Quota Check</a> does it in ten seconds.</p>
     <p>Then build the case from what you actually know:</p>
     <ul>
       <li>Prior year revenue, minus anything that won't repeat: a one-time migration, a true-up, one giant deal that landed once.</li>
@@ -2192,7 +2203,7 @@ SELLER_BODY = '''
       <li>Committed contracts that ramp this year, and how much of them customers will really consume.</li>
       <li>Qualified pipeline at your real win rate.</li>
     </ul>
-    <p>Take the strongest of those and subtract it from the new number. What's left is the gap. <a href="/quota-case/">Quota Case</a> does the arithmetic.</p>
+    <p>On a run-rate or whole-book number, add your run rate to the new pipeline you expect to win. On a bookings number, compare last year's bookings, adjusted for headcount, with pipeline at your win rate. Subtract the evidence from the new number. What's left is the gap. <a href="/quota-case/">Quota Case</a> does the arithmetic.</p>
     <p>Now be honest about what can move. The growth rate almost never does. It was set above your manager's boss, and arguing with it just makes you the rep who argued. What can move: the baseline, if it includes revenue that won't repeat; the territory, if accounts moved after the number was set; ramp time, if you're new; and crediting. Pick the one that matters most. One ask gets heard. Five sounds like complaining.</p>
     <p>Then say it plainly: "Here's last year, here's what we're running at, here's what's committed. That leaves a $1.8M gap I can't explain. What assumption am I missing?"</p>
     <p>Sometimes there's a real answer: a new program, a big renewal, a partner with names attached. Then the number is hard but fair. Accept it, get anything that moved in writing, and go to chapter 3.</p>
@@ -2526,11 +2537,10 @@ _how = note_head('How Quotas Usually Get Built', "Where your sales quota probabl
   <p>Your territory and your number are usually settled before anybody asks you about either one.</p>
 
   <h2>Why the quotas add up to more than the plan</h2>
-  <p>Planners over-assign. The quotas across a sales team typically total 20 to 30% more than the company actually
-    needs, and more in enterprise, to cover the reps who miss, leave or ramp slowly. If your number feels like it's
+  <p>Planners over-assign. Sales plans are usually over-assigned. A common planning rule of thumb is 20 to 30% more quota than the company needs, sometimes more in enterprise, to cover the reps who miss, leave or ramp slowly. If your number feels like it's
     carrying somebody else's, it probably is.</p>
 
-  <h2>Cloud quotas count consumption</h2>
+  <h2>Consumption plans count what customers run</h2>
   <p>At the cloud providers, a lot of quota is measured in what customers actually run, month after month, not what they
     sign. Microsoft, for one, ties its field incentives to Azure consumed revenue. A big commit nobody uses doesn't
     retire much quota, which is also why cloud multiples look enormous next to SaaS benchmarks.</p>
@@ -2626,14 +2636,14 @@ _num = note_head('Quota by the Numbers', 'Sales quota and comp benchmarks with s
 
   <h2>Who hits quota</h2>
   ''' + stat_grid([('48%', 'of AEs hit 100% of quota in 2026', True), ('51%', 'did in 2024'), ('66%', 'did in 2022'),
-                   ('42%', 'of all AEs say they hit quota'), ('41%', 'of enterprise AEs say they did'), ('46%', 'of federal AEs say they did'),
-                   ('45%', 'of SLED AEs say they did'), ('42.7%', 'average attainment across 246 cloud and software companies')]) + '''
+                   ('42%', 'of all AEs say they hit quota (RepVue, Sept. 2026)'), ('41%', 'of enterprise AEs say they did (RepVue, Sept. 2026)'), ('46%', 'of federal AEs say they did (RepVue, Sept. 2026)'),
+                   ('45%', 'of SLED AEs say they did (RepVue, Sept. 2026)'), ('42.7%', 'average attainment across 246 cloud and software companies')]) + '''
   <p class="fine">Bridge Group 2026 (158 B2B companies) for the first three; RepVue, September 2026, self-reported, for the next four; RepVue Cloud Sales Index, Q2 2025, for the average.</p>
   <p>Two different numbers both get called attainment: the share of reps who hit 100%, and the average share of quota reps
     reach. They aren't the same number, and people swap them in meetings.</p>
 
   <h2>What the number is and what it pays</h2>
-  ''' + stat_grid([('$960K', 'median SaaS AE quota'), ('$200K', 'median SaaS AE OTE'), ('4.6×', 'quota to OTE, up from 4.2× in 2024', True),
+  ''' + stat_grid([('$960K', 'median AE quota, 158 B2B companies'), ('$200K', 'median AE OTE, same sample'), ('4.6×', 'quota to OTE, up from 4.2× in 2024', True),
                    ('2.4%', 'quota growth per year'), ('4.9%', 'OTE growth per year'), ('53:47', 'base to variable')]) + '''
   <p class="fine">Bridge Group 2026 and 2024 SaaS AE reports.</p>
   <p>Pay has grown about twice as fast as quota for a decade, and the share of reps hitting quota fell by a quarter in four
@@ -2643,11 +2653,10 @@ _num = note_head('Quota by the Numbers', 'Sales quota and comp benchmarks with s
   ''' + stat_grid([('$280K', 'AWS Account Manager OTE'), ('$150K', 'AWS Account Manager base'), ('54:46', 'AWS Account Manager pay mix'),
                    ('64%', 'of AWS Account Managers say they hit quota'), ('56%', 'of Microsoft Enterprise AEs say they did'), ('67%', 'of Microsoft SLED AEs say they did')]) + '''
   <p class="fine">RepVue, self-reported by current and former employees, 2026.</p>
-  <p>These are reps rating their own employers, so treat them as a rough read. Cloud quotas are usually measured in
-    consumption growth, which is why their multiples run far higher than SaaS; <a href="/how-quotas-get-built/">here's why</a>.</p>
+  <p>These are reps rating their own employers, so treat them as a rough read. Many cloud-provider quotas are measured in consumption growth, which is why their multiples run far higher than SaaS; <a href="/how-quotas-get-built/">here's why</a>.</p>
 
   <h2>How plans get built</h2>
-  ''' + stat_grid([('20-30%', 'more quota handed out than the company needs'), ('6.2 mo', 'for a new AE to ramp'),
+  ''' + stat_grid([('20-30%', 'over-assignment, a common planning rule of thumb'), ('6.2 mo', 'for a new AE to ramp'),
                    ('1.5-2×', 'typical first accelerator above quota'), ('80%', 'of plans use accelerators')]) + '''
   <p class="fine">Mostly Metrics on over-assignment; Bridge Group 2026 on ramp; accelerator ranges from 2026 comp plan surveys (Everstage, Prowi, QuotaPath, CaptivateIQ).</p>
 
