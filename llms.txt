@@ -7,7 +7,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 ## Your number
 
 - [Quota Check](https://quotabird.com/quota/): Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book. (the day the number lands.)
-- [Quota Case](https://quotabird.com/quota-case/): Build the bridge from last year to this year's quota: run rate, pipeline at your real win rate, headcount, one-time deals. Find the gap nobody has explained, and take it to your boss calmly. (when you need to push back.)
+- [Quota Case](https://quotabird.com/quota-case/): Find the gap between last year and this year's quota: run rate or ARR, pipeline at your real win rate, headcount, one-time deals. Then push back with it, or close it with growth in existing accounts and net-new ones. (when you need to push back.)
 - [Territory Check](https://quotabird.com/territory/): Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers. (month one in a new territory.)
 - [Commission Check](https://quotabird.com/commission/): Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes. (when it closes.)
 - [Discount Check](https://quotabird.com/discount/): How much discount is too much? See what it costs in your commission and the company's margin before you say yes. (when they ask you to sharpen the pencil.)
@@ -40,9 +40,9 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 ## Free printable
 
-- [The Manager's Field Kit](https://quotabird.com/kit/): a free, printable field kit for sales managers: inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, managing high performers, and six worksheets.
-- [The Seller's Field Kit](https://quotabird.com/seller/): a free, printable field kit for sellers: is it a real deal, pipeline math, one deal carrying the quarter, single-threaded accounts, discounts, quiet deals, falling behind, and keeping your manager informed.
-- [The Leadership Field Kit](https://quotabird.com/leader/): a free, printable field kit for managers who want their influence to travel beyond their team: what to be known for, a point of view, receipts, templates others can borrow, the right rooms, and developing the people behind you.
+- [The Manager's Field Kit](https://quotabird.com/kit/): a free, printable field kit for sales managers: how your team's number got built, fighting the plan without losing, handing down a tough quota and still crushing it, inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, managing high performers, and nine worksheets.
+- [The Seller's Field Kit](https://quotabird.com/seller/): a free, printable field kit for sellers: where your quota came from, checking it and pushing back, crushing a tough number anyway, is it a real deal, pipeline math, one deal carrying the quarter, single-threaded accounts, discounts, quiet deals, falling behind, and keeping your manager informed.
+- [The Leadership Field Kit](https://quotabird.com/leader/): a free, printable field kit for managers who want their influence to travel beyond their team: shaping the number before it shapes your team, what to be known for, a point of view, receipts, templates others can borrow, the right rooms, and developing the people behind you.
 
 ## Sales Math Library
 

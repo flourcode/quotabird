@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Regenerate the 1200x630 OpenGraph cards in the site's own palette and typeface.
-  python3 make-card.py deal       -> card.jpg
-  python3 make-card.py pipeline   -> card-pipeline.jpg
-Run from the web-root folder. Needs: pillow, fonttools, brotli. Uses inter.woff2 so the cards cannot drift from the pages."""
-import re, base64, io, os
+"""OpenGraph share cards (1200x630) and the LinkedIn banner, in Option A: a white page, the tool's question as a
+chunky headline, and a result card in its verdict tint (green / yellow / red), exactly as the page shows it.
+  python3 make-card.py quota      -> card-quota.jpg        python3 make-card.py home   -> card.jpg
+  python3 make-card.py banner     -> linkedin-banner.jpg   python3 make-card.py kit    -> card-kit.jpg
+Run from the web root. Needs pillow, fonttools, brotli. Uses inter.woff2 and logo.png so the cards match the pages."""
+import io, os, sys
 from PIL import Image, ImageDraw, ImageFont
 from fontTools.ttLib import TTFont
 from fontTools.varLib import instancer
 
-import sys
 CARDS = {
   'home': dict(out='card.jpg', wordmark='QuotaBird',
     headline=["You sure that's", 'enough pipeline?'],
@@ -42,13 +42,13 @@ CARDS = {
     pillars=['RECEIPTS', 'OWNERSHIP', 'SCOPE', 'HOW', 'NEXT']),
   'pipeline': dict(out='card-pipeline.jpg', wordmark='PIPELINE CHECK', headline=["You sure that's", 'enough pipeline?'], dek='3X is a rule of thumb. Put in your win rate and see what you really need.',
     foot='', url='quotabird.com/pipeline', pillars=['TARGET', 'PIPELINE', 'WIN RATE', 'THE GAP']),
-  'quota-case': dict(out='card-quota-case.jpg', wordmark='QUOTA CASE', headline=['What has to be true', 'for this quota to work?'], dek='Last year, run rate, pipeline and headcount in. The bridge, and the gap nobody explained.',
+  'quota-case': dict(out='card-quota-case.jpg', wordmark='QUOTA CASE', headline=['What has to be true', 'for this quota to work?'], dek='Last year, run rate, pipeline and headcount in. The gap, and what closes it.',
     foot='', url='quotabird.com/quota-case', pillars=['LAST YEAR', 'RUN RATE', 'PIPELINE', 'THE GAP']),
-  'quota': dict(out='card-quota.jpg', wordmark='QUOTA CHECK', headline=['Is my quota crazy?', ''], dek='Your number against your on-target earnings, and what it asks of your territory.',
+  'quota': dict(out='card-quota.jpg', wordmark='QUOTA CHECK', headline=['Is your quota crazy?', ''], dek='Your number against your on-target earnings, and what it asks of your territory.',
     foot='', url='quotabird.com/quota', pillars=['OTE', 'MULTIPLE', 'VARIABLE', 'GROWTH']),
   'discount': dict(out='card-discount.jpg', wordmark='DISCOUNT CHECK', headline=['How much discount', 'is too much?'], dek='What it costs you in commission, and the company in margin, before you say yes.',
     foot='', url='quotabird.com/discount', pillars=['PRICE', 'DISCOUNT', 'MARGIN', 'YOUR CUT']),
-  'commission': dict(out='card-commission.jpg', wordmark='COMMISSION CHECK', headline=['It closed.', "What do I actually keep?"], dek='A planning estimate of the check after withholding, in about ten seconds.',
+  'commission': dict(out='card-commission.jpg', wordmark='COMMISSION CHECK', headline=['It closed.', "What do you actually keep?"], dek='A planning estimate of the check after withholding, in about ten seconds.',
     foot='Not tax advice.', url='quotabird.com/commission', pillars=['DEAL', 'RATE', 'WITHHELD', 'TAKE-HOME']),
   'account': dict(out='card-account.jpg', wordmark='ACCOUNT CHECK', headline=['Do you know', 'your customer?'], dek="Five questions, then the room pressure-tests you. Finds where you're single-threaded.",
     foot='', url='quotabird.com/account', pillars=['MISSION', 'MONEY', 'POWER', 'INCUMBENT', 'PATH']),
@@ -62,194 +62,109 @@ CARDS = {
     foot='', url='quotabird.com/brief',
     pillars=['POINT', 'RECEIPTS', 'ALTERNATIVE', 'HOLE', 'ASK']),
 }
-if (sys.argv[1] if len(sys.argv) > 1 else '') == 'banner':
-    # LinkedIn profile banner, 1584x396 (drawn at 2x). The left third stays clear for the headshot, which overlaps
-    # the bottom-left on desktop and is proportionally larger in the mobile app; nothing hugs the top or bottom edge.
-    from PIL import ImageFilter
-    S = 2; W, H = 1584 * S, 396 * S
-    SURF=(0xFF,0xFF,0xFF); INK=(0x1B,0x1F,0x23); VAR=(0x5B,0x66,0x70); ACC=(0x0A,0x71,0xB1)
-    woff2 = open('inter.woff2', 'rb').read()
-    def font(w, size):
-        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
-        inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
-        return ImageFont.truetype(buf, size * S)
-    hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
-    books = [("Is my quota crazy?", '#E07A5F', '#2B1B1B'), ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
-             ("Does this territory suck?", '#F4E1C1', '#2B2B2B'), ("What do I actually keep?", '#567E55', '#FFFFFF')]
-    im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
-    bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
-    # covers, right side
-    cols, gap, bw = 4, 14 * S, 104 * S; bh = int(bw * 4 / 3); x0 = W - 112 * S - cols * bw - (cols - 1) * gap; y0 = (H - bh) // 2
-    tf = font(800, 15); lh = 19 * S
-    def wrap(text, width):
-        words, lines, cur = text.split(), [], ''
-        for w_ in words:
-            t = (cur + ' ' + w_).strip()
-            if d.textlength(t, font=tf) <= width: cur = t
-            else: lines.append(cur); cur = w_
-        return lines + [cur]
-    for i, (title, bg, ink) in enumerate(books):
-        x = x0 + i * (bw + gap); y = y0; pad = 20 * S
-        cover = Image.new('RGBA', (bw, bh), hexc(bg) + (255,)); cd = ImageDraw.Draw(cover)
-        bm = mask.resize((int(bw * .8), int(bw * .8 * mask.height / mask.width)), Image.LANCZOS)
-        tint = Image.new('RGBA', bm.size, hexc(ink) + (0,)); tint.putalpha(bm.point(lambda a: int(a * .13)))
-        cover.alpha_composite(tint, (int(bw * .32), bh - int(bm.height * .9)))
-        ty = 13 * S
-        for line in wrap(title, bw - 24 * S):
-            cd.text((12 * S, ty), line, font=tf, fill=hexc(ink)); ty += lh
-        cd.text((12 * S, bh - 19 * S), 'QUOTABIRD', font=font(700, 8), fill=hexc(ink) + (255,))
-        rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), 10 * S, fill=255)
-        im.paste(cover, (x, y), rm)
-        ImageDraw.Draw(im).rounded_rectangle((x, y, x + bw - 1, y + bh - 1), 10 * S, outline=(0xD6, 0xDC, 0xE2), width=2 * S // 2 + 1)
-    # the pitch, middle third
-    tx = 575 * S
-    lb = bird.resize((int(34 * S * bird.width / bird.height), 34 * S), Image.LANCZOS)
-    ty = 92 * S
-    im.paste(lb, (tx, ty), lb); d.text((tx + lb.width + 10 * S, ty + 3 * S), 'QuotaBird', font=font(700, 22), fill=INK)
-    d.text((tx, ty + 56 * S), 'THE QUOTA LANDED', font=font(700, 13), fill=ACC)
-    d.text((tx - 2 * S, ty + 80 * S), 'Is your quota', font=font(800, 38), fill=INK)
-    d.text((tx - 2 * S, ty + 124 * S), 'crazy?', font=font(800, 38), fill=INK)
-    d.text((tx, ty + 180 * S), 'quotabird.com', font=font(700, 19), fill=ACC)
-    im.save('linkedin-banner@2x.jpg', quality=92, optimize=True, subsampling=0)
-    im.resize((1584, 396), Image.LANCZOS).save('linkedin-banner.jpg', quality=92, optimize=True, subsampling=0)
-    print('linkedin-banner.jpg (1584x396) and linkedin-banner@2x.jpg (3168x792)'); sys.exit(0)
-
-if (sys.argv[1] if len(sys.argv) > 1 else '') == 'home':
-    # The home card is the shelf itself. Drawn at 2x (2400x1260) and saved without chroma subsampling, so
-    # LinkedIn's downscaled copies stay sharp and coloured text on coloured covers doesn't smear.
-    from PIL import ImageFilter
-    S = 2; W, H, M = 1200 * S, 630 * S, 64 * S
-    SURF=(0xFF,0xFF,0xFF); INK=(0x1B,0x1F,0x23); VAR=(0x5B,0x66,0x70); ACC=(0x0A,0x71,0xB1)
-    woff2 = open('inter.woff2', 'rb').read()
-    def font(w, size):
-        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
-        inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
-        return ImageFont.truetype(buf, size * S)
-    hexc = lambda h: tuple(int(h[i:i+2], 16) for i in (1, 3, 5))
-    books = [("Is my quota crazy?", '#E07A5F', '#2B1B1B'), ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
-             ("Does this territory suck?", '#F4E1C1', '#2B2B2B'), ("What do I actually keep?", '#567E55', '#FFFFFF'),
-             ("Rep or territory?", '#388073', '#FFFFFF'), ("They want a discount.", '#9DD2FF', '#12324F')]
-    im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
-    bird = Image.open('logo.png').convert('RGBA'); mask = bird.split()[3]
-    cols, gap, bw = 3, 18 * S, 172 * S; bh = int(bw * 4 / 3); x0 = W - M - cols * bw - (cols - 1) * gap; y0 = (H - 2 * bh - gap) // 2
-    tf = font(800, 24); lh = 29 * S
-    def wrap(text, width):
-        words, lines, cur = text.split(), [], ''
-        for w_ in words:
-            t = (cur + ' ' + w_).strip()
-            if d.textlength(t, font=tf) <= width: cur = t
-            else: lines.append(cur); cur = w_
-        return lines + [cur]
-    for i, (title, bg, ink) in enumerate(books):
-        x = x0 + (i % cols) * (bw + gap); y = y0 + (i // cols) * (bh + gap)
-        pad = 24 * S
-        cover = Image.new('RGBA', (bw, bh), hexc(bg) + (255,)); cd = ImageDraw.Draw(cover)
-        cd.rectangle((0, 0, 6 * S, bh), fill=tuple(int(v * .86) for v in hexc(bg)) + (255,))
-        bm = mask.resize((int(bw * .8), int(bw * .8 * mask.height / mask.width)), Image.LANCZOS)
-        tint = Image.new('RGBA', bm.size, hexc(ink) + (0,)); tint.putalpha(bm.point(lambda a: int(a * .13)))
-        cover.alpha_composite(tint, (int(bw * .32), bh - int(bm.height * .9)))
-        ty = 18 * S
-        for line in wrap(title, bw - 34 * S):
-            cd.text((17 * S, ty), line, font=tf, fill=hexc(ink)); ty += lh
-        cd.text((17 * S, bh - 26 * S), 'QUOTABIRD', font=font(700, 11), fill=hexc(ink) + (255,))
-        rm = Image.new('L', (bw, bh), 0); ImageDraw.Draw(rm).rounded_rectangle((0, 0, bw - 1, bh - 1), 10 * S, fill=255)
-        im.paste(cover, (x, y), rm)
-        ImageDraw.Draw(im).rounded_rectangle((x, y, x + bw - 1, y + bh - 1), 10 * S, outline=(0xD6, 0xDC, 0xE2), width=2 * S // 2 + 1)
-    lb = bird.resize((int(46 * S * bird.width / bird.height), 46 * S), Image.LANCZOS); im.paste(lb, (M, M - 4 * S), lb)
-    d.text((M + lb.width + 14 * S, M + 1 * S), 'QuotaBird', font=font(700, 28), fill=INK)
-    d.text((M, M + 96 * S), 'THE QUOTA LANDED', font=font(700, 17), fill=ACC)
-    y = M + 128 * S
-    for line in ['Is your', 'quota', 'crazy?']:
-        d.text((M - 2 * S, y), line, font=font(800, 62), fill=INK); y += 70 * S
-    y += 16 * S
-    for line in ["Maybe. Let's do the math.", 'Push back, or build the plan.', 'Free.']:
-        d.text((M, y), line, font=font(400, 25), fill=VAR); y += 34 * S
-    d.text((M, H - M - 26 * S), 'quotabird.com', font=font(700, 26), fill=ACC)
-    im.save('card.jpg', quality=90, optimize=True, progressive=True, subsampling=0)
-    print('card.jpg', im.size, os.path.getsize('card.jpg') // 1024, 'KB'); sys.exit(0)
 
 KITCARDS = {
   'seller': dict(out='card-seller.jpg', dir='seller', title=["The Seller's", 'Field Kit'], sub=['Useful things for the weeks when', 'the deal, the number, or both', 'are giving you trouble.'], foot='', url='quotabird.com/seller'),
   'kit': dict(out='card-kit.jpg', dir='kit', title=["The Manager's", 'Field Kit'], sub=['Useful things for the weeks when', 'the number, the team, or both', 'are giving you trouble.'], foot='', url='quotabird.com/kit'),
   'leader': dict(out='card-leader.jpg', dir='leader', title=['The Leadership', 'Field Kit'], sub=['For managers who want to', 'become the person other leaders', 'call when something matters.'], foot='', url='quotabird.com/leader'),
 }
-if (sys.argv[1] if len(sys.argv) > 1 else '') in KITCARDS:
-    K = KITCARDS[sys.argv[1]]
-    # The kit's card shows the pages themselves: text left, the two page previews stacked right.
-    from PIL import ImageFilter
-    W, H, M = 1200, 630, 72
-    SURF=(0xFF,0xFF,0xFF); INK=(0x1B,0x1F,0x23); VAR=(0x5B,0x66,0x70); ACC=(0x0A,0x71,0xB1); SOFT=(0xD3,0xE7,0xFF); ONSOFT=(0x00,0x18,0x2B)
-    woff2 = open('inter.woff2', 'rb').read()
-    def font(w, size):
-        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
-        inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
-        return ImageFont.truetype(buf, size)
-    im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
-    # pages, right side
-    ph = 500; front = Image.open(K['dir'] + '/preview-1.jpg').convert('RGB'); back = Image.open(K['dir'] + '/preview-2.jpg').convert('RGB')
-    pw = int(front.width * ph / front.height); front = front.resize((pw, ph), Image.LANCZOS); back = back.resize((pw, ph), Image.LANCZOS)
-    px, py = W - M - pw - 24, (H - ph) // 2 - 6
-    def shadowed(page, angle, x, y, blur=14, alpha=70):
-        pg = page.convert('RGBA'); sh = Image.new('RGBA', (pg.width + 80, pg.height + 80), (0, 0, 0, 0))
-        ImageDraw.Draw(sh).rectangle((40, 48, 40 + pg.width, 48 + pg.height), fill=(0, 0, 0, alpha)); sh = sh.filter(ImageFilter.GaussianBlur(blur))
-        layer = Image.new('RGBA', sh.size, (0, 0, 0, 0)); layer.alpha_composite(sh); layer.paste(pg, (40, 40))
-        layer = layer.rotate(angle, resample=Image.BICUBIC, expand=True)
-        im.paste(layer, (x - 40 - (layer.width - sh.width) // 2, y - 40 - (layer.height - sh.height) // 2), layer)
-    shadowed(back, -4, px + 30, py + 14, alpha=45)
-    fr = front.copy(); ImageDraw.Draw(fr).rectangle((0, ph - 9, pw, ph), fill=ACC)
-    shadowed(fr, 0, px, py)
-    # text, left side
-    bird = Image.open('logo.png').convert('RGBA'); bh = 46; bw = int(bird.width * bh / bird.height); bird = bird.resize((bw, bh), Image.LANCZOS)
-    im.paste(bird, (M, M - 4), bird); d.text((M + bw + 16, M + 1), 'QuotaBird', font=font(700, 28), fill=INK)
-    pf = font(700, 22); pt = 'FREE PRINTABLE'; ptw = int(d.textlength(pt, font=pf))
-    d.rounded_rectangle((M, M + 84, M + ptw + 36, M + 84 + 44), radius=22, fill=SOFT); d.text((M + 18, M + 94), pt, font=pf, fill=ONSOFT)
-    hf = font(800, 64); y = M + 150
-    for line in K['title']:
-        d.text((M - 2, y), line, font=hf, fill=INK); y += 74
-    sf = font(400, 27); y += 18
-    for line in K['sub']:
-        d.text((M, y), line, font=sf, fill=VAR); y += 38
-    fy = H - M - 20
-    d.text((M, fy), K['foot'], font=font(400, 24), fill=VAR)
-    uf = font(700, 26); d.text((M + int(d.textlength(K['foot'], font=font(400, 24))) + 22, fy - 2), K['url'], font=uf, fill=ACC)
-    im.save(K['out'], quality=90, optimize=True, subsampling=0)
-    print(K['out'], os.path.getsize(K['out']), 'bytes'); sys.exit(0)
 
-C = CARDS[sys.argv[1] if len(sys.argv) > 1 else 'home']
-HEADLINE, DEK, FOOT, URL, PILLARS = C['headline'], C['dek'], C['foot'], C['url'], C['pillars']
-
-W, H, M = 1200, 630, 72
-SURF=(0xFF,0xFF,0xFF); INK=(0x1B,0x1F,0x23); VAR=(0x5B,0x66,0x70); PINK=(0x0A,0x71,0xB1)
-PRIMC=(0xED,0xF2,0xF7); ONPRIMC=(0x13,0x16,0x19)
-
-woff2 = open('inter.woff2', 'rb').read()
+# What the result card shows: the page's own default answer (calculators) or a real verdict word (question tools).
+TINT = {'green': ('#AAD576', '#0B1215'), 'yellow': ('#FCEC60', '#0B1215'), 'red': ('#FF7F50', '#0B1215'), 'grey': ('#EEF2F8', '#0B1215')}   # Bold: the word is always ink
+RESULTS = {   # each result is worded as the answer to the tool's question, exactly as the page says it
+  'home':        ('68×', "Yes. It's crazy.", 'Your quota is 68× your OTE. The typical range is 15 to 30.', 'red'),   # a warm, believable result makes people check their own
+  'quota':       ('47×', "Close. It's aggressive.", 'Well above the typical 15 to 30 for cloud run rate.', 'yellow'),
+  'quota-case':  ('$2.6M', "You've got a gap.", 'Push back with it, or close it with $10.4M of new pipeline.', 'yellow'),
+  'discount':    ('$6K', 'This much needs a trade.', 'What 15% off costs you in commission.', 'yellow'),
+  'commission':  ('$28K', "That's your take-home.", 'About 70 cents of every commission dollar.', 'green'),
+  'pipeline':    ('3.2X', "Not really. You're at risk.", 'A 20% win rate says you need 5X.', 'yellow'),
+  'deal':        ('Hopium.', None, 'Weakest: power.', 'red'),
+  'rep':         ('The territory.', None, 'Good rep, bad situation.', 'yellow'),
+  'partner':     ('Yes. Real work.', None, 'Protect the time you spend here.', 'green'),
+  'territory':   ('Yes. Nobody could hit this.', None, 'Say so now, with the math. Not in Q4.', 'red'),
+  'olr':         ('No. No receipts.', None, "It may still be a good rep. It isn't an assessment yet.", 'red'),
+  'account':     ('Yes. You know the account.', None, 'Now find the next one before anyone else does.', 'green'),
+  'risk':        ("Yes. It's fragile.", None, 'Re-underwrite every commit deal this week.', 'yellow'),
+  'competition': ("You're behind.", None, 'Weakest: proof.', 'yellow'),
+  'brief':       ('No. Shark food.', None, 'Weakest: receipts.', 'yellow'),
+}
+WHITE, INK, MUT = (255, 255, 255), (0x0B, 0x12, 0x15), (0x4F, 0x5B, 0x66)
+_WOFF = open('inter.woff2', 'rb').read(); _cache = {}
 def font(w, size):
-    inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(woff2)), {'wght': w}, inplace=False)
-    inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0)
-    return ImageFont.truetype(buf, size)
+    key = (w, size)
+    if key not in _cache:
+        inst = instancer.instantiateVariableFont(TTFont(io.BytesIO(_WOFF)), {'wght': w}, inplace=False)
+        inst.flavor = None; buf = io.BytesIO(); inst.save(buf); buf.seek(0); _cache[key] = ImageFont.truetype(buf, size)
+    return _cache[key]
+def hexc(h): return tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
+def wrap(d, text, f, width):
+    words, lines, cur = text.split(), [], ''
+    for w in words:
+        t = (cur + ' ' + w).strip()
+        if d.textlength(t, font=f) <= width or not cur: cur = t
+        else: lines.append(cur); cur = w
+    if cur: lines.append(cur)
+    return lines
+def fit(d, text, weight, start, width, max_lines, floor=40):
+    s = start
+    while s > floor:
+        f = font(weight, s); lines = wrap(d, text, f, width)
+        if len(lines) <= max_lines and all(d.textlength(l, font=f) <= width for l in lines): return f, lines, s
+        s -= 2
+    f = font(weight, floor); return f, wrap(d, text, f, width), floor
+def brand(im, d, x, y, h=48):
+    bird = Image.open('logo.png').convert('RGBA'); bw = int(bird.width * h / bird.height); bird = bird.resize((bw, h), Image.LANCZOS)
+    im.paste(bird, (x, y), bird); d.text((x + bw + 14, y + int(h * .12)), 'QuotaBird', font=font(700, int(h * .6)), fill=INK)
+def result_card(im, d, box, big, word, line, tint, big_lines=2, scale=1.0):
+    bg, dark = TINT[tint]; x0, y0, x1, y1 = box; d.rounded_rectangle(box, radius=int(34 * scale), fill=hexc(bg))
+    pad = int(38 * scale); w = x1 - x0 - 2 * pad
+    f, lines, s = fit(d, big, 900, int((170 if len(big) <= 5 else 104) * scale), w, big_lines, int(56 * scale))
+    lf = font(500, int(26 * scale)); wf = font(800, int(40 * scale)); body = wrap(d, line, lf, w)[:4]
+    wlines, wf2, ws = ([], None, 0)
+    if word: wf2, wlines, ws = fit(d, word, 850, int(46 * scale), w, 2, int(30 * scale))
+    hgt = len(lines) * int(s * .98) + int(14 * scale) + len(wlines) * int(ws * 1.12) + (int(10 * scale) if word else 0) + len(body) * int(36 * scale)
+    y = y0 + (y1 - y0 - hgt) // 2 - int(8 * scale)          # the result sits in the middle of its card
+    for l in lines: d.text((x0 + pad - 4, y), l, font=f, fill=INK); y += int(s * .98)
+    y += int(14 * scale)
+    for l in wlines: d.text((x0 + pad, y), l, font=wf2, fill=INK); y += int(ws * 1.12)
+    if word: y += int(10 * scale)
+    for l in body: d.text((x0 + pad, y), l, font=lf, fill=INK); y += int(36 * scale)
+def save(im, out):
+    im.save(out, quality=90, optimize=True, subsampling=0); print(out, os.path.getsize(out), 'bytes')
 
-im = Image.new('RGB', (W, H), SURF); d = ImageDraw.Draw(im)
-bird = Image.open(C.get('mark', 'logo.png')).convert('RGBA')
-bh = 52; bw = int(bird.width * bh / bird.height); bird = bird.resize((bw, bh), Image.LANCZOS)
-im.paste(bird, (M, M - 4), bird)
-d.text((M + bw + 18, M + 2), C['wordmark'], font=font(700, 30), fill=INK)
-# the headline and the line under it shrink until their longest line fits the card
-hs = C.get('hsize', 74)
-while hs > 44 and max(d.textlength(l, font=font(800, hs)) for l in HEADLINE if l) > W - 2 * M: hs -= 2
-hf = font(800, hs); y = M + 104
-for line in HEADLINE:
-    d.text((M - 3, y), line, font=hf, fill=INK); y += int(hs * 1.19)
-ds = 29
-while ds > 20 and d.textlength(DEK, font=font(400, ds)) > W - 2 * M: ds -= 1
-d.text((M, y + 14), DEK, font=font(400, ds), fill=VAR)
-cy = y + 84; cx = M; cf = font(700, 25)
-for t in PILLARS:
-    pw = int(d.textlength(t, font=cf) + 52)
-    d.rounded_rectangle((cx, cy, cx + pw, cy + 54), radius=14, fill=PRIMC)
-    d.text((cx + 26, cy + 13), t, font=cf, fill=ONPRIMC); cx += pw + 16
-fy = H - M - 20
-d.text((M, fy), FOOT, font=font(400, 24), fill=VAR)
-uf = font(700, 26)
-d.text((W - M - d.textlength(URL, font=uf), fy - 2), URL, font=uf, fill=PINK)
-im.save(C['out'], quality=90, optimize=True, subsampling=0)
-print(C['out'], os.path.getsize(C['out']), 'bytes')
+arg = sys.argv[1] if len(sys.argv) > 1 else 'home'
+if arg == 'banner':
+    for sc, out in ((1, 'linkedin-banner.jpg'), (2, 'linkedin-banner@2x.jpg')):
+        W, H = 1584 * sc, 396 * sc; im = Image.new('RGB', (W, H), WHITE); d = ImageDraw.Draw(im)
+        X = 420 * sc                                   # clear of LinkedIn's profile photo, which covers the lower left
+        brand(im, d, X, 58 * sc, 44 * sc)
+        f, lines, s = fit(d, 'Is your quota crazy?', 900, 80 * sc, 560 * sc, 2)
+        y = 128 * sc
+        for l in lines: d.text((X - 2 * sc, y), l, font=f, fill=INK); y += int(s * 1.0)
+        d.text((X, y + 10 * sc), "Maybe. Let's do the math.  quotabird.com", font=font(500, 28 * sc), fill=MUT)
+        result_card(im, d, (W - 72 * sc - 470 * sc, 42 * sc, W - 72 * sc, H - 42 * sc), '21×', 'Standard', 'Inside the 15 to 30 I usually see.', 'green', scale=sc * .82)
+        save(im, out)
+    sys.exit(0)
+
+W, H, M = 1200, 630, 64
+im = Image.new('RGB', (W, H), WHITE); d = ImageDraw.Draw(im)
+brand(im, d, M, M - 6)
+LW = 590
+if arg in KITCARDS:
+    K = KITCARDS[arg]; title = ' '.join(K['title']); label = 'FREE PRINTABLE'; url = K['url']
+    pages = {'seller': '7', 'kit': '11', 'leader': '3'}[arg]
+    card = (pages + ' pages', 'Free to print', ' '.join(K['sub']), 'grey')
+else:
+    C = CARDS[arg]; title = ' '.join(x for x in C['headline'] if x).replace("  ", " "); url = C['url']
+    label = '' if arg == 'home' else C['wordmark']
+    card = RESULTS[arg]
+if arg in ('home', 'quota'): title = 'Is your quota crazy?'
+y = 150
+if label: d.text((M, y), label, font=font(700, 22), fill=MUT); y += 44
+f, lines, s = fit(d, title, 900, 84, LW, 3, 48)
+for l in lines: d.text((M - 3, y), l, font=f, fill=INK); y += int(s * 1.02)
+if arg in ('home', 'quota'): d.text((M, y + 14), "Maybe. Let's do the math.", font=font(500, 30), fill=MUT)
+d.text((M, H - M - 28), url, font=font(700, 28), fill=INK)
+result_card(im, d, (W - M - 440, M + 20, W - M, H - M - 20), *card, big_lines=1 if arg in KITCARDS else 2)
+out = KITCARDS[arg]['out'] if arg in KITCARDS else C['out']
+save(im, out)

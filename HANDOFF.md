@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-10-28.1900.** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-10-31.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -20,6 +20,39 @@ Free tools, no login, no AI, nothing stored. The consulting offer (a free 20-min
 - Contractions always. No em or en dashes anywhere. "Territory," never "patch." Bio wording is exactly "six years leading federal partner sales teams at AWS."
 - Numbers are sourced (see Data). Self-reported data is labelled as self-reported.
 
+## Voice in results (Oct 30)
+
+1. **Tools speak to "you".** Your quota, your territory, your deal, your number. No "I", "my" or "this number" in any result, next step, row or share text. Tool questions are in second person too ("Is your quota crazy?", "What do you actually keep?"). Buttons say "Check your quota", not "Check my quota".
+2. **Mark's "I" lives only where he is clearly the speaker:** his card after each result, About, Ask Mark, Field Notes, and his DM and booking templates. Quoted lines stay in their speaker's voice: "Your VP will ask" questions are the VP talking; Quota Case's push-back script is what the rep says out loud.
+3. **Every verdict answers its tool's question**, starting with the answer: "Does this territory suck?" gets "Yes. Nobody could hit this." Each tool keeps a short internal tag (At risk, HOPIUM) for the sticky bar, booking notes and lookups, and an `answers` map (in each tool's config; `ANSWER` in the Pipeline and Deal pages) that turns the tag into the answer shown on the card and in share text. **Add an answer for every new tag.**
+4. **No unsourced authority.** The cloud (15 to 30) and whole-book (40 to 80) ranges come from Mark's experience: say "the typical range", never "reported". Only the SaaS range (4 to 6x OTE) is published consensus and may be called that.
+
+| Tool | Answers (green → red) |
+|---|---|
+| Quota Check | No. It's favorable. / No. It's standard. / It's unusually low. / Not crazy. A stretch. / Close. It's aggressive. / Yes. It's crazy. |
+| Quota Case | It already adds up. / You're a little short. / You've got a gap. / You've got a big gap. |
+| Pipeline | Yes. You're covered. / Close. Not quite. / Not really. You're at risk. / No. You're short. |
+| Discount | This much is normal. / This much needs a trade. / This much is expensive. / This much is too much. |
+| Commission | That's your take-home. |
+| Deal | It's real. / Real, but at risk. / Hopium. / Not a deal yet. |
+| Rep | Neither. They're fine. / The territory. / The rep: a skill gap. / The rep: an effort gap. / The rep. Wrong fit. / Not clear yet. |
+| Territory | No. It's workable. / A little. It's thin. / Mostly, yes. / Yes. Nobody could hit this. |
+| Account | Yes. You know the account. / Partly. / Barely. One thread. / No. You know one person. |
+| Competition | They prefer you. / You're in the mix. / You're behind. / Doing nothing is winning. |
+| Risk | No. It's spread out. / Almost. It's lopsided. / Yes. It's fragile. / Yes. It won't hold. |
+| Partner | Yes. Real work. / Mostly talk. / Not much. / No. Just promises. |
+| Talent Review | Yes. You're ready. / Not yet. / Not really. It's a story. / No. No receipts. |
+| Brief | Yes. It's room-ready. / Maybe. It'll be a fight. / No. Shark food. / No. There's no point yet. |
+
+## Share cards
+
+- **Share cards for Quota Check and home use a warm result on purpose.** A green "Standard" gives nobody a reason to click; a believable warm result makes people check their own. Home: red **68×, Yes. It's crazy.** Quota Check: yellow **47×, Close. It's aggressive.** Both sit inside the real bands for cloud run rate, so a visitor who enters them gets the same verdict. Keep numbers specific and plausible (never absurd like 571×), and keep "Maybe. Let's do the math." under the question.
+
+## Language reps actually use
+
+- **"The gap", never "the bridge."** Reps don't say bridge. The sequence the site follows everywhere: know your quota against your pipeline and ARR, see the gap, then either push back with it (the conversation) or close it with new pipeline from growth in existing accounts and net-new accounts (the plan). Quota Case shows both: the gap, the new pipeline it takes at your win rate, and the words for each conversation.
+- Say "run rate or ARR", not just "run rate". *Bridge Group* (the research firm) is the only "bridge" on the site.
+
 ## UX rules (apply to every page)
 
 1. **Show value before any ask.** The home page answers a question in the first screen (the live mini Quota Check) before anyone taps anything.
@@ -37,29 +70,52 @@ Free tools, no login, no AI, nothing stored. The consulting offer (a free 20-min
 13. **Keep forms short.** The fewer fields between someone and an answer (or a booking), the better. Calendly asks name, email and one line.
 14. **No decoration that isn't doing work:** no highlighter, gradients, gloss or shadows.
 
-## Design system (Material 3 roles, seeded from the bird)
+## Design system (Option A structure + the BOLD colour system, Oct 30, final)
 
-- **The bird:** Mark's drawing, body #9DD2FF, outline and eye in #1B1F23. Dark versions get a light rim; the 404 bird has an X eye. PNGs are rendered from the SVGs (make sure the local server is running first, or they come out as broken-image icons).
-- **Page:** pure white. Text #1B1F23; muted #5B6670 (only on white and light neutrals). Font: Inter, self-hosted.
-- **Blue scale (Mark's monochromatic):** #4FAEFF, #6AB8FF, #86C5FF, #9FD1FF, #B8DDFF, #D3E7FF, #EAF4FF (tokens `--blue-1` to `--blue-7`).
-- **Roles:** filled button `--blue-1` #4FAEFF with #00182B text (hover `--blue-2`); filled tonal button `--blue-6` #D3E7FF; selected chip = the bird #9DD2FF; emphasis container (booking card, headline stat) `--blue-7` #EAF4FF; text links #0A71B1 only. Dark mode: the filled button is the bird.
-- **Shapes (M3 scale):** buttons and answer choices full; chips 8px; cards 16px; text fields 4px. Circles stay circles.
-- **Cards:** flat, 1px #D6DCE2 border, no shadow, no gradient. Plain cards #F7F8F9.
-- **Verdict tints:** green #C6EBC9, yellow #FFF982, orange #FFCF8A, red #F5B3AD.
-- **The shelf keeps Mark's original book colours**, each with its own title colour (`--on-k`): Quota coral #E07A5F (featured), Pipeline #F2C14E, Deal #1C3D5A, Rep #388073, Territory #F4E1C1, Account #6C5B7B, Competition #C35037, Risk #2E2E3A (gold type), Discount #9DD2FF, Commission #567E55, Partner #F28482, Talent Review #264653 (gold type), Brief #E9C46A, Field Kits #EDEDE9, Sales Math #1D3557. Quota Shorts use the same colours.
-- **Big numbers:** the hero answer and the Quota Shorts use 48px, weight 800. Stats on /quota-by-the-numbers/ are plain cards (`stat()` / `stat_grid()`): value, label, a source line per section. No donuts or bar charts.
-- The system lives in the blocks at the end of `site.css` ("One system", "M3 roles and shapes", the Shorts numbers), which win over older rules above them.
+Built from the 2026 palettes Mark supplied (@346eur): flat, confident colour on clean cool whites and blue-blacks.
+
+| Role | Meaning | Light | Dark |
+|---|---|---|---|
+| **Standard** | defensible, ordinary, okay | Yellow Green `#AAD576` | same `#AAD576` |
+| **Caution** | you've got a gap, the situation, a stretch | Corn Yellow `#FCEC60` | same `#FCEC60` |
+| **Problem** | unrealistic, crazy | Coral Orange `#FF7F50` | same `#FF7F50` |
+| **Action** | only things you tap | Denim Blue `#1560BD`, white text | Aero Blue `#7CB9E8`, Midnight text |
+| **Structure** | page / cards / lines | `#FFFFFF` / `#EEF2F8` / `#E2E8F0` | Midnight Abyss `#0B1215` / `#16202A` / `#222E3A` |
+| **Text** | everything | `#0B1215`, muted `#4F5B66` | `#F2F6FC`, muted `#A3AFBB` |
+| **Brand** | the bird | `#9DD2FF`, ink outline | `#9DD2FF`, medium-blue outline `#4F86B5` |
+
+**Rules:**
+1. **Verdict cards are bold stickers: the same colour in light and dark, always with black text** (7.6 to 15.6:1). They never darken, so dark mode never turns yellow into brown.
+2. **Colour appears on the answer card only.** Everything else is structure; blue is only for things you tap.
+3. **Verdict words are always black**, large and heavy; the card colour carries the meaning.
+4. Three bands, not four (`--v-orange` = Caution).
+
+**Verdict wording:** see *Voice in results* below; every verdict is an answer to its tool's question. Quota Case's middle verdict is **"You've got a gap."** (the sticky bar shortens it to "$2.6M gap"); the explanation and next steps go in the text below it, never in the label. Avoid homework phrasing like "Gap to explain" or "Needs a bridge".
+
+**Type: chunky.** Inter. Headings weight 900, tight tracking (-.045em). Home headline 44px on phones, 76px on desktop. The answer number 96px on phones (scales down to 58px on 320px screens so "$2.6M" never overflows), 120px on the desktop home. Verdict words in sentence case, never capitals ("The situation", "At risk").
+
+**Components (standard, modern):**
+- Buttons: 14px corners, 54px tall for the main action. Secondary actions are grey, or an underlined text link on the booking card.
+- Segmented control (iOS style): grey track, black selected segment, no check. Used for *Bookings / Run rate / Whole book* (the label is "Run rate", not "Cloud growth"). Pipeline Check's preset rows (win rate, year end) use it too, sized to their text.
+- Inputs are grouped rows: label left, number right, in one grey panel with hairline dividers. Number fields keep at least 128px; long labels wrap. Where preset buttons interrupt a list, each panel keeps rounded corners.
+- Cards: grey, 16px corners. The checks are plain cards: the question in bold, the tool name and an arrow underneath. Pressing a card turns it blue.
+- Links: underlined only inside sentences. Buttons and whole-card links are never underlined.
+- Focus: a 2px ink ring for keyboard focus only; headings and verdicts moved into view for screen readers show no ring.
+
+**The bird:** Mark's fainter bluebird, `#9DD2FF` with an ink outline and eye. In dark mode the outline is medium blue `#4F86B5` (4.9:1 against the page, so the beak and wing line stay crisp); a light rim looked like a sticker, a deep blue lost the beak, a soft blue blurred into the body. The 404 bird has an X eye.
+
+**The system lives in the "OPTION A" block at the end of `site.css`** and the small fix-ups after it, which win over everything above. Older palette blocks above it are dead weight and can be pruned once this has been live for a while.
 
 ## Pages
 
-**Home:** "The quota landed / Is your quota crazy? / Maybe. Let's do the math." then the live mini Quota Check (basis chips; quota, base, variable pre-filled grey; multiple and verdict update as you type; "See the whole plan" hands typed numbers to /quota/). Then "Push back or build a plan." over three paths (Understand it → /how-quotas-get-built/, Push back → /quota-case/, Accept it and plan → the note), the Quota Shorts strip, and the shelf under "The quota isn't the only problem." The hero's thresholds must match Quota Check's.
+**Home:** "The quota landed / Is your quota crazy? / Maybe. Let's do the math." then the live mini Quota Check: the answer card (big number on its verdict tint), the segmented control, the grouped input rows (pre-filled grey examples), and "See the whole plan" (blue), which hands typed numbers to /quota/. On desktop the inputs sit left and the answer right. Then "Push back or build a plan." over three paths, the Quota Shorts strip (grey cards, big numbers), and under "The quota isn't the only problem." the checks as plain grey cards grouped like the Tools menu: Your number, Your team, Your deal, Any meeting, and Print and learn (Field Kits, Sales Math). Quota Check itself isn't listed on the home page (the hero is Quota Check); the 404 page copies the same block and adds it. The hero's thresholds must match Quota Check's.
 
 **The 14 tools:**
 
 | URL | Tool | Kind | Headline |
 |---|---|---|---|
 | /quota/ | Quota Check | calculator | Is my quota crazy? |
-| /quota-case/ | Quota Case | calculator | What has to be true for this quota to work? |
+| /quota-case/ | Quota Case | calculator | What has to be true for this quota to work? (the gap, and the pipeline that closes it) |
 | /pipeline/ | Pipeline Check | calculator (pipeline.src.html) | You sure that's enough pipeline? |
 | /discount/ | Discount Check | calculator | How much discount is too much? |
 | /commission/ | Commission Check | calculator | It closed. What do I actually keep? |
@@ -79,7 +135,11 @@ Question tools run on `check.js`, calculators on `calc.js`. Five questions per t
 
 **Field Notes (11):** Your quota is crazy. Now prove it (managers pushing back) · You're the rep and the number is crazy · You have to hand down a number you don't love · The number isn't changing. Now what? · Before you decide the comp plan sucks, figure out how it pays · 3X is a win rate in disguise · Why I don't start with BANT or MEDDIC · If three people failed in the same territory · Your quota went up 30%. Did your territory? · They asked for 15% off · Your best rep hates meetings.
 
-**Field Kits:** Seller's (4 pages), Manager's (8), Leadership (3), printed from their pages to Letter and A4. Re-check page counts after any kit copy change. The Manager's kit index has a Quota problem row (chapter 5).
+**Field Kits (rebuilt Oct 30): every kit leads with the number**, because that's why people come to QuotaBird. Printed from their pages to Letter and A4 with `node kitpdf.js` (local server running); re-check page counts after any kit copy change and set `SELLER_PAGES`, `KIT_PAGES`, `LEADER_PAGES` in `make-tools.py` and the `pages` map in `make-card.py`.
+- **Seller's Kit (7 pages, 11 chapters, 8 worksheets).** Opens with *Your number*: 1. Where your quota came from (prior year revenue plus a growth rate, set above the geo VP at AWS; over-assignment; bookings vs ARR/MRR vs consumption vs whole book; reading the comp plan: OTE, split, rate, accelerators, caps, crediting; what to ask for this week). 2. Is your quota crazy? Check it, then decide (quota ÷ OTE; the gap from PYR minus one-time revenue, run rate, committed contracts, pipeline × win rate; what can move and what can't; one ask; the script; when to accept). 3. It's a tough number. Crush it anyway (gap ÷ win rate = new pipeline; existing-account growth vs net-new with names; front-load, since a March workload runs ten months and an October one three). Then the eight deal chapters (4 to 11).
+- **Manager's Kit (11 pages, 13 chapters, 9 worksheets).** Opens with 1. How your team's number got built (and what your boss is actually paid on: growth rate, new business, new logos, consumption, margin). 2. Fighting the plan without losing (early, one page, one ask for what can move; escalate once; commit publicly; know when to stop). 3. Handing down a tough number, and still crushing it. Then the original ten chapters (4 to 13). The *Having a bad week?* index points Where the number came from, Quota or comp plan problem, and Handing down a tough number at 1 to 3.
+- **Leadership Kit (3 pages, 7 chapters, 2 worksheets and a checklist).** Opens with 1. Shape the number before it shapes your team (plan from a clean baseline and capacity, choose over-assignment on purpose, get into the planning room, know what the people above you are paid on).
+- **The through-line in all three:** "The best time to shape your quota was last year. The next best time is now." Push back with data (PYR, run rate, committed contracts, pipeline × win rate), know when to accept, then fill the gap from existing accounts and net-new. Kits stay in Mark's first person; they're signed.
 
 **Also:** Sales Math (4 pages), About (opens on Mark's photo and "Hi, I'm Mark."), Ask Mark ("Got a quota problem?"), Stuff I Like, 404 (shows the shelf).
 
@@ -93,13 +153,13 @@ Calendly: calendly.com/markflournoy/chat-with-mark (utm_source=quotabird, utm_me
 
 ## Navigation
 
-Header: Tools ▾ · Field Kits · Field Notes · About · Ask Mark. Don't add to it. The Tools menu leads with Your number (Quota Check, Quota Case, Territory, Commission, Discount), then Your team, Your deal, Any meeting. Footer: "QuotaBird is a pile of free sales tools. I built them because they helped me, and maybe they'll help you." and "Not affiliated with the U.S. government or Amazon."
+Header: Tools ▾ · Field Kits · Field Notes · About · Ask Mark. Don't add to it. In the Tools menu, Your number sits left, Your deal and Any meeting right, and Your team runs full width underneath with its links in two columns, so no column gets long on a phone (about 530 to 560px tall open). The 404's copy of the menu is refreshed at build. The Tools menu leads with Your number (Quota Check, Quota Case, Territory, Commission, Discount), then Your team, Your deal, Any meeting. Footer: "QuotaBird is a pile of free sales tools. I built them because they helped me, and maybe they'll help you." and "Not affiliated with the U.S. government or Amazon."
 
 ## Build and deploy
 
 - **Edit:** `make-tools.py` (every generated page), `home.src.html`, `pipeline.src.html`, `deal/index.html`, `check.js`, `calc.js`, `analytics.js`, `site.css`, `partials/*.html`, `404.html`, `make-card.py`, `make-social.py`.
 - **Never edit by hand:** built `index.html` files, `sitemap.xml`, `llms.txt`, `ai-catalog.json`, the fingerprinted `site.<hash>.css` / `check.<hash>.js` / `calc.<hash>.js` / `analytics.<hash>.js`, `card*.jpg`.
-- **Build:** `python3 make-tools.py` (pages, sitemap, llms.txt, ai-catalog, fingerprints). Cards: `python3 make-card.py <slug|home|banner>`, then rebuild. Social images: `python3 make-social.py`. Copy workbook: `python3 extract-copy.py`.
+- **Build:** `python3 make-tools.py` (pages, sitemap, llms.txt, ai-catalog, fingerprints). Share cards: `python3 make-card.py <slug|home|banner|seller|kit|leader>`, then rebuild. Each card is the tool's question as a chunky headline beside a result card in its verdict tint, using the page's real default answer (calculators) or a real verdict word (question tools); the list is `RESULTS` in `make-card.py`, so update it if a default changes. The banner keeps its text clear of the lower-left, where LinkedIn places the profile photo. Kit PDFs: start the local server, then `node kitpdf.js` (saved with the build tools); re-check 4 / 8 / 3 pages afterwards. Social images: `python3 make-social.py`. Copy workbook: `python3 extract-copy.py`.
 - **Deploy:** AWS Amplify from GitHub. `customHttp.yml` caches css/js for a year (safe: names change with content) and html not at all. Rewrites in `amplify-rewrites.json` (45 rules, 404 catch-all last); every new page needs a `/<slug>` → `/<slug>/` rule. Never edit the live site directly.
 
 ## Data (researched Sept 27, 2026; refresh yearly)
@@ -108,13 +168,11 @@ Bridge Group 2026 (158 B2B companies): 48% of AEs at 100%+ (51% in 2024, 66% in 
 
 ## Already decided (don't re-propose)
 
-- **Bird colours:** raven/charcoal, yellow canary, dusty blue #88B1CB and an X-eyed main logo were all tried; the bird is #9DD2FF. No bluebird-versus-blackbird imagery.
-- **Palettes:** warm-ink monochrome, "raven" bone-and-slate, Mark's mustard/Material palette, the six-colour card system and a colourless one-family shelf were all tried and dropped. The shelf keeps its original colours; the UI is the M3 blue roles above.
-- **Type:** Google Sans Flex was tried and dropped. Inter stays.
-- **Visual treatments:** no highlighter on the hero (or anywhere), no editorial "By the Numbers" panels with donuts and bars, no field-guide/kraft look, no gradients or gloss.
-- **Hero:** leads with the live mini Quota Check, not just a headline and a button.
+- **The look is Option A with the BOLD colour system** (above, Oct 30). Tried and dropped along the way: pale kiwi/sunshine/tomato tints, dusty coral, brick, ochre, sage caution, deep dark-mode verdict cards (always drifted brown), and coloured verdict words. Tried and dropped before it: raven, yellow canary, dusty blue and purple birds; warm-ink, bone-and-slate, mustard/Material, six-colour, rainbow-shelf, colourless-shelf, M3 purple and teal, retro-sunset, palette B, oat milk, the Swiss "mood and trope" cover palette, colour-coded groups (dots, switches, shapes and badges), Monocle-style rules, the iPhone-primary palette, Google Sans Flex, the highlighter, editorial charts, the bookshelf. Mark's words at the end: "I just want a modern site with modern UI elements and chunky hero text and numbers." Keep it that simple.
+- **No decorative systems:** no badges, switches, filter chips or colour codes on the checks. Grouping is done with quiet grey labels.
+- **Switches mean on/off only.** Never use one as decoration.
 - **Copy:** the "kill" language is gone except one line of Mark's on About; don't add more.
 
 ## Pending (Mark)
 
-Replace `mark.jpg` (background-removal artifacts; it sits beside the booking button). Set prices for Wingman and Team session. Calendly: 20-minute event, one intake question, no marketing emails. Submit the sitemap in Search Console. Post the Field Notes; write new notes before new tools (queue: The best quota fight happens before January · Show me the bridge · If only 20% of the team hits quota, maybe the reps aren't the problem · Your boss may not be goaled on your quota · When a tough quota is still a fair quota · One giant deal made last year's number · New reps don't produce twelve months of revenue in six months · A vacant territory still has quota · Stop using 3X pipeline if your win rate is 18%).
+Redo the social collateral (post images, carousel, email signature) in Option A; `make-social.py` still draws the old bookshelf covers, so those files are not in the latest package. Replace `mark.jpg` (background-removal artifacts; it sits beside the booking button). Set prices for Wingman and Team session. Calendly: 20-minute event, one intake question, no marketing emails. Submit the sitemap in Search Console. Post the Field Notes; write new notes before new tools (queue: The best quota fight happens before January · Show me where the gap closes · If only 20% of the team hits quota, maybe the reps aren't the problem · Your boss may not be goaled on your quota · When a tough quota is still a fair quota · One giant deal made last year's number · New reps don't produce twelve months of revenue in six months · A vacant territory still has quota · Stop using 3X pipeline if your win rate is 18%).

@@ -11,7 +11,7 @@ from fontTools.varLib import instancer
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 OUT = 'social'; os.makedirs(OUT, exist_ok=True)
-SURF = (0xFF, 0xFF, 0xFF); INK = (0x1B, 0x1F, 0x23); VAR = (0x5B, 0x66, 0x70); ACC = (0x0A, 0x71, 0xB1); LINE = (0xDD, 0xE4, 0xEA)
+SURF = (0xF8, 0xF8, 0xF5); INK = (0x28, 0x2C, 0x2F); VAR = (0x5F, 0x61, 0x64); ACC = (0x28, 0x2C, 0x2F); LINE = (0xDD, 0xE4, 0xEA)
 hexc = lambda h: tuple(int(h[i:i + 2], 16) for i in (1, 3, 5))
 _WOFF = open('inter.woff2', 'rb').read(); _cache = {}
 def font(w, size):
@@ -23,9 +23,9 @@ BIRD = Image.open('logo.png').convert('RGBA'); MASK = BIRD.split()[3]
 
 # the shelf's covers, same words and colours as the site
 COVERS = {
-    'deal': ("Is this even a deal?", '#1C3D5A', '#FFFFFF'), 'pipeline': ("Enough pipeline?", '#F2C14E', '#1B1B1B'),
-    'quota': ("Is my quota crazy?", '#E07A5F', '#2B1B1B'), 'rep': ("Rep or territory?", '#388073', '#FFFFFF'),
-    'partner': ("Is this partner doing anything?", '#F28482', '#2B1B1B'), 'discount': ("They want a discount.", '#9DD2FF', '#12324F'),
+    'deal': ("Is this even a deal?", '#0A504B', '#FFFFFF'), 'pipeline': ("Enough pipeline?", '#D9B265', '#282C2F'),
+    'quota': ("Is my quota crazy?", '#E77A3C', '#282C2F'), 'rep': ("Rep or territory?", '#BEAAA3', '#282C2F'),
+    'partner': ("Is this partner doing anything?", '#BEAAA3', '#282C2F'), 'discount': ("They want a discount.", '#D9B265', '#282C2F'),
 }
 
 def wrap(d, text, f, width):
