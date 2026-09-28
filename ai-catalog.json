@@ -27,8 +27,8 @@
         "quota to OTE ratio for cloud sales",
         "is my sales quota fair"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -57,8 +57,8 @@
         "find the gap between last year and this year's quota",
         "my quota went up and my territory did not"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -86,37 +86,8 @@
         "is my sales territory viable",
         "new territory sizing check"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your number"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:commission-check",
-      "displayName": "Commission Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/commission/",
-      "description": "Commission Check: Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes.",
-      "tags": [
-        "your-number",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "CommissionCheck"
-      ],
-      "representativeQueries": [
-        "how much of my commission do I take home",
-        "commission take home after taxes",
-        "commission check calculator"
-      ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -144,13 +115,135 @@
         "should I give a 15 percent discount",
         "discount impact on margin and commission"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
         "usesAI": false,
         "audience": "Your number"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:pay-check",
+      "displayName": "Pay Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/pay/",
+      "description": "Pay Check: Base, variable, accelerator, cap and threshold in. What the plan pays at 50% to 200% of quota out, and where the upside goes.",
+      "tags": [
+        "your-pay",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "PayCheck"
+      ],
+      "representativeQueries": [
+        "how much will my sales comp plan pay at 150% of quota",
+        "sales accelerator calculator",
+        "does my commission cap limit my upside",
+        "what does OTE really pay",
+        "comp plan payout curve"
+      ],
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your pay"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:commission-check",
+      "displayName": "Commission Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/commission/",
+      "description": "Commission Check: Deal size, commission rate and your share of the credit in, what you actually take home out, after the share you set aside for taxes.",
+      "tags": [
+        "your-pay",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "CommissionCheck"
+      ],
+      "representativeQueries": [
+        "how much of my commission do I take home",
+        "commission take home after taxes",
+        "commission check calculator"
+      ],
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your pay"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:comp-plan-check",
+      "displayName": "Comp Plan Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/comp-plan/",
+      "description": "Comp Plan Check: Five questions that find the red flags in a sales comp plan: crediting, payout timing, upside, clawbacks and mid-year changes.",
+      "tags": [
+        "your-pay",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "CompPlanCheck"
+      ],
+      "representativeQueries": [
+        "comp plan red flags",
+        "is my sales commission plan fair",
+        "questions to ask about a sales comp plan",
+        "commission clawback rules",
+        "who gets credit on a split deal"
+      ],
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your pay"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:offer-check",
+      "displayName": "Offer Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/offer/",
+      "description": "Offer Check: Two sales job offers side by side: base, variable, ramp and guarantee in, year-one cash and a normal year at a realistic attainment out.",
+      "tags": [
+        "your-pay",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "OfferCheck"
+      ],
+      "representativeQueries": [
+        "compare two sales job offers",
+        "which sales offer pays more",
+        "OTE vs realistic earnings calculator",
+        "sales job offer ramp guarantee",
+        "year one sales compensation with ramp"
+      ],
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your pay"
       }
     },
     {
@@ -173,8 +266,8 @@
         "pipeline coverage calculator with my win rate",
         "is 3X pipeline coverage enough"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -202,8 +295,8 @@
         "pipeline concentration and aging risk",
         "4X coverage but still at risk"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -231,8 +324,8 @@
         "why is my sales rep underperforming",
         "rep problem or territory problem"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -260,8 +353,8 @@
         "is my channel partner actually selling",
         "partner check for co-sell"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -289,8 +382,8 @@
         "will my case for a rep survive talent review",
         "Amazon OLR prep for managers"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -318,8 +411,8 @@
         "qualify a federal sales deal before commit",
         "what will my manager ask about this deal"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -347,8 +440,8 @@
         "am I single-threaded in this account",
         "federal account check"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -378,8 +471,8 @@
         "customer is behind on their committed spend",
         "how much monthly spend to use a cloud commitment"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -407,8 +500,8 @@
         "am I beating the incumbent",
         "competitive position check for a deal"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -436,8 +529,8 @@
         "pressure test my brief before the meeting",
         "what question am I hoping nobody asks"
       ],
-      "version": "2026.11.01",
-      "updatedAt": "2026-11-01T00:00:00Z",
+      "version": "2026.11.02",
+      "updatedAt": "2026-11-02T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,

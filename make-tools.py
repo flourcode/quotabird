@@ -3,13 +3,16 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-01.2000'
+BUILD = '2026-11-02.1500'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
     ('Your number', '/territory/', 'Territory Check', 'Month one in a new territory'),
-    ('Your number', '/commission/', 'Commission Check', 'When it closes'),
     ('Your number', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
+    ('Your pay', '/pay/', 'Pay Check', 'When you want to know what the plan really pays'),
+    ('Your pay', '/commission/', 'Commission Check', 'When it closes'),
+    ('Your pay', '/comp-plan/', 'Comp Plan Check', 'Before you count on the plan'),
+    ('Your pay', '/offer/', 'Offer Check', 'When you have two offers'),
     ('Your team', '/pipeline/', 'Pipeline Check', 'Quarterly, before the review'),
     ('Your team', '/risk/', 'Risk Check', 'When coverage looks fine and you don\'t trust it'),
     ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
@@ -828,7 +831,76 @@ COMPETITION = dict(
 });''',
 )
 
-for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION):
+COMPPLAN = dict(
+    slug='comp-plan', name='Comp Plan Check',
+    title='Comp Plan Check: Can You Trust This Comp Plan?',
+    desc='Five questions that find the red flags in a sales comp plan: crediting, payout timing, upside, clawbacks and mid-year changes.',
+    ogdesc='Before you count on the plan, check the fine print. Five questions, about a minute.',
+    h1='Can you trust this comp plan?',
+    dek='Five questions that find the red flags before your first check does.',
+    cta='Check your plan',
+    questions=[
+        dict(k='credit', n='CREDIT', q='Is it written down who gets credit for a deal, including partner, marketplace and split deals?'),
+        dict(k='payout', n='PAYOUT', q='Do you know when each commission gets paid, and does it show up within a quarter of the deal?'),
+        dict(k='upside', n='UPSIDE', q='Can you earn above your target without a cap or decelerator taking most of it?'),
+        dict(k='clawback', n='CLAWBACK', q='Are clawbacks spelled out, with a time limit on them?'),
+        dict(k='changes', n='CHANGES', q="Does the plan say mid-year changes aren't retroactive, and that quota moves when territory does?"),
+    ],
+    bands=[
+        ('how', 'What to look for in a comp plan', '''    <p class="lede">Most comp plan problems aren't in the rate. They're in the parts nobody explains until a big deal closes.</p>
+    <p><strong>Credit.</strong> Who gets credit when a partner brought the deal, when it went through a cloud marketplace, or when another rep or a specialist worked it too. If the rules aren't written down, you'll find out what they are after the fact.</p>
+    <p><strong>Payout.</strong> When a deal you close this month actually shows up in your paycheck. Some plans pay the next month, some pay quarterly, and some hold part of it until the customer pays.</p>
+    <p><strong>Upside.</strong> What happens above 100%. An accelerator is only worth something if the plan lets you keep it. A cap or a decelerator can take most of it back.</p>
+    <p><strong>Clawbacks.</strong> What can be taken back, why, and for how long. A customer who cancels in the first 90 days is a common trigger. An open-ended clawback is a red flag.</p>
+    <p><strong>Changes.</strong> What happens when the plan, the quota or the territory changes mid-year. You want changes to apply going forward, and a territory change to come with a quota change.</p>'''),
+        ('verdicts', 'What the answers mean', '''    <p>A clear plan still might not be a generous one. <a href="/pay/">Pay Check</a> shows what it pays at 50% to 200% of quota. This check is about whether you can trust how it pays.</p>'''),
+    ],
+    faq=[
+        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
+        ('Is this legal or financial advice?', 'No. It points you to the questions worth asking about your plan. For anything about your rights under a contract or employment law, talk to HR or an employment attorney.'),
+        ('What about stock, RSUs and ESPPs?', 'They can matter a lot, and they get complicated fast: vesting schedules, refresh grants, purchase windows, taxes. QuotaBird doesn\'t value them or give financial advice. Read the grant documents, and talk to a financial professional if the equity is a big part of your decision.'),
+    ],
+    config='''CheckTool({
+  slug: 'comp-plan', answers: {"Clear": "Yes. It's clear.", "Mostly clear": "Mostly. Get a few answers in writing.", "Unclear": "Not yet. Too much is unwritten.", "Red flags": "No. Get answers before you count on it."}, name: 'Comp Plan Check', url: 'https://quotabird.com/comp-plan/',
+  questions: [
+    { k: 'credit',   n: 'CREDIT',   q: 'Is it written down who gets credit for a deal, including partner, marketplace and split deals?' },
+    { k: 'payout',   n: 'PAYOUT',   q: 'Do you know when each commission gets paid, and does it show up within a quarter of the deal?' },
+    { k: 'upside',   n: 'UPSIDE',   q: 'Can you earn above your target without a cap or decelerator taking most of it?' },
+    { k: 'clawback', n: 'CLAWBACK', q: 'Are clawbacks spelled out, with a time limit on them?' },
+    { k: 'changes',  n: 'CHANGES',  q: "Does the plan say mid-year changes aren't retroactive, and that quota moves when territory does?" },
+  ],
+  weights: { credit: 24, upside: 22, changes: 20, payout: 18, clawback: 16 },
+  verdict(a, total) {
+    if (total >= 75) return { label: 'Clear', cls: 'ready', attack: 'You know how it pays, when it pays, and what can change.', sub: 'Keep the plan and your quota letter somewhere you can find them.' };
+    if (total >= 55) return { label: 'Mostly clear', cls: 'proof', attack: "Most of it is written down. A couple of things aren't.", sub: 'Get the missing answers in writing before a big deal closes.' };
+    if (total >= 35) return { label: 'Unclear', cls: 'prove', attack: "Too much of how you get paid is in somebody's head.", sub: 'Ask for the written rules now, while nothing is riding on the answer.' };
+    return { label: 'Red flags', cls: 'dont', attack: "You can't tell how, when or whether you'll get paid.", sub: 'Get answers in writing before you count on this plan, or before you sign it.' };
+  },
+  askedBy: 'Ask your manager',
+  grill: {
+    credit: 'Who gets credit when a partner, the marketplace or another rep is on the deal, and where is that written?',
+    payout: 'When does commission on a deal I close this month actually hit my paycheck?',
+    upside: 'What happens to my rate above 100%, and is there a cap anywhere in the plan?',
+    clawback: 'What can be clawed back, for how long, and why?',
+    changes: 'If my territory or quota changes mid-year, what happens to deals I already worked?',
+  },
+  moves: {
+    credit: 'Ask for the crediting rules in writing, with one example deal worked through.',
+    payout: 'Get the payout schedule and put the next three paydays on your calendar.',
+    upside: 'Run your plan through Pay Check and look at the 125% and 150% rows.',
+    clawback: 'Ask what triggers a clawback and how long the window lasts. Write down the answer.',
+    changes: 'Ask how mid-year changes are handled before one happens.',
+  },
+  noMove: 'Keep a copy of the plan, your quota letter and every change notice in one folder.',
+  handoff: (s) => s.total >= 55
+    ? { overline: 'Now the payout math', text: 'Pay Check shows what the plan pays at 50% to 200% of quota, and where the upside goes.', href: '/pay/', label: 'Check your pay' }
+    : { overline: 'Before you count on it', text: 'How to read a comp plan, and what to ask when something is missing.', href: '/notes/read-your-comp-plan/', label: 'Read: How your plan pays' },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've read a lot of comp plans, and the problems are usually in the parts nobody explains. Tell me what's unclear in yours, and leave out the company name and the dollars." },
+  dm: (s) => `Mark, ran my comp plan through Comp Plan Check. ${s.label}, weakest is ${s.weak.n.toLowerCase()}. Worth 20 minutes?`,
+});''',
+)
+
+for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN):
     os.makedirs(t['slug'], exist_ok=True)
     html = page(t)
     assert '—' not in html and '–' not in html, t['slug']
@@ -873,7 +945,148 @@ NOTES = [
       make the reps more productive. It can write the follow-up email. It can't make the customer care.</p>
     <p>If only 20% of a reasonably tenured team hits quota year after year, stop assuming every miss is its own rep problem.</p>''',
          tool=('/quota/', 'Quota Check', 'does the multiple and the implied rate in about ten seconds. Pipeline Check and Territory Check cover the rest of the math.')),
-    dict(slug='push-back-as-a-rep', title="You're the rep and the number is crazy",
+    dict(slug='review-an-offer', title='How to review an offer, and push back on it',
+         dek="The offer letter tells you what they'll pay if everything goes right. Find out what you'll make in a normal year.",
+         body='''    <p class="lede">An offer letter shows you the OTE. That's what you make if you hit 100%, and about half of AEs don't. Before you sign, figure out what the job pays in a normal year.</p>
+    <h3>Get the whole plan, not the summary</h3>
+    <ul>
+      <li>Base, variable and OTE, and how the variable pays: monthly, quarterly, or when the customer pays</li>
+      <li>The quota, and what it's measured on: bookings, run rate, or the whole book</li>
+      <li>The comp plan document itself, including accelerators, caps and crediting rules</li>
+      <li>The ramp: how long, what the ramped quota is, and whether there's a guarantee or a draw while you ramp</li>
+      <li>The territory: what's in it, and who had it before you</li>
+    </ul>
+    <p>If they won't show you the plan until after you sign, that tells you something.</p>
+    <h3>Do the math for a normal year</h3>
+    <p>Run the quota and OTE through <a href="/quota/">Quota Check</a> to see whether the multiple is in the normal range for how it's measured. Then put the plan through <a href="/pay/">Pay Check</a> and look at the 75% and 100% rows. That's closer to what you'll make than the number in the offer.</p>
+    <p>For year one, count the ramp. If you start in April with a six-month ramp, you'll sell for about three months at full quota before the year ends. A guarantee or a draw changes that math a lot, so ask exactly how yours works.</p>
+    <h3>Ask the questions nobody likes</h3>
+    <ul>
+      <li>What share of the team hit quota last year?</li>
+      <li>Why is this role open, and what happened to the last person in the territory?</li>
+      <li>How often has the plan changed mid-year?</li>
+      <li>Has anyone on the team hit the cap, if there is one?</li>
+    </ul>
+    <p>A good hiring manager will answer these without flinching. If they dodge all of them, you learned something.</p>
+    <h3>Stock, RSUs and ESPPs</h3>
+    <p>Plenty of cloud and SaaS offers include stock: RSU grants, options, or an employee stock purchase plan. They can be worth a lot, and they get complicated fast: vesting schedules, cliffs, refresh grants, purchase windows, taxes. I don't value them here, and I'm not giving financial advice. Get the grant details in writing, and if the equity is a big part of the decision, talk to a financial professional.</p>
+    <h3>How to push back</h3>
+    <p>Pick the one or two things that matter most to you and ask for those. Base often moves more easily than quota. A ramp guarantee, a lower first-year number, or a start date that lines up with the plan year are all reasonable asks. So is asking them to put a verbal promise into the offer letter.</p>
+    <p>Ask plainly, give your reason, and be ready to hear no. Don't bluff about a competing offer you don't have, and don't negotiate against yourself by offering a lower number before they answer.</p>''',
+         tool=('/pay/', 'Pay Check', 'shows what an offer pays at 50% to 200% of quota, before you sign.')),
+ dict(slug='think-youre-being-shorted', title="You think the company is shorting you",
+         dek='Start with the math, then the paperwork, then the right person. In that order.',
+         body='''    <p class="lede">Sooner or later a commission check comes in lighter than you expected. Most of the time it's a mistake, or a rule in the plan you didn't know about. Sometimes it isn't. Either way, start with the math, not the accusation.</p>
+    <h3>Check your own math first</h3>
+    <ul>
+      <li>The deal amount that was actually credited, which isn't always the contract value</li>
+      <li>Your share of the credit, if another rep, a partner or a specialist was on it</li>
+      <li>Your rate at the attainment level you were at when it closed</li>
+      <li>When it should pay under the payout schedule, and whether part of it is held until the customer pays</li>
+      <li>Any clawback, hold or adjustment from an earlier deal</li>
+    </ul>
+    <p><a href="/commission/">Commission Check</a> does the arithmetic. If your number and theirs still don't match, you've got a real question.</p>
+    <h3>Write it down</h3>
+    <p>Keep the plan document, your quota letter, any change notices, and the emails about how the deal was credited. Write down the deal, what you expected, what you got, and why you think they're different, with dates.</p>
+    <h3>Ask the right person, in writing</h3>
+    <p>Start with your manager or sales ops, not the team channel. Ask a plain question: "I expected $X on this deal under section Y of the plan. I got $Z. Can you walk me through the difference?" Most errors get fixed right there, and a calm question gets a faster answer than an angry one.</p>
+    <h3>If it doesn't get fixed</h3>
+    <p>Most plans have a dispute process, and it often has a deadline, so find it and use it. If it's still not resolved and the amount matters, HR is the next stop. For questions about your rights under the plan or under employment law, talk to an employment attorney. I'm not a lawyer, and this isn't legal advice.</p>
+    <h3>What not to do</h3>
+    <p>Don't hold deals to push them into the next period, don't take it to customers or social media, and don't assume bad intent before you've asked. Comp teams make mistakes. So do reps.</p>''',
+         tool=('/commission/', 'Commission Check', 'works out what a deal should pay you, including split credit.')),
+ dict(slug='explain-a-bad-comp-plan', title='How to explain a bad comp plan without losing the room',
+         dek="You'll roll out a plan you wouldn't have written. Your team will find the ugly parts fast, so get there first.",
+         body='''    <p class="lede">Sooner or later you'll roll out a comp plan you wouldn't have written. The team will read it faster than you did, and they'll find the ugly parts first. Get there before they do.</p>
+    <h3>Read it like a rep</h3>
+    <p>Before the rollout, run the plan through <a href="/pay/">Pay Check</a> at 75%, 100% and 150% of quota for a typical rep on your team. Know what changed from last year in dollars: the rate, the accelerator, the cap, crediting and clawbacks.</p>
+    <h3>Say what's good and what isn't</h3>
+    <p>Start with whatever is actually better, if anything is. Then say plainly what got worse. Reps can handle a worse plan. What they can't handle is finding out on their own that you knew and didn't say.</p>
+    <h3>Say what you pushed on</h3>
+    <p>Tell them what you pushed back on, what you got, and what you didn't. Keep it short. You can be honest about it without criticizing your boss.</p>
+    <h3>Help them plan around it</h3>
+    <p>Show each rep what the plan pays for, and point their effort there. If the plan pays more for new logos than for expansion, their territory plan should say so. If there's a cap, tell them where it is before anybody gets near it.</p>
+    <h3>Then stop</h3>
+    <p>Take questions, answer what you can, find out what you can't, and follow up in writing. After that, stop reopening it in team meetings. Complaining about the plan every week doesn't change it, and it tells the team you've given up on it.</p>''',
+         tool=('/pay/', 'Pay Check', 'shows what the plan pays a typical rep at 75%, 100% and 150% of quota.')),
+ dict(slug='fight-a-comp-plan-before-it-ships', title='How to fight a comp plan before it ships',
+         dek="Once the plan ships, you're mostly explaining it. The time to change it is while it's still a draft.",
+         body='''    <p class="lede">The time to change a comp plan is before it's final. Once it ships, you're mostly explaining it. Plans get built months before the year starts, so find out when yours gets drafted and who's drafting it.</p>
+    <h3>Bring what the plan designers don't have</h3>
+    <ul>
+      <li>Last year's attainment for your team: how many reps finished near 50%, 75%, 100% and 150%</li>
+      <li>What reps actually earned against their OTE</li>
+      <li>Territory changes, open territories and ramp for the coming year</li>
+      <li>Deals that got credited in odd ways, and what that did to someone's pay</li>
+    </ul>
+    <h3>Test the plan against what leadership says it wants</h3>
+    <p>Every plan pays for some behavior. If leadership wants new logos and the plan pays the same for expansion, reps will do expansion. If they want multi-year deals and nothing in the plan rewards them, they won't get many. Run the draft through <a href="/pay/">Pay Check</a> with your team's real attainment, and show where the money actually goes.</p>
+    <h3>Ask for specific changes</h3>
+    <p>One or two, with the numbers behind them. An accelerator that starts where reps actually get to. A cap high enough that it never touches a normal good year. Crediting rules written down before the first split deal. "The plan feels unfair" won't move anything.</p>
+    <h3>Know when to stop</h3>
+    <p>If you've made the case and the plan ships anyway, your job changes to explaining it well. <a href="/notes/explain-a-bad-comp-plan/">How to explain a bad comp plan</a> picks up from there.</p>''',
+         tool=('/pay/', 'Pay Check', 'shows where a draft plan pays and where the upside goes, using your team\'s real attainment.')),
+ dict(slug='ote-if-everything-goes-right', title='OTE is what you make if everything goes right',
+         dek="It's a real number. It's the number for a year that goes to plan, and most years don't.",
+         body='''    <p class="lede">On-target earnings is what you make if you hit exactly 100% of quota. It's a real number, but it's the number for a year that goes to plan.</p>
+    <p>Bridge Group's 2026 study found 48% of AEs hit quota. So for about half of sellers, OTE is more than they'll make that year.</p>
+    <h3>Budget on the lower rows</h3>
+    <p>When you plan your spending, use what the plan pays at 75% to 100% of quota. <a href="/pay/">Pay Check</a> shows those rows. Anything above that is a good year, and you'll know when you're having one.</p>
+    <h3>When you compare jobs</h3>
+    <p>Compare what each offer pays at the same realistic attainment, not the two OTEs. A higher OTE on a quota nobody hits can pay less than a lower one you'll actually make. <a href="/offer/">Offer Check</a> puts them side by side.</p>''',
+         tool=('/offer/', 'Offer Check', 'compares two offers at a realistic attainment, not at OTE.')),
+ dict(slug='accelerators-need-someone-to-reach-them', title='Your accelerator only matters if somebody reaches it',
+         dek='A 2× accelerator sounds great in the offer. It pays nothing in a year you finish at 90%.',
+         body='''    <p class="lede">A 2× accelerator sounds great in the offer. It pays nothing in a year you finish at 90%.</p>
+    <p>An accelerator raises your rate once you pass a point, usually 100% of quota. What it's worth depends on how often people actually get past that point. Bridge Group found 48% of AEs hit quota in 2026, so in a given year a little under half of reps see any accelerator at all.</p>
+    <h3>What to ask</h3>
+    <ul>
+      <li>How many people on the team got into the accelerator last year?</li>
+      <li>Where does it start, and does it apply to everything past that point?</li>
+      <li>Is there a cap, or anything else that limits it?</li>
+    </ul>
+    <h3>How to use it</h3>
+    <p>Plan your year on the base rate. The accelerator is the reason to push hard on one more deal in Q4, and it's a nice surprise when it pays. Don't spend it before it shows up.</p>''',
+         tool=('/pay/', 'Pay Check', 'shows what the accelerator adds at 125%, 150% and 200% of quota.')),
+ dict(slug='what-a-cap-tells-you', title="A cap tells you how much upside they're willing to share",
+         dek='Past the cap, your check stops growing. Where they put it tells you a lot.',
+         body='''    <p class="lede">If variable is capped at 200% of target, then past 200% your check stops growing. Your base still pays and the company still books the revenue. You just don't get paid more for it.</p>
+    <h3>Why companies cap</h3>
+    <p>Mostly to protect against windfalls: a giant deal that landed in one rep's territory by luck, or a pricing mistake. That's a fair worry. A cap at 150% is a different thing. It limits an ordinary good year, not a windfall.</p>
+    <h3>What to ask</h3>
+    <ul>
+      <li>Where exactly is the cap, and is it on total variable or per deal?</li>
+      <li>Has it ever been lifted for a big year?</li>
+      <li>Is there a separate review for windfall deals instead?</li>
+    </ul>
+    <p>A plan with a windfall review and no cap is usually better for the rep than a plan with a low cap. <a href="/pay/">Pay Check</a> shows exactly what a cap does to your 150% and 200% rows.</p>''',
+         tool=('/pay/', 'Pay Check', 'shows what a cap does to your pay at 150% and 200% of quota.')),
+ dict(slug='split-credit', title='How a $1M deal turns into a small paycheck',
+         dek='You close a $1M deal. Then the credit rules run.',
+         body='''    <p class="lede">You close a $1M deal. Then the credit rules run.</p>
+    <p>Here's one way it goes. A specialist worked the deal with you, so your share of the credit is 50%: $500K. It went through a channel your plan credits at half, so you're at $250K. At an 8% rate, that's $20K of commission, and after setting aside 30% for taxes, about $14K. The customer paid $1M.</p>
+    <p>Every plan's rules are different, and this is just an example. The point is that the contract value and your credit are often two very different numbers.</p>
+    <h3>Why it happens</h3>
+    <p>Splits exist for real reasons. Specialists, partners and account managers help close deals, and plans pay them for it. The trouble is finding out how your split works after the deal closes.</p>
+    <h3>What to do</h3>
+    <p>Get the crediting rules in writing before a big deal closes, with one example worked through. When several people are on a deal, agree on the split early, in writing, before anybody knows how big it'll get. <a href="/commission/">Commission Check</a> shows what your share pays.</p>''',
+         tool=('/commission/', 'Commission Check', 'works out what your share of the credit actually pays.')),
+ dict(slug='uncapped-read-the-footnotes', title='The plan says uncapped. Read the footnotes.',
+         dek="A plan can be uncapped on page one and still limit a big year. Find out before you're counting on one.",
+         body='''    <p class="lede">Plenty of plans say uncapped on page one. Read the rest of the document before you count on it.</p>
+    <p>A plan can be uncapped and still limit your upside. Look for:</p>
+    <ul>
+      <li>A decelerator, where your rate drops past a certain point</li>
+      <li>A windfall clause, where deals over a certain size get reviewed or paid differently</li>
+      <li>A cap on any single deal, even with no cap on the year</li>
+      <li>Management discretion to adjust payouts</li>
+      <li>Crediting rules that shrink a big deal before the rate applies</li>
+    </ul>
+    <p>None of these are unusual, and some are reasonable. The point is to know they're there before you plan on a big year.</p>
+    <h3>What to ask</h3>
+    <p>"Is there anything in the plan, or in a separate policy, that can reduce the payout on a large deal? Has it been used in the last two years?" Get the answer in writing. <a href="/comp-plan/">Comp Plan Check</a> covers the rest of what to look for.</p>''',
+         tool=('/comp-plan/', 'Comp Plan Check', 'finds the red flags in a comp plan: crediting, payout timing, upside, clawbacks and mid-year changes.')),
+ dict(slug='push-back-as-a-rep', title="You're the rep and the number is crazy",
          dek="You don't set the number. You can still make a case, if you bring the right one.",
          body='''    <p class="lede">A rep has less leverage on quota than a manager does. That's just true. But the reps who bring a
       clean case to their manager get more than the ones who complain in the team channel.</p>
@@ -1387,12 +1600,110 @@ CALCS = [
   dm: (s) => `Mark, ran a discount through Discount Check. ${Math.round(s.disc * 100)}% off costs me ${Math.round(s.disc * 100)}% of my commission${s.newMargin != null ? ' and takes margin from ' + Math.round(s.margin * 100) + '% to ' + Math.round(s.newMargin * 100) + '%' : ''}. Not sure it's worth it. Worth 20 minutes?`,
   bookNote: (s) => `Discount Check: ${Math.round(s.disc * 100)}% off${s.newMargin != null ? ', margin ' + Math.round(s.margin * 100) + '% to ' + Math.round(s.newMargin * 100) + '%' : ''}, ${s.label.toLowerCase()}.`,
 });'''),
+ dict(slug='pay', name='Pay Check',
+  title='Pay Check: What Does This Comp Plan Actually Pay?',
+  desc='Base, variable, accelerator, cap and threshold in. What the plan pays at 50% to 200% of quota out, and where the upside goes.',
+  ogdesc='What does this plan actually pay at 75%, 100% and 150% of quota? Base, variable, accelerator and cap in.',
+  h1='What does this plan actually pay?', dek='Put in your base, your variable and how the plan pays above 100%. See what you make at 50% to 200% of quota.',
+  fields=[dict(id='base',kind='money',label='Base salary',example='$150,000'),
+          dict(id='variable',kind='money',label='Target variable at 100%',example='$130,000'),
+          dict(id='accel',kind='pctx',label='Rate above the accelerator, as % of your normal rate',example='150%'),
+          dict(id='start',kind='pctx',label='Accelerator starts at',example='100%'),
+          dict(id='cap',kind='pctx',label='Variable capped at, % of target',example='',placeholder='uncapped'),
+          dict(id='threshold',kind='pct',label='Nothing pays below',example='',placeholder='0% (optional)')],
+  card=dict(headline=['What does this plan', 'actually pay?'],dek='Base. Variable. Accelerator. Cap.',pillars=['BASE','VARIABLE','ACCELERATOR','CAP']),
+  bands=[('how','How to read the curve','''    <p class="lede">OTE is what you make if you hit 100%. The rows above and below it are what you make in a real year.</p>
+    <p>Below 100%, most plans pay your variable in a straight line: 75% of quota pays 75% of your variable. Some plans pay nothing below a threshold, often 50%, so a bad year can take the whole variable.</p>
+    <p>Above 100%, an accelerator raises your rate. A 1.5× accelerator pays 150% of your normal rate on everything past the point where it starts. That's where good years make real money.</p>
+    <p>A cap stops it. If variable is capped at 150% of target, nothing past that pays, however big the year. A plan that sounds exciting can pay very little above quota once the cap and the starting point are in.</p>
+    <p>Plan your budget on the 75% and 100% rows. Bridge Group's 2026 study found 48% of AEs hit quota, so the accelerator rows are the good years, not the average one.</p>''')],
+  faq=[('Does anything I enter leave my device?','No. The math runs right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result.'),
+       ('My plan has more than one accelerator tier. What do I enter?','Enter the first tier. The rows past it will be conservative, since later tiers usually pay more. If the tiers matter to your decision, work the higher ones by hand from the plan document.'),
+       ('What about stock, RSUs and bonuses outside the plan?','This covers cash comp from the plan only. Stock, RSUs and ESPPs can matter a lot, and they get complicated fast. QuotaBird doesn\'t value them or give financial advice.')],
+  config="""CalcTool({
+  slug: 'pay', answers: {"Real upside": "Yes, it pays for beating the number.", "Some upside": "A little extra above 100%.", "Straight line": "It pays in a straight line.", "Thin upside": "Not much above 100%.", "Capped": "The cap takes the upside."}, name: 'Pay Check', url: 'https://quotabird.com/pay/',
+  fields: [{ id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'accel', kind: 'pctx' }, { id: 'start', kind: 'pctx' }, { id: 'cap', kind: 'pctx' }, { id: 'threshold', kind: 'pct' }],
+  compute(v) {
+    if (!(v.variable > 0)) return null;
+    const base = v.base > 0 ? v.base : 0;
+    const money = (n) => n >= 1e6 ? '$' + parseFloat((n / 1e6).toFixed(2)) + 'M' : '$' + Math.round(n / 1e3) + 'K';
+    const pct = (r) => Math.round(r * 100) + '%';
+    const acc = v.accel > 0 ? v.accel : 1, start = v.start > 0 ? v.start : 1, cap = v.cap > 0 ? v.cap : Infinity, th = v.threshold > 0 ? v.threshold : 0;
+    const pay = (a) => a < th ? 0 : Math.min(v.variable * Math.min(a, start) + (a > start ? v.variable * (a - start) * acc : 0), v.variable * cap);
+    const extra = pay(1.5) - pay(1), straight = v.variable * .5, ratio = extra / straight;
+    let t;
+    if (cap < 1.5 && ratio < .3) t = ['Capped', 'dont', `The cap stops your variable at ${pct(cap)} of target. Ask whether it's ever been lifted for a big year.`];
+    else if (ratio < .95) t = ['Thin upside', 'prove', 'A cap or a late start takes most of the upside. Know that before you count on a big year.'];
+    else if (ratio >= 1.2) t = ['Real upside', 'ready', 'Plan your budget on the 75% and 100% rows. The rows above them are the good years.'];
+    else if (ratio >= 1.02) t = ['Some upside', 'proof', 'The accelerator starts late or pays a small premium. Plan on the 75% and 100% rows.'];
+    else t = ['Straight line', 'proof', 'Fair, with no extra reward for beating the number. Plan on the 75% and 100% rows.'];
+    const rows = [.5, .75, 1, 1.25, 1.5, 2].map(a => [`At ${pct(a)} of quota`, money(base + pay(a)), a < th ? 'v-no' : '']);
+    if (th > 0) rows.push(['Nothing pays below', pct(th), 'v-no']);
+    const attack = `At 150% of quota you'd make ${money(base + pay(1.5))}, ${money(extra)} more than at 100%.`;
+    return { label: t[0], cls: t[1], attack, sub: t[2], big: '+' + money(extra), rows, ote: money(base + v.variable), extram: money(extra), stripText: '' };
+  },
+  handoff: (s) => ({ overline: 'Can you trust the rest of it?', text: 'The rate is only half of it. Comp Plan Check covers crediting, payout timing, clawbacks and mid-year changes.', href: '/comp-plan/', label: 'Check your comp plan' }),
+  mark: { title: () => 'Plan look thin?', body: "I'm Mark. I've seen plans that sound great in the offer and pay very little above quota. Send me the shape of yours, no company name." },
+  dm: (s) => `Mark, ran my comp plan through Pay Check: ${s.extram} more at 150% than at 100%, on a ${s.ote} OTE. Is that normal? Worth 20 minutes?`,
+  bookNote: (s) => `Pay Check: ${s.extram} extra at 150%, OTE ${s.ote}.`,
+});"""),
+ dict(slug='offer', name='Offer Check',
+  title='Offer Check: Which Offer Actually Pays More?',
+  desc='Two sales job offers side by side: base, variable, ramp and guarantee in, year-one cash and a normal year at a realistic attainment out.',
+  ogdesc='Two offers, side by side. Year-one cash with the ramp, and a normal year at a realistic attainment.',
+  h1='Which offer actually pays more?', dek='Put in both offers and a realistic attainment. See year one with the ramp, and a normal year after it.',
+  fields=[dict(id='baseA',kind='money',label='Offer A: base',example='$150,000'),
+          dict(id='varA',kind='money',label='Offer A: target variable',example='$130,000'),
+          dict(id='rampA',kind='count',label='Offer A: ramp, in months',example='6'),
+          dict(id='guarA',kind='pctx',label='Offer A: variable guaranteed during ramp',example='',placeholder='none'),
+          dict(id='baseB',kind='money',label='Offer B: base',example='$170,000'),
+          dict(id='varB',kind='money',label='Offer B: target variable',example='$150,000'),
+          dict(id='rampB',kind='count',label='Offer B: ramp, in months',example='6'),
+          dict(id='guarB',kind='pctx',label='Offer B: variable guaranteed during ramp',example='',placeholder='none'),
+          dict(id='attain',kind='pctx',label='Realistic attainment, both offers',example='85%')],
+  card=dict(headline=['Which offer', 'actually pays more?'],dek='Base. Variable. Ramp. Guarantee.',pillars=['BASE','VARIABLE','RAMP','ATTAINMENT']),
+  bands=[('how','How the comparison works','''    <p class="lede">An offer letter shows OTE, which is what you make at exactly 100% of quota. This compares the two offers at the attainment you think is realistic, which is usually closer to what you'll make.</p>
+    <p>A normal year is base plus variable at that attainment. Year one also counts the ramp: during the ramp months you earn your guarantee if there is one, and otherwise about half your normal attainment, since new reps rarely sell at full speed. That half is an assumption, and it's shown so you can argue with it.</p>
+    <p>If one offer has a much bigger quota for the same pay, put in a lower attainment for that job and run it again. <a href="/quota/">Quota Check</a> tells you whether each quota is in the normal range for how it's measured.</p>
+    <p>This covers cash only, at a straight-line rate. It doesn't include accelerators (<a href="/pay/">Pay Check</a> does), or stock, RSUs and ESPPs, which QuotaBird doesn't value. It isn't financial advice.</p>''')],
+  faq=[('Does anything I enter leave my device?','No. The math runs right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result.'),
+       ('What attainment should I use?','Whatever you honestly expect. Bridge Group\'s 2026 study found 48% of AEs hit quota, so 100% is optimistic for most people. Ask each company what share of its team hit quota last year and adjust.'),
+       ('What if the guarantee is a draw I have to pay back?','Then leave the guarantee blank. A recoverable draw is an advance against future commission, not extra money.')],
+  config="""CalcTool({
+  slug: 'offer', answers: {"Close": "About the same money.", "A pays more": "Offer A pays more in a normal year.", "B pays more": "Offer B pays more in a normal year."}, name: 'Offer Check', url: 'https://quotabird.com/offer/',
+  fields: [{ id: 'baseA', kind: 'money' }, { id: 'varA', kind: 'money' }, { id: 'rampA', kind: 'count' }, { id: 'guarA', kind: 'pctx' }, { id: 'baseB', kind: 'money' }, { id: 'varB', kind: 'money' }, { id: 'rampB', kind: 'count' }, { id: 'guarB', kind: 'pctx' }, { id: 'attain', kind: 'pctx' }],
+  compute(v) {
+    if (!(v.baseA > 0 && v.baseB > 0 && v.varA >= 0 && v.varB >= 0)) return null;
+    const money = (n) => n >= 1e6 ? '$' + parseFloat((n / 1e6).toFixed(2)) + 'M' : '$' + Math.round(n / 1e3) + 'K';
+    const at = v.attain > 0 ? v.attain : .85;
+    const year1 = (base, vari, ramp, guar) => { const r = Math.min(12, ramp || 0); return base + vari / 12 * (r * (guar > 0 ? guar : at * .5) + (12 - r) * at); };
+    const normA = v.baseA + v.varA * at, normB = v.baseB + v.varB * at;
+    const y1A = year1(v.baseA, v.varA, v.rampA, v.guarA), y1B = year1(v.baseB, v.varB, v.rampB, v.guarB);
+    const diff = normB - normA, d1 = y1B - y1A, rel = Math.abs(diff) / Math.max(normA, normB);
+    const lead = diff > 0 ? 'B' : 'A', other = diff > 0 ? 'A' : 'B';
+    let t;
+    if (rel < .03) t = ['Close', 'proof', 'Close enough that the rest of the job should decide it: the territory, the manager, and how many people actually hit quota.'];
+    else t = [lead + ' pays more', 'proof', 'That assumes the same attainment at both jobs. If one quota is much harder, lower its attainment and run it again.'];
+    let attack = rel < .03 ? `At ${Math.round(at * 100)}% attainment, the two offers are within ${money(Math.abs(diff))} of each other in a normal year.` : `At ${Math.round(at * 100)}% attainment, Offer ${lead} pays ${money(Math.abs(diff))} more in a normal year.`;
+    if (Math.sign(d1) !== Math.sign(diff) && Math.abs(d1) > 1000) attack += ` Offer ${other} pays ${money(Math.abs(d1))} more in year one, because of its ramp or guarantee.`;
+    const rows = [['Offer A at 100% (OTE)', money(v.baseA + v.varA)], ['Offer B at 100% (OTE)', money(v.baseB + v.varB)],
+      ['Offer A, year one', money(y1A)], ['Offer B, year one', money(y1B)],
+      [`Offer A, normal year at ${Math.round(at * 100)}%`, money(normA)], [`Offer B, normal year at ${Math.round(at * 100)}%`, money(normB)]];
+    return { label: t[0], cls: t[1], attack, sub: t[2], big: rel < .03 ? money(Math.abs(diff)) : '+' + money(Math.abs(diff)), rows, diffm: money(Math.abs(diff)), lead, stripText: '' };
+  },
+  handoff: { overline: 'Before you sign', text: 'How to review an offer, what to ask, and how to push back on the parts that matter.', href: '/notes/review-an-offer/', label: 'Read: Review an offer' },
+  mark: { title: () => 'Weighing two offers?', body: "I'm Mark. I've looked at a lot of offers, and the one with the bigger OTE isn't always the one that pays more. Send me the shape of both, no company names." },
+  dm: (s) => `Mark, ran two offers through Offer Check. At a realistic attainment one pays ${s.diffm} more in a normal year. Worth 20 minutes before I decide?`,
+  bookNote: (s) => `Offer Check: ${s.diffm} difference in a normal year.`,
+});"""),
  dict(slug='commission', name='Commission Check',
   title='Commission Check: Your Take-Home on a Deal',
-  desc='Deal size and commission rate in, what you actually take home out, after the share you set aside for taxes.',
+  desc='Deal size, commission rate and your share of the credit in, what you actually take home out, after the share you set aside for taxes.',
   ogdesc='It closed. Here is roughly what you actually take home.',
   h1="It closed. What do you actually keep?", dek='Plug in the deal and your rate to find out, roughly, before the check lands.',
   fields=[dict(id='deal',kind='money',label='Deal size',example='$500,000'),dict(id='rate',kind='pct',label='Your commission rate',example='8%'),
+          dict(id='credit',kind='pct',label='Your share of the credit',example='',placeholder='100%'),
+          dict(id='mult',kind='pct',label='Product multiplier',example='',placeholder='100% (optional)'),
           dict(id='buffer',kind='pct',label='Set aside for taxes',example='30%',presets=[('W-2 ~30%','30%'),('High bracket ~40%','40%'),('1099 ~20%','20%')])],
   card=dict(headline=['It closed.','What do I take home?'],dek='A planning estimate of the check after withholding, in about ten seconds.',pillars=['DEAL','RATE','WITHHELD','TAKE-HOME']),
   bands=[('how','Why the check is smaller than the math','''    <p class="lede">The commission in your plan and the money that hits your account are further apart than most sellers expect, especially the first time.</p>
@@ -1403,14 +1714,15 @@ CALCS = [
        ('What about accelerators and clawbacks?','Enter the rate that applies to this deal. If your plan has accelerators above quota, use the accelerated rate; if it has clawbacks, remember the take-home is provisional until the clawback window closes.')],
   config='''CalcTool({
   slug: 'commission', answers: {"Take-home": "That's your take-home."}, name: 'Commission Check', url: 'https://quotabird.com/commission/',
-  fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'buffer', kind: 'pct' }],
+  fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'credit', kind: 'pct' }, { id: 'mult', kind: 'pct' }, { id: 'buffer', kind: 'pct' }],
   compute(v) {
     if (!(v.deal > 0 && v.rate > 0)) return null;
     const money = (n) => n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3).toLocaleString() + 'K' : '$' + Math.round(n).toLocaleString();
     const tax = v.buffer > 0 ? v.buffer : .30;
-    const gross = v.deal * v.rate, aside = gross * tax, net = gross - aside;
-    return { label: 'Take-home', cls: 'ready', big: money(net), attack: `Set aside ${Math.round(tax * 100)}% and you keep about ${Math.round((1 - tax) * 100)} cents of every commission dollar on this deal.`,
-      sub: 'A planning buffer, not tax advice. Change the percentage to yours.', rows: [['Gross commission', money(gross)], ['Set aside, about', money(aside), 'v-no'], ['Take-home, about', money(net)]], keep: 1 - tax };
+    const credit = v.credit > 0 ? v.credit : 1, mult = v.mult > 0 ? v.mult : 1, credited = v.deal * credit * mult, split = credit !== 1 || mult !== 1;
+    const gross = credited * v.rate, aside = gross * tax, net = gross - aside;
+    return { label: 'Take-home', cls: 'ready', big: money(net), attack: (split ? `Your credit on this deal is ${money(credited)}. ` : '') + `Set aside ${Math.round(tax * 100)}% and you keep about ${Math.round((1 - tax) * 100)} cents of every commission dollar on this deal.`,
+      sub: 'A planning buffer, not tax advice. Change the percentage to yours.', rows: [...(split ? [['Deal size', money(v.deal)], ['Your credit on it', money(credited)]] : []), ['Gross commission', money(gross)], ['Set aside, about', money(aside), 'v-no'], ['Take-home, about', money(net)]], keep: 1 - tax };
   },
   handoff: { overline: 'Before you count on it', text: 'Accelerators, caps, clawbacks and crediting can all change what this deal pays. Know how your plan works.', href: '/notes/read-your-comp-plan/', label: 'Read: How your plan pays' },
   mark: { title: () => 'Questions about the plan?', body: "I'm Mark. Comp plans tell you what the company actually thinks your job is worth. If yours doesn't add up, send me a line about it, and leave out the company name and the dollars." },
@@ -2822,9 +3134,11 @@ _method = note_head("How QuotaBird's Numbers Work", "Where every range and bench
     <li><strong>Quota Case:</strong> on a run-rate or whole-book number, the evidence is the current run rate plus new pipeline × win rate. On a bookings number, it is the stronger of last year's bookings (minus one-time deals, scaled by ramped headcount) and pipeline × win rate. The gap is the quota minus the evidence, and the new pipeline to close it is the gap ÷ win rate.</li>
     <li><strong>Pipeline Check:</strong> coverage needed = 1 ÷ win rate. A 20% win rate needs 5× coverage; 3× assumes a win rate of about 33%.</li>
     <li><strong>Discount Check:</strong> commission lost = list price × discount × your rate. Margin after the discount = 1 minus cost ÷ discounted price, because cost doesn't fall with the price.</li>
-    <li><strong>Commission Check:</strong> the commission, minus the withholding percentage you enter. A planning estimate, not tax advice.</li>
+    <li><strong>Pay Check:</strong> variable paid = variable × attainment up to where the accelerator starts, plus variable × each point past it × the accelerator rate, limited by any cap, and zero below any threshold. Total pay = base + variable paid.</li>
+    <li><strong>Offer Check:</strong> a normal year = base + variable × the attainment you enter. Year one also counts the ramp: during ramp months you earn the guarantee if there is one, and otherwise half your normal attainment, an assumption the page states.</li>
+    <li><strong>Commission Check:</strong> your credit = deal × your share of the credit × any product multiplier. Commission = credit × your rate, minus the withholding percentage you enter. A planning estimate, not tax advice.</li>
     <li><strong>Commit Check:</strong> projected spend = spent so far + current monthly spend × months left. The monthly spend needed = (commit minus spent so far) ÷ months left.</li>
-    <li><strong>The question checks</strong> (Deal, Rep, Territory, Account, Competition, Risk, Partner, Talent Review and Brief) weight five yes, sort of or no answers into a score. They are structured judgment, not statistics.</li>
+    <li><strong>The question checks</strong> (Deal, Rep, Territory, Account, Competition, Risk, Partner, Talent Review, Brief and Comp Plan) weight five yes, sort of or no answers into a score. They are structured judgment, not statistics.</li>
   </ul>
 
   <h2>What QuotaBird doesn't model</h2>
@@ -2995,7 +3309,7 @@ def chrome(path):
         elif path in SELLERCARD_PAGES and 'kit-band' not in mark: mark = SELLERCARD_SRC + mark
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
-PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION)] \
+PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN)] \
         + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html'] + ['404.html']
 for _p in PAGES:
     chrome(_p)
@@ -3029,9 +3343,12 @@ for _p in PAGES:
 # ai-catalog.json follows the ARD ai-catalog schema 1.0 (ards-project/ard-spec); each tool is a text/html entry.
 DESC = {'/pipeline/': 'Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need.',
         '/deal/': 'Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.'}
-for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
+for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
 for c in CALCS: DESC['/' + c['slug'] + '/'] = c['name'] + ': ' + c['desc']
-QUERIES = {'/commit/': ['will my customer burn their cloud commit', 'committed spend vs actual consumption', 'EDP commit burn down calculator', 'customer is behind on their committed spend', 'how much monthly spend to use a cloud commitment'],
+QUERIES = {'/offer/': ['compare two sales job offers', 'which sales offer pays more', 'OTE vs realistic earnings calculator', 'sales job offer ramp guarantee', 'year one sales compensation with ramp'],
+           '/pay/': ['how much will my sales comp plan pay at 150% of quota', 'sales accelerator calculator', 'does my commission cap limit my upside', 'what does OTE really pay', 'comp plan payout curve'],
+           '/comp-plan/': ['comp plan red flags', 'is my sales commission plan fair', 'questions to ask about a sales comp plan', 'commission clawback rules', 'who gets credit on a split deal'],
+           '/commit/': ['will my customer burn their cloud commit', 'committed spend vs actual consumption', 'EDP commit burn down calculator', 'customer is behind on their committed spend', 'how much monthly spend to use a cloud commitment'],
            '/quota-case/': ['how to push back on a quota that is too high', 'is my sales quota realistic compared to last year', 'find the gap between last year and this year\'s quota', 'my quota went up and my territory did not'],
            '/pipeline/': ['do I have enough pipeline to make my number', 'pipeline coverage calculator with my win rate', 'is 3X pipeline coverage enough'],
            '/deal/': ['is my deal real or hopium', 'qualify a federal sales deal before commit', 'what will my manager ask about this deal'],

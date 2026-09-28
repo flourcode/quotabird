@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-01.2000** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-02.1500** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -60,6 +60,9 @@ Mark's own lines stay, even when they're punchy ("3X is a 33% win rate wearing a
 | Risk | No. It's spread out. / Almost. It's lopsided. / Yes. It's fragile. / Yes. It won't hold. |
 | Partner | Yes. Real work. / Mostly talk. / Not much. / No. Just promises. |
 | Talent Review | Yes. You're ready. / Not yet. / Not really. It's a story. / No. No receipts. |
+| Pay | Yes, it pays for beating the number. / A little extra above 100%. / It pays in a straight line. / Not much above 100%. / The cap takes the upside. |
+| Comp Plan | Yes. It's clear. / Mostly. Get a few answers in writing. / Not yet. Too much is unwritten. / No. Get answers before you count on it. |
+| Offer | About the same money. / Offer A pays more in a normal year. / Offer B pays more in a normal year. |
 | Commit | Yes, and then some. / Yes. They're on pace. / Not at this pace. / No. They'll fall short. / No. Not even close. |
 | Brief | Yes. It's room-ready. / Maybe. It'll be a fight. / No. Shark food. / No. There's no point yet. |
 
@@ -83,6 +86,17 @@ Every result hands off to the most useful next thing for that verdict, usually a
 - Commit Check: behind → Account Check (burning a commit takes more than one team); on pace or over → Quota Case.
 
 **Considered and deliberately not built (Nov 1):** marketplace fee and co-sell quota-retirement calculators, multi-year crediting and side-by-side deal comparisons. The rules differ by company and change often, so a generic tool would be wrong for many users. Worth building later as their own projects: a manager team roll-up ("team health"), and churn / NRR ("how much new just to stand still"). Danger-zone colours and shareable scenario links already exist.
+
+## Two pillars: your number and your pay (Nov 2)
+
+QuotaBird's core is two jobs: **the number they gave you** (Quota Check, Quota Case, Territory, Discount) and **what they'll pay you for it** (the Your pay group). Your pay, first pass:
+- **Pay Check** (/pay/): "What does this plan actually pay?" Base, variable, accelerator rate and where it starts, optional cap and threshold. Shows total pay at 50 / 75 / 100 / 125 / 150 / 200% of quota and the extra from 100% to 150%. Uses the `pctx` field type (percentages that can pass 100%: "150%", "150" and "1.5" all mean 1.5); regular `pct` fields still reject 100% and up, which is right for win rates.
+- **Commission Check** now takes your share of the credit and a product multiplier (credit = deal × share × multiplier).
+- **Comp Plan Check** (/comp-plan/): five questions (credit, payout, upside, clawback, changes). Its "Ask your manager" lines are questions the rep asks, not questions a boss asks the rep.
+- Field Notes: **"How to review an offer, and push back on it"** and **"You think the company is shorting you"**.
+- **Equity and advice:** stock, RSUs and ESPPs are mentioned, never valued. Every comp page steers clear of financial and legal advice and says so: talk to HR, an employment attorney or a financial professional where it matters.
+- Big result numbers stay on one line and shrink to fit their card (`fitBig` in calc.js).
+- **Second pass (built Nov 2):** **Offer Check** (/offer/): two offers side by side, year one with the ramp (guarantee if any, otherwise half your normal attainment, an assumption the page states) and a normal year at a realistic attainment; neutral verdicts ("About the same money." / "Offer A pays more in a normal year."); guarantee and attainment fields use `pctx` so 100% works. Field Notes: "How to explain a bad comp plan without losing the room", "How to fight a comp plan before it ships", "OTE is what you make if everything goes right", "Your accelerator only matters if somebody reaches it", "A cap tells you how much upside they're willing to share", "How a $1M deal turns into a small paycheck", "The plan says uncapped. Read the footnotes." The home page now shows both pillars under the hero: "The number they gave you." and "What they'll pay you for it.", three steps each.
 
 ## Methodology (/methodology/, Nov 1)
 
@@ -154,7 +168,7 @@ Built from the 2026 palettes Mark supplied (@346eur): flat, confident colour on 
 
 **Home:** "The quota landed / Is your quota crazy? / Maybe. Let's do the math." then the live mini Quota Check: the answer card (big number on its verdict tint), the segmented control, the grouped input rows (pre-filled grey examples), and "See the whole plan" (blue), which hands typed numbers to /quota/. On desktop the inputs sit left and the answer right. Then "Push back or build a plan." over three paths, the Quota Shorts strip (grey cards, big numbers), and under "The quota isn't the only problem." the checks as plain grey cards grouped like the Tools menu: Your number, Your team, Your deal, Any meeting, and Print and learn (Field Kits, Sales Math). Quota Check itself isn't listed on the home page (the hero is Quota Check); the 404 page copies the same block and adds it. The hero's thresholds must match Quota Check's.
 
-**The 15 tools:**
+**The 18 tools:**
 
 | URL | Tool | Kind | Headline |
 |---|---|---|---|
