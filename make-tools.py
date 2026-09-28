@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-10-28.1500'
+BUILD = '2026-10-28.1900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -868,6 +868,48 @@ NOTES = [
       make the reps more productive. It can write the follow-up email. It can't make the customer care.</p>
     <p>If only 20% of the team hits quota year after year, it's probably not a performance problem.</p>''',
          tool=('/quota/', 'Quota Check', 'does the multiple and the implied rate in about ten seconds. Pipeline Check and Territory Check cover the rest of the bridge.')),
+    dict(slug='push-back-as-a-rep', title="You're the rep and the number is crazy",
+         dek="You don't set the number. You can still make a case, if you bring the right one.",
+         body='''    <p class="lede">A rep has less leverage on quota than a manager does. That's just true. But the reps who bring a
+      clean case to their manager get more than the ones who complain in the team channel.</p>
+    <h3>What can actually change</h3>
+    <ul>
+      <li>The territory: accounts that moved in or out after the number was set</li>
+      <li>Ramp: if you're new, a ramp schedule is normal, so ask what yours is</li>
+      <li>One-time deals: a giant deal from last year baked into this year's number</li>
+      <li>Crediting: deals you work that don't count toward your number</li>
+      <li>The start date, if you inherited the territory mid-year</li>
+    </ul>
+    <p>The total usually won't move much. These often do.</p>
+    <h3>How to raise it</h3>
+    <p>Ask your manager for fifteen minutes, not a meeting about fairness. Bring your number next to last year's actuals
+      for the territory, your pipeline at your real win rate, and the one change you're asking for.</p>
+    <p>Then ask: "What has to be true for me to hit this?" If your manager can answer it, you have a plan. If they
+      can't, they now have something to take upstairs, in their words instead of yours.</p>
+    <h3>What not to do</h3>
+    <p>Don't threaten to leave unless you mean it. Don't compare your number to a teammate's in public. And don't
+      sandbag the first quarter to prove a point. It proves the other point.</p>''',
+         tool=('/quota-case/', 'Quota Case', 'builds the bridge from last year to this year for your territory.')),
+    dict(slug='handing-down-a-tough-quota', title="You have to hand down a number you don't love",
+         dek="You made your case upstairs. It didn't move. Now your team needs to hear it from you.",
+         body='''    <p class="lede">Sooner or later every manager carries a number down the hall that they argued against. How you
+      hand it over decides whether the team spends the first quarter selling or complaining.</p>
+    <h3>Own it</h3>
+    <p>Don't say "corporate gave us this." Your team hears "my manager doesn't believe in it either," and they'll act
+      like it. You can say you pushed back. Then say what you got, even if it's small, and that the number is the
+      number.</p>
+    <h3>Show the math</h3>
+    <p>Most reps have never seen how their quota was built. Show them: last year, the team's run rate, and what the plan
+      assumes about new logos, renewals and headcount. People take a hard number better when they can see where it came
+      from.</p>
+    <h3>Give each rep a path</h3>
+    <p>In the first one-on-one, walk the number down for their territory: what's already coming in, what existing
+      accounts can grow into, and how much new pipeline they need, by when. A rep who can see a path will work it. A rep
+      who can't will update their LinkedIn.</p>
+    <h3>Then stop relitigating it</h3>
+    <p>Once it's handed down, stop complaining about it in team meetings. If something real changes, a territory or a
+      big renewal, take it upstairs again with the math.</p>''',
+         tool=('/pipeline/', 'Pipeline Check', "works backward from each rep's number to the pipeline and deals it takes.")),
     dict(slug='the-number-isnt-changing', title="The number isn't changing. Now what?",
          dek="You made the case. It didn't move. Fine. Now figure out what it takes.",
          body='''    <p class="lede">You brought the bridge, you asked what assumption you were missing, and the answer was some
@@ -1086,22 +1128,23 @@ print('notes', len(NOTES))
 # Every number here is sourced on /quota-by-the-numbers/. Colours are the shelf's.
 from html import escape as esc_html
 SHORTS = [
-    dict(tag='Attainment', fact='48% of AEs hit quota in 2026.', line='It was 66% in 2022.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', k='#E07A5F', ink='#2B1B1B'),
-    dict(tag='The median', fact='The median SaaS quota is $960K.', line='On a $200K OTE.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', k='#F4E1C1', ink='#2B2B2B'),
-    dict(tag='The multiple', fact='The median quota is 4.6 times OTE.', line='It was 4.2 two years ago.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', k='#F2C14E', ink='#1B1B1B'),
-    dict(tag='Planning', fact="Teams get 20 to 30% more quota than the company needs.", line='Planners over-assign to cover misses.', src='Mostly Metrics', href='/how-quotas-get-built/', go='How quotas get built', k='#1C3D5A', ink='#FFFFFF'),
+    dict(tag='Attainment', num='48%', fact='of AEs hit quota in 2026.', line='It was 66% in 2022.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', k='#E07A5F', ink='#2B1B1B'),
+    dict(tag='The median', num='$960K', fact='is the median SaaS quota.', line='On a $200K OTE.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', k='#F4E1C1', ink='#2B2B2B'),
+    dict(tag='The multiple', num='4.6×', fact='is the median quota to OTE.', line='It was 4.2 two years ago.', src='Bridge Group, 2026', href='/quota/', go='Check my quota', k='#F2C14E', ink='#1B1B1B'),
+    dict(tag='Planning', num='20-30%', fact='more quota gets handed out than the company needs.', line='Planners over-assign to cover misses.', src='Mostly Metrics', href='/how-quotas-get-built/', go='How quotas get built', k='#1C3D5A', ink='#FFFFFF'),
     dict(tag='Your boss', fact='Your boss may be paid on something else.', line='Growth rate, new logos, a strategic product.', src='', href='/how-quotas-get-built/', go='How quotas get built', k='#C35037', ink='#FFFFFF'),
-    dict(tag='Ramp', fact='New AEs take 6.2 months to ramp.', line='A rep hired in March is a fall rep.', src='Bridge Group, 2026', href='/quota-case/', go='Build the bridge', k='#388073', ink='#FFFFFF'),
+    dict(tag='Ramp', num='6.2 mo', fact='for a new AE to ramp.', line='A rep hired in March is a fall rep.', src='Bridge Group, 2026', href='/quota-case/', go='Build the bridge', k='#388073', ink='#FFFFFF'),
     dict(tag='Vacancies', fact='A vacant territory still has quota.', line="Somebody's carrying it.", src='', href='/quota-case/', go='Build the bridge', k='#2E2E3A', ink='#F2C14E'),
-    dict(tag='Coverage', fact='3X is a 33% win rate wearing a nicer shirt.', line='Win 20% and you need 5X.', src='The math', href='/pipeline/', go='Check my pipeline', k='#6C5B7B', ink='#FFFFFF'),
+    dict(tag='Coverage', num='3X', fact='is a 33% win rate wearing a nicer shirt.', line='Win 20% and you need 5X.', src='The math', href='/pipeline/', go='Check my pipeline', k='#6C5B7B', ink='#FFFFFF'),
     dict(tag='Cloud', fact="A commit nobody uses doesn't retire much quota.", line='Cloud quotas count what customers run.', src='Microsoft Partner Center', href='/quota/', go='Check my quota', k='#9DD2FF', ink='#12324F'),
-    dict(tag='Comp', fact='Most accelerators pay 1.5 to 2 times above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan', k='#567E55', ink='#FFFFFF'),
-    dict(tag='Federal', fact='46% of federal AEs say they hit quota.', line='The most of any AE role. SLED is 45%.', src='RepVue, 2026', href='/territory/', go='Check my territory', k='#264653', ink='#E9C46A'),
+    dict(tag='Comp', num='1.5-2×', fact='is what most accelerators pay above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan', k='#567E55', ink='#FFFFFF'),
+    dict(tag='Federal', num='46%', fact='of federal AEs say they hit quota.', line='The most of any AE role. SLED is 45%.', src='RepVue, 2026', href='/territory/', go='Check my territory', k='#264653', ink='#E9C46A'),
 ]
 def _short(s, i):
     src = f'<span class="short-src">{esc_html(s["src"])}</span>' if s['src'] else ''
-    return (f'<a class="short" href="{s["href"]}" style="--k:{s.get("k", "#F7F8F9")};--on-k:{s.get("ink", "#1B1F23")}" data-short="{i+1}">'
-            f'<span class="short-tag">{esc_html(s["tag"])}</span><span class="short-fact">{esc_html(s["fact"])}</span>'
+    num = f'<span class="short-num">{esc_html(s["num"])}</span>' if s.get('num') else ''
+    return (f'<a class="short{" has-num" if s.get("num") else ""}" href="{s["href"]}" style="--k:{s.get("k", "#F7F8F9")};--on-k:{s.get("ink", "#1B1F23")}" data-short="{i+1}">'
+            f'<span class="short-tag">{esc_html(s["tag"])}</span>{num}<span class="short-fact">{esc_html(s["fact"])}</span>'
             f'<span class="short-line">{esc_html(s["line"])}</span><span class="short-foot">{src}<span class="short-go">{esc_html(s["go"])} →</span></span></a>')
 def shorts_strip():
     return ('<section class="shorts-band" aria-labelledby="shorts-h"><div class="shorts-head"><h2 id="shorts-h">Quota Shorts</h2>'
@@ -1137,7 +1180,7 @@ CALCS = [
     <p>Take one-time deals out of last year. If a single giant deal made last year's number, building this year's quota on it is how a team ends up at 60% attainment and a lot of meetings about effort.</p>
     <p>If you lost reps or have open territories, put in the headcount. A vacant territory still has quota. That's the problem. And a rep hired in March doesn't sell much until summer, so count them when they're ramped, not when they start.</p>'''),
          ('conversation','Taking it to your boss','''    <p class="lede">Don't walk in upset. Walk in with the bridge and one question: what assumption am I missing?</p>
-    <p>Sometimes there's a real answer: new territory, a big renewal you didn't know about, a product launch, partner help with names attached. Then the number's hard but fair, and your job changes to helping the team hit it, which means you stop relitigating it every Monday. Sometimes nobody has an answer. Then at least everybody knows where the number came from, and it's in writing before the year starts.</p>
+    <p>Sometimes there's a real answer: new territory, a big renewal you didn't know about, a product launch, partner help with names attached. Then the number's hard but fair, and your job changes to helping the team hit it (<a href="/notes/handing-down-a-tough-quota/">here's how to hand it down</a>), which means you stop relitigating it every Monday. Sometimes nobody has an answer. Then at least everybody knows where the number came from, and it's in writing before the year starts.</p>
     <p><a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> has the longer version, including why the best time to have this fight is the year before.</p>''')],
   faq=[('Does anything I enter leave my device?','No. The math runs right here in your browser. There\'s no account, and nothing goes to a server or your CRM. I count page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result.'),
        ('Is this the company\'s formula?','No. Nobody outside finance has that, and some years nobody inside does either. This is the evidence you have: history, capacity and pipeline. It\'s the part of the conversation you control.'),
@@ -1187,7 +1230,7 @@ CALCS = [
           dict(id='quota',kind='money',label='Your quota for the year',example='$6,000,000'),dict(id='closed',kind='money',label='What you closed last year',example='',placeholder='$0 (optional)')],
   card=dict(headline=['Is my quota crazy?',''],dek='Your number against your on-target earnings, judged by what it\'s measured in.',pillars=['OTE','MULTIPLE','RATE','GROWTH']),
   bands=[('pushback','If the number is crazy','''    <p class="lede">Saying it feels too high won't move it. Bring the math: last year's sales, your run rate, qualified pipeline at your real win rate, headcount and ramp time. Then ask what has to be true for the number to be reasonable.</p>
-    <p>Better yet, get into planning the year before, while somebody still has the spreadsheet open. <a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> walks through it, with an example you can steal.</p>'''),('how','Why the multiple depends on what you sell','''    <p class="lede">Divide your quota by your on-target earnings. That one number tells you a lot about the plan, once you know what the quota is measured in.</p>
+    <p>Better yet, get into planning the year before, while somebody still has the spreadsheet open. <a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> walks through it, with an example you can steal. If you're the rep, start with <a href="/notes/push-back-as-a-rep/">this one</a>. If you're the manager handing it down, <a href="/notes/handing-down-a-tough-quota/">this one</a>.</p>'''),('how','Why the multiple depends on what you sell','''    <p class="lede">Divide your quota by your on-target earnings. That one number tells you a lot about the plan, once you know what the quota is measured in.</p>
     <p>For SaaS reps carrying new bookings, the published benchmarks agree: 4 to 6 times OTE, with 5 as the steady state and enterprise roles a little higher. That range is really a commission rate in disguise. At a 50/50 pay mix and roughly 10% on new ARR, quota works out to about five times OTE. Below 3 is unusual and usually means a ramp, an overlay, or a plan with a condition in it. Above 8 the plan is asking for something the territory may not have.</p>
     <p>Cloud consumption is a different animal, and it's the one most people on this site carry. The number is incremental revenue growth on a book, paid at a fraction of a percent, so the same arithmetic gives 15 to 30 times OTE at a big cloud provider and higher in strategic accounts. A rep carrying a $6M growth target on a $280K OTE is at 21×, and in my experience that's ordinary, not crazy. Whole-book targets (retention plus growth on the full run rate) run higher still, 40 to 80 times OTE, because most of that revenue would have happened anyway.</p>
     <p>The number to watch across all three is the implied rate: your variable divided by your quota. If it's well under what your peers are paid on the same kind of number, the plan is heavier than the multiple alone suggests. And if you closed last year, the growth the new number implies is the real measure of how much harder this year is. Whether the territory can produce it is <a href="/territory/">Territory Check</a>; how much pipeline it takes is <a href="/pipeline/">Pipeline Check</a>.</p>'''),
@@ -1603,6 +1646,7 @@ KIT_BODY = '''
         <li><a href="#k-forecast">Forecast problem</a><span>Chapter 3</span></li>
         <li><a href="#k-pipeline">Pipeline problem</a><span>Chapter 4</span></li>
         <li><a href="#k-boss">Boss problem</a><span>Chapter 5</span></li>
+        <li><a href="#k-boss">Quota problem</a><span>Chapter 5</span></li>
         <li><a href="#k-review">Review season</a><span>Chapter 7</span></li>
         <li><a href="#k-alone">High performers</a><span>Chapter 10</span></li>
       </ul>
@@ -2360,7 +2404,7 @@ _how = note_head('How Quotas Usually Get Built', "Where your sales quota probabl
   <h2>Then decide</h2>
   <p>If the number holds up, build the plan. If it doesn't, bring the math. <a href="/quota/">Quota Check</a> tells you
     how your multiple compares, <a href="/quota-case/">Quota Case</a> builds the bridge from last year to this year, and
-    <a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> covers the conversation. If the
+    <a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> covers the conversation for managers, and <a href="/notes/push-back-as-a-rep/">this one</a> is for reps. If the
     number isn't moving, <a href="/notes/the-number-isnt-changing/">here's what I'd do instead</a>. The benchmarks are all on
     <a href="/quota-by-the-numbers/">Quota by the numbers</a>.</p>
 </article>
