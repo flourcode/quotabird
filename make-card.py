@@ -56,6 +56,7 @@ CARDS = {
     foot='', url='quotabird.com/risk', pillars=['SPREAD', 'MOTION', 'NEXT', 'TIMING', 'FRESH']),
   'competition': dict(out='card-competition.jpg', wordmark='COMPETITION CHECK', headline=['Why you', 'and not them?'], dek='Five questions that tell you whether the incumbent, or doing nothing, is beating you.',
     foot='', url='quotabird.com/competition', pillars=['NOTHING', 'SWITCH', 'PREFERENCE', 'PROOF', 'ACCESS']),
+  'commit': dict(out='card-commit.jpg', wordmark='COMMIT CHECK', headline=['Will they burn', 'the commit?'], tagline='Commit. Term. Spend so far. Pace.', dek='Commit. Term. Spent so far. Monthly spend.', foot='', url='quotabird.com/commit', pillars=['COMMIT', 'TERM', 'SPENT', 'PACE']),
   'brief': dict(out='card-brief.jpg', wordmark='BRIEF CHECK',
     headline=['Will your brief', 'survive the room?'],
     dek='Brief Check finds it before the meeting does. Five questions, then the room pressure-tests you.',
@@ -86,6 +87,7 @@ RESULTS = {   # each result is worded as the answer to the tool's question, exac
   'account':     ('Yes. You know the account.', None, 'Now find the next one before anyone else does.', 'green'),
   'risk':        ("Yes. It's fragile.", None, 'Re-underwrite every commit deal this week.', 'yellow'),
   'competition': ("You're behind.", None, 'Weakest: proof.', 'yellow'),
+  'commit':      ('81%', 'Not at this pace.', 'They need $95K a month from here, up from $70K.', 'yellow'),
   'brief':       ('No. Shark food.', None, 'Weakest: receipts.', 'yellow'),
 }
 WHITE, INK, MUT = (255, 255, 255), (0x0B, 0x12, 0x15), (0x4F, 0x5B, 0x66)
@@ -166,7 +168,9 @@ if label: d.text((M, y), label, font=font(700, 22), fill=MUT); y += 44
 f, lines, s = fit(d, title, 900, 84, LW, 3, 48)
 for l in lines: d.text((M - 3, y), l, font=f, fill=INK); y += int(s * 1.02)
 if arg in ('home', 'quota'): d.text((M, y + 14), "Maybe. Let's do the math.", font=font(500, 30), fill=MUT)
-elif arg in CARDS and CARDS[arg].get('tagline'): d.text((M, y + 14), CARDS[arg]['tagline'], font=font(500, 30), fill=MUT)   # inputs line: what goes in
+elif arg in CARDS and CARDS[arg].get('tagline'):   # inputs line: what goes in, wrapped inside the left column
+    tf = font(500, 30); ty = y + 14
+    for tl in wrap(d, CARDS[arg]['tagline'], tf, LW): d.text((M, ty), tl, font=tf, fill=MUT); ty += 38
 d.text((M, H - M - 28), url, font=font(700, 28), fill=INK)
 result_card(im, d, (W - M - 440, M + 20, W - M, H - M - 20), *card, big_lines=1 if arg in KITCARDS else 2)
 out = KITCARDS[arg]['out'] if arg in KITCARDS else C['out']

@@ -86,7 +86,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.86e8ff7d.css">
+<link rel="stylesheet" href="../site.8b283e6a.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -96,7 +96,7 @@
   <header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/quota-case/">Quota Case</a><a href="/territory/">Territory Check</a><a href="/commission/">Commission Check</a><a href="/discount/" class="current">Discount Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check (federal)</a><a href="/account/">Account Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-g menu-wide"><div class="menu-group">Your team</div><a href="/pipeline/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">Talent Review</a></div><div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div></div></details>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/quota-case/">Quota Case</a><a href="/territory/">Territory Check</a><a href="/commission/">Commission Check</a><a href="/discount/" class="current">Discount Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check (federal)</a><a href="/account/">Account Check</a><a href="/commit/">Commit Check</a><a href="/competition/">Competition Check</a></div><div class="menu-g"><div class="menu-group">Any meeting</div><a href="/brief/">Brief Check</a></div></div><div class="menu-g menu-wide"><div class="menu-group">Your team</div><a href="/pipeline/">Pipeline Check</a><a href="/risk/">Risk Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a><a href="/olr/">Talent Review</a></div><div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div></div></details>
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
@@ -129,7 +129,7 @@
     <p class="lede">Every point off the price is supposed to buy you something. Check whether it did.</p>
     <p>These are rough ranges from real deals; yours may differ. Up to about 5% is normal negotiation. Nobody remembers it. Between 5 and 15% is meaningful, and it should buy something specific: a signature date, a larger scope, a reference, a multi-year term. Above 15% you're paying for a decision, so the decision had better come with it, this quarter, in writing. Above 25%, you're usually paying to be liked, and the customer will remember the number.</p>
     <p>Two things sellers forget. The discount comes out of your commission at exactly the same rate it comes out of revenue, so a 15% discount is a 15% pay cut on that deal. And it comes out of the company's margin much faster than 15%: cost of goods doesn't move, so every dollar off the price is a dollar off the margin.</p>
-    Before you discount at all, figure out whether the objection is really the price or the deal. A discount only helps with the price. <a href="/deal/">Deal Check</a> can tell you which one you've got.
+    Before you discount at all, figure out whether the objection is really the price or the deal. A discount only helps with the price. <a href="/notes/fifteen-percent-off/">They asked for 15% off</a> walks through what to ask for in return.
     <p><a href="/math/discount-math/">The full math, with tables and sources →</a></p>
   </div>
 </section>
@@ -186,7 +186,7 @@
 <script src="../calc.6f5dcc55.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-10-31.1800';
+window.QB_BUILD = '2026-11-01.1800';
 CalcTool({
   slug: 'discount', answers: {"Normal": "This much is normal.", "Meaningful": "This much needs a trade.", "Expensive": "This much is expensive.", "Giveaway": "This much is too much."}, name: 'Discount Check', url: 'https://quotabird.com/discount/',
   fields: [{ id: 'list', kind: 'money' }, { id: 'disc', kind: 'pct' }, { id: 'margin', kind: 'pct' }, { id: 'rate', kind: 'pct' }],
@@ -210,7 +210,7 @@ CalcTool({
     if (newMargin != null) rows.push(['Company margin after', pct(newMargin), newMargin < .15 ? 'v-no' : '']);
     return { label: t[0], cls: t[1], attack, sub: t[2], big: v.rate > 0 ? money(commLost) : money(given), rows, disc: v.disc, margin: v.margin, newMargin, stripText: '' };
   },
-  handoff: { overline: 'Before you discount', text: 'Is the problem the price, or the deal? A discount only helps with the price.', href: '/deal/', label: 'Check your deal' },
+  handoff: (s) => ({ overline: s.cls === 'ready' ? 'Even a small discount should buy something' : 'Before you say yes', text: s.cls === 'ready' ? 'What to ask for in return, so the next discount is never automatic.' : `What to ask for in return for ${Math.round(s.disc * 100)}% off, and how to hold the line on the rest.`, href: '/notes/fifteen-percent-off/', label: 'Read: They asked for 15% off' }),
   mark: { title: () => 'Stuck on the price?', body: "I'm Mark. I've watched a lot of discounts buy absolutely nothing. If somebody's asking you to sharpen the pencil, send me a line about why, no customer names or dollars." },
   dm: (s) => `Mark, ran a discount through Discount Check. ${Math.round(s.disc * 100)}% off costs me ${Math.round(s.disc * 100)}% of my commission${s.newMargin != null ? ' and takes margin from ' + Math.round(s.margin * 100) + '% to ' + Math.round(s.newMargin * 100) + '%' : ''}. Not sure it's worth it. Worth 20 minutes?`,
   bookNote: (s) => `Discount Check: ${Math.round(s.disc * 100)}% off${s.newMargin != null ? ', margin ' + Math.round(s.margin * 100) + '% to ' + Math.round(s.newMargin * 100) + '%' : ''}, ${s.label.toLowerCase()}.`,

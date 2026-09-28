@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-10-31.1800** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-01.1800** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -19,6 +19,17 @@ Free tools, no login, no AI, nothing stored. The consulting offer (a free 20-min
 - **Stop at the point.** No trailing tag lines ("Free. Nothing stored.", "No email."), no closing sentence that restates or sells, no résumé triplets, no neat X-not-Y lines, no "the key takeaway." The privacy promise lives in each page's FAQ.
 - Contractions always. No em or en dashes anywhere. "Territory," never "patch." Bio wording is exactly "six years leading federal partner sales teams at AWS."
 - Numbers are sourced (see Data). Self-reported data is labelled as self-reported.
+
+## Plain talk, no machine patterns (Nov 1)
+
+Everything reads the way Mark talks across the table: literal, plainspoken, dry. Say what you mean in the order you'd say it out loud. Before shipping copy, look for these and rewrite them:
+- The reversal: "X isn't Y. It's Z." ("Asking isn't pushing back. It's doing your job.") Just say the point.
+- Paired punchlines: "A rep with a path works the plan. A rep without one works on their resume." One plain sentence does it.
+- Counted setups and bold triads: "They do three things differently" followed by three bold, parallel lead-ins. Write normal paragraphs.
+- Flipped lines ("every week, and ... never") and literary metaphors ("good news with a deadline").
+- The same device repeated: "in disguise" had crept into four places. A line that works once is a tic the second time.
+- Buzzwords: leverage (as a verb), navigate, robust, seamless, crucial, ensure, unlock, empower, landscape, journey, delve.
+Mark's own lines stay, even when they're punchy ("3X is a 33% win rate wearing a nicer shirt", "Maybe. Let's do the math."). The test: would Mark say it to a rep at a bar? If it sounds like it was written to be quoted, rewrite it.
 
 ## Voice in results (Oct 30)
 
@@ -49,6 +60,7 @@ Free tools, no login, no AI, nothing stored. The consulting offer (a free 20-min
 | Risk | No. It's spread out. / Almost. It's lopsided. / Yes. It's fragile. / Yes. It won't hold. |
 | Partner | Yes. Real work. / Mostly talk. / Not much. / No. Just promises. |
 | Talent Review | Yes. You're ready. / Not yet. / Not really. It's a story. / No. No receipts. |
+| Commit | Yes, and then some. / Yes. They're on pace. / Not at this pace. / No. They'll fall short. / No. Not even close. |
 | Brief | Yes. It's room-ready. / Maybe. It'll be a fight. / No. Shark food. / No. There's no point yet. |
 
 ## Share cards
@@ -60,6 +72,25 @@ Free tools, no login, no AI, nothing stored. The consulting offer (a free 20-min
 - *Run rate or whole book:* evidence = current run rate as entered (it already reflects today's team) + new pipeline × win rate. Without a run rate, last year (minus one-time revenue, scaled by ramped headcount) is the baseline. Headcount is shown as context and **never** adjusts a run rate the user entered (the old code did, which counted headcount twice).
 - *Bookings:* evidence = the stronger of last year's bookings (minus one-time deals) × ramped reps now ÷ reps last year, and this year's pipeline × win rate. Run rate is ignored.
 - Gap = quota − evidence; new pipeline to close it = gap ÷ win rate. Example numbers give a $1.8M gap and $7.2M of new pipeline, matching the kits.
+
+## Next steps after a result (Nov 1)
+
+Every result hands off to the most useful next thing for that verdict, usually a Field Note with the talk track:
+- Quota Check: Standard or better → Pipeline Check; Aggressive or Crazy → "Your quota is crazy. Now prove it."
+- Quota Case: a gap → the prove-it playbook; supported → Pipeline Check.
+- Discount Check → "They asked for 15% off" (what to ask for in return). Not Deal Check, which is federal.
+- Commission Check → "Before you decide the comp plan sucks" (accelerators, caps, clawbacks, crediting).
+- Commit Check: behind → Account Check (burning a commit takes more than one team); on pace or over → Quota Case.
+
+**Considered and deliberately not built (Nov 1):** marketplace fee and co-sell quota-retirement calculators, multi-year crediting and side-by-side deal comparisons. The rules differ by company and change often, so a generic tool would be wrong for many users. Worth building later as their own projects: a manager team roll-up ("team health"), and churn / NRR ("how much new just to stand still"). Danger-zone colours and shareable scenario links already exist.
+
+## Methodology (/methodology/, Nov 1)
+
+"How QuotaBird's numbers work" is the citable reference for every number on the site. It labels each one as **published data**, a **common rule of thumb**, or a **QuotaBird working range**; shows the quota-to-OTE ranges by basis; derives the run-rate and whole-book ranges from one identity (quota ÷ OTE = variable share ÷ commission rate: with a 46% variable share, about 8 to 12% gives 4 to 6×, 1.5 to 3% gives 15 to 30×, 0.6 to 1.2% gives 40 to 80×); lists every other number's source; gives each tool's formula; says what the site doesn't model; and carries a last-reviewed date (`METHOD_REVIEWED` / `METHOD_DATE` in `make-tools.py`) and Dataset structured data. It is listed first under "Methodology and benchmarks" in llms.txt.
+- **When any range, benchmark or formula changes, update the methodology page in the same edit**, and bump the review date.
+- **Review schedule:** RepVue Cloud Sales Index each quarter (quote only figures confirmed on RepVue's own page; the index covers software sellers, not cloud-provider consumption sellers); Bridge Group when a new report ships.
+- Sources considered and usable: Bridge Group (2026, 2024 with percentiles 3.2 / 4.2 / 4.8×), RepVue (Cloud Sales Index, Sales Salary Guide), QuotaPath (5× observed SaaS standard; 1.5 to 2× accelerators), Gong (attainment from CRM data), Pavilion (leader comp). No public benchmark exists for cloud-provider consumption quotas; Mark chose not to run a survey.
+- Fixed Nov 1: three places said consumption is "paid at a fraction of a percent", which contradicts 15 to 30× (it implies about 100×). Consumption is about 1.5 to 3%; whole book about 0.6 to 1.2%.
 
 ## Language reps actually use
 
@@ -123,11 +154,12 @@ Built from the 2026 palettes Mark supplied (@346eur): flat, confident colour on 
 
 **Home:** "The quota landed / Is your quota crazy? / Maybe. Let's do the math." then the live mini Quota Check: the answer card (big number on its verdict tint), the segmented control, the grouped input rows (pre-filled grey examples), and "See the whole plan" (blue), which hands typed numbers to /quota/. On desktop the inputs sit left and the answer right. Then "Push back or build a plan." over three paths, the Quota Shorts strip (grey cards, big numbers), and under "The quota isn't the only problem." the checks as plain grey cards grouped like the Tools menu: Your number, Your team, Your deal, Any meeting, and Print and learn (Field Kits, Sales Math). Quota Check itself isn't listed on the home page (the hero is Quota Check); the 404 page copies the same block and adds it. The hero's thresholds must match Quota Check's.
 
-**The 14 tools:**
+**The 15 tools:**
 
 | URL | Tool | Kind | Headline |
 |---|---|---|---|
 | /quota/ | Quota Check | calculator | Is my quota crazy? |
+| /commit/ | Commit Check | calculator | Will they burn the commit? (committed spend vs consumption: pace, monthly spend needed, shortfall or overage) |
 | /quota-case/ | Quota Case | calculator | Is your quota actually possible? (the gap, and the pipeline that closes it) |
 | /pipeline/ | Pipeline Check | calculator (pipeline.src.html) | You sure that's enough pipeline? |
 | /discount/ | Discount Check | calculator | How much discount is too much? |
