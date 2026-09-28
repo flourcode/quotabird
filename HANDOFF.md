@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-01.1800** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-01.2000** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -43,7 +43,7 @@ Mark's own lines stay, even when they're punchy ("3X is a 33% win rate wearing a
    - Consumption claims apply to consumption plans, not all cloud quotas ("On a consumption plan, a commit nobody uses…").
    - Live self-reported figures (RepVue) carry their snapshot date next to the number, and no "the most of any" superlatives that can go stale.
    - Don't write "CSP" alone: it means Microsoft's Cloud Solution Provider program to many readers. Say "cloud provider".
-5. **Federal-only content is labeled.** Deal Check is federal (appropriations, contract vehicles) and says so in the menu, the home card, its page and its share card. Federal specifics elsewhere are marked as a "Federal wrinkle" or "Selling government:" aside rather than stated as the general rule. A commercial Deal Check (same five questions: customer, money, power, path, now; "path" becomes security, legal, procurement and vendor onboarding) is a good next build.
+5. **Federal-only content is labeled.** Deal Check is federal (appropriations, contract vehicles) and says so on the home card, its page and its share card. The Tools menu just says "Deal Check" (Mark's call: the label is unnecessary for most of the audience). Federal specifics elsewhere are marked as a "Federal wrinkle" or "Selling government:" aside rather than stated as the general rule. A commercial Deal Check (same five questions: customer, money, power, path, now; "path" becomes security, legal, procurement and vendor onboarding) is a good next build.
 
 | Tool | Answers (green → red) |
 |---|---|
@@ -185,6 +185,8 @@ Question tools run on `check.js`, calculators on `calc.js`. Five questions per t
 - **Manager's Kit (11 pages, 13 chapters, 9 worksheets).** Opens with 1. How your team's number got built (and what your boss is actually paid on: growth rate, new business, new logos, consumption, margin). 2. Fighting the plan without losing (early, one page, one ask for what can move; escalate once; commit publicly; know when to stop). 3. Handing down a tough number, and still crushing it. Then the original ten chapters (4 to 13). The *Having a bad week?* index points Where the number came from, Quota or comp plan problem, and Handing down a tough number at 1 to 3.
 - **Leadership Kit (3 pages, 7 chapters, 2 worksheets and a checklist).** Opens with 1. Shape the number before it shapes your team (plan from a clean baseline and capacity, choose over-assignment on purpose, get into the planning room, know what the people above you are paid on).
 - **The through-line in all three:** "The best time to shape your quota was last year. The next best time is now." Push back with data (PYR, run rate, committed contracts, pipeline × win rate), know when to accept, then fill the gap from existing accounts and net-new. Kits stay in Mark's first person; they're signed.
+
+**About photo:** the text wraps around the round photo itself (`shape-outside: circle()` on `.who img`), not its square box.
 
 **Also:** Sales Math (4 pages), About (opens on Mark's photo and "Hi, I'm Mark."), Ask Mark ("Got a quota problem?"), Stuff I Like, 404 (shows the shelf).
 

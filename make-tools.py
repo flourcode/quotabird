@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-01.1800'
+BUILD = '2026-11-01.2000'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -15,7 +15,7 @@ TOOLS = [
     ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
     ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
     ('Your team', '/olr/', 'Talent Review', 'Review season'),
-    ('Your deal', '/deal/', 'Deal Check (federal)', 'Before you put it in commit'),
+    ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
     ('Your deal', '/commit/', 'Commit Check', 'When a commit might not burn'),
     ('Your deal', '/competition/', 'Competition Check', 'When you\'re not sure you\'re ahead'),
