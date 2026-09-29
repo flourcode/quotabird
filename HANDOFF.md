@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-02.1800** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-03.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -86,6 +86,15 @@ Every result hands off to the most useful next thing for that verdict, usually a
 - Commit Check: behind → Account Check (burning a commit takes more than one team); on pace or over → Quota Case.
 
 **Considered and deliberately not built (Nov 1):** marketplace fee and co-sell quota-retirement calculators, multi-year crediting and side-by-side deal comparisons. The rules differ by company and change often, so a generic tool would be wrong for many users. Worth building later as their own projects: a manager team roll-up ("team health"), and churn / NRR ("how much new just to stand still"). Danger-zone colours and shareable scenario links already exist.
+
+## Layout rules (redesign, Nov 3)
+
+Applied from a website-design review: audit first, remove before adding, one edge, rows over boxes.
+- **One left edge on every page.** The header, headings and body all start on the same edge (the header container is 920px everywhere; reading text keeps a 680px measure inside it). Check new pages against the logo's edge.
+- **Rows, not a box per item.** Tool lists and note lists are rows with a hairline between them: the question on the left, the tool name and an arrow on the right. Keep cards for things that really are separate objects: the verdict card, the pillar steps, the Shorts, the kit card.
+- **The home page shows six Field Notes** (`HOME_NOTES` in make-tools.py) and links to the rest with a live count. Don't list every note on the home page again.
+- **Reassurance sits next to the action.** Under the hero button: "Free. No login. What you type stays in your browser." The old "How these work" section was cut; the FAQ answers the rest.
+- Result: the home page went from about 6,700px to 4,300px on desktop and from 9,400px to 6,600px on a phone, with nothing a visitor needs removed.
 
 ## Two pillars: your number and your pay (Nov 2)
 

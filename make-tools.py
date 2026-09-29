@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-02.1800'
+BUILD = '2026-11-03.0900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -1281,6 +1281,12 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.q
 </body>
 </html>
 '''
+HOME_NOTES = ['prove-the-quota-is-crazy', 'push-back-as-a-rep', 'handing-down-a-tough-quota', '3x-is-a-win-rate', 'read-your-comp-plan', 'review-an-offer']   # the six on the home page
+def home_notes():
+    picks = [n for s in HOME_NOTES for n in NOTES if n['slug'] == s]
+    return '<div class="doors">' + ''.join(
+        f'<a class="door" href="/notes/{n["slug"]}/"><span><b>{n["title"]}</b><span class="q">{n["dek"]}</span></span><span class="to">Read</span></a>'
+        for n in picks) + '</div>'
 def note_list():
     return '<div class="doors">' + ''.join(
         f'<a class="door" href="/notes/{n["slug"]}/"><span><b>{n["title"]}</b><span class="q">{n["dek"]}</span></span><span class="to">Read</span></a>'
@@ -1371,7 +1377,7 @@ def shorts_strip():
 
 # ────────────────────────────── HOME ──────────────────────────────
 # The home page source lives in home.src.html; this fills in the note list and build stamp.
-home = open('home.src.html').read().replace('__NOTES__', note_list()).replace('__BUILD__', BUILD).replace('<!--shorts-->', shorts_strip())
+home = open('home.src.html').read().replace('__NOTES__', home_notes()).replace('__NOTECOUNT__', str(len(NOTES))).replace('__BUILD__', BUILD).replace('<!--shorts-->', shorts_strip())
 open('index.html', 'w').write(home)
 # Pipeline Check lives at /pipeline/ again (it was the home page until the shelf took over)
 os.makedirs('pipeline', exist_ok=True)
