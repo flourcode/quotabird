@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-02.1500** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-02.1800** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -137,10 +137,12 @@ Built from the 2026 palettes Mark supplied (@346eur): flat, confident colour on 
 | **Standard** | defensible, ordinary, okay | Yellow Green `#AAD576` | same `#AAD576` |
 | **Caution** | you've got a gap, the situation, a stretch | Corn Yellow `#FCEC60` | same `#FCEC60` |
 | **Problem** | unrealistic, crazy | Coral Orange `#FF7F50` | same `#FF7F50` |
-| **Action** | only things you tap | Denim Blue `#1560BD`, white text | Aero Blue `#7CB9E8`, Midnight text |
+| **Action** | only things you tap | Bird blue `#7CC0F5`, black text | the same `#7CC0F5`, black text |
 | **Structure** | page / cards / lines | `#FFFFFF` / `#EEF2F8` / `#E2E8F0` | Midnight Abyss `#0B1215` / `#16202A` / `#222E3A` |
 | **Text** | everything | `#0B1215`, muted `#4F5B66` | `#F2F6FC`, muted `#A3AFBB` |
-| **Brand** | the bird | `#9DD2FF`, ink outline | `#9DD2FF`, medium-blue outline `#4F86B5` |
+| **Brand** | the bird | `#7CC0F5`, ink outline | `#7CC0F5`, outline `#3F77A8` |
+
+**One blue (Nov 2):** the bird, the light-mode button and the dark-mode button are all `#7CC0F5` with black text (9.6:1). The grammar: **black = interface** (selected segment, Tools menu, links), **blue = do something** (buttons and pressed states) **and the bird**, **green / yellow / coral = QuotaBird's answer**. Blue is used nowhere else. The dark-mode bird outline is `#3F77A8` (4.0:1 against the page so the beak stays crisp, 2.4:1 against the body so it reads as a line).
 
 **Rules:**
 1. **Verdict cards are bold stickers: the same colour in light and dark, always with black text** (7.6 to 15.6:1). They never darken, so dark mode never turns yellow into brown.
