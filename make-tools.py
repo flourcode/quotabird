@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-03.0900'
+BUILD = '2026-11-03.1500'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -26,22 +26,23 @@ TOOLS = [
 ]
 
 def menu(current):
-    groups, last = [], None
+    # Four groups in a two-by-two grid: Your number over Your pay on the left, Your deal over Your team on the right.
+    # Brief Check is left out of the menu on purpose (Mark's call, Nov 3); it stays on the home page and at /brief/.
+    MENU_SKIP = {'/brief/'}
+    groups, last = {}, []
     for g, h, n, d in TOOLS:
-        if g != last: groups.append([g, []]); last = g
-        groups[-1][1].append(f'<a href="{h}"{" class=\"current\"" if h == current else ""}>{n}</a>')
-    # two balanced columns: groups go left until the left holds at least half the items
-    # "Your team" runs full width under the columns, its links in two columns, so no column gets too long on a phone
-    wide = [(g, items) for g, items in groups if g == 'Your team']
-    groups = [(g, items) for g, items in groups if g != 'Your team']
-    total = sum(len(i) for g, i in groups); left, right, n = [], [], 0
-    for g, items in groups:
-        (left if n < total / 2 else right).append((g, items)); n += len(items)
-    col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in gs) + '</div>'
-    wide_html = ''.join(f'<div class="menu-g menu-wide"><div class="menu-group">{g}</div>{"".join(items)}</div>' for g, items in wide)
+        if h in MENU_SKIP: continue
+        if g not in groups: groups[g] = []; last.append(g)
+        groups[g].append(f'<a href="{h}"{" class=\"current\"" if h == current else ""}>{n}</a>')
+    left = [g for g in ('Your number', 'Your pay') if g in groups]
+    right = [g for g in ('Your deal', 'Your team') if g in groups]
+    rest = [g for g in last if g not in left + right]          # any future group goes to the shorter column
+    for g in rest: (left if sum(len(groups[x]) for x in left) <= sum(len(groups[x]) for x in right) else right).append(g)
+    col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(groups[g])}</div>' for g in gs) + '</div>'
+    wide_html = ''
     foot = '<div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div>'
     kit = '<a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a>'
-    return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{kit}{col(left)}{col(right)}{wide_html}{foot}</div></details>'
+    return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{kit}{col(left)}{col(right)}{foot}</div></details>'
 
 
 

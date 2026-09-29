@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-03.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-03.1500** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -225,7 +225,7 @@ Calendly: calendly.com/markflournoy/chat-with-mark (utm_source=quotabird, utm_me
 
 ## Navigation
 
-Header: Tools ▾ · Field Kits · Field Notes · About · Ask Mark. Don't add to it. In the Tools menu, Your number sits left, Your deal and Any meeting right, and Your team runs full width underneath with its links in two columns, so no column gets long on a phone (about 530 to 560px tall open). The 404's copy of the menu is refreshed at build. The Tools menu leads with Your number (Quota Check, Quota Case, Territory, Commission, Discount), then Your team, Your deal, Any meeting. Footer: "QuotaBird is a pile of free sales tools. I built them because they helped me, and maybe they'll help you." and "Not affiliated with the U.S. government or Amazon."
+Header: Tools ▾ · Field Kits · Field Notes · About · Ask Mark. Don't add to it. In the Tools menu, four groups sit two by two: Your number over Your pay on the left, Your deal over Your team on the right (about 590px open on a phone, 44px tap targets). Brief Check is deliberately left out of the menu (Mark's call, Nov 3: not important enough for the menu); it stays on the home page tool list, at /brief/, and in the plugin. To leave another tool out of the menu, add its path to `MENU_SKIP` in `menu()`. The Tools menu leads with Your number (Quota Check, Quota Case, Territory, Commission, Discount), then Your team, Your deal, Any meeting. Footer: "QuotaBird is a pile of free sales tools. I built them because they helped me, and maybe they'll help you." and "Not affiliated with the U.S. government or Amazon."
 
 ## Build and deploy
 
