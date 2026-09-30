@@ -94,7 +94,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.3ee6095e.css">
+<link rel="stylesheet" href="../site.9714b763.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -123,7 +123,9 @@
         <label class="tf"><span class="tf-label">Base salary</span><input id="base" type="text" inputmode="decimal" autocomplete="off" value="$150,000"></label>
         <label class="tf"><span class="tf-label">Target variable at 100%</span><input id="variable" type="text" inputmode="decimal" autocomplete="off" value="$130,000"></label>
         <label class="tf"><span class="tf-label">Your quota for the year</span><input id="quota" type="text" inputmode="decimal" autocomplete="off" value="$6,000,000"></label>
+        <details class="more-fields"><summary>More details <span>optional</span></summary>
         <label class="tf"><span class="tf-label">What you closed last year</span><input id="closed" type="text" inputmode="decimal" autocomplete="off" placeholder="$0 (optional)"></label>
+        </details>
       </form>
       <div class="calc-out2" id="out2"></div>
     </div>
@@ -213,10 +215,10 @@
   <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../calc.faf20c43.js"></script>
+<script src="../calc.4b2e0bf2.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-03.1500';
+window.QB_BUILD = '2026-11-03.2100';
 CalcTool({
   slug: 'quota', answers: {"Low": "It's unusually low.", "Favorable": "No. It's favorable.", "Standard": "No. It's standard.", "A stretch": "Not crazy. A stretch.", "Aggressive": "Close. It's aggressive.", "Crazy": "Yes. It's crazy."}, name: 'Quota Check', url: 'https://quotabird.com/quota/',
   fields: [{ id: 'basis', kind: 'choice', example: 'cloud' }, { id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],

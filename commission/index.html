@@ -86,7 +86,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.3ee6095e.css">
+<link rel="stylesheet" href="../site.9714b763.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -113,10 +113,12 @@
         <p class="startnote fields-note"><span id="exnote">Example numbers. Type yours over them.</span></p>
         <label class="tf"><span class="tf-label">Deal size</span><input id="deal" type="text" inputmode="decimal" autocomplete="off" value="$500,000"></label>
         <label class="tf"><span class="tf-label">Your commission rate</span><input id="rate" type="text" inputmode="decimal" autocomplete="off" value="8%"></label>
-        <label class="tf"><span class="tf-label">Your share of the credit</span><input id="credit" type="text" inputmode="decimal" autocomplete="off" placeholder="100%"></label>
-        <label class="tf"><span class="tf-label">Product multiplier</span><input id="mult" type="text" inputmode="decimal" autocomplete="off" placeholder="100% (optional)"></label>
         <label class="tf"><span class="tf-label">Set aside for taxes</span><input id="buffer" type="text" inputmode="decimal" autocomplete="off" value="30%"></label>
         <div class="chips" style="margin:-6px 0 14px;"><button class="chip" data-preset-for="buffer" data-v="30%" type="button">W-2 ~30%</button><button class="chip" data-preset-for="buffer" data-v="40%" type="button">High bracket ~40%</button><button class="chip" data-preset-for="buffer" data-v="20%" type="button">1099 ~20%</button></div>
+        <details class="more-fields"><summary>More details <span>optional</span></summary>
+        <label class="tf"><span class="tf-label">Your share of the credit</span><input id="credit" type="text" inputmode="decimal" autocomplete="off" placeholder="100%"></label>
+        <label class="tf"><span class="tf-label">Product multiplier</span><input id="mult" type="text" inputmode="decimal" autocomplete="off" placeholder="100% (optional)"></label>
+        </details>
       </form>
       <div class="calc-out2" id="out2"></div>
     </div>
@@ -184,10 +186,10 @@
   <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../calc.faf20c43.js"></script>
+<script src="../calc.4b2e0bf2.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-03.1500';
+window.QB_BUILD = '2026-11-03.2100';
 CalcTool({
   slug: 'commission', answers: {"Take-home": "That's your take-home."}, name: 'Commission Check', url: 'https://quotabird.com/commission/',
   fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'credit', kind: 'pct' }, { id: 'mult', kind: 'pct' }, { id: 'buffer', kind: 'pct' }],

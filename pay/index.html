@@ -86,7 +86,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.3ee6095e.css">
+<link rel="stylesheet" href="../site.9714b763.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -115,8 +115,10 @@
         <label class="tf"><span class="tf-label">Target variable at 100%</span><input id="variable" type="text" inputmode="decimal" autocomplete="off" value="$130,000"></label>
         <label class="tf"><span class="tf-label">Rate above the accelerator, as % of your normal rate</span><input id="accel" type="text" inputmode="decimal" autocomplete="off" value="150%"></label>
         <label class="tf"><span class="tf-label">Accelerator starts at</span><input id="start" type="text" inputmode="decimal" autocomplete="off" value="100%"></label>
+        <details class="more-fields"><summary>More details <span>optional</span></summary>
         <label class="tf"><span class="tf-label">Variable capped at, % of target</span><input id="cap" type="text" inputmode="decimal" autocomplete="off" placeholder="uncapped"></label>
         <label class="tf"><span class="tf-label">Nothing pays below</span><input id="threshold" type="text" inputmode="decimal" autocomplete="off" placeholder="0% (optional)"></label>
+        </details>
       </form>
       <div class="calc-out2" id="out2"></div>
     </div>
@@ -164,10 +166,10 @@
   <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../calc.faf20c43.js"></script>
+<script src="../calc.4b2e0bf2.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-03.1500';
+window.QB_BUILD = '2026-11-03.2100';
 CalcTool({
   slug: 'pay', answers: {"Real upside": "Yes, it pays for beating the number.", "Some upside": "A little extra above 100%.", "Straight line": "It pays in a straight line.", "Thin upside": "Not much above 100%.", "Capped": "The cap takes the upside."}, name: 'Pay Check', url: 'https://quotabird.com/pay/',
   fields: [{ id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'accel', kind: 'pctx' }, { id: 'start', kind: 'pctx' }, { id: 'cap', kind: 'pctx' }, { id: 'threshold', kind: 'pct' }],

@@ -94,7 +94,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.3ee6095e.css">
+<link rel="stylesheet" href="../site.9714b763.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -121,13 +121,15 @@
         <p class="startnote fields-note"><span id="exnote">Example numbers. Type yours over them.</span></p>
         <div class="tf"><span class="tf-label" id="lbl-basis">What the quota is measured on</span><div class="chips" role="group" aria-labelledby="lbl-basis"><button class="chip" data-choice="basis" data-v="saas" type="button" aria-pressed="false">Bookings</button><button class="chip on" data-choice="basis" data-v="cloud" type="button" aria-pressed="true">Run rate</button><button class="chip" data-choice="basis" data-v="book" type="button" aria-pressed="false">Whole book</button></div></div>
         <label class="tf"><span class="tf-label">Last year, on the same measure</span><input id="lastyear" type="text" inputmode="decimal" autocomplete="off" value="$8,200,000"></label>
-        <label class="tf"><span class="tf-label">One-time deals in that number</span><input id="oneoff" type="text" inputmode="decimal" autocomplete="off" placeholder="$0 (optional)"></label>
         <label class="tf"><span class="tf-label">Current run rate (MRR × 12)</span><input id="runrate" type="text" inputmode="decimal" autocomplete="off" value="$8,700,000"></label>
         <label class="tf"><span class="tf-label">New qualified pipeline this year</span><input id="pipeline" type="text" inputmode="decimal" autocomplete="off" value="$6,000,000"></label>
         <label class="tf"><span class="tf-label">Your historical win rate</span><input id="win" type="text" inputmode="decimal" autocomplete="off" value="25%"></label>
+        <label class="tf"><span class="tf-label">The new number</span><input id="quota" type="text" inputmode="decimal" autocomplete="off" value="$12,000,000"></label>
+        <details class="more-fields"><summary>More details <span>optional</span></summary>
+        <label class="tf"><span class="tf-label">One-time deals in that number</span><input id="oneoff" type="text" inputmode="decimal" autocomplete="off" placeholder="$0 (optional)"></label>
         <label class="tf"><span class="tf-label">Reps last year</span><input id="repsthen" type="text" inputmode="numeric" autocomplete="off" placeholder="optional"></label>
         <label class="tf"><span class="tf-label">Fully ramped reps now</span><input id="repsnow" type="text" inputmode="numeric" autocomplete="off" placeholder="optional"></label>
-        <label class="tf"><span class="tf-label">The new number</span><input id="quota" type="text" inputmode="decimal" autocomplete="off" value="$12,000,000"></label>
+        </details>
       </form>
       <div class="calc-out2" id="out2"></div>
     </div>
@@ -184,10 +186,10 @@
   <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../calc.faf20c43.js"></script>
+<script src="../calc.4b2e0bf2.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-03.1500';
+window.QB_BUILD = '2026-11-03.2100';
 CalcTool({
   slug: 'quota-case', answers: {"Supported": "Yes. It already adds up.", "Tight": "You're a little short.", "You've got a gap": "You've got a gap.", "Can't see it": "You've got a big gap."}, name: 'Quota Case', url: 'https://quotabird.com/quota-case/',
   fields: [{ id: 'basis', kind: 'choice' }, { id: 'lastyear', kind: 'money' }, { id: 'oneoff', kind: 'money' }, { id: 'runrate', kind: 'money' }, { id: 'pipeline', kind: 'money' }, { id: 'win', kind: 'pct' }, { id: 'repsthen', kind: 'count' }, { id: 'repsnow', kind: 'count' }, { id: 'quota', kind: 'money' }],

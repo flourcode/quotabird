@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-03.1500'
+BUILD = '2026-11-03.2100'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -1394,12 +1394,12 @@ CALCS = [
   h1='Is your quota actually possible?', dek='Use last year, your run rate, your pipeline and your win rate to find the gap. Build the case before you push back.',
   fields=[dict(id='basis',kind='choice',label='What the quota is measured on',example='cloud',options=[('saas','Bookings'),('cloud','Run rate'),('book','Whole book')]),
           dict(id='lastyear',kind='money',label='Last year, on the same measure',example='$8,200,000'),
-          dict(id='oneoff',kind='money',label='One-time deals in that number',example='',placeholder='$0 (optional)'),
+          dict(id='oneoff',more=True,kind='money',label='One-time deals in that number',example='',placeholder='$0 (optional)'),
           dict(id='runrate',kind='money',label='Current run rate (MRR × 12)',example='$8,700,000'),
           dict(id='pipeline',kind='money',label='New qualified pipeline this year',example='$6,000,000'),
           dict(id='win',kind='pct',label='Your historical win rate',example='25%'),
-          dict(id='repsthen',kind='count',label='Reps last year',example='',placeholder='optional'),
-          dict(id='repsnow',kind='count',label='Fully ramped reps now',example='',placeholder='optional'),
+          dict(id='repsthen',more=True,kind='count',label='Reps last year',example='',placeholder='optional'),
+          dict(id='repsnow',more=True,kind='count',label='Fully ramped reps now',example='',placeholder='optional'),
           dict(id='quota',kind='money',label='The new number',example='$12,000,000')],
   card=dict(headline=['Build the case', 'against a crazy quota.'],dek='Last year. Run rate. Pipeline. Win rate.',pillars=['LAST YEAR','RUN RATE','PIPELINE','THE GAP']),
   bands=[('how','How the gap works','''    <p class="lede">Start with what the quota is measured on, because the math changes. On a run-rate or whole-book number, the evidence is your current run rate, which already reflects today's team, plus the new pipeline you expect to win this year. On a bookings number, run rate doesn't tell you much, so it compares last year's bookings, adjusted for today's ramped headcount, with this year's pipeline at your real win rate, and takes the stronger of the two. Whatever's left between the evidence and the new number is the gap somebody needs to explain.</p>
@@ -1515,7 +1515,7 @@ CALCS = [
   h1='Is your quota crazy?', dek='Plug in your base, your variable and the number they handed you to find out.',
   fields=[dict(id='basis',kind='choice',label='What the number is measured in',example='cloud',options=[('saas','Bookings'),('cloud','Run rate'),('book','Whole book')]),
           dict(id='base',kind='money',label='Base salary',example='$150,000'),dict(id='variable',kind='money',label='Target variable at 100%',example='$130,000'),
-          dict(id='quota',kind='money',label='Your quota for the year',example='$6,000,000'),dict(id='closed',kind='money',label='What you closed last year',example='',placeholder='$0 (optional)')],
+          dict(id='quota',kind='money',label='Your quota for the year',example='$6,000,000'),dict(id='closed',more=True,kind='money',label='What you closed last year',example='',placeholder='$0 (optional)')],
   card=dict(headline=['Is your quota crazy?',''],dek='Your number against your on-target earnings, judged by what it\'s measured in.',pillars=['OTE','MULTIPLE','RATE','GROWTH']),
   bands=[('pushback','If the number is crazy','''    <p class="lede">Saying it feels too high won't move it. Bring the math: last year's sales, your run rate, qualified pipeline at your real win rate, headcount and ramp time. Then ask what has to be true for the number to be reasonable.</p>
     <p>Better yet, get into planning the year before, while somebody still has the spreadsheet open. <a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> walks through it, with an example you can steal. If you're the rep, start with <a href="/notes/push-back-as-a-rep/">this one</a>. If you're the manager handing it down, <a href="/notes/handing-down-a-tough-quota/">this one</a>.</p>'''),('how','Why the multiple depends on what you sell','''    <p class="lede">Divide your quota by your on-target earnings. That one number tells you a lot about the plan, once you know what the quota is measured in.</p>
@@ -1616,8 +1616,8 @@ CALCS = [
           dict(id='variable',kind='money',label='Target variable at 100%',example='$130,000'),
           dict(id='accel',kind='pctx',label='Rate above the accelerator, as % of your normal rate',example='150%'),
           dict(id='start',kind='pctx',label='Accelerator starts at',example='100%'),
-          dict(id='cap',kind='pctx',label='Variable capped at, % of target',example='',placeholder='uncapped'),
-          dict(id='threshold',kind='pct',label='Nothing pays below',example='',placeholder='0% (optional)')],
+          dict(id='cap',more=True,kind='pctx',label='Variable capped at, % of target',example='',placeholder='uncapped'),
+          dict(id='threshold',more=True,kind='pct',label='Nothing pays below',example='',placeholder='0% (optional)')],
   card=dict(headline=['What does this plan', 'actually pay?'],dek='Base. Variable. Accelerator. Cap.',pillars=['BASE','VARIABLE','ACCELERATOR','CAP']),
   bands=[('how','How to read the curve','''    <p class="lede">OTE is what you make if you hit 100%. The rows above and below it are what you make in a real year.</p>
     <p>Below 100%, most plans pay your variable in a straight line: 75% of quota pays 75% of your variable. Some plans pay nothing below a threshold, often 50%, so a bad year can take the whole variable.</p>
@@ -1659,15 +1659,15 @@ CALCS = [
   desc='Two sales job offers side by side: base, variable, ramp and guarantee in, year-one cash and a normal year at a realistic attainment out.',
   ogdesc='Two offers, side by side. Year-one cash with the ramp, and a normal year at a realistic attainment.',
   h1='Which offer actually pays more?', dek='Put in both offers and a realistic attainment. See year one with the ramp, and a normal year after it.',
-  fields=[dict(id='baseA',kind='money',label='Offer A: base',example='$150,000'),
-          dict(id='varA',kind='money',label='Offer A: target variable',example='$130,000'),
-          dict(id='rampA',kind='count',label='Offer A: ramp, in months',example='6'),
-          dict(id='guarA',kind='pctx',label='Offer A: variable guaranteed during ramp',example='',placeholder='none'),
-          dict(id='baseB',kind='money',label='Offer B: base',example='$170,000'),
-          dict(id='varB',kind='money',label='Offer B: target variable',example='$150,000'),
-          dict(id='rampB',kind='count',label='Offer B: ramp, in months',example='6'),
-          dict(id='guarB',kind='pctx',label='Offer B: variable guaranteed during ramp',example='',placeholder='none'),
-          dict(id='attain',kind='pctx',label='Realistic attainment, both offers',example='85%')],
+  fields=[dict(id='baseA',head='Offer A',kind='money',label='Base',example='$150,000'),
+          dict(id='varA',kind='money',label='Target variable',example='$130,000'),
+          dict(id='rampA',kind='count',label='Ramp, in months',example='6'),
+          dict(id='guarA',more=True,kind='pctx',label='Offer A: variable guaranteed during ramp',example='',placeholder='none'),
+          dict(id='baseB',head='Offer B',kind='money',label='Base',example='$170,000'),
+          dict(id='varB',kind='money',label='Target variable',example='$150,000'),
+          dict(id='rampB',kind='count',label='Ramp, in months',example='6'),
+          dict(id='guarB',more=True,kind='pctx',label='Offer B: variable guaranteed during ramp',example='',placeholder='none'),
+          dict(id='attain',head='Both offers',kind='pctx',label='Realistic attainment',example='85%')],
   card=dict(headline=['Which offer', 'actually pays more?'],dek='Base. Variable. Ramp. Guarantee.',pillars=['BASE','VARIABLE','RAMP','ATTAINMENT']),
   bands=[('how','How the comparison works','''    <p class="lede">An offer letter shows OTE, which is what you make at exactly 100% of quota. This compares the two offers at the attainment you think is realistic, which is usually closer to what you'll make.</p>
     <p>A normal year is base plus variable at that attainment. Year one also counts the ramp: during the ramp months you earn your guarantee if there is one, and otherwise about half your normal attainment, since new reps rarely sell at full speed. That half is an assumption, and it's shown so you can argue with it.</p>
@@ -1677,7 +1677,7 @@ CALCS = [
        ('What attainment should I use?','Whatever you honestly expect. Bridge Group\'s 2026 study found 48% of AEs hit quota, so 100% is optimistic for most people. Ask each company what share of its team hit quota last year and adjust.'),
        ('What if the guarantee is a draw I have to pay back?','Then leave the guarantee blank. A recoverable draw is an advance against future commission, not extra money.')],
   config="""CalcTool({
-  slug: 'offer', answers: {"Close": "About the same money.", "A pays more": "Offer A pays more in a normal year.", "B pays more": "Offer B pays more in a normal year."}, name: 'Offer Check', url: 'https://quotabird.com/offer/',
+  slug: 'offer', share: { baseA: 'base', varA: 'variable' }, answers: {"Close": "About the same money.", "A pays more": "Offer A pays more in a normal year.", "B pays more": "Offer B pays more in a normal year."}, name: 'Offer Check', url: 'https://quotabird.com/offer/',
   fields: [{ id: 'baseA', kind: 'money' }, { id: 'varA', kind: 'money' }, { id: 'rampA', kind: 'count' }, { id: 'guarA', kind: 'pctx' }, { id: 'baseB', kind: 'money' }, { id: 'varB', kind: 'money' }, { id: 'rampB', kind: 'count' }, { id: 'guarB', kind: 'pctx' }, { id: 'attain', kind: 'pctx' }],
   compute(v) {
     if (!(v.baseA > 0 && v.baseB > 0 && v.varA >= 0 && v.varB >= 0)) return null;
@@ -1709,8 +1709,8 @@ CALCS = [
   ogdesc='It closed. Here is roughly what you actually take home.',
   h1="It closed. What do you actually keep?", dek='Plug in the deal and your rate to find out, roughly, before the check lands.',
   fields=[dict(id='deal',kind='money',label='Deal size',example='$500,000'),dict(id='rate',kind='pct',label='Your commission rate',example='8%'),
-          dict(id='credit',kind='pct',label='Your share of the credit',example='',placeholder='100%'),
-          dict(id='mult',kind='pct',label='Product multiplier',example='',placeholder='100% (optional)'),
+          dict(id='credit',more=True,kind='pct',label='Your share of the credit',example='',placeholder='100%'),
+          dict(id='mult',more=True,kind='pct',label='Product multiplier',example='',placeholder='100% (optional)'),
           dict(id='buffer',kind='pct',label='Set aside for taxes',example='30%',presets=[('W-2 ~30%','30%'),('High bracket ~40%','40%'),('1099 ~20%','20%')])],
   card=dict(headline=['It closed.','What do I take home?'],dek='A planning estimate of the check after withholding, in about ten seconds.',pillars=['DEAL','RATE','WITHHELD','TAKE-HOME']),
   bands=[('how','Why the check is smaller than the math','''    <p class="lede">The commission in your plan and the money that hits your account are further apart than most sellers expect, especially the first time.</p>
@@ -1750,7 +1750,10 @@ def calc_page(t):
         if f.get('presets'):
             out += '        <div class="chips" style="margin:-6px 0 14px;">' + ''.join(f'<button class="chip" data-preset-for="{f["id"]}" data-v="{v}" type="button">{lab}</button>' for lab, v in f['presets']) + '</div>\n'
         return out
-    fields = ''.join(field(f) for f in t['fields'])
+    def head(f): return f'        <div class="tf-head">{f["head"]}</div>\n' if f.get('head') else ''
+    main = ''.join(head(f) + field(f) for f in t['fields'] if not f.get('more'))
+    extra = ''.join(head(f) + field(f) for f in t['fields'] if f.get('more'))
+    fields = main + (f'        <details class="more-fields"><summary>More details <span>optional</span></summary>\n{extra}        </details>\n' if extra else '')
     faq_html = ''.join(f'''    <details class="exp"><summary>{q}</summary>
       <div class="body">{a}</div></details>
 ''' for q, a in t['faq'])
@@ -3179,37 +3182,37 @@ _stuff = note_head('Stuff I Like', "Books and podcasts Mark Flournoy has gotten 
 <article class="note stuff">
   <span class="overline">QuotaBird</span>
   <h1>Stuff I Like</h1>
-  <p class="dek">Some sales. Some just because I like them.</p>
+  <p class="dek">Let me know if you have better recommendations.</p>
 
-  <h2>Books that made me think</h2>
+  <h2>Books I actually read</h2>
   <div class="likes">
-    <div class="like"><p class="like-t">The Qualified Sales Leader</p><p class="like-by">John McMahon</p><p class="like-why">Probably the one I'd hand to someone managing serious enterprise sellers.</p></div>
+    <div class="like"><p class="like-t">The Qualified Sales Leader</p><p class="like-by">John McMahon</p><p class="like-why">A good one if you're managing serious enterprise sales teams.</p></div>
     <div class="like"><p class="like-t">Fanatical Prospecting</p><p class="like-by">Jeb Blount</p><p class="like-why">If prospecting is the part of the job you keep finding reasons not to do.</p></div>
-    <div class="like"><p class="like-t">Getting to Yes</p><p class="like-by">Roger Fisher, William Ury and Bruce Patton</p><p class="like-why">Negotiating without turning every conversation into a hostage situation.</p></div>
-    <div class="like"><p class="like-t">The Little Red Book of Selling</p><p class="like-by">Jeffrey Gitomer</p><p class="like-why">Old-school, occasionally corny, and still right about a surprising amount.</p></div>
-    <div class="like"><p class="like-t">How to Say It</p><p class="like-by">Rosalie Maggio</p><p class="like-why">Not really a sales book. Good when you know what you mean but can't find the words.</p></div>
-    <div class="like"><p class="like-t">Atomic Habits</p><p class="like-by">James Clear</p><p class="like-why">Because a sales career is mostly boring things done over and over.</p></div>
-    <div class="like"><p class="like-t">Meditations</p><p class="like-by">Marcus Aurelius</p><p class="like-why">Two thousand years old and still useful when the forecast call starts getting stupid.</p></div>
+    <div class="like"><p class="like-t">Getting to Yes</p><p class="like-by">Roger Fisher, William Ury and Bruce Patton</p><p class="like-why">Negotiating without turning it into a hostage situation.</p></div>
+    <div class="like"><p class="like-t">The Little Red Book of Selling</p><p class="like-by">Jeffrey Gitomer</p><p class="like-why">If you joined my sales team, this was your onboarding gift.</p></div>
+    <div class="like"><p class="like-t">How to Say It</p><p class="like-by">Rosalie Maggio</p><p class="like-why">Good when you know what you mean but can't find the words.</p></div>
+    <div class="like"><p class="like-t">Atomic Habits</p><p class="like-by">James Clear</p><p class="like-why">Because a sales career is mostly boring things done over and over and over.</p></div>
+    <div class="like"><p class="like-t">Meditations</p><p class="like-by">Marcus Aurelius</p><p class="like-why">Two thousand years old and still useful when the forecast call starts going south.</p></div>
     <div class="like"><p class="like-t">Tao Te Ching</p><p class="like-by">Lao Tzu</p><p class="like-why">Forcing things usually makes them worse. That goes for sales, management, meetings, pretty much everything.</p></div>
-    <div class="like"><p class="like-t">The Bezos Blueprint</p><p class="like-by">Carmine Gallo</p><p class="like-why">Why Amazon writes and communicates the strange way it does.</p></div>
-    <div class="like"><p class="like-t">Amazon Unbound</p><p class="like-by">Brad Stone</p><p class="like-why">Less about selling than understanding how one very large company thinks.</p></div>
+    <div class="like"><p class="like-t">The Bezos Blueprint</p><p class="like-by">Carmine Gallo</p><p class="like-why">Why Amazon writes and makes decisions the weird way it does.</p></div>
+    <div class="like"><p class="like-t">Amazon Unbound</p><p class="like-by">Brad Stone</p><p class="like-why">Understanding how the company thinks. Good if you're trying to partner with Amazon.</p></div>
   </div>
 
   <h2>Podcasts I fall asleep to</h2>
   <div class="likes">
-    <div class="like"><p class="like-t">The Brutal Truth About Sales &amp; Selling</p><p class="like-by">Brian Burns</p><p class="like-why">Actual selling. Not much incense.</p></div>
+    <div class="like"><p class="like-t">The Brutal Truth About Sales</p><p class="like-by">Brian Burns</p><p class="like-why">Great interviews with real enterprise sellers. No corporate marketing stuff.</p></div>
     <div class="like"><p class="like-t">Hidden Brain</p><p class="like-by">Shankar Vedantam</p><p class="like-why">People are weird. Helpful to remember when selling to them or managing them.</p></div>
-    <div class="like"><p class="like-t">Freakonomics Radio</p><p class="like-by">Stephen J. Dubner</p><p class="like-why">Incentives explain a lot of behavior, including some very stupid sales behavior.</p></div>
+    <div class="like"><p class="like-t">Freakonomics Radio</p><p class="like-by">Stephen J. Dubner</p><p class="like-why">Incentives explain a lot of behavior, including sales behavior.</p></div>
     <div class="like"><p class="like-t">Marketplace</p><p class="like-by">American Public Media</p><p class="like-why">Twenty-some minutes and you know enough about the economy to sound less surprised.</p></div>
     <div class="like"><p class="like-t">Pivot</p><p class="like-by">Kara Swisher and Scott Galloway</p><p class="like-why">Tech, business, politics, and two people disagreeing with each other.</p></div>
     <div class="like"><p class="like-t">How to Be a Better Human</p><p class="like-by">TED</p><p class="like-why">Pretty much what it says.</p></div>
-    <div class="like"><p class="like-t">The Daily Stoic</p><p class="like-by">Ryan Holiday</p><p class="like-why">Good before certain forecast calls.</p></div>
-    <div class="like"><p class="like-t">The Side Hustle Show</p><p class="like-by">Nick Loper</p><p class="like-why">For people who occasionally wonder what else they could build.</p></div>
+    <div class="like"><p class="like-t">The Daily Stoic</p><p class="like-by">Ryan Holiday</p><p class="like-why">Good before those forecast calls.</p></div>
+    <div class="like"><p class="like-t">The Side Hustle Show</p><p class="like-by">Nick Loper</p><p class="like-why">For people who dream of escaping their cubicle.</p></div>
     <div class="like"><p class="like-t">Radiolab</p><p class="like-by">WNYC</p><p class="like-why">Good stories about things I didn't know I was interested in.</p></div>
-    <div class="like"><p class="like-t">Stuff You Should Know</p><p class="like-by">Josh Clark and Chuck Bryant</p><p class="like-why">Has nothing to do with quota. That's partly why I like it.</p></div>
+    <div class="like"><p class="like-t">Stuff You Should Know</p><p class="like-by">Josh Clark and Chuck Bryant</p><p class="like-why">A great escape from thinking about your quota.</p></div>
   </div>
 
-  <p class="fine stuff-foot">No links and no affiliate stuff. Your library or podcast app can find them.</p>
+  <p class="fine stuff-foot">Stay tuned for my favorite Talking Heads and Hall &amp; Oates songs!</p>
 </article>
 
 <section class="band" id="about"></section>

@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-03.1500** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-03.2100** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -87,13 +87,27 @@ Every result hands off to the most useful next thing for that verdict, usually a
 
 **Considered and deliberately not built (Nov 1):** marketplace fee and co-sell quota-retirement calculators, multi-year crediting and side-by-side deal comparisons. The rules differ by company and change often, so a generic tool would be wrong for many users. Worth building later as their own projects: a manager team roll-up ("team health"), and churn / NRR ("how much new just to stand still"). Danger-zone colours and shareable scenario links already exist.
 
+## Website design skill v2.1 pass (Nov 3)
+
+- **Home page, one route to each tool.** The two jobs are lists of rows, side by side: "The number they gave you." (the guide, Quota Case, Territory, Pipeline, Discount, and "The number isn't changing" note) and "What they'll pay you for it." (Pay, Commission, Comp Plan, Offer). Below the Shorts, "Also useful." holds Your deal, Your team, and Print and learn. Brief Check is off the home page and the menu; its page and the plugin skill stay. The home block uses class `jobs` (not `pillars`, which is the uppercase label strip on tool pages).
+- **Numbers carry between tools.** Base, variable and quota are remembered in the visitor's browser (localStorage key `qb-numbers`) and prefill Quota Check, Quota Case, Pay Check and Offer Check (Offer A). The page says so and offers "Clear them". Nothing is sent anywhere. Fields map through `share` in a tool's config.
+- **Optional fields fold away** under "More details" (`more=True` on a field; `head='…'` adds a small section heading). The panel opens itself when a shared link or remembered number fills one of its fields.
+- **Shape scale:** small 12px (buttons, fields, answers), medium 16px (cards, panels), large 24px (the verdict card), full (pills and chips).
+- **One state system:** hover is a 5% ink layer and press 10% on rows, notes, answers and menu links; solid blue only on real buttons.
+- **Focus:** one 2px ink ring on every interactive element, keyboard only; a field row shows the ring around the whole row.
+- **Touch targets:** 48px on the controls people tap constantly (answers, chips, segmented switches); 44px minimum elsewhere.
+- **Motion:** the verdict "pop" plays only when the verdict changes, and never when the device asks for reduced motion.
+- **Type roles:** display 120/96/76/60, headline 44/36/28, title 22/18, body 17, secondary 15, label 13, overline 12. Eleven sizes on a phone, twelve on desktop (was 17). Don't add sizes; map new text to a role.
+- **Not done:** trimming tools by usage. It needs the Google Analytics numbers; once known, move the least-used tools out of the menu and home list (`MENU_SKIP`) and keep their pages live.
+- **A bug this pass fixed:** the reading-column rule from the redesign had also narrowed the home page's main block to 680px; `.wrap.wide` pages now keep their full width.
+
 ## Layout rules (redesign, Nov 3)
 
 Applied from a website-design review: audit first, remove before adding, one edge, rows over boxes.
 - **One left edge on every page.** The header, headings and body all start on the same edge (the header container is 920px everywhere; reading text keeps a 680px measure inside it). Check new pages against the logo's edge.
 - **Rows, not a box per item.** Tool lists and note lists are rows with a hairline between them: the question on the left, the tool name and an arrow on the right. Keep cards for things that really are separate objects: the verdict card, the pillar steps, the Shorts, the kit card.
 - **The home page shows six Field Notes** (`HOME_NOTES` in make-tools.py) and links to the rest with a live count. Don't list every note on the home page again.
-- **Reassurance sits next to the action.** Under the hero button: "Free. No login. What you type stays in your browser." The old "How these work" section was cut; the FAQ answers the rest.
+- **No reassurance line under the hero button** (Mark removed "Free. No login. What you type stays in your browser." on Nov 3). The FAQ answers what stays in the browser. The old "How these work" section stays cut.
 - Result: the home page went from about 6,700px to 4,300px on desktop and from 9,400px to 6,600px on a phone, with nothing a visitor needs removed.
 
 ## Two pillars: your number and your pay (Nov 2)
@@ -213,7 +227,7 @@ Question tools run on `check.js`, calculators on `calc.js`. Five questions per t
 
 **About photo:** the text wraps around the round photo itself (`shape-outside: circle()` on `.who img`), not its square box.
 
-**Also:** Sales Math (4 pages), About (opens on Mark's photo and "Hi, I'm Mark."), Ask Mark ("Got a quota problem?"), Stuff I Like, 404 (shows the shelf).
+**Also:** Sales Math (4 pages), About (opens on Mark's photo and "Hi, I'm Mark."), Ask Mark ("Got a quota problem?"), Stuff I Like (Mark edits this page's wording himself; carry his changes into the `_stuff` article in make-tools.py, never paste a built page over the site), 404 (shows the shelf).
 
 ## Funnel and analytics
 
