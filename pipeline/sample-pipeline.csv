@@ -1,0 +1,21 @@
+Opportunity,Account,Owner,Stage,Amount,Close Date,Probability
+Data platform migration,Northwind Health,Dana Ortiz,Negotiation,"$1,200,000",2026-11-20,80%
+Security analytics renewal,Contoso Federal,Sam Patel,Proposal,"$650,000",2026-12-15,60%
+AI pilot expansion,Fabrikam Labs,Dana Ortiz,Proposal,"$480,000",2026-12-05,50%
+Disaster recovery,Tailspin Logistics,Lee Chen,Qualification,"$300,000",2026-12-20,30%
+Contact center modernization,Wide World Importers,Sam Patel,Discovery,"$900,000",2027-02-15,10%
+Analytics consolidation,Adventure Works,Lee Chen,Negotiation,"$750,000",2026-10-30,80%
+Edge compute rollout,Litware,Dana Ortiz,Proposal,"$1,500,000",2027-03-31,50%
+Zero trust program,Contoso Federal,Sam Patel,Qualification,"$400,000",2026-11-30,30%
+Warehouse automation,Tailspin Logistics,Lee Chen,Closed Won,"$520,000",2026-03-12,100%
+Records digitization,Northwind Health,Dana Ortiz,Closed Won,"$310,000",2026-05-28,100%
+Fraud detection,Woodgrove Bank,Sam Patel,Closed Won,"$880,000",2026-06-30,100%
+Call analytics,Wide World Importers,Lee Chen,Closed Won,"$240,000",2026-08-14,100%
+Backup consolidation,Adventure Works,Dana Ortiz,Closed Lost,"$600,000",2026-02-20,0%
+Mainframe offload,Woodgrove Bank,Sam Patel,Closed Lost,"$1,100,000",2026-04-10,0%
+Supply chain visibility,Fabrikam Labs,Lee Chen,Closed Lost,"$450,000",2026-05-05,0%
+Customer data platform,Litware,Dana Ortiz,Closed Lost,"$700,000",2026-07-22,0%
+Cloud cost management,Contoso Federal,Sam Patel,Closed Lost,"$250,000",2026-08-29,0%
+Network refresh,Tailspin Logistics,Lee Chen,Closed Lost,"$380,000",2026-09-15,0%
+Identity modernization,Northwind Health,Sam Patel,Closed Won,"$560,000",2025-11-18,100%
+Observability rollout,Adventure Works,Lee Chen,Closed Lost,"$420,000",2025-12-12,0%

@@ -138,8 +138,9 @@
         </div>
         <details class="more-fields export" id="xpanel"><summary>Use a pipeline export <span>CSV, read in your browser</span></summary>
           <div class="x-body">
-            <p class="x-note">Pick a CSV export from your CRM. It's read right here in your browser and never uploaded. It needs columns for amount, stage and close date.</p>
-            <input id="xfile" type="file" accept=".csv,text/csv">
+            <p class="x-note">Pick a CSV export from your CRM or a spreadsheet. It's read right here in your browser and never uploaded. You'll confirm which columns are the amount, stage and close date.</p>
+            <div class="x-pick"><input id="xfile" type="file" accept=".csv,.tsv,.txt,text/csv,text/plain"><label class="btn btn-tonal" for="xfile">Choose a CSV file</label><span class="x-name" id="xname">No file yet</span></div>
+            <p class="x-note"><a href="/pipeline/sample-pipeline.csv" download>Download a sample CSV</a> to see a file that works.</p>
             <div id="xout"></div>
           </div>
         </details>
@@ -385,11 +386,12 @@ function render() {
   document.querySelectorAll('[data-win]').forEach(b => b.classList.toggle('on', s && s.win && Math.round(s.win * 100) === +b.dataset.win));
   document.querySelectorAll('[data-ye]').forEach(b => b.classList.toggle('on', b.dataset.ye === yearEnd));
   $('justMe').classList.toggle('on', parseCount($('reps').value) === 1);
-  if (!s) { out.innerHTML = `<div class="empty">Put in your target and the pipeline you expect to close against it.</div>`; $('out2').innerHTML = ''; sumbar(null); return; }
+  if (!s) { out.innerHTML = `<div class="empty">${XRAW ? 'Now put in your target for the year.' : 'Put in your target and the pipeline you expect to close against it.'}</div>`; $('goal').classList.toggle('needs', !!XRAW && !parseMoney($('goal').value)); $('out2').innerHTML = ''; sumbar(null); return; }
   if (s.done) { out.innerHTML = `<div class="verdict verdict-ready"><div class="verdict-word">Made it</div><div class="verdict-attack">You've closed ${money(s.closed)} against ${money(s.goal)}. Go protect next year.</div></div>`; $('out2').innerHTML = ''; sumbar(null); return; }
+  $('goal').classList.remove('needs');
   const cal = s.cal;
   const clock = yearEnd === 'fy' ? `Your year ends in ${cal.daysLeft} days.` : `Your year has ${cal.daysLeft} days left. Your federal customers' money expires in ${cal.fedDays}.`;
-  const paceLine = s.pace ? (s.pace <= 1.15 ? " You're roughly on pace." : ` You need ${s.pace.toFixed(1)}× your current monthly rate${s.pace > 3 ? '. Nobody does that by trying harder.' : '.'}`) : '';
+  const paceLine = s.pace ? (s.pace <= 1.15 ? " You're roughly on pace." : s.pace > 10 ? " Your pace so far won't get you there. This needs new pipeline, not more effort." : ` You need ${s.pace.toFixed(1)}× your current monthly rate${s.pace > 3 ? '. Nobody does that by trying harder.' : '.'}`) : '';
   out.innerHTML = `
     ${shared ? `<div class="banner">Someone sent you these numbers. Change any of them to run your own.</div>` : fromQuota ? `<div class="banner">From Quota Check. Starting point filled in: ${money(s.goal * 3)} of pipeline (3X your number), a conservative 20% win rate, $500K deals, just you. Change anything that's wrong.</div>` : ''}
     <div class="verdict verdict-${s.cls}" id="verdict">
@@ -478,72 +480,138 @@ $('win').addEventListener('blur', () => { const v = parseRate($('win').value); i
 document.querySelectorAll('.calc-in input').forEach(inp => inp.addEventListener('focus', () => { setTimeout(() => { try { inp.select(); } catch {} }, 0); }));
 document.querySelectorAll('[data-win]').forEach(b => b.onclick = () => { $('win').value = b.dataset.win + '%'; $('win').classList.remove('is-example'); track('pipeline_winrate'); onEdit(); });
 /* ── a pipeline export, read in the browser and never uploaded ──
-   Finds amount, stage and close date; counts open deals in the checked stages that close inside the period;
-   closed won inside the period counts as already closed. CRM probabilities are never used. */
-let XROWS = null, XCOLS = null;
-function csvRows(text) {
+   Works with whatever a CRM or a spreadsheet produces: guesses the columns from the headings, then from the
+   contents, and lets the person correct the guess. Never rejects a file. CRM probabilities are never used. */
+let XRAW = null, XHEAD = [], XMAP = null, XROWS = null, XCLEARED = false;
+function xDelim(text) {
+  const first = text.split(/\r?\n/).find(l => l.trim()) || '';
+  const n = (ch) => first.split(ch).length - 1;
+  const c = { ',': n(','), ';': n(';'), '\t': n('\t') };
+  return Object.keys(c).sort((a, b) => c[b] - c[a])[0];
+}
+function csvRows(text, d) {
   const rows = []; let row = [], cell = '', q = false;
   for (let k = 0; k < text.length; k++) {
     const ch = text[k];
     if (q) { if (ch === '"') { if (text[k + 1] === '"') { cell += '"'; k++; } else q = false; } else cell += ch; }
     else if (ch === '"') q = true;
-    else if (ch === ',') { row.push(cell); cell = ''; }
+    else if (ch === d) { row.push(cell); cell = ''; }
     else if (ch === '\n' || ch === '\r') { if (ch === '\r' && text[k + 1] === '\n') k++; row.push(cell); rows.push(row); row = []; cell = ''; }
     else cell += ch;
   }
   if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
-  return rows.filter(r => r.some(c => c.trim() !== ''));
+  return rows.filter(r => r.some(c => String(c).trim() !== ''));
 }
-function xDate(v) {
-  v = String(v || '').trim(); if (!v) return null;
-  let m = v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/); if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
-  m = v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/); if (m) { const y = +m[3] < 100 ? 2000 + +m[3] : +m[3]; return new Date(y, +m[1] - 1, +m[2]); }
-  const d = new Date(v); return isNaN(d) ? null : d;
+function xAmt(v) {
+  let s = String(v == null ? '' : v).trim().toLowerCase();
+  if (!s || /%/.test(s) || /[a-z]{4,}/.test(s.replace(/usd|eur|gbp/g, ''))) return 0;
+  s = s.replace(/usd|eur|gbp|[$€£\s,()]/g, '');
+  let mult = 1;
+  if (/b$/.test(s)) { mult = 1e9; s = s.slice(0, -1); } else if (/m{1,2}$/.test(s)) { mult = 1e6; s = s.replace(/m+$/, ''); } else if (/k$/.test(s)) { mult = 1e3; s = s.slice(0, -1); }
+  if (!/^-?\d*\.?\d+$/.test(s)) return 0;
+  const n = parseFloat(s) * mult; return isFinite(n) && n > 0 ? n : 0;
 }
+const MON = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, sept: 8, oct: 9, nov: 10, dec: 11 };
+function xDate(v, serialOK) {
+  v = String(v == null ? '' : v).trim(); if (!v) return null;
+  let m = v.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})/); if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+  m = v.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{2,4})$/); if (m) { const y = +m[3] < 100 ? 2000 + +m[3] : +m[3]; return new Date(y, +m[1] - 1, +m[2]); }
+  m = v.match(/^(\d{1,2})[\s-]([a-z]{3,4})[a-z]*[\s,-]+(\d{2,4})$/i); if (m && MON[m[2].toLowerCase()] != null) { const y = +m[3] < 100 ? 2000 + +m[3] : +m[3]; return new Date(y, MON[m[2].toLowerCase()], +m[1]); }
+  m = v.match(/^([a-z]{3,4})[a-z]*\.?\s+(\d{1,2}),?\s+(\d{4})$/i); if (m && MON[m[1].toLowerCase()] != null) return new Date(+m[3], MON[m[1].toLowerCase()], +m[2]);
+  if (serialOK && /^\d{5}(\.\d+)?$/.test(v)) { const n = +v; if (n > 30000 && n < 80000) return new Date(1899, 11, 30 + Math.floor(n)); }
+  return null;
+}
+const STAGE_WORDS = /prospect|qualif|discover|proposal|negotiat|commit|closed|won|lost|demo|evaluat|contract|upside|best case|pipeline|solution|decision|verbal/i;
 const xDone = (st) => /closed|won|lost|dead|disqualif/i.test(st);
 const xWon = (st) => /won/i.test(st) && !/lost/i.test(st);
-function xLoad(text) {
-  const rows = csvRows(text), out = $('xout');
-  if (rows.length < 2) { out.innerHTML = '<p class="x-msg">That file has no rows to read.</p>'; return; }
-  const head = rows[0].map(h => h.trim().toLowerCase());
-  const find = (re, skip) => head.findIndex((h, n) => re.test(h) && !(skip && skip.test(h)));
-  const amount = find(/amount|value|acv|arr|tcv|total|revenue|\$/, /prob|weight|expected/), stage = find(/stage|status/), close = find(/close|date/, /created|modified|last/);
-  if (amount < 0 || stage < 0 || close < 0) {
-    out.innerHTML = `<p class="x-msg">I couldn't find ${[amount < 0 ? 'an amount' : '', stage < 0 ? 'a stage' : '', close < 0 ? 'a close date' : ''].filter(Boolean).join(', ')} column. Check the headings in the first row.</p>`; XROWS = null; return;
-  }
-  XCOLS = { amount: rows[0][amount], stage: rows[0][stage], close: rows[0][close] };
-  XROWS = rows.slice(1).map(r => ({ amt: parseMoney(r[amount]), stage: String(r[stage] || '').trim() || '(no stage)', date: xDate(r[close]) })).filter(r => r.amt > 0);
-  const stages = [...new Set(XROWS.map(r => r.stage))];
-  out.innerHTML = `<p class="x-msg">Read ${XROWS.length} deals using the ${esc(XCOLS.amount)}, ${esc(XCOLS.stage)} and ${esc(XCOLS.close)} columns. Which stages count as qualified?</p>
-    <div class="x-stages">${stages.map(st => { const n = XROWS.filter(r => r.stage === st); return `<label class="x-stage"><input type="checkbox" value="${esc(st)}" ${xDone(st) ? 'disabled' : 'checked'}> <span>${esc(st)}</span><small>${n.length} · ${money(n.reduce((a, r) => a + r.amt, 0))}${xDone(st) ? (xWon(st) ? ' · closed won' : ' · closed') : ''}</small></label>`; }).join('')}</div>
-    <p class="x-sum" id="xsum"></p>`;
-  out.querySelectorAll('.x-stage input').forEach(c => c.addEventListener('change', xApply));
-  xApply();
+const xLost = (st) => /lost|dead|disqualif/i.test(st);
+function xGuess(head, data) {
+  const H = head.map(h => String(h).trim().toLowerCase()), cols = head.map((_, j) => data.map(r => String(r[j] == null ? '' : r[j]).trim()).filter(Boolean));
+  const share = (j, f) => cols[j].length ? cols[j].filter(f).length / cols[j].length : 0;
+  const pick = (scores) => { let best = -1, bi = -1; scores.forEach((s, j) => { if (s > best) { best = s; bi = j; } }); return best > 0 ? bi : -1; };
+  const isAmtHead = (h) => /amount|value|acv|arr|tcv|revenue|deal size|price|total|\$|bookings/.test(h) && !/prob|weight|expected rev|%|percent|\bid\b|count|quantity|stage/.test(h);
+  const isDateHead = (h) => /close|closing|expected.*date|target date|due|end date|award/.test(h) && !/created|modified|last|start|activity/.test(h);
+  const amount = pick(H.map((h, j) => { const s = share(j, v => xAmt(v) > 0 && !xDate(v)); const big = cols[j].some(v => xAmt(v) >= 100); return (isAmtHead(h) && s >= .5 ? 2 : 0) + (big ? s : 0); }));
+  const close = pick(H.map((h, j) => { const s = share(j, v => !!xDate(v, isDateHead(h))); return (isDateHead(h) && s >= .5 ? 2 : 0) + s + (/date/.test(h) && !/created|modified/.test(h) ? .2 : 0); }));
+  const stage = pick(H.map((h, j) => { if (j === amount || j === close) return 0; const vals = cols[j], d = new Set(vals.map(v => v.toLowerCase())).size;
+    const texty = share(j, v => !xAmt(v) && !xDate(v)); const words = share(j, v => STAGE_WORDS.test(v));
+    return (/stage|status|phase/.test(h) ? 2 : 0) + (texty > .8 && d >= 2 && d <= Math.max(12, Math.ceil(vals.length * .7)) ? .5 : 0) + words; }));
+  const owner = H.findIndex((h, j) => j !== stage && /owner|\brep\b|seller|account exec|salesperson|assigned|sales rep|\bae\b/.test(h));
+  return { amount, stage, close, owner };
 }
-function xApply() {
-  if (!XROWS) return;
+function xLoad(text, name) {
+  text = String(text || '').replace(/^\uFEFF/, '');
+  const rows = csvRows(text, xDelim(text)), out = $('xout');
+  $('xname').textContent = name || 'File loaded';
+  if (!rows.length) { out.innerHTML = '<p class="x-msg">That file looks empty.</p>'; XRAW = null; return; }
+  const looksData = rows[0].filter(c => xAmt(c) > 0 || xDate(c)).length >= Math.max(1, Math.ceil(rows[0].length / 3));
+  XHEAD = looksData ? rows[0].map((_, j) => 'Column ' + (j + 1)) : rows[0].map((h, j) => String(h).trim() || 'Column ' + (j + 1));
+  XRAW = looksData ? rows : rows.slice(1);
+  XMAP = xGuess(XHEAD, XRAW);
+  if (!XCLEARED) {   // a file means real numbers: the example numbers in the other fields shouldn't mix with them
+    const HINT = { goal: 'Your target', win: 'Your win rate', reps: 'How many' };
+    ['goal', 'win', 'reps'].forEach(id => { const el = $(id); if (el.classList.contains('is-example')) { el.value = ''; el.classList.remove('is-example'); el.placeholder = HINT[id]; } });
+    XCLEARED = true;
+  }
+  xMapUI(); xApply(); track('pipeline_export');
+}
+function xMapUI() {
+  const opt = (sel, none) => (none ? `<option value="-1"${sel < 0 ? ' selected' : ''}>${none}</option>` : (sel < 0 ? '<option value="-1" selected>Choose a column</option>' : '')) + XHEAD.map((h, j) => `<option value="${j}"${j === sel ? ' selected' : ''}>${esc(h)}</option>`).join('');
+  $('xout').innerHTML = `<p class="x-msg">Read ${XRAW.length} rows. Check that these are the right columns:</p>
+    <div class="x-map">
+      <label><span>Amount</span><select data-x="amount">${opt(XMAP.amount)}</select></label>
+      <label><span>Stage</span><select data-x="stage">${opt(XMAP.stage)}</select></label>
+      <label><span>Close date</span><select data-x="close">${opt(XMAP.close)}</select></label>
+      <label><span>Seller <small>(optional)</small></span><select data-x="owner">${opt(XMAP.owner, 'None')}</select></label>
+    </div>
+    <div id="xstages"></div><div id="xwin"></div><p class="x-sum" id="xsum"></p>`;
+  $('xout').querySelectorAll('[data-x]').forEach(s => s.addEventListener('change', () => { XMAP[s.dataset.x] = +s.value; xApply(true); }));
+}
+function xApply(remap) {
+  if (!XRAW) return;
+  const box = $('xstages'), sum = $('xsum');
+  if (XMAP.amount < 0 || XMAP.stage < 0 || XMAP.close < 0) { box.innerHTML = '<p class="x-msg">Pick the amount, stage and close date columns above.</p>'; $('xwin').innerHTML = ''; sum.textContent = ''; XROWS = null; return; }
+  XROWS = XRAW.map(r => ({ amt: xAmt(r[XMAP.amount]), stage: String(r[XMAP.stage] || '').trim() || '(no stage)', date: xDate(r[XMAP.close], true), owner: XMAP.owner >= 0 ? String(r[XMAP.owner] || '').trim() : '' })).filter(r => r.amt > 0);
+  if (!XROWS.length) { box.innerHTML = '<p class="x-msg">No amounts in that column. Pick the column with the deal values.</p>'; sum.textContent = ''; return; }
+  const prev = new Set([...document.querySelectorAll('.x-stage input')].filter(c => !c.checked).map(c => c.value));
+  const stages = [...new Set(XROWS.map(r => r.stage))];
+  if (remap || !box.querySelector('.x-stage')) {
+    box.innerHTML = `<p class="x-msg">Which stages count as qualified?</p><div class="x-stages">${stages.map(st => { const n = XROWS.filter(r => r.stage === st); return `<label class="x-stage"><input type="checkbox" value="${esc(st)}" ${xDone(st) ? 'disabled' : prev.has(st) ? '' : 'checked'}> <span>${esc(st)}</span><small>${n.length} · ${money(n.reduce((a, r) => a + r.amt, 0))}${xDone(st) ? (xWon(st) ? ' · closed won' : ' · closed') : ''}</small></label>`; }).join('')}</div>`;
+    box.querySelectorAll('.x-stage input').forEach(c => c.addEventListener('change', () => xApply()));
+  }
   const cal = calendar(yearEnd), inYear = (d) => d && d >= cal.start && d <= cal.end;
   const on = new Set([...document.querySelectorAll('.x-stage input:checked')].map(c => c.value));
   const q = XROWS.filter(r => on.has(r.stage) && !xDone(r.stage));
-  const counted = q.filter(r => inYear(r.date)), later = q.filter(r => r.date && r.date > cal.end), undated = q.filter(r => !r.date);
+  const counted = q.filter(r => inYear(r.date)), later = q.filter(r => r.date && r.date > cal.end), early = q.filter(r => r.date && r.date < cal.start), undated = q.filter(r => !r.date);
   const other = XROWS.filter(r => !on.has(r.stage) && !xDone(r.stage));
   const won = XROWS.filter(r => xWon(r.stage) && inYear(r.date));
-  const sum = (a) => a.reduce((t, r) => t + r.amt, 0), pipe = sum(counted), wonAmt = sum(won);
-  const set = (id, v) => { const el = $(id); el.value = v ? fullMoney(v) : ''; el.classList.remove('is-example'); };
+  const s$ = (a) => a.reduce((t, r) => t + r.amt, 0), pipe = s$(counted), wonAmt = s$(won);
+  const set = (id, v, fmt) => { const el = $(id); el.value = v ? (fmt || fullMoney)(v) : ''; el.classList.remove('is-example'); };
   set('pipe', pipe); set('closed', wonAmt);
-  if (counted.length) { set('size', pipe / counted.length); set('big', Math.max(...counted.map(r => r.amt))); }
+  if (counted.length) { set('size', pipe / counted.length); set('big', Math.max(...counted.map(r => r.amt))); } else { set('size', 0); set('big', 0); }
+  const owners = XMAP.owner >= 0 ? new Set(XROWS.map(r => r.owner).filter(Boolean)) : null;
+  if (owners && owners.size) set('reps', owners.size, String);
+  // a win rate from closed deals, offered, never filled in silently, and only with enough deals behind it
+  const cw = XROWS.filter(r => xWon(r.stage)), cl = XROWS.filter(r => xLost(r.stage)), nClosed = cw.length + cl.length;
+  const wr = nClosed ? s$(cw) / (s$(cw) + s$(cl)) : 0;
+  $('xwin').innerHTML = nClosed >= 10 && wr > 0
+    ? `<p class="x-msg">Your ${nClosed} closed deals won ${Math.round(wr * 100)}% by value. <button type="button" class="linkbtn" id="xusewin">Use ${Math.round(wr * 100)}% as your win rate</button></p>`
+    : `<p class="x-msg">${nClosed ? `Your file has ${nClosed} closed deal${nClosed === 1 ? '' : 's'}, too few for a win rate you can trust.` : 'Your file has no closed deals to work out a win rate from.'} Use your own qualified win rate.</p>`;
+  const uw = $('xusewin'); if (uw) uw.onclick = () => { $('win').value = Math.round(wr * 100) + '%'; $('win').classList.remove('is-example'); onEdit(); };
   const endTxt = cal.end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  const parts = [`Counted ${counted.length} qualified deals closing by ${endTxt}: ${money(pipe)}.`];
-  if (later.length) parts.push(`Left out ${later.length} closing after that (${money(sum(later))}).`);
-  if (undated.length) parts.push(`Left out ${undated.length} with no close date (${money(sum(undated))}).`);
-  if (other.length) parts.push(`Not counted: ${other.length} in unchecked stages (${money(sum(other))}).`);
+  const parts = [`Counted ${counted.length} qualified deal${counted.length === 1 ? '' : 's'} closing by ${endTxt}: ${money(pipe)}.`];
+  if (later.length) parts.push(`Left out ${later.length} closing after that (${money(s$(later))}).`);
+  if (early.length) parts.push(`Left out ${early.length} with close dates already past (${money(s$(early))}).`);
+  if (undated.length) parts.push(`Left out ${undated.length} with no readable close date (${money(s$(undated))}).`);
+  if (other.length) parts.push(`Not counted: ${other.length} in unchecked stages (${money(s$(other))}).`);
   if (won.length) parts.push(`Closed won this year: ${money(wonAmt)}.`);
+  if (owners && owners.size) parts.push(`${owners.size} seller${owners.size === 1 ? '' : 's'} from the ${esc(XHEAD[XMAP.owner])} column.`);
   parts.push('Amounts only; CRM probabilities are never used.');
-  const s = $('xsum'); if (s) s.textContent = parts.join(' ');
+  sum.textContent = parts.join(' ');
   onEdit();
 }
-$('xfile').addEventListener('change', (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => xLoad(String(rd.result || '')); rd.readAsText(f); track('pipeline_export'); });
-document.querySelectorAll('[data-ye]').forEach(b => b.onclick = () => { yearEnd = b.dataset.ye; onEdit(); if (XROWS) xApply(); });
+$('xfile').addEventListener('change', (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => xLoad(rd.result, f.name); rd.readAsText(f); });
+document.querySelectorAll('[data-ye]').forEach(b => b.onclick = () => { yearEnd = b.dataset.ye; onEdit(); if (XRAW) xApply(); });
 $('justMe').onclick = () => { $('reps').value = '1'; $('reps').classList.remove('is-example'); onEdit(); };
 $('f').addEventListener('submit', (e) => e.preventDefault());
 if (readHash()) { shared = /(^|&)p=/.test(location.hash); touched = true; $('exnote').textContent = ''; if (shared) track('pipeline_verdict_shared'); } 
