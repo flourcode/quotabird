@@ -24,7 +24,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B1215">
-<link rel="stylesheet" href="/site.cb482b4a.css">
+<link rel="stylesheet" href="/site.c784106b.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="/analytics.a5a3ef9d.js" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Dataset", "name": "QuotaBird quota-to-OTE working ranges", "description": "Quota-to-OTE ranges for sales quotas measured on bookings, run rate (consumption growth) and whole book, with the evidence type, derivation and sources for each.", "url": "https://quotabird.com/methodology/", "creator": {"@type": "Person", "name": "Mark Flournoy", "url": "https://quotabird.com/about/"}, "dateModified": "2026-11-01", "isAccessibleForFree": true, "variableMeasured": ["Quota to OTE ratio", "Implied commission rate on quota"], "citation": ["https://blog.bridgegroupinc.com/2026-ae-compensation-quota-ai-metrics", "https://blog.bridgegroupinc.com/2024-ae-metrics-compensation-benchmark", "https://www.repvue.com/cloud-index/2025/Q4", "https://www.repvue.com/blog/sales-salary-guide", "https://www.repvue.com/companies/Amazonwebservices/salaries", "https://www.quotapath.com/blog/calculating-otes/", "https://www.mostlymetrics.com/p/your-complete-guide-to-annual-planning", "https://learn.microsoft.com/en-us/partner-center/referrals/partner-reported-azure-consumed-revenue"]}</script>
@@ -78,7 +78,7 @@
   <ul>
     <li><strong>Quota Check:</strong> quota ÷ (base + variable), judged against the range for what the quota is measured on. Implied rate = variable ÷ quota.</li>
     <li><strong>Quota Case:</strong> on a run-rate or whole-book number, the evidence is the current run rate plus new pipeline × win rate. On a bookings number, it is the stronger of last year's bookings (minus one-time deals, scaled by ramped headcount) and pipeline × win rate. The gap is the quota minus the evidence, and the new pipeline to close it is the gap ÷ win rate.</li>
-    <li><strong>Pipeline Check:</strong> coverage needed = 1 ÷ win rate. A 20% win rate needs 5× coverage; 3× assumes a win rate of about 33%.</li>
+    <li><strong>Pipeline Check:</strong> coverage needed = 1 ÷ win rate, on unweighted pipeline (full deal values). A 20% win rate needs 5× coverage; 3× assumes a win rate of about 33%. Weighted pipeline (each deal times its CRM stage probability) is compared straight to the remaining target, so 1.0× is enough; weighted ÷ unweighted is the win rate the CRM's weights assume, shown next to the real one. If the biggest deal slips, the same math runs without it.</li>
     <li><strong>Discount Check:</strong> commission lost = list price × discount × your rate. Margin after the discount = 1 minus cost ÷ discounted price, because cost doesn't fall with the price.</li>
     <li><strong>Pay Check:</strong> variable paid = variable × attainment up to where the accelerator starts, plus variable × each point past it × the accelerator rate, limited by any cap, and zero below any threshold. Total pay = base + variable paid.</li>
     <li><strong>Offer Check:</strong> a normal year = base + variable × the attainment you enter. Year one also counts the ramp: during ramp months you earn the guarantee if there is one, and otherwise half your normal attainment, an assumption the page states.</li>

@@ -94,7 +94,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="/site.cb482b4a.css">
+<link rel="stylesheet" href="/site.c784106b.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="/analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -121,7 +121,7 @@
         <p class="startnote fields-note"><span id="exnote">Example numbers. Type yours over them.</span></p>
         <label class="tf"><span class="tf-label">Target for the year</span>
           <input id="goal" type="text" inputmode="decimal" value="$10M"></label>
-        <label class="tf"><span class="tf-label">Qualified pipeline expected to close this year</span>
+        <label class="tf"><span class="tf-label">Qualified pipeline closing this year <small>(full deal values, not weighted)</small></span>
           <input id="pipe" type="text" inputmode="decimal" value="$32M"></label>
         <label class="tf"><span class="tf-label">Your qualified win rate</span>
           <input id="win" type="text" inputmode="decimal" value="20%"></label>
@@ -140,6 +140,8 @@
           <input id="closed" type="text" inputmode="decimal" placeholder="$0"></label>
         <label class="tf"><span class="tf-label">Biggest single deal <small>(optional)</small></span>
           <input id="big" type="text" inputmode="decimal" placeholder="$0"></label>
+        <label class="tf"><span class="tf-label">Weighted pipeline from your CRM <small>(optional)</small></span>
+          <input id="wtd" type="text" inputmode="decimal" placeholder="$0"></label>
         <div class="chips presets" style="margin:8px 0 14px;" aria-label="Year end">
           <button class="chip on" data-ye="cy" type="button">Year ends Dec 31</button>
           <button class="chip" data-ye="fy" type="button">Sep 30</button>
@@ -148,7 +150,7 @@
           <div class="x-body">
             <p class="x-note">Pick a CSV export from your CRM or a spreadsheet. It's read right here in your browser and never uploaded. You'll confirm which columns are the amount, stage and close date.</p>
             <div class="x-pick"><input id="xfile" type="file" accept=".csv,.tsv,.txt,text/csv,text/plain"><label class="btn btn-tonal" for="xfile">Choose a CSV file</label><span class="x-name" id="xname">No file yet</span></div>
-            <p class="x-note"><a href="/pipeline/sample-pipeline.csv" download>Download a sample CSV</a> to see a file that works.</p>
+            <p class="x-note"><a href="/pipeline/sample-pipeline.csv" download>Download a sample CSV</a> to see a file that works. If your company doesn't allow exports, type the totals above instead.</p>
             <div id="xout"></div>
           </div>
         </details>
@@ -172,6 +174,16 @@
       requirements, <strong>partners</strong> who own relationships and vehicles you don't, and
       <strong>executive plays</strong> that open doors a rep can't. You're probably leaning too hard on one of them and ignoring another.</p>
     <p><a href="/math/pipeline-coverage/">The full table, 10% to 50% win rates →</a></p>
+  </div>
+</section>
+
+<section class="band" id="weighted" aria-labelledby="weighted-h">
+  <div class="band-inner">
+    <h2 id="weighted-h">Weighted and unweighted pipeline</h2>
+    <p class="lede">Unweighted pipeline is the full value of your deals. Weighted pipeline multiplies each deal by its stage probability first.</p>
+    <p>A $1M deal counts as $1M unweighted. At a 60% stage it counts as $600K weighted. Both can be useful, but they answer different questions, and mixing them breaks the math.</p>
+    <p>This check uses unweighted pipeline and your real win rate: full values, divided by how much of them you actually win. Weighted pipeline is already discounted, so you compare it straight to what's left of the target, and 1.0X is enough. Holding weighted pipeline to 3X, or multiplying it by your win rate, counts the discount twice.</p>
+    <p>The catch is where the weights come from. Most CRMs assign stage probabilities by default, and nobody checks them against what actually closes. Put your CRM's weighted total in the optional field, and the check shows the win rate your weights assume next to the one you actually get. <a href="/notes/weighted-pipeline/">Weighted pipeline is only as good as the weights →</a></p>
   </div>
 </section>
 
@@ -215,7 +227,7 @@
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-05.1700';
+window.QB_BUILD = '2026-11-05.2000';
 const track = (n) => { if (typeof window.qbTrack === 'function') window.qbTrack(n); else (window.qbTrackQ = window.qbTrackQ || []).push(n); };
 const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const $ = (id) => document.getElementById(id);
@@ -283,7 +295,7 @@ function calendar(yearEnd) {
 let yearEnd = 'cy';
 function read() {
   return { goal: parseMoney($('goal').value), pipe: parseMoney($('pipe').value), win: parseRate($('win').value),
-           size: parseMoney($('size').value), reps: parseCount($('reps').value), closed: parseMoney($('closed').value), big: parseMoney($('big').value), yearEnd };
+           size: parseMoney($('size').value), reps: parseCount($('reps').value), closed: parseMoney($('closed').value), big: parseMoney($('big').value), wtd: parseMoney($('wtd').value), yearEnd };
 }
 function compute(i) {
   if (i.goal <= 0 || i.pipe <= 0) return null;
@@ -319,7 +331,7 @@ function compute(i) {
     'At risk': "Half the pipeline you need isn't there. Where does it come from?",
     'Short': `Don't forecast this yet. You don't have enough pipeline to close your way out of it.`,
   };
-  return Object.assign({}, i, { cal, closed, base, cov, req3, gap3, covNeed, need, gap, ratio, deals, perRep, pace, threeOK, flip, slip, label: tier[0], cls: tier[1], sub: SUB[tier[0]] });
+  return Object.assign({}, i, { cal, closed, base, cov, req3, gap3, covNeed, need, gap, ratio, deals, perRep, pace, threeOK, flip, slip, wt: (i.wtd > 0 ? (() => { const implied = i.wtd / i.pipe; return { amt: i.wtd, implied, bad: i.wtd > i.pipe, cov: i.wtd / base, expect: i.win > 0 ? i.pipe * i.win : 0 }; })() : null), label: tier[0], cls: tier[1], sub: SUB[tier[0]] });
 }
 
 /* ── the coverage bar: pipeline, the 3X line and your line on one scale ── */
@@ -343,7 +355,7 @@ function bar(s) {
 function encodeInputs() {
   const p = new URLSearchParams(), i = read();
   if (i.goal) p.set('t', Math.round(i.goal)); if (i.pipe) p.set('p', Math.round(i.pipe)); if (i.win) p.set('w', Math.round(i.win * 100));
-  if (i.size) p.set('s', Math.round(i.size)); if (i.reps) p.set('n', i.reps); if (i.closed) p.set('c', Math.round(i.closed)); if (i.big) p.set('b', Math.round(i.big)); p.set('y', yearEnd);
+  if (i.size) p.set('s', Math.round(i.size)); if (i.reps) p.set('n', i.reps); if (i.closed) p.set('c', Math.round(i.closed)); if (i.big) p.set('b', Math.round(i.big)); if (i.wtd) p.set('v', Math.round(i.wtd)); p.set('y', yearEnd);
   return p.toString();
 }
 function readHash() {
@@ -353,7 +365,7 @@ function readHash() {
   const set = (id, v, fmt) => { $(id).value = v ? fmt(v) : ''; };
   set('goal', parseMoney(p.get('t')), fullMoney); set('pipe', parseMoney(p.get('p')), fullMoney);
   set('win', parseRate(p.get('w')), pct); set('size', parseMoney(p.get('s')), fullMoney);
-  set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), fullMoney); set('big', parseMoney(p.get('b')), fullMoney);
+  set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), fullMoney); set('big', parseMoney(p.get('b')), fullMoney); set('wtd', parseMoney(p.get('v')), fullMoney);
   yearEnd = p.get('y') === 'fy' ? 'fy' : 'cy';
   // Quota Check sends only a target: start from the 3X ballpark it quoted, so the page opens on a verdict
   if (p.has('t') && !p.has('p')) { const t = parseMoney(p.get('t')); if (t > 0) {
@@ -429,6 +441,11 @@ function render() {
       ${s.perRep ? `<div class="list-item"><span class="headline">${s.reps === 1 ? 'For you' : 'Per seller'}</span><span class="trailing strong">${money(s.perRep)}${s.deals && s.reps > 1 ? ' · ' + Math.ceil(s.deals / s.reps) + ' deals' : ''}</span></div>` : ''}
     </div>
     <p class="clock">${esc(clock + paceLine)}</p>
+    ${s.wt ? `<p class="wline">${esc(s.wt.bad
+        ? "Your weighted number is bigger than your full pipeline. Weighted pipeline is the full value times each deal's probability, so it should be smaller. Check the two numbers."
+        : `Your CRM's weights say you'll close ${money(s.wt.amt)}, ${X(s.wt.cov)} of what's left (1.0X needed when it's weighted). ` + (s.win > 0
+          ? `Your ${pct(s.win)} win rate says about ${money(s.wt.expect)}. Your weights assume a ${pct(s.wt.implied)} win rate.` + (s.wt.implied - s.win > .10 ? " That's optimistic. Plan on the win rate you actually get." : s.win - s.wt.implied > .10 ? ' Your weights are more cautious than your track record.' : ' They roughly match your track record.')
+          : `Your weights assume a ${pct(s.wt.implied)} win rate. Add your real win rate to compare.`))}</p>` : ''}
     ${s.win > .10 ? `<div class="breakit"><span>Before you defend it, try to break it.</span><button class="btn btn-tonal" id="stress" type="button">Try 5 points lower</button></div>` : ''}
 <div class="card mark-card" style="margin-top:20px;">
       <h3>Stuck on where it comes from?</h3>
@@ -489,8 +506,8 @@ const onEdit = () => {
   if (shared || fromQuota) { shared = false; fromQuota = false; try { history.replaceState(null, '', location.pathname); } catch {} }
   render();
 };
-['goal','pipe','win','size','reps','closed','big'].forEach(id => $(id).addEventListener('input', onEdit));
-['goal','pipe','size','closed','big'].forEach(id => { const el = $(id); el.addEventListener('input', () => liveMoney(el)); const v0 = parseMoney(el.value); if (v0) el.value = fullMoney(v0); });
+['goal','pipe','win','size','reps','closed','big','wtd'].forEach(id => $(id).addEventListener('input', onEdit));
+['goal','pipe','size','closed','big','wtd'].forEach(id => { const el = $(id); el.addEventListener('input', () => liveMoney(el)); const v0 = parseMoney(el.value); if (v0) el.value = fullMoney(v0); });
 // Tidy money fields when you leave them: "10m" becomes "$10M".
 ['goal','pipe','size','closed'].forEach(id => $(id).addEventListener('blur', () => { const v = parseMoney($(id).value); if (v) $(id).value = fullMoney(v); }));
 $('win').addEventListener('blur', () => { const v = parseRate($('win').value); if (v) $('win').value = pct(v); });
@@ -529,6 +546,7 @@ function xAmt(v) {
   if (!/^-?\d*\.?\d+$/.test(s)) return 0;
   const n = parseFloat(s) * mult; return isFinite(n) && n > 0 ? n : 0;
 }
+function xProb(v) { let s = String(v == null ? '' : v).trim(); if (!s) return null; const pctg = /%/.test(s); let n = parseFloat(s.replace(/[^0-9.]/g, '')); if (!isFinite(n)) return null; if (pctg || n > 1) n = n / 100; return n >= 0 && n <= 1 ? n : null; }
 const MON = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, sept: 8, oct: 9, nov: 10, dec: 11 };
 function xDate(v, serialOK) {
   v = String(v == null ? '' : v).trim(); if (!v) return null;
@@ -541,6 +559,7 @@ function xDate(v, serialOK) {
 }
 const STAGE_WORDS = /prospect|qualif|discover|proposal|negotiat|commit|closed|won|lost|demo|evaluat|contract|upside|best case|pipeline|solution|decision|verbal/i;
 const xDone = (st) => /closed|won|lost|dead|disqualif/i.test(st);
+const xEarly = (st) => /prospect|lead|discover|qualif|suspect|new\b|identif/i.test(st);   // not qualified pipeline yet: unchecked to start, one tap to include
 const xWon = (st) => /won/i.test(st) && !/lost/i.test(st);
 const xLost = (st) => /lost|dead|disqualif/i.test(st);
 function xGuess(head, data) {
@@ -555,7 +574,8 @@ function xGuess(head, data) {
     const texty = share(j, v => !xAmt(v) && !xDate(v)); const words = share(j, v => STAGE_WORDS.test(v));
     return (/stage|status|phase/.test(h) ? 2 : 0) + (texty > .8 && d >= 2 && d <= Math.max(12, Math.ceil(vals.length * .7)) ? .5 : 0) + words; }));
   const owner = H.findIndex((h, j) => j !== stage && /owner|\brep\b|seller|account exec|salesperson|assigned|sales rep|\bae\b/.test(h));
-  return { amount, stage, close, owner };
+  const prob = H.findIndex(h => /prob|likelihood|confidence|win %|chance/.test(h));
+  return { amount, stage, close, owner, prob };
 }
 function xLoad(text, name) {
   text = String(text || '').replace(/^\uFEFF/, '');
@@ -571,7 +591,7 @@ function xLoad(text, name) {
     ['goal', 'win', 'reps'].forEach(id => { const el = $(id); if (el.classList.contains('is-example')) { el.value = ''; el.classList.remove('is-example'); el.placeholder = HINT[id]; } });
     XCLEARED = true;
   }
-  xMapUI(); xApply(); track('pipeline_export');
+  xMapUI(); xApply('first'); track('pipeline_export');
 }
 function xMapUI() {
   const opt = (sel, none) => (none ? `<option value="-1"${sel < 0 ? ' selected' : ''}>${none}</option>` : (sel < 0 ? '<option value="-1" selected>Choose a column</option>' : '')) + XHEAD.map((h, j) => `<option value="${j}"${j === sel ? ' selected' : ''}>${esc(h)}</option>`).join('');
@@ -589,12 +609,12 @@ function xApply(remap) {
   if (!XRAW) return;
   const box = $('xstages'), sum = $('xsum');
   if (XMAP.amount < 0 || XMAP.stage < 0 || XMAP.close < 0) { box.innerHTML = '<p class="x-msg">Pick the amount, stage and close date columns above.</p>'; $('xwin').innerHTML = ''; sum.textContent = ''; XROWS = null; return; }
-  XROWS = XRAW.map(r => ({ amt: xAmt(r[XMAP.amount]), stage: String(r[XMAP.stage] || '').trim() || '(no stage)', date: xDate(r[XMAP.close], true), owner: XMAP.owner >= 0 ? String(r[XMAP.owner] || '').trim() : '' })).filter(r => r.amt > 0);
+  XROWS = XRAW.map(r => ({ amt: xAmt(r[XMAP.amount]), stage: String(r[XMAP.stage] || '').trim() || '(no stage)', date: xDate(r[XMAP.close], true), owner: XMAP.owner >= 0 ? String(r[XMAP.owner] || '').trim() : '', prob: XMAP.prob >= 0 ? xProb(r[XMAP.prob]) : null })).filter(r => r.amt > 0);
   if (!XROWS.length) { box.innerHTML = '<p class="x-msg">No amounts in that column. Pick the column with the deal values.</p>'; sum.textContent = ''; return; }
   const prev = new Set([...document.querySelectorAll('.x-stage input')].filter(c => !c.checked).map(c => c.value));
   const stages = [...new Set(XROWS.map(r => r.stage))];
   if (remap || !box.querySelector('.x-stage')) {
-    box.innerHTML = `<p class="x-msg">Which stages count as qualified?</p><div class="x-stages">${stages.map(st => { const n = XROWS.filter(r => r.stage === st); return `<label class="x-stage"><input type="checkbox" value="${esc(st)}" ${xDone(st) ? 'disabled' : prev.has(st) ? '' : 'checked'}> <span>${esc(st)}</span><small>${n.length} · ${money(n.reduce((a, r) => a + r.amt, 0))}${xDone(st) ? (xWon(st) ? ' · closed won' : ' · closed') : ''}</small></label>`; }).join('')}</div>`;
+    box.innerHTML = `<p class="x-msg">Which stages count as qualified?</p><div class="x-stages">${stages.map(st => { const n = XROWS.filter(r => r.stage === st); return `<label class="x-stage"><input type="checkbox" value="${esc(st)}" ${xDone(st) ? 'disabled' : (remap === 'first' ? (xEarly(st) ? '' : 'checked') : (prev.has(st) ? '' : 'checked'))}> <span>${esc(st)}</span><small>${n.length} · ${money(n.reduce((a, r) => a + r.amt, 0))}${xDone(st) ? (xWon(st) ? ' · closed won' : ' · closed') : ''}</small></label>`; }).join('')}</div>`;
     box.querySelectorAll('.x-stage input').forEach(c => c.addEventListener('change', () => xApply()));
   }
   const cal = calendar(yearEnd), inYear = (d) => d && d >= cal.start && d <= cal.end;
@@ -609,6 +629,8 @@ function xApply(remap) {
   if (counted.length) { set('size', pipe / counted.length); set('big', Math.max(...counted.map(r => r.amt))); } else { set('size', 0); set('big', 0); }
   const owners = XMAP.owner >= 0 ? new Set(XROWS.map(r => r.owner).filter(Boolean)) : null;
   if (owners && owners.size) set('reps', owners.size, String);
+  const wp = counted.filter(r => r.prob != null);   // CRM probabilities fill the weighted comparison only, never the coverage math
+  if (XMAP.prob >= 0 && wp.length === counted.length && counted.length) set('wtd', wp.reduce((t, r) => t + r.amt * r.prob, 0)); else set('wtd', 0);
   // a win rate from closed deals, offered, never filled in silently, and only with enough deals behind it
   const cw = XROWS.filter(r => xWon(r.stage)), cl = XROWS.filter(r => xLost(r.stage)), nClosed = cw.length + cl.length;
   const wr = nClosed ? s$(cw) / (s$(cw) + s$(cl)) : 0;
@@ -624,7 +646,7 @@ function xApply(remap) {
   if (other.length) parts.push(`Not counted: ${other.length} in unchecked stages (${money(s$(other))}).`);
   if (won.length) parts.push(`Closed won this year: ${money(wonAmt)}.`);
   if (owners && owners.size) parts.push(`${owners.size} seller${owners.size === 1 ? '' : 's'} from the ${esc(XHEAD[XMAP.owner])} column.`);
-  parts.push('Amounts only; CRM probabilities are never used.');
+  parts.push(XMAP.prob >= 0 ? `Coverage uses full amounts. The ${esc(XHEAD[XMAP.prob])} column fills only the weighted comparison.` : 'Coverage uses full amounts; CRM probabilities are never used for it.');
   sum.textContent = parts.join(' ');
   onEdit();
 }

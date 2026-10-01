@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-05.1700'
+BUILD = '2026-11-05.2000'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -1088,6 +1088,23 @@ NOTES = [
     <h3>What to ask</h3>
     <p>"Is there anything in the plan, or in a separate policy, that can reduce the payout on a large deal? Has it been used in the last two years?" Get the answer in writing. <a href="/comp-plan/">Comp Plan Check</a> covers the rest of what to look for.</p>''',
          tool=('/comp-plan/', 'Comp Plan Check', 'finds the red flags in a comp plan: crediting, payout timing, upside, clawbacks and mid-year changes.')),
+ dict(slug='weighted-pipeline', title='Weighted pipeline is only as good as the weights',
+         dek="Your CRM's stage probabilities are numbers somebody typed in once. Check them against what you actually win.",
+         body='''    <p class="lede">Weighted pipeline takes every open deal, multiplies it by its stage probability, and adds them up. It's supposed to tell you what you'll actually close. It's only as good as the probabilities.</p>
+    <h3>Where the weights come from</h3>
+    <p>In most CRMs, somebody set the stage probabilities once, usually when the system was set up: maybe 50% at Proposal and 80% at Negotiation. Then nobody checked them against what actually closed. They're defaults, not data.</p>
+    <h3>What that looks like</h3>
+    <p>Take a pipeline with four qualified deals worth $3.08M. The CRM's weights add up to $2.19M, which works out to a 71% average. The same team's closed deals won 39% by value. At that rate, the realistic expectation is about $1.2M.</p>
+    <p>The weighted number is almost double what the team's own history supports, and it makes a short pipeline look nearly fine.</p>
+    <h3>How to use each one</h3>
+    <ul>
+      <li><strong>Unweighted pipeline goes with your real win rate.</strong> Coverage needed is one divided by the win rate: a 25% win rate needs 4X.</li>
+      <li><strong>Weighted pipeline is already discounted.</strong> Compare it straight to what's left of the target, and 1.0X is enough.</li>
+      <li><strong>Never hold weighted pipeline to 3X, and never multiply it by your win rate.</strong> Both count the discount twice.</li>
+    </ul>
+    <h3>Check your weights</h3>
+    <p>Divide your weighted pipeline by your unweighted pipeline. That's the win rate your CRM assumes. Put it next to the one you actually get. If the CRM's number is ten points higher, your forecast is leaning on optimism somebody typed in years ago.</p>''',
+         tool=('/pipeline/', 'Pipeline Check', 'compares your CRM\'s weighted pipeline with what your real win rate says.')),
  dict(slug='push-back-as-a-rep', title="You're the rep and the number is crazy",
          dek="You don't set the number. You can still make a case, if you bring the right one.",
          body='''    <p class="lede">A rep has less leverage on quota than a manager does. That's just true. But the reps who bring a
@@ -3168,7 +3185,7 @@ _method = note_head("How QuotaBird's Numbers Work", "Where every range and bench
   <ul>
     <li><strong>Quota Check:</strong> quota ÷ (base + variable), judged against the range for what the quota is measured on. Implied rate = variable ÷ quota.</li>
     <li><strong>Quota Case:</strong> on a run-rate or whole-book number, the evidence is the current run rate plus new pipeline × win rate. On a bookings number, it is the stronger of last year's bookings (minus one-time deals, scaled by ramped headcount) and pipeline × win rate. The gap is the quota minus the evidence, and the new pipeline to close it is the gap ÷ win rate.</li>
-    <li><strong>Pipeline Check:</strong> coverage needed = 1 ÷ win rate. A 20% win rate needs 5× coverage; 3× assumes a win rate of about 33%.</li>
+    <li><strong>Pipeline Check:</strong> coverage needed = 1 ÷ win rate, on unweighted pipeline (full deal values). A 20% win rate needs 5× coverage; 3× assumes a win rate of about 33%. Weighted pipeline (each deal times its CRM stage probability) is compared straight to the remaining target, so 1.0× is enough; weighted ÷ unweighted is the win rate the CRM's weights assume, shown next to the real one. If the biggest deal slips, the same math runs without it.</li>
     <li><strong>Discount Check:</strong> commission lost = list price × discount × your rate. Margin after the discount = 1 minus cost ÷ discounted price, because cost doesn't fall with the price.</li>
     <li><strong>Pay Check:</strong> variable paid = variable × attainment up to where the accelerator starts, plus variable × each point past it × the accelerator rate, limited by any cap, and zero below any threshold. Total pay = base + variable paid.</li>
     <li><strong>Offer Check:</strong> a normal year = base + variable × the attainment you enter. Year one also counts the ramp: during ramp months you earn the guarantee if there is one, and otherwise half your normal attainment, an assumption the page states.</li>
