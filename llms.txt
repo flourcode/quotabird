@@ -1,6 +1,6 @@
 # QuotaBird
 
-> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. 18 one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.
+> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. 19 one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.
 
 The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor's own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Privacy: https://quotabird.com/privacy/
 
@@ -31,6 +31,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 - [Deal Check](https://quotabird.com/deal/): Five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal. (before you put it in commit.)
 - [Account Check](https://quotabird.com/account/): Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. (when you only know one person there.)
 - [Commit Check](https://quotabird.com/commit/): For cloud and consumption sellers: will the customer use their committed spend? See the pace, the monthly spend it takes from here, and the shortfall or overage. (when a commit might not burn.)
+- [Federal Readiness Check](https://quotabird.com/federal-readiness/): Five skeptical questions on whether a company has a real federal business: customer, money, buying path, partners and team. (before you bet on federal.)
 - [Competition Check](https://quotabird.com/competition/): Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. (when you're not sure you're ahead.)
 
 ## Any meeting
@@ -41,6 +42,11 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 - [How QuotaBird's numbers work](https://quotabird.com/methodology/): where every range and benchmark on QuotaBird comes from, labelled as published data, a common rule of thumb, or a QuotaBird working range. Quota-to-OTE working ranges: bookings 4 to 6x (built on Bridge Group 2026 median 4.6x, 158 B2B companies), run rate or consumption growth 15 to 30x, whole book 40 to 80x (QuotaBird working ranges, derived from quota / OTE = variable share / commission rate). Includes each tool's formula and a last-reviewed date.
 - [Quota by the numbers](https://quotabird.com/quota-by-the-numbers/): sourced quota and compensation benchmarks: attainment, median quota and OTE, pay mix, ramp, over-assignment, accelerators.
+
+## Working with Mark
+
+- [Work with Mark](https://quotabird.com/work-with-mark/): paid help on one sales problem (Sales Reality Check, $200), Manager Wingman (from $750 a month) and Team Reality Check (from $1,500). The tools stay free.
+- [Federal GTM](https://quotabird.com/federal/): for companies deciding whether federal is real for them: Federal GTM Pressure Test ($600), Federal GTM Sprint (from $2,500) and Federal Revenue Reality Check for investors (from $3,500).
 
 ## Ask Mark
 

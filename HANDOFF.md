@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-05.2200** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-06.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -86,6 +86,18 @@ Every result hands off to the most useful next thing for that verdict, usually a
 - Commit Check: behind → Account Check (burning a commit takes more than one team); on pace or over → Quota Case.
 
 **Considered and deliberately not built (Nov 1):** marketplace fee and co-sell quota-retirement calculators, multi-year crediting and side-by-side deal comparisons. The rules differ by company and change often, so a generic tool would be wrong for many users. Worth building later as their own projects: a manager team roll-up ("team health"), and churn / NRR ("how much new just to stand still"). Danger-zone colours and shareable scenario links already exist.
+
+## Work with Mark and Federal GTM (Nov 6)
+
+QuotaBird is not becoming a consulting-company site. The free tools stay the center and stay ungated; consulting is the paid version of the same idea. One Mark, one front door (FedHoo is a federal data/tools property, cross-linked from /federal/, never a second consulting brand).
+- **/work-with-mark/**: "Bring me the ugly one." Sales Reality Check ($200: one problem, 60-minute working session plus a short written recap), Manager Wingman (from $750 a month: two working sessions a month), Team Reality Check (from $1,500: a virtual session or offsite working session), a Federal teaser, the free 20 minutes, and a short proof paragraph.
+- **/federal/**: "You think you have a federal business. Let's find out." Federal GTM Pressure Test ($600: 90 minutes plus written observations), Federal GTM Sprint (from $2,500: a pressure test and working plan, not a 75-slide deck), Federal Revenue Reality Check (from $3,500, for investors and acquirers, positioned quietly; no implied prior M&A work), free resources, the free 20 minutes.
+- **Starting a paid engagement:** each offer's button is a pre-addressed email to mark@quotabird.com with the offer as the subject. Swap in paid booking links later if Mark wants.
+- **Federal Readiness Check** (/federal-readiness/): Customer, Money, Path, Partners, Team (weights 24/24/20/14/18, any-no cap 74). Answers: "Yes. There's a business here." / "Maybe. Prove the weak part." / "Not yet. It's mostly hope." / "No. Not yet." Left out of the Tools menu (MENU_SKIP); reached from /federal/ and the home list.
+- **Quiet next steps** (`offer` in a tool config; one line at the bottom of the Mark card, after the useful result; never a banner, modal or gate): Quota Case with a gap, Sales Reality Check; Deal Check when not healthy, Sales Reality Check; Pipeline Check with more than one seller, Team Reality Check; Rep, Talent Review and Risk, Manager Wingman; Federal Readiness, Federal GTM Pressure Test. No line on other tools.
+- **Proof** is only what Mark can substantiate: 20 years as a Marine officer (COTR, government technology and acquisition work), about 15 years in enterprise technology sales at Red Hat, F5 and Amazon, Federal Partner Sales at Amazon across four markets with about 25 managers and a shared goal above $1B, a $54M four-year committed cloud agreement with a major DoD systems integrator, President's Circle at F5. Add testimonials or anonymized examples only when Mark provides them.
+- **Not built, on purpose:** a newsletter platform, email capture, a training catalog, a page per offer. A LinkedIn follow is enough for now.
+- Voice on these pages is the site's voice: plain, dry, skeptical, never guru. Banned there too: transformation, unlock, optimize, excellence, world-class, fractional CRO.
 
 ## After the Sales plugin review (Nov 5)
 

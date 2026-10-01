@@ -117,7 +117,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.c784106b.css">
+<link rel="stylesheet" href="../site.c5730988.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -217,7 +217,7 @@
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
       <p>I spent six years leading federal partner sales teams at Amazon, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
-      <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
+      <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/work-with-mark/">Work with Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
 </section>
@@ -244,7 +244,7 @@
 </section>
 
 <footer class="sitefoot">
-  <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/ask/">Ask Mark</a><a href="/privacy/">Privacy</a></p>
+  <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a><a href="/ask/">Ask Mark</a><a href="/privacy/">Privacy</a></p>
   <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
@@ -666,7 +666,8 @@ function mountMark(text) {
     <p>I'm Mark. I've been the seller defending the deal, and later the manager poking holes in it. Tell me about yours.</p>
     <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="${bookLink('result', bookNote(s))}" target="_blank" rel="noopener" style="margin-top:14px;">Grab 20 minutes</a>
     <button class="btn btn-lg btn-full" id="dmBtn" type="button" style="margin-top:8px;">DM me on LinkedIn</button>
-    <p class="fine" style="text-align:center;margin:8px 0 0;">It\'s free, and if I can\'t help, I\'ll say so. The DM button copies a short note you can paste.</p>`;
+    <p class="fine" style="text-align:center;margin:8px 0 0;">It\'s free, and if I can\'t help, I\'ll say so. The DM button copies a short note you can paste.</p>
+    ${s.total < 75 ? '<p class="offer-line">Still want to put this in commit? <a href="/work-with-mark/#sales-reality-check">Bring me the ugly one: Sales Reality Check →</a></p>' : ''}`;
   const row = document.getElementById('shareRow');
   if (row) el().insertBefore(w, row); else el().appendChild(w);
   const bk = document.getElementById('bookBtn'); if (bk) bk.addEventListener('click', () => track('book'));

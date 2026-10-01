@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-05.2200'
+BUILD = '2026-11-06.0900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -21,6 +21,7 @@ TOOLS = [
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
     ('Your deal', '/commit/', 'Commit Check', 'When a commit might not burn'),
+    ('Your deal', '/federal-readiness/', 'Federal Readiness Check', 'Before you bet on federal'),
     ('Your deal', '/competition/', 'Competition Check', 'When you\'re not sure you\'re ahead'),
     ('Any meeting', '/brief/', 'Brief Check', 'When someone in the room can say no'),
 ]
@@ -28,7 +29,7 @@ TOOLS = [
 def menu(current):
     # Four groups in a two-by-two grid: Your number over Your pay on the left, Your deal over Your team on the right.
     # Brief Check is left out of the menu on purpose (Mark's call, Nov 3); it stays on the home page and at /brief/.
-    MENU_SKIP = {'/brief/'}
+    MENU_SKIP = {'/brief/', '/federal-readiness/'}   # Federal Readiness lives on /federal/ and the home list
     groups, last = {}, []
     for g, h, n, d in TOOLS:
         if h in MENU_SKIP: continue
@@ -237,6 +238,7 @@ REP = dict(
   handoff: (s) => s.label === 'The situation'
     ? { overline: 'It\\'s the territory', text: 'Send them Territory Check. Do the math before you turn it into a people argument.', href: '/territory/', label: 'Check your territory' }
     : { overline: 'Before you decide anything', text: "Sit with them and run their five biggest deals through Deal Check, and listen to how they answer. Ninety minutes of that beats a month of dashboards.", href: '/deal/', label: 'Check your deal' },
+  offer: () => ({ text: "Sometimes the spreadsheet isn't the hard part.", href: '/work-with-mark/#manager-wingman', label: 'Manager Wingman' }),
   mark: { title: (s) => 'Not sure it\\'s ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I once spent six months coaching a rep before I figured out it was the territory. Tell me what's going on with yours." },
   dm: (s) => `Mark, ran a rep through Rep Check. Verdict: ${s.label.toLowerCase()}. Weakest answer was ${s.weak.n.toLowerCase()}. Not sure I've got the right problem. Worth 20 minutes?`,
 });''',
@@ -493,6 +495,7 @@ OLR = dict(
   handoff: (s) => s.total >= 75
     ? { overline: 'The assessment is ready. Is the year set up?', text: "Next year's assessment starts now. Is the rep in a territory that can produce one? Rep Check asks that first.", href: '/rep/', label: 'Check your rep' }
     : { overline: 'The fastest receipt', text: 'A deal you watched them run. Sit in their next customer meeting and go through it with Deal Check afterward.', href: '/deal/', label: 'Check your deal' },
+  offer: () => ({ text: "Sometimes the spreadsheet isn't the hard part.", href: '/work-with-mark/#manager-wingman', label: 'Manager Wingman' }),
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've written glowing reviews that got taken apart in the room, and usually the problem was how I'd made the case. Tell me about yours." },
   dm: (s) => `Mark, ran a rep's talent review assessment through Talent Review Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. OLR is coming and I'm not sure it holds. Worth 20 minutes?`,
   dmGrill: (s, missed) => `Mark, ran a rep's talent review assessment through Talent Review Check and couldn't answer ${missed} of the room's 3 ${s.weak.n.toLowerCase()} questions. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
@@ -753,6 +756,7 @@ RISK = dict(
   },
   noMove: 'Keep the shape. Now check the size: run the coverage math with your real win rate.',
   handoff: (s) => ({ overline: 'Shape checked. Now the size.', text: 'This checked the shape of your pipeline. Pipeline Check looks at whether there\\'s enough of it.', href: '/pipeline/', label: 'Check your pipeline' }),
+  offer: () => ({ text: "Sometimes the spreadsheet isn't the hard part.", href: '/work-with-mark/#manager-wingman', label: 'Manager Wingman' }),
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I once forecast a year on two deals and watched both slip the same week. Send me the shape of the pipeline, no customer names or dollars." },
   dm: (s) => `Mark, ran my pipeline through Risk Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Coverage looks fine and I don't trust it. Worth 20 minutes?`,
 });''',
@@ -902,7 +906,72 @@ COMPPLAN = dict(
 });''',
 )
 
-for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN):
+FEDREADY = dict(
+    slug='federal-readiness', name='Federal Readiness Check',
+    title='Federal Readiness Check: Is There a Federal Business Here?',
+    desc='Five skeptical questions on whether a company has a real federal business: customer, money, buying path, partners and team.',
+    ogdesc='You think you have a federal business. Five questions to find out.',
+    h1='Is there a federal business here?',
+    dek='Five skeptical questions for founders, sales leaders and anyone betting on federal.',
+    cta='Check your federal plan',
+    questions=[
+        dict(k='customer', n='CUSTOMER', q='Is there an actual federal customer asking for this?'),
+        dict(k='money', n='MONEY', q='Do you know where the funding would come from?'),
+        dict(k='path', n='PATH', q='Do you know how they can legally buy it?'),
+        dict(k='partners', n='PARTNERS', q='Do you know whether you need a prime, reseller, marketplace or other partner?'),
+        dict(k='team', n='TEAM', q='Do you have somebody who understands how to navigate all of the above?'),
+    ],
+    bands=[
+        ('how', 'What this checks', '''    <p class="lede">A federal customer liking your product isn't the same as a federal business.</p>
+    <p>A business needs a customer who has actually asked for the thing, money that can pay for it, a legal way to buy it, the right partner if the customer can't buy from you directly, and somebody on your side who knows how all of that works. Miss one and the deal waits, usually until next fiscal year.</p>
+    <p>These five questions are skeptical on purpose. Answer them the way a federal buyer would, not the way the pitch deck does. More on how federal technology actually gets bought, and what a believable first year looks like, is on the <a href="/federal/">Federal GTM</a> page.</p>'''),
+    ],
+    faq=[
+        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
+        ('Is this legal or contracting advice?', 'No. It points to the questions a federal buyer will ask. For contracts, compliance and authorization questions, talk to people who do that work for a living.'),
+    ],
+    config='''CheckTool({
+  slug: 'federal-readiness', answers: {"Real": "Yes. There's a business here.", "Maybe": "Maybe. Prove the weak part.", "Mostly hope": "Not yet. It's mostly hope.", "Not yet": "No. Not yet."}, name: 'Federal Readiness Check', url: 'https://quotabird.com/federal-readiness/',
+  questions: [
+    { k: 'customer', n: 'CUSTOMER', q: 'Is there an actual federal customer asking for this?' },
+    { k: 'money',    n: 'MONEY',    q: 'Do you know where the funding would come from?' },
+    { k: 'path',     n: 'PATH',     q: 'Do you know how they can legally buy it?' },
+    { k: 'partners', n: 'PARTNERS', q: 'Do you know whether you need a prime, reseller, marketplace or other partner?' },
+    { k: 'team',     n: 'TEAM',     q: 'Do you have somebody who understands how to navigate all of the above?' },
+  ],
+  weights: { customer: 24, money: 24, path: 20, team: 18, partners: 14 },
+  verdict(a, total) {
+    if (total >= 75) return { label: 'Real', cls: 'ready', attack: 'A customer, money, a way to buy and people who know the way. That is the start of a federal business.', sub: "Now pressure-test the timing. Federal deals take longer than anyone's plan says." };
+    if (total >= 55) return { label: 'Maybe', cls: 'proof', attack: 'Most of it is there. One piece is still a guess.', sub: 'Fix the weakest answer before you hire anybody or tell the board it is a business.' };
+    if (total >= 35) return { label: 'Mostly hope', cls: 'prove', attack: "You have interest. You don't have a business yet.", sub: 'Hope is not evidence. Start with the customer and the money.' };
+    return { label: 'Not yet', cls: 'dont', attack: 'Nothing here would survive a hard question from a federal buyer.', sub: "That's fine for a first look. It isn't fine for a plan." };
+  },
+  askedBy: 'Your board will ask',
+  grill: {
+    customer: 'Who in the government has asked for this, by name and office?',
+    money: 'What budget pays for it, and when is that money available?',
+    path: 'How can they legally buy it from you today?',
+    partners: 'Do you need a prime, a reseller or a marketplace, and which one?',
+    team: 'Who on your team has sold this way before?',
+  },
+  moves: {
+    customer: 'Name one federal customer who has asked for this, and write down what they asked for in their words.',
+    money: 'Find out which budget the money would come from, and when that money is available.',
+    path: "Write down how they would buy it: a contract vehicle they can use, a marketplace, a partner's contract, or something else.",
+    partners: 'Decide whether you need a prime, a reseller or a marketplace, and talk to one this month.',
+    team: 'Get somebody involved who has sold to the federal government before, even part time.',
+  },
+  noMove: 'Put dates on the next three steps with the customer. Then run Deal Check on the first real opportunity.',
+  handoff: (s) => s.total >= 55
+    ? { overline: 'Next: the first real deal', text: 'Deal Check pressure-tests one federal opportunity: customer, money, power, path and now.', href: '/deal/', label: 'Check the deal' }
+    : { overline: 'Before you build the plan', text: 'How federal technology actually gets bought, and what a believable first year looks like.', href: '/federal/', label: 'Federal GTM' },
+  offer: () => ({ text: "Trying to figure out whether there's actually a federal business here?", href: '/federal/#pressure-test', label: 'Federal GTM Pressure Test' }),
+  mark: { title: () => 'Not sure it adds up?', body: "I'm Mark. I spent 20 years on the government side and the last stretch of my career selling into it. Tell me what you're seeing. No company name needed." },
+  dm: (s) => `Mark, ran Federal Readiness Check. ${s.label}, weakest is ${s.weak.n.toLowerCase()}. Worth 20 minutes?`,
+});''',
+)
+
+for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY):
     os.makedirs(t['slug'], exist_ok=True)
     html = page(t)
     assert '—' not in html and '–' not in html, t['slug']
@@ -1473,6 +1542,7 @@ CALCS = [
   handoff: (s) => s.gap > 0
     ? { overline: 'Before you take it upstairs', text: 'How to walk in with this, and what to do when they push back.', href: '/notes/prove-the-quota-is-crazy/', label: 'Read the playbook' }
     : { overline: 'Okay. How do we hit it?', text: `Pipeline Check works backward from ${s.quotam} to the pipeline and deals it takes.`, href: `/pipeline/#t=${Math.round(s.quota)}&y=cy`, label: 'Check your pipeline' },
+  offer: (s) => s.cls !== 'ready' ? { text: 'Going to challenge the number? Bring the math.', href: '/work-with-mark/#sales-reality-check', label: 'Get another set of eyes: Sales Reality Check' } : null,
   mark: { title: () => 'Want a second look at the gap?', body: "I'm Mark. I've taken a gap like this to my boss and had the number move, and I've had it not move. Either way it was a better conversation than 'this feels high.' Send me the numbers, no company name." },
   dm: (s) => `Mark, ran our quota through Quota Case. The new number is ${s.quotam}, the evidence supports about ${s.bestm}, so a ${s.gap > 0 ? s.gapm : '$0'} gap. Not sure how to take it upstairs. Worth 20 minutes?`,
   bookNote: (s) => `Quota Case: quota ${s.quotam}, evidence supports ${s.bestm}, gap ${s.gap > 0 ? s.gapm : 'none'}.`,
@@ -3191,7 +3261,7 @@ _method = note_head("How QuotaBird's Numbers Work", "Where every range and bench
     <li><strong>Offer Check:</strong> a normal year = base + variable × the attainment you enter. Year one also counts the ramp: during ramp months you earn the guarantee if there is one, and otherwise half your normal attainment, an assumption the page states.</li>
     <li><strong>Commission Check:</strong> your credit = deal × your share of the credit × any product multiplier. Commission = credit × your rate, minus the withholding percentage you enter. A planning estimate, not tax advice.</li>
     <li><strong>Commit Check:</strong> projected spend = spent so far + current monthly spend × months left. The monthly spend needed = (commit minus spent so far) ÷ months left.</li>
-    <li><strong>The question checks</strong> (Deal, Rep, Territory, Account, Competition, Risk, Partner, Talent Review, Brief and Comp Plan) weight five yes, sort of or no answers into a score. They are structured judgment, not statistics.</li>
+    <li><strong>The question checks</strong> (Deal, Rep, Territory, Account, Competition, Risk, Partner, Talent Review, Brief, Comp Plan and Federal Readiness) weight five yes, sort of or no answers into a score. They are structured judgment, not statistics.</li>
   </ul>
 
   <h2>What QuotaBird doesn't model</h2>
@@ -3265,6 +3335,111 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
 assert '—' not in _privacy and '–' not in _privacy
 os.makedirs('privacy', exist_ok=True)
 open('privacy/index.html', 'w').write(_privacy)
+
+
+# ────────────────────────────── WORK WITH MARK and FEDERAL ───────────────────────────
+# One Mark, one front door. The tools stay free and ungated; this is the paid version of the same idea.
+CAL = 'https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium='
+def _mail(subject): return 'mailto:mark@quotabird.com?subject=' + subject.replace(' ', '%20')
+def offer_card(oid, name, price, body, gets, cta, subject, note=''):
+    li = ''.join(f'<li>{g}</li>' for g in gets)
+    return f'''  <section class="offer" id="{oid}">
+    <h2>{name}</h2>
+    <p class="price">{price}</p>
+    <p>{body}</p>
+    <ul>{li}</ul>
+    {f'<p class="fine">{note}</p>' if note else ''}
+    <p class="offer-cta"><a class="btn btn-tonal" href="{_mail(subject)}">{cta}</a></p>
+  </section>
+'''
+def ask_block(src):
+    return f'''  <section class="offer offer-ask" id="ask">
+    <h2>Not sure you need any of this?</h2>
+    <p>Grab 20 minutes. Tell me what you're wrestling with and I'll tell you what I think. If I don't think you need my help, I'll tell you that too.</p>
+    <p class="offer-cta"><a class="btn btn-primary" href="{CAL}{src}&utm_content=page" target="_blank" rel="noopener">Grab 20 minutes</a></p>
+  </section>
+'''
+PROOF = '''  <h2>Who you'd be talking to</h2>
+  <p>Twenty years as a Marine officer, including government technology and acquisition work as a COTR. Then about fifteen years selling and leading enterprise technology sales at Red Hat, F5 and Amazon. At Amazon I led Federal Partner Sales across Defense, Federal Civilian, Federal Financial and National Security: about 25 partner sales managers carrying a shared goal above $1B. Along the way I closed a $54M four-year committed cloud agreement with a major DoD systems integrator, and made President's Circle at F5.</p>
+  <p>Seller, manager, government guy, partner guy. And I built these tools, which is probably the best evidence of how I think about these problems.</p>
+'''
+_work = note_head('Work with Mark', "Bring me the ugly one. A $200 working session on one sales problem, Manager Wingman from $750 a month, and team sessions from $1,500. The tools stay free.", 'https://quotabird.com/work-with-mark/') + '''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note work">
+  <span class="overline">Work with Mark</span>
+  <h1>Bring me the ugly one.</h1>
+  <p class="dek">The tools are free, and they stay free. Sometimes the problem is messier than a tool, and you want an experienced second set of eyes on it. That's what this is.</p>
+  <p>I don't have a methodology to sell you, and this isn't coaching. You bring the actual problem, and I tell you what I see, what I'd challenge and what I'd do next. If the answer is that you're fine, you'll hear that too.</p>
+
+''' + offer_card('sales-reality-check', 'Sales Reality Check', '$200',
+    "One problem, worked properly. A quota, a comp plan, a territory, a deal, a pipeline, a QBR, a job offer, or something like it.",
+    ['A 60-minute working session on your actual numbers and documents.', "A short written recap: what I think, what I'd challenge, and what I'd do next."],
+    'Email Mark about this', 'Sales Reality Check', "Priced so you can buy it yourself, without turning it into a purchasing decision.") + offer_card('manager-wingman', 'Manager Wingman', 'Starting at $750 a month',
+    "For frontline and second-line sales leaders who want somebody outside the company to pressure-test what they're seeing. It's less like executive coaching and more like having a former sales leader around when something smells funny.",
+    ['Two working sessions a month.', 'Forecast and pipeline pressure tests, difficult rep situations, territory and quota questions.', 'QBR prep, leadership and organization questions, and the occasional look at a document or spreadsheet before an important meeting.'],
+    'Email Mark about this', 'Manager Wingman') + offer_card('team-reality-check', 'Team Reality Check', 'Starting at $1,500',
+    "For a sales leader who wants the same thinking applied across the team: a pipeline reality check, a quota or territory review, a forecast inspection, deal pressure tests, or a manager workshop. Virtual, or as a working session at your offsite.",
+    ["One focused session built around your team's real numbers.", "What I'd look at next, written down so it doesn't evaporate after the meeting."],
+    'Email Mark about this', 'Team Reality Check', "Priced to fit a team or offsite budget without a procurement adventure.") + '''  <section class="offer offer-fed">
+    <h2>Federal</h2>
+    <p class="lede">You think you have a federal business. Let's find out.</p>
+    <p>For founders, CROs and sales leaders deciding whether federal is real for them, and for investors who need an honest read on a federal business somebody else says is real.</p>
+    <p class="offer-cta"><a class="btn btn-tonal" href="/federal/">Federal GTM</a></p>
+  </section>
+''' + ask_block('work') + PROOF + '''</article>
+
+''' + NOTE_TAIL
+_fed = note_head('Federal GTM', "You think you have a federal business. Let's find out. A $600 Federal GTM Pressure Test, a short Federal GTM Sprint, and an outside read on federal revenue for investors.", 'https://quotabird.com/federal/') + '''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note work">
+  <span class="overline">Federal GTM</span>
+  <h1>You think you have a federal business. Let's find out.</h1>
+  <p class="dek">For companies deciding whether federal is real for them, and for people who need an honest read on a federal business somebody else says is real.</p>
+  <p>A federal customer liking your product isn't the same as a federal customer with money, a legal way to buy it, and a reason to do it this year. Most federal plans I've seen were built on the first part and assumed the rest. Hope is not evidence.</p>
+  <p>I spent 20 years as a Marine officer, some of it on the government side of technology buying, and later led Federal Partner Sales at Amazon across Defense, Federal Civilian, Federal Financial and National Security. I've watched this get bought from both sides of the table.</p>
+
+  <h2>Who this is for</h2>
+  <ul>
+    <li>Startups thinking about federal, and commercial technology companies moving into the public sector</li>
+    <li>SaaS companies getting pulled into federal by a customer</li>
+    <li>Companies trying to figure out partners, primes and integrators</li>
+    <li>Sales leaders inheriting a federal business, or making their first federal sales hire</li>
+    <li>Investors and acquirers who need to know whether a federal pipeline is real</li>
+  </ul>
+
+''' + offer_card('pressure-test', 'Federal GTM Pressure Test', '$600',
+    "A working session for a founder, CRO or sales leader. We go through actual customer demand, funding, the buying path, partners, product readiness, sales coverage, your current pipeline and timing, and what should happen over the next 6 to 12 months.",
+    ['A 90-minute working session.', 'Written observations and priorities afterward.'],
+    'Email Mark about this', 'Federal GTM Pressure Test', 'An easy first step, not a consulting proposal.') + offer_card('sprint', 'Federal GTM Sprint', 'Starting at $2,500',
+    "For a company that needs more than a conversation. A short, finite engagement that ends with a pressure test and a working plan: which customers and accounts to start with, how they can buy, the likely contract vehicles, a partner and prime strategy, what the federal fiscal year means for your timing, a pipeline reality check, the profile of your first federal hire, first-year priorities, and the risks and assumptions underneath all of it.",
+    ['A working plan you can run, with the assumptions written down.', 'A pressure test of the plan before you spend money on it.'],
+    'Email Mark about this', 'Federal GTM Sprint', 'A working plan, not a 75-slide strategy deck.') + offer_card('revenue-reality-check', 'Federal Revenue Reality Check', 'Starting at $3,500',
+    "For investors, acquirers or executives who need an experienced outside read on a federal business. Is the pipeline real, and how old are the opportunities? Who's the incumbent? How much depends on one partner or one contract vehicle? What has actually been won, where is it concentrated, and who walks out the door with the relationships? What's coming up for recompete, and how much of the claimed traction is funded work?",
+    ['A scoped review of the pipeline, history and dependencies you can share.', 'A plain written read on what holds up and what doesn\'t.'],
+    'Talk to Mark about it', 'Federal Revenue Reality Check') + '''
+  <h2>Some free places to start</h2>
+  <ul>
+    <li><a href="/federal-readiness/">Federal Readiness Check</a>: five skeptical questions on whether there's a federal business here.</li>
+    <li><a href="/deal/">Deal Check</a>: pressure-test one federal opportunity on customer, money, power, path and now.</li>
+    <li><a href="/seller/#s-sep30">Working back from September 30</a>: the federal year-end chapter of the Seller's Field Kit.</li>
+    <li><a href="https://fedhoo.com" rel="noopener">FedHoo</a>: federal market data tools I built.</li>
+  </ul>
+
+''' + ask_block('federal') + '''</article>
+
+''' + NOTE_TAIL
+for _name, _html in (('work-with-mark', _work), ('federal', _fed)):
+    assert '—' not in _html and '–' not in _html, _name
+    os.makedirs(_name, exist_ok=True)
+    open(f'{_name}/index.html', 'w').write(_html)
 
 
 
@@ -3389,7 +3564,7 @@ def header(path):
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/')) else '/' + path.split('/')[0] + '/')}
+      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/', 'work-with-mark/', 'federal/')) else '/' + path.split('/')[0] + '/')}
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
@@ -3403,7 +3578,7 @@ def chrome(path):
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
     ask = '/ask/'
-    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a><a href="/privacy/">Privacy</a></p>'
+    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a><a href="{ask}">Ask Mark</a><a href="/privacy/">Privacy</a></p>'
     s = re.sub(r'\s*<p class="foot-nav">.*?</p>', '', s, count=1, flags=re.S)          # the footer nav is regenerated every build, so every page matches
     s = s.replace('<footer class="sitefoot">', '<footer class="sitefoot">\n  ' + nav, 1)
     # one contact line in every footer, for questions and security issues
@@ -3419,8 +3594,8 @@ def chrome(path):
         elif path in SELLERCARD_PAGES and 'kit-band' not in mark: mark = SELLERCARD_SRC + mark
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
-PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN)] \
-        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html'] + ['404.html']
+PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY)] \
+        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html', 'work-with-mark/index.html', 'federal/index.html'] + ['404.html']
 for _p in PAGES:
     chrome(_p)
 print('chrome', len(PAGES))
@@ -3453,9 +3628,10 @@ for _p in PAGES:
 # ai-catalog.json follows the ARD ai-catalog schema 1.0 (ards-project/ard-spec); each tool is a text/html entry.
 DESC = {'/pipeline/': 'Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need.',
         '/deal/': 'Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.'}
-for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
+for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
 for c in CALCS: DESC['/' + c['slug'] + '/'] = c['name'] + ': ' + c['desc']
-QUERIES = {'/offer/': ['compare two sales job offers', 'which sales offer pays more', 'OTE vs realistic earnings calculator', 'sales job offer ramp guarantee', 'year one sales compensation with ramp'],
+QUERIES = {'/federal-readiness/': ['is my company ready to sell to the federal government', 'federal go-to-market readiness', 'do I need a prime contractor', 'how do federal agencies buy software', 'federal sales readiness checklist'],
+           '/offer/': ['compare two sales job offers', 'which sales offer pays more', 'OTE vs realistic earnings calculator', 'sales job offer ramp guarantee', 'year one sales compensation with ramp'],
            '/pay/': ['how much will my sales comp plan pay at 150% of quota', 'sales accelerator calculator', 'does my commission cap limit my upside', 'what does OTE really pay', 'comp plan payout curve'],
            '/comp-plan/': ['comp plan red flags', 'is my sales commission plan fair', 'questions to ask about a sales comp plan', 'commission clawback rules', 'who gets credit on a split deal'],
            '/commit/': ['will my customer burn their cloud commit', 'committed spend vs actual consumption', 'EDP commit burn down calculator', 'customer is behind on their committed spend', 'how much monthly spend to use a cloud commitment'],
@@ -3486,6 +3662,7 @@ for g, items in groups:
         desc = DESC[h].split(': ', 1)[1]; lines.append(f'- [{n}]({site}{h}): {desc[0].upper() + desc[1:]} ({d[0].lower() + d[1:]}.)')
     lines.append('')
 lines += ['## Methodology and benchmarks', '', f"- [How QuotaBird's numbers work]({site}/methodology/): where every range and benchmark on QuotaBird comes from, labelled as published data, a common rule of thumb, or a QuotaBird working range. Quota-to-OTE working ranges: bookings 4 to 6x (built on Bridge Group 2026 median 4.6x, 158 B2B companies), run rate or consumption growth 15 to 30x, whole book 40 to 80x (QuotaBird working ranges, derived from quota / OTE = variable share / commission rate). Includes each tool's formula and a last-reviewed date.", f"- [Quota by the numbers]({site}/quota-by-the-numbers/): sourced quota and compensation benchmarks: attainment, median quota and OTE, pay mix, ramp, over-assignment, accelerators.", '']
+lines += ['## Working with Mark', '', '- [Work with Mark](https://quotabird.com/work-with-mark/): paid help on one sales problem (Sales Reality Check, $200), Manager Wingman (from $750 a month) and Team Reality Check (from $1,500). The tools stay free.', '- [Federal GTM](https://quotabird.com/federal/): for companies deciding whether federal is real for them: Federal GTM Pressure Test ($600), Federal GTM Sprint (from $2,500) and Federal Revenue Reality Check for investors (from $3,500).', '']
 lines += ['## Ask Mark', '', f'- [Ask Mark]({site}/ask/): a free twenty-minute call to start; Manager Wingman (monthly calls for sales managers) and team sessions (pipeline or deal reviews, account planning, manager workshops) if it needs more.', '', '## Stuff I Like', '', f'- [Stuff I Like]({site}/stuff/): ten books and ten podcasts Mark has gotten something from, each with one line on why. No affiliate links.', '']
 lines += ['## Free printable', '', f"- [The Manager's Field Kit]({site}/kit/): a free, printable field kit for sales managers: how your team's number got built, fighting the plan without losing, handing down a tough quota and still crushing it, inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, managing high performers, and nine worksheets.", f"- [The Seller's Field Kit]({site}/seller/): a free, printable field kit for sellers: where your quota came from, checking it and pushing back, crushing a tough number anyway, is it a real deal, pipeline math, one deal carrying the quarter, single-threaded accounts, discounts, quiet deals, falling behind, and keeping your manager informed.", f"- [The Leadership Field Kit]({site}/leader/): a free, printable field kit for managers who want their influence to travel beyond their team: shaping the number before it shapes your team, what to be known for, a point of view, receipts, templates others can borrow, the right rooms, and developing the people behind you.", '', '## Sales Math Library', ''] + [f'- [{p["title"]}]({site}/math/{p["slug"]}/): {p["answer"]}' for p in MATH] + ['', '## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
 open('llms.txt', 'w').write('\n'.join(lines))

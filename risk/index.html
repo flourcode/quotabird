@@ -86,7 +86,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.c784106b.css">
+<link rel="stylesheet" href="../site.c5730988.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -162,7 +162,7 @@
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
       <p>I spent six years leading federal partner sales teams at Amazon, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
-      <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/about/">About Mark</a></p>
+      <p class="madeby-links"><a class="btn btn-primary" href="/ask/">Ask Mark</a><a href="/work-with-mark/">Work with Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
 </section>
@@ -180,15 +180,15 @@
 </section>
 
 <footer class="sitefoot">
-  <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/ask/">Ask Mark</a><a href="/privacy/">Privacy</a></p>
+  <p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a><a href="/ask/">Ask Mark</a><a href="/privacy/">Privacy</a></p>
   <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
   <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../check.f6df73a1.js"></script>
+<script src="../check.aa593bd7.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-05.2200';
+window.QB_BUILD = '2026-11-06.0900';
 CheckTool({
   slug: 'risk', answers: {"Sturdy": "No. It's spread out.", "Lopsided": "Almost. It's lopsided.", "Fragile": "Yes. It's fragile.", "Won't hold": "Yes. It won't hold."}, name: 'Risk Check', url: 'https://quotabird.com/risk/',
   questions: [
@@ -222,6 +222,7 @@ CheckTool({
   },
   noMove: 'Keep the shape. Now check the size: run the coverage math with your real win rate.',
   handoff: (s) => ({ overline: 'Shape checked. Now the size.', text: 'This checked the shape of your pipeline. Pipeline Check looks at whether there\'s enough of it.', href: '/pipeline/', label: 'Check your pipeline' }),
+  offer: () => ({ text: "Sometimes the spreadsheet isn't the hard part.", href: '/work-with-mark/#manager-wingman', label: 'Manager Wingman' }),
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I once forecast a year on two deals and watched both slip the same week. Send me the shape of the pipeline, no customer names or dollars." },
   dm: (s) => `Mark, ran my pipeline through Risk Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Coverage looks fine and I don't trust it. Worth 20 minutes?`,
 });
