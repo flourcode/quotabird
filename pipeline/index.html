@@ -128,7 +128,7 @@
         <div class="chips presets" style="margin:8px 0 14px;" aria-label="Win rate presets">
           <button class="chip" data-win="20" type="button">20%</button>
           <button class="chip" data-win="25" type="button">25%</button>
-          <button class="chip" data-win="33" type="button">A third (3X)</button>
+          <button class="chip" data-win="33" type="button">33%</button>
         </div>
         <div class="tf-grid">
           <label class="tf"><span class="tf-label">Average deal size</span>
@@ -143,7 +143,6 @@
         <div class="chips presets" style="margin:8px 0 14px;" aria-label="Year end">
           <button class="chip on" data-ye="cy" type="button">Year ends Dec 31</button>
           <button class="chip" data-ye="fy" type="button">Sep 30</button>
-          <button class="chip" id="justMe" type="button">Just me</button>
         </div>
         <details class="more-fields export" id="xpanel"><summary>Use a pipeline export <span>CSV, read in your browser</span></summary>
           <div class="x-body">
@@ -216,7 +215,7 @@
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-05.1500';
+window.QB_BUILD = '2026-11-05.1700';
 const track = (n) => { if (typeof window.qbTrack === 'function') window.qbTrack(n); else (window.qbTrackQ = window.qbTrackQ || []).push(n); };
 const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const $ = (id) => document.getElementById(id);
@@ -405,7 +404,6 @@ function render() {
   const out = $('out');
   document.querySelectorAll('[data-win]').forEach(b => b.classList.toggle('on', s && s.win && Math.round(s.win * 100) === +b.dataset.win));
   document.querySelectorAll('[data-ye]').forEach(b => b.classList.toggle('on', b.dataset.ye === yearEnd));
-  $('justMe').classList.toggle('on', parseCount($('reps').value) === 1);
   if (!s) { out.innerHTML = `<div class="empty">${XRAW ? 'Now put in your target for the year.' : 'Put in your target and the pipeline you expect to close against it.'}</div>`; $('goal').classList.toggle('needs', !!XRAW && !parseMoney($('goal').value)); $('out2').innerHTML = ''; sumbar(null); return; }
   if (s.done) { out.innerHTML = `<div class="verdict verdict-ready"><div class="verdict-word">Made it</div><div class="verdict-attack">You've closed ${money(s.closed)} against ${money(s.goal)}. Go protect next year.</div></div>`; $('out2').innerHTML = ''; sumbar(null); return; }
   $('goal').classList.remove('needs');
@@ -632,7 +630,6 @@ function xApply(remap) {
 }
 $('xfile').addEventListener('change', (e) => { const f = e.target.files && e.target.files[0]; if (!f) return; const rd = new FileReader(); rd.onload = () => xLoad(rd.result, f.name); rd.readAsText(f); });
 document.querySelectorAll('[data-ye]').forEach(b => b.onclick = () => { yearEnd = b.dataset.ye; onEdit(); if (XRAW) xApply(); });
-$('justMe').onclick = () => { $('reps').value = '1'; $('reps').classList.remove('is-example'); onEdit(); };
 $('f').addEventListener('submit', (e) => e.preventDefault());
 if (readHash()) { shared = /(^|&)p=/.test(location.hash); touched = true; $('exnote').textContent = ''; if (shared) track('pipeline_verdict_shared'); } 
 // Example values look like defaults (quiet grey) until the user types in that field; after the Quota Check hand-off the

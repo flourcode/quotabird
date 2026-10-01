@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-05.1500** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-05.1700** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -197,7 +197,7 @@ Built from the 2026 palettes Mark supplied (@346eur): flat, confident colour on 
 
 **Components (standard, modern):**
 - Buttons: 14px corners, 54px tall for the main action. Secondary actions are grey, or an underlined text link on the booking card.
-- Segmented control (iOS style): grey track, black selected segment, no check. Used for *Bookings / Run rate / Whole book* (the label is "Run rate", not "Cloud growth"). Pipeline Check's preset rows (win rate, year end) use it too, sized to their text.
+- Segmented control (iOS style): grey track, black selected segment, no check. Used for *Bookings / Run rate / Whole book* (the label is "Run rate", not "Cloud growth"). Pipeline Check's preset rows (win rate, year end) use it too, sized to their text. Win-rate presets are 20% / 25% / 33% (33% is the 3X assumption, which the result line explains); the year-end row is only Dec 31 / Sep 30 (the old "Just me" button was removed Nov 5: it duplicated typing 1 in Sellers and looked like a third year-end option).
 - Inputs are grouped rows: label left, number right, in one grey panel with hairline dividers. Number fields keep at least 128px; long labels wrap. Where preset buttons interrupt a list, each panel keeps rounded corners.
 - Cards: grey, 16px corners. The checks are plain cards: the question in bold, the tool name and an arrow underneath. Pressing a card turns it blue.
 - Links: underlined only inside sentences. Buttons and whole-card links are never underlined.
