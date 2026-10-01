@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-06.2000** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-06.2330** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -87,6 +87,14 @@ Every result hands off to the most useful next thing for that verdict, usually a
 
 **Considered and deliberately not built (Nov 1):** marketplace fee and co-sell quota-retirement calculators, multi-year crediting and side-by-side deal comparisons. The rules differ by company and change often, so a generic tool would be wrong for many users. Worth building later as their own projects: a manager team roll-up ("team health"), and churn / NRR ("how much new just to stand still"). Danger-zone colours and shareable scenario links already exist.
 
+## Math audit (Nov 6)
+
+Every calculator was checked against formulas written independently from the methodology page and this handoff: 230 browser cases across Quota Check, Quota Case, Pipeline, Discount, Commission, Pay, Offer and Commit (random values, edge cases, and values just either side of each verdict cutoff). All match. All ten question tools' weights sum to 100 and match their five questions; cutoffs are 75 / 55 / 35; one "no" never reaches the top verdict; Deal Check's caps (Customer 45, Money 55, Power 60, any no 74) behave as documented.
+Two bugs found and fixed:
+- **Shared links mixed in example numbers.** A field the sender left blank was missing from the link, and the receiving calculator filled it with the example (a blank accelerator became 150%, a blank monthly spend became $70K, a blank commission rate became 8%). A shared link now describes the whole form: anything it leaves out arrives blank. The home calculator always passes all three numbers it shows.
+- **Commit Check showed "$3.00M" and "$2.50M"** because its trailing-zero cleanup was mis-escaped; it now uses the same formatter as Discount Check ("$3M", "$2.5M").
+The audit scripts (reference formulas, browser runner, comparison) are in math-audit.zip. Rerun them after any change to a formula, a cutoff, or how links are read.
+
 ## Work with Mark and Federal GTM (Nov 6)
 
 QuotaBird is not becoming a consulting-company site. The free tools stay the center and stay ungated; consulting is the paid version of the same idea. One Mark, one front door (FedHoo is a federal data/tools property, cross-linked from /federal/, never a second consulting brand).
@@ -125,6 +133,7 @@ QuotaBird is not becoming a consulting-company site. The free tools stay the cen
 ## Website design skill v2.1 pass (Nov 3)
 
 - **Home page, one route to each tool.** The two jobs are lists of rows, side by side: "The number they gave you." (the guide, Quota Case, Territory, Pipeline, Discount, and "The number isn't changing" note) and "What they'll pay you for it." (Pay, Commission, Comp Plan, Offer). Below the Shorts, "Also useful." holds Your deal, Your team, and Print and learn. Brief Check is off the home page and the menu; its page and the plugin skill stay. The home block uses class `jobs` (not `pillars`, which is the uppercase label strip on tool pages).
+- **The home calculator shares the remembered numbers too (fixed Nov 6):** it reads `qb-numbers` on load, shows the same "remembered in this browser only. Clear them" note, saves what's typed there, and passes the shown values to Quota Check, so the home page and Quota Check always show the same multiple. Before this, a visitor who had used another tool saw 21× on the home page and 24× after "See the whole plan".
 - **Numbers carry between tools.** Base, variable and quota are remembered in the visitor's browser (localStorage key `qb-numbers`) and prefill Quota Check, Quota Case, Pay Check and Offer Check (Offer A). The page says so and offers "Clear them". Nothing is sent anywhere. Fields map through `share` in a tool's config.
 - **Optional fields fold away** under "More details" (`more=True` on a field; `head='…'` adds a small section heading). The panel opens itself when a shared link or remembered number fills one of its fields.
 - **Shape scale:** small 12px (buttons, fields, answers), medium 16px (cards, panels), large 24px (the verdict card), full (pills and chips).

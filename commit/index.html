@@ -173,17 +173,17 @@
   <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../calc.b9b48f78.js"></script>
+<script src="../calc.90387e77.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-06.2000';
+window.QB_BUILD = '2026-11-06.2330';
 CalcTool({
   slug: 'commit', answers: {"Overage": "Yes, and then some.", "On pace": "Yes. They're on pace.", "Behind": "Not at this pace.", "Short": "No. They'll fall short.", "Way short": "No. Not even close."}, name: 'Commit Check', url: 'https://quotabird.com/commit/',
   fields: [{ id: 'commit', kind: 'money' }, { id: 'term', kind: 'count' }, { id: 'elapsed', kind: 'count' }, { id: 'used', kind: 'money' }, { id: 'monthly', kind: 'money' }],
   compute(v) {
     if (!(v.commit > 0 && v.term > 0 && v.elapsed > 0 && v.elapsed < v.term && v.used >= 0)) return null;
     const pct = (r) => Math.round(r * 100) + '%';
-    const money = (n) => { const neg = n < 0; n = Math.abs(n); const t = n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n); return (neg ? '-' : '') + t; };
+    const money = (n) => { const neg = n < 0; n = Math.abs(n); const t = n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n); return (neg ? '-' : '') + t; };
     const left = v.term - v.elapsed;
     const pace = v.monthly > 0 ? v.monthly : v.used / v.elapsed;
     const projected = v.used + pace * left, ratio = projected / v.commit;

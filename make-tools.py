@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-06.2000'
+BUILD = '2026-11-06.2330'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -1572,7 +1572,7 @@ CALCS = [
   compute(v) {
     if (!(v.commit > 0 && v.term > 0 && v.elapsed > 0 && v.elapsed < v.term && v.used >= 0)) return null;
     const pct = (r) => Math.round(r * 100) + '%';
-    const money = (n) => { const neg = n < 0; n = Math.abs(n); const t = n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n); return (neg ? '-' : '') + t; };
+    const money = (n) => { const neg = n < 0; n = Math.abs(n); const t = n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n); return (neg ? '-' : '') + t; };
     const left = v.term - v.elapsed;
     const pace = v.monthly > 0 ? v.monthly : v.used / v.elapsed;
     const projected = v.used + pace * left, ratio = projected / v.commit;

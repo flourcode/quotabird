@@ -270,18 +270,25 @@
         else t = ["Yes. It's crazy.", 'dont', 'The plan is asking for something the territory may not have.'];
         $('hcNum').textContent = X; $('hcLabel').textContent = t[0]; $('hcLine').textContent = t[2]; $('hcOut').className = 'hc-out ' + t[1];
         var p = new URLSearchParams(); p.set('basis', basis);
-        [['quota', 'hcQuota'], ['base', 'hcBase'], ['variable', 'hcVar']].forEach(function (f) { if (touched[f[1]] && money($(f[1]).value) > 0) p.set(f[0], Math.round(money($(f[1]).value))); });
+        [['quota', 'hcQuota'], ['base', 'hcBase'], ['variable', 'hcVar']].forEach(function (f) { if (money($(f[1]).value) > 0) p.set(f[0], Math.round(money($(f[1]).value))); });   // all three, exactly as shown
         $('hcGo').href = '/quota/' + (Object.keys(touched).length || basis !== 'cloud' ? '#' + p.toString() : '');
       }
       ['hcQuota', 'hcBase', 'hcVar'].forEach(function (id) {
         var el = $(id);
         el.addEventListener('focus', function () { setTimeout(function () { el.select(); }, 0); });
-        el.addEventListener('input', function () { el.classList.remove('is-example'); touched[id] = 1; $('hcNote').textContent = ''; if (!tracked) { tracked = true; if (window.qbTrack) qbTrack('hero_calc_edit'); } render(); });
+        el.addEventListener('input', function () { el.classList.remove('is-example'); touched[id] = 1; $('hcNote').textContent = ''; if (!tracked) { tracked = true; if (window.qbTrack) qbTrack('hero_calc_edit'); } render(); saveStore(); });
         el.addEventListener('blur', function () { var n = money(el.value); if (n > 0 && touched[id]) el.value = fmt(n); });
       });
       document.querySelectorAll('[data-hb]').forEach(function (btn) { btn.addEventListener('click', function () {
         basis = btn.getAttribute('data-hb'); document.querySelectorAll('[data-hb]').forEach(function (x) { x.classList.toggle('on', x === btn); x.setAttribute('aria-pressed', x === btn ? 'true' : 'false'); }); render(); }); });
       $('hcGo').addEventListener('click', function () { if (window.qbTrack) qbTrack('hero_calc_go'); });
+      // the same remembered numbers every other tool uses (this browser only), so the home page and Quota Check always agree
+      var STORE = 'qb-numbers', MAP = { hcQuota: 'quota', hcBase: 'base', hcVar: 'variable' };
+      function loadStore() { try { return JSON.parse(localStorage.getItem(STORE) || '{}') || {}; } catch (e) { return {}; } }
+      function saveStore() { try { var st = loadStore(); Object.keys(MAP).forEach(function (id) { if (touched[id]) { var v = money($(id).value); if (v > 0) st[MAP[id]] = v; } }); localStorage.setItem(STORE, JSON.stringify(st)); } catch (e) {} }
+      var st = loadStore(), used = false;
+      Object.keys(MAP).forEach(function (id) { var v = st[MAP[id]]; if (v > 0) { $(id).value = fmt(v); $(id).classList.remove('is-example'); touched[id] = 1; used = true; } });
+      if (used) { $('hcNote').innerHTML = 'Your numbers from another QuotaBird tool, remembered in this browser only. <button type="button" class="linkbtn" id="hcForget">Clear them</button>'; $('hcForget').onclick = function () { try { localStorage.removeItem(STORE); } catch (e) {} location.reload(); }; }
       render();
     })();
     </script>
@@ -392,7 +399,7 @@
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-06.2000';
+window.QB_BUILD = '2026-11-06.2330';
 // the Tools menu closes on an outside tap or Escape (the tool pages get this from their engines)
 document.addEventListener('click', (e) => { document.querySelectorAll('details.menu[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; }); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('details.menu[open]').forEach(d => { d.open = false; d.querySelector('summary').focus(); }); });
