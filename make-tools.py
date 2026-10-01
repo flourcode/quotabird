@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-03.2100'
+BUILD = '2026-11-04.0900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -139,6 +139,7 @@ def page(t):
 
 <footer class="sitefoot">
   <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
+  <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script src="../check.js"></script>
@@ -1273,6 +1274,7 @@ def note_head(title, desc, url):
 '''
 NOTE_TAIL = '''<footer class="sitefoot">
   <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
+  <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script>
@@ -1845,6 +1847,7 @@ def calc_page(t):
 
 <footer class="sitefoot">
   <a href="/">QuotaBird</a> is a pile of free sales tools. I built them because they helped me, and maybe they'll help you.
+  <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
 <script src="../calc.js"></script>
@@ -3170,6 +3173,59 @@ os.makedirs('methodology', exist_ok=True)
 open('methodology/index.html', 'w').write(_method)
 
 
+# ────────────────────────────── PRIVACY (/privacy/) ───────────────────────────
+PRIVACY_UPDATED = 'October 2026'
+_privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your browser, and how to clear it. No accounts, no ads, and the numbers you type are never sent anywhere.', 'https://quotabird.com/privacy/') + f'''</head>
+<body>
+
+<div class="wrap">
+  <header class="appbar"></header>
+</div>
+<article class="note">
+  <span class="overline">QuotaBird</span>
+  <h1>Privacy</h1>
+  <p class="dek">What QuotaBird counts, what stays in your browser, and how to clear it.</p>
+  <p class="fine">Last updated {PRIVACY_UPDATED}. Questions: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
+
+  <h2>The short version</h2>
+  <p>QuotaBird has no accounts, no ads and no sign-up. The numbers and answers you type into the tools are worked out in your browser and never sent to QuotaBird or anyone else. QuotaBird counts page views and which tools get used, so it knows what's worth improving.</p>
+
+  <h2>What QuotaBird counts</h2>
+  <p>QuotaBird uses Google Analytics 4 to count visits. Google Analytics records the pages you visit and the usual technical details that come with any visit, such as your browser, device type, approximate location and the site that sent you. It sets cookies in your browser to tell visits apart.</p>
+  <p>QuotaBird also counts a few named events, with no details attached: that someone used a tool, finished a check, shared a result, copied a note to Mark, or downloaded a Field Kit. Those events never include the numbers or answers you entered.</p>
+  <p>To stop Google Analytics, block its cookies in your browser settings or use Google's <a href="https://tools.google.com/dlpage/gaoptout" rel="noopener">opt-out add-on</a>. Google's handling of that data is covered by <a href="https://policies.google.com/privacy" rel="noopener">Google's privacy policy</a>.</p>
+
+  <h2>What stays in your browser</h2>
+  <ul>
+    <li><strong>Your numbers and answers.</strong> Every calculation happens on your device. Nothing you type goes to a server or a CRM.</li>
+    <li><strong>Base, variable and quota.</strong> If you type them into one tool, your browser remembers them so the next tool can fill them in. They're stored only in your browser's local storage, on your device. Use "Clear them" on any tool that shows them, or clear your browser's site data for quotabird.com.</li>
+  </ul>
+
+  <h2>Shared links</h2>
+  <p>When you share a result, the numbers or answers ride along in the link itself, after the # sign. That part of a link isn't sent to QuotaBird's server or to Google Analytics, but anyone you send the link to can see what's in it. Share accordingly.</p>
+
+  <h2>Other services you might click through to</h2>
+  <ul>
+    <li><strong>Booking a call</strong> opens Calendly, which collects what you enter there under its own privacy policy.</li>
+    <li><strong>Sending a note on LinkedIn</strong> happens on LinkedIn, under its own privacy policy. The DM button only copies a note to your clipboard.</li>
+    <li><strong>Email</strong> to mark@quotabird.com is read by Mark and not shared.</li>
+  </ul>
+
+  <h2>What QuotaBird doesn't do</h2>
+  <p>No accounts, no advertising, no selling or renting data, and no AI processing of anything you type. The Field Kits are plain PDF files.</p>
+
+  <h2>Changes and questions</h2>
+  <p>If this page changes, the date at the top changes with it. Questions about privacy or security go to <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
+</article>
+
+<section class="band" id="about"></section>
+
+''' + NOTE_TAIL
+assert '—' not in _privacy and '–' not in _privacy
+os.makedirs('privacy', exist_ok=True)
+open('privacy/index.html', 'w').write(_privacy)
+
+
 
 # ────────────────────────────── STUFF I LIKE (/stuff/) ──────────────────────────────
 # Mark's books and podcasts. No affiliate links, no links at all: the value is that it's his.
@@ -3292,7 +3348,7 @@ def header(path):
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/')) else '/' + path.split('/')[0] + '/')}
+      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/')) else '/' + path.split('/')[0] + '/')}
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
@@ -3306,9 +3362,12 @@ def chrome(path):
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
     ask = '/ask/'
-    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a></p>'
+    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="{ask}">Ask Mark</a><a href="/privacy/">Privacy</a></p>'
     s = re.sub(r'\s*<p class="foot-nav">.*?</p>', '', s, count=1, flags=re.S)          # the footer nav is regenerated every build, so every page matches
     s = s.replace('<footer class="sitefoot">', '<footer class="sitefoot">\n  ' + nav, 1)
+    # one contact line in every footer, for questions and security issues
+    s = re.sub(r'\s*<p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>', '', s)
+    s = s.replace('<p>Not affiliated with the U.S. government or Amazon.</p>', '<p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>\n  <p>Not affiliated with the U.S. government or Amazon.</p>', 1)
     if path != '404.html':
         # the full story lives on the About page; every other page gets the short "Made by Mark" card
         src = MARK_SRC if path == 'about/index.html' else MADEBY_SRC
@@ -3320,7 +3379,7 @@ def chrome(path):
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
 PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN)] \
-        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html'] + ['404.html']
+        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html'] + ['404.html']
 for _p in PAGES:
     chrome(_p)
 print('chrome', len(PAGES))
@@ -3378,8 +3437,8 @@ for g, h, n, d in TOOLS:
     if g != last: groups.append([g, []]); last = g
     groups[-1][1].append((h, n, d))
 site = 'https://quotabird.com'
-lines = ['# QuotaBird', '', '> Quick reality checks for people who carry a number: thirteen free, one-minute tools for sellers and sales managers (deals, pipeline, quota, territories, partners, reps, reviews), plus short field notes. Everything runs in the browser; nothing is stored. Built by Mark Flournoy, who spent six years leading federal partner sales teams at AWS.', '',
-         'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI.', '']
+lines = ['# QuotaBird', '', '> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at AWS. ' + f'{len([1 for g, h, n, d in TOOLS])} one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.', '',
+         'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor\'s own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Privacy: https://quotabird.com/privacy/', '']
 for g, items in groups:
     lines.append(f'## {g}'); lines.append('')
     for h, n, d in items:
