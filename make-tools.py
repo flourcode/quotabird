@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-06.0900'
+BUILD = '2026-11-06.1700'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -41,7 +41,7 @@ def menu(current):
     for g in rest: (left if sum(len(groups[x]) for x in left) <= sum(len(groups[x]) for x in right) else right).append(g)
     col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(groups[g])}</div>' for g in gs) + '</div>'
     wide_html = ''
-    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a></div>'
+    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a></div>'
     kit = '<a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a>'
     return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{kit}{col(left)}{col(right)}{foot}</div></details>'
 
@@ -2402,7 +2402,7 @@ KIT_CTA = '''
       <a class="btn btn-primary btn-lg" id="kitBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=kit&amp;utm_content=kit_cta" target="_blank" rel="noopener">Chat with Mark</a>
       <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
     </div>
-    <p class="kit-bridge">Used this with your team and found something ugly? That's <a href="/ask/">most of the stuff I help managers with</a>.</p>
+    <p class="kit-bridge">Used this with your team and found something ugly? That's <a href="/work-with-mark/">most of the stuff I help managers with</a>.</p>
     <p class="fine">Or email me: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>. And if I don't think I can help, I'll tell you.</p>
   </section>
 '''
@@ -2545,7 +2545,7 @@ LEADER_CTA = '''
       <a class="btn btn-primary btn-lg" id="leaderBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=leader&amp;utm_content=leader_cta" target="_blank" rel="noopener">Chat with Mark</a>
       <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
     </div>
-    <p class="kit-bridge">Used this with your team and found something ugly? That's <a href="/ask/">most of the stuff I help managers with</a>.</p>
+    <p class="kit-bridge">Used this with your team and found something ugly? That's <a href="/work-with-mark/">most of the stuff I help managers with</a>.</p>
     <p class="fine">Or email me: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>. And if I don't think I can help, I'll tell you.</p>
   </section>
 '''
@@ -2850,7 +2850,7 @@ SELLER_CTA = '''
       <a class="btn btn-primary btn-lg" id="sellerBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=seller&amp;utm_content=seller_cta" target="_blank" rel="noopener">Chat with Mark</a>
       <a class="btn btn-lg" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">DM on LinkedIn</a>
     </div>
-    <p class="kit-bridge">Used this with your team and found something ugly? That's <a href="/ask/">most of the stuff I help managers with</a>.</p>
+    <p class="kit-bridge">Used this with your team and found something ugly? That's <a href="/work-with-mark/">most of the stuff I help managers with</a>.</p>
     <p class="fine">Or email me: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>. And if I don't think I can help, I'll tell you.</p>
   </section>
   <div class="kit-next"><span class="overline">Next</span><p>Running a team? <a href="/kit/">The Manager's Field Kit</a> is the one for that.</p></div>
@@ -2924,75 +2924,9 @@ open('kits/index.html', 'w').write(_kits)
 print('seller kit', len(_seller), '| kits index', len(_kits))
 
 
-# ────────────────────────────── ASK MARK (/ask/): what working with Mark looks like ──────────────────────────────
-_ask_url = 'https://quotabird.com/ask/'
-_ask_desc = "Got a sales problem that doesn't fit in five questions? A free twenty-minute call with Mark Flournoy to start, then monthly help for managers or a working session with your team. No methodology rollout, no deck."
-_ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>', '| QuotaBird</title>') + '''</head>
-<body>
-
-<div class="wrap">
-  <header class="appbar"></header>
-</div>
-<article class="note ask">
-  <span class="overline">Ask Mark</span>
-  <h1>Got a quota problem?</h1>
-  <p class="dek">Your quota went up. Your pipeline didn't. Your boss says the number isn't moving. Bring the math, and
-    we'll look at what changed, what didn't, and whether you've got a quota problem or a planning problem.</p>
-
-  <div class="ask-cta">
-    <a class="btn btn-primary btn-lg" id="askBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=ask&amp;utm_content=ask" target="_blank" rel="noopener">Grab 20 minutes</a>
-    <a class="ask-alt" href="https://www.linkedin.com/in/markflournoy/" target="_blank" rel="noopener">or DM me on LinkedIn</a>
-  </div>
-  <ol class="how">
-    <li><b>Pick a time.</b> Add one line about what's going on.</li>
-    <li><b>I read it before we talk.</b> No deck needed.</li>
-    <li><b>Twenty minutes, free.</b> If I can't help, I'll say so in the first five.</li>
-  </ol>
-
-  <div class="who ask-me">
-    <img src="/mark.jpg" alt="Mark Flournoy" width="96" height="96" loading="lazy" decoding="async">
-    <p>I'm Mark. I spent six years leading federal partner sales teams at Amazon, after plenty of years carrying a number
-      myself. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've
-      probably never heard of.</p>
-  </div>
-
-  <h2>What people usually bring me</h2>
-  <ul class="ask-list">
-    <li>A quota that came from somebody who's never seen your territory.</li>
-    <li>A comp plan nobody can explain, including the person who sent it.</li>
-    <li>A deal everybody thinks will close, and nobody on the customer side has committed to anything.</li>
-    <li>A rep you're not sure about. Or maybe it's the territory.</li>
-    <li>A forecast call you're dreading, or a review where you have to defend somebody.</li>
-  </ul>
-
-  <h2>If twenty minutes isn't enough</h2>
-  <div class="offers">
-    <div class="offer">
-      <h3>Manager Wingman</h3>
-      <p class="offer-when">Monthly</p>
-      <p>A couple of calls a month when you need somebody outside the org chart. Bring the rep, the forecast, the ugly deal, or the thing you have to explain to your boss.</p>
-      <p class="offer-link"><a href="mailto:mark@quotabird.com?subject=Manager%20Wingman">Ask about Wingman</a></p>
-    </div>
-    <div class="offer">
-      <h3>Team session</h3>
-      <p class="offer-when">One session</p>
-      <p>I work with your team on pipeline, deals, account planning or a manager workshop, using the same questions as the
-        tools. There's usually some arguing.</p>
-      <p class="offer-link"><a href="mailto:mark@quotabird.com?subject=Team%20session">Ask about a team session</a></p>
-    </div>
-  </div>
-  <p class="fine ask-price">If we keep going, I'll tell you what it costs before we do anything.</p>
-
-  <p class="ask-foot">Not ready to talk? The <a href="/">tools</a> and the <a href="/kits/">Field Kits</a> are free. Or email
-    me at <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
-</article>
-
-''' + NOTE_TAIL.replace('Field Notes are part of', 'Ask Mark is part of').replace('</script>\n</body>', """document.getElementById('askBook').addEventListener('click', function () { if (window.qbTrack) window.qbTrack('ask_book'); });
-</script>
-</body>""")
-assert '—' not in _ask and '–' not in _ask
+# ────────────────────────────── /ask/ now redirects to Work with Mark (Nov 6) ───────────────────────
 os.makedirs('ask', exist_ok=True)
-open('ask/index.html', 'w').write(_ask)
+open('ask/index.html', 'w').write('<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8"><title>Work with Mark | QuotaBird</title>\n<meta name="robots" content="noindex"><link rel="canonical" href="https://quotabird.com/work-with-mark/">\n<meta http-equiv="refresh" content="0; url=/work-with-mark/#ask"></head>\n<body><p><a href="/work-with-mark/#ask">Working with Mark, and the free twenty minutes, are here.</a></p></body></html>\n')
 
 # ────────────────────────────── HOW QUOTAS GET BUILT (/how-quotas-get-built/) ──────────────────────────────
 _how = note_head('How Quotas Usually Get Built', "Where your sales quota probably came from: last year plus a growth rate, the corporate plan, headcount, territory, overlays. And why your boss may not even be goaled on your number.", 'https://quotabird.com/how-quotas-get-built/') + '''</head>
@@ -3268,7 +3202,7 @@ _method = note_head("How QuotaBird's Numbers Work", "Where every range and bench
   <p>Crediting rules, marketplace fees, co-sell quota retirement and multi-year crediting differ by company and change often, so QuotaBird doesn't guess at them. Check your own plan document.</p>
 
   <h2>Updates and corrections</h2>
-  <p>Published figures are rechecked when Bridge Group releases a new report and each quarter for RepVue. If a number looks wrong, or your plan sits well outside a working range, <a href="/ask/">tell Mark</a>. The ranges change when the evidence does.</p>
+  <p>Published figures are rechecked when Bridge Group releases a new report and each quarter for RepVue. If a number looks wrong, or your plan sits well outside a working range, <a href="mailto:mark@quotabird.com">tell Mark</a>. The ranges change when the evidence does.</p>
 
   <h2>Sources</h2>
   <ul class="sources">
@@ -3356,14 +3290,31 @@ def ask_block(src):
     return f'''  <section class="offer offer-ask" id="ask">
     <h2>Not sure you need any of this?</h2>
     <p>Grab 20 minutes. Tell me what you're wrestling with and I'll tell you what I think. If I don't think you need my help, I'll tell you that too.</p>
-    <p class="offer-cta"><a class="btn btn-primary" href="{CAL}{src}&utm_content=page" target="_blank" rel="noopener">Grab 20 minutes</a></p>
+    <p>Pick a time and add one line about what's going on. I read it before we talk. No deck needed.</p>
+    <p class="offer-cta"><a class="btn btn-primary" href="{CAL}{src}&utm_content=page" target="_blank" rel="noopener">Grab 20 minutes</a> <a class="offer-alt" href="https://www.linkedin.com/in/markflournoy/" rel="noopener">or message me on LinkedIn</a></p>
   </section>
 '''
-PROOF = '''  <h2>Who you'd be talking to</h2>
-  <p>Twenty years as a Marine officer, including government technology and acquisition work as a COTR. Then about fifteen years selling and leading enterprise technology sales at Red Hat, F5 and Amazon. At Amazon I led Federal Partner Sales across Defense, Federal Civilian, Federal Financial and National Security: about 25 partner sales managers carrying a shared goal above $1B. Along the way I closed a $54M four-year committed cloud agreement with a major DoD systems integrator, and made President's Circle at F5.</p>
+PROOF = '''  <h2>The specifics</h2>
+  <p>As a Marine officer I did government technology and acquisition work, including as a COTR, so I've sat on the buying side. Then about fifteen years in enterprise technology sales at Red Hat, F5 and Amazon. At Amazon I led Federal Partner Sales across Defense, Federal Civilian, Federal Financial and National Security: about 25 partner sales managers carrying a shared goal above $1B. Along the way I closed a $54M four-year committed cloud agreement with a major DoD systems integrator, and made President's Circle at F5.</p>
   <p>Seller, manager, government guy, partner guy. And I built these tools, which is probably the best evidence of how I think about these problems.</p>
 '''
-_work = note_head('Work with Mark', "Bring me the ugly one. A $200 working session on one sales problem, Manager Wingman from $750 a month, and team sessions from $1,500. The tools stay free.", 'https://quotabird.com/work-with-mark/') + '''</head>
+def offer_plain(oid, name, price, paras, cta_label, subject):
+    body = ''.join(f'<p>{p}</p>' for p in paras)
+    return f'''  <section class="offer" id="{oid}">
+    <h3>{name}</h3>
+    <p class="price">{price}</p>
+    {body}
+    <p class="offer-cta"><a class="btn btn-tonal" href="{_mail(subject)}">{cta_label}</a></p>
+  </section>
+'''
+def ask_plain(src):
+    return f'''  <section class="offer offer-ask" id="ask">
+    <h2>Not sure yet?</h2>
+    <p>Grab 20 minutes and tell me what's going on. If I don't think you need help, I'll say so. When you pick a time, add a line about the problem so I can read it before we talk.</p>
+    <p class="offer-cta"><a class="btn btn-primary" href="{CAL}{src}&utm_content=page" target="_blank" rel="noopener">Grab 20 minutes</a> <a class="offer-alt" href="https://www.linkedin.com/in/markflournoy/" rel="noopener">or message me on LinkedIn</a></p>
+  </section>
+'''
+_work = note_head('Work with Mark', "Need a second opinion on a deal, quota, territory, pipeline or comp plan? Send it over and I'll tell you what I think. Paid help starts at $200; the tools stay free.", 'https://quotabird.com/work-with-mark/') + '''</head>
 <body>
 
 <div class="wrap">
@@ -3371,29 +3322,36 @@ _work = note_head('Work with Mark', "Bring me the ugly one. A $200 working sessi
 </div>
 <article class="note work">
   <span class="overline">Work with Mark</span>
-  <h1>Bring me the ugly one.</h1>
-  <p class="dek">The tools are free, and they stay free. Sometimes the problem is messier than a tool, and you want an experienced second set of eyes on it. That's what this is.</p>
-  <p>I don't have a methodology to sell you, and this isn't coaching. You bring the actual problem, and I tell you what I see, what I'd challenge and what I'd do next. If the answer is that you're fine, you'll hear that too.</p>
+  <h1>Need a second opinion?</h1>
+  <div class="who">
+    <img src="/mark.jpg" alt="Mark Flournoy" width="120" height="120" loading="lazy" decoding="async">
+    <p>I built QuotaBird because most sales problems don't need another methodology. They usually need somebody to look at the facts and ask a few uncomfortable questions.</p>
+    <p>I've spent a long time around this stuff. I carried a number, managed sellers, led federal partner sales teams at Amazon, and before that spent 20 years as a Marine officer. I've been the seller, the manager, the partner and the government customer.</p>
+  </div>
+  <p>I'm retired now, so I get to be selective about what I work on. I still like sales problems, especially the ones where something doesn't quite add up.</p>
+  <p>If you want me to take a look at a deal, quota, territory, pipeline, comp plan or whatever else is bothering you, send it over. I'll tell you what I think.</p>
+  <p class="offer-cta"><a class="btn btn-primary" href="''' + _mail('A second opinion') + '''">Send it over</a> <a class="offer-alt" href="#ask">or start with a free 20 minutes</a></p>
 
-''' + offer_card('sales-reality-check', 'Sales Reality Check', '$200',
-    "One problem, worked properly. A quota, a comp plan, a territory, a deal, a pipeline, a QBR, a job offer, or something like it.",
-    ['A 60-minute working session on your actual numbers and documents.', "A short written recap: what I think, what I'd challenge, and what I'd do next."],
-    'Email Mark about this', 'Sales Reality Check', "Priced so you can buy it yourself, without turning it into a purchasing decision.") + offer_card('manager-wingman', 'Manager Wingman', 'Starting at $750 a month',
-    "For frontline and second-line sales leaders who want somebody outside the company to pressure-test what they're seeing. It's less like executive coaching and more like having a former sales leader around when something smells funny.",
-    ['Two working sessions a month.', 'Forecast and pipeline pressure tests, difficult rep situations, territory and quota questions.', 'QBR prep, leadership and organization questions, and the occasional look at a document or spreadsheet before an important meeting.'],
-    'Email Mark about this', 'Manager Wingman') + offer_card('team-reality-check', 'Team Reality Check', 'Starting at $1,500',
-    "For a sales leader who wants the same thinking applied across the team: a pipeline reality check, a quota or territory review, a forecast inspection, deal pressure tests, or a manager workshop. Virtual, or as a working session at your offsite.",
-    ["One focused session built around your team's real numbers.", "What I'd look at next, written down so it doesn't evaporate after the meeting."],
-    'Email Mark about this', 'Team Reality Check', "Priced to fit a team or offsite budget without a procurement adventure.") + '''  <section class="offer offer-fed">
-    <h2>Federal</h2>
-    <p class="lede">You think you have a federal business. Let's find out.</p>
-    <p>For founders, CROs and sales leaders deciding whether federal is real for them, and for investors who need an honest read on a federal business somebody else says is real.</p>
+  <h2>What it costs</h2>
+  <p>The tools on this site are free and they'll stay that way. If you want my time, here's how that usually works.</p>
+''' + offer_plain('sales-reality-check', 'Sales Reality Check', '$200', [
+    "One problem, like a deal, a quota, a territory, a pipeline, a comp plan, a QBR or a job offer. We spend an hour on it together, and afterward I send you a short write-up of what I think, what I'd push back on and what I'd do next.",
+    "I priced it so you can pay for it yourself without asking anybody."], 'Send it over', 'Sales Reality Check') + offer_plain('manager-wingman', 'Manager Wingman', 'Starting at $750 a month', [
+    "For sales managers who want somebody outside the company to look at what they're seeing. We meet twice a month, and in between I'll look at a forecast, a rep situation, a territory question or a spreadsheet before an important meeting.",
+    "Think of it as a former sales leader you can call when something looks off."], 'Ask about Manager Wingman', 'Manager Wingman') + offer_plain('team-reality-check', 'Team Reality Check', 'Starting at $1,500', [
+    "For a sales leader who wants the same kind of look across the whole team: the pipeline, quotas and territories, the forecast, a few big deals, or a working session with your managers. We can do it virtually or as part of an offsite.",
+    "I priced it so it can come out of a team budget without a purchasing process."], 'Ask about a team session', 'Team Reality Check') + '''  <section class="offer offer-fed">
+    <h3>Federal</h3>
+    <p>If you're trying to figure out whether there's a real federal business in front of you, or whether a federal business somebody's selling you is real, that has its own page.</p>
     <p class="offer-cta"><a class="btn btn-tonal" href="/federal/">Federal GTM</a></p>
   </section>
-''' + ask_block('work') + PROOF + '''</article>
+''' + ask_plain('work') + '''
+  <h2>A few specifics</h2>
+  <p>At Amazon I led Federal Partner Sales across Defense, Federal Civilian, Federal Financial and National Security, with about 25 partner sales managers and a shared goal over $1B. I closed a $54M four-year cloud agreement with a major DoD systems integrator. Before Amazon I was at F5, where I made President's Circle, and Red Hat. In the Marine Corps I worked on the government side of technology buying, including as a COTR. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've probably never heard of.</p>
+</article>
 
 ''' + NOTE_TAIL
-_fed = note_head('Federal GTM', "You think you have a federal business. Let's find out. A $600 Federal GTM Pressure Test, a short Federal GTM Sprint, and an outside read on federal revenue for investors.", 'https://quotabird.com/federal/') + '''</head>
+_fed = note_head('Federal GTM', "Trying to figure out whether there's a real federal business? A $600 Federal GTM Pressure Test, a short Federal GTM Sprint, and an outside read on federal revenue for investors.", 'https://quotabird.com/federal/') + '''</head>
 <body>
 
 <div class="wrap">
@@ -3401,39 +3359,37 @@ _fed = note_head('Federal GTM', "You think you have a federal business. Let's fi
 </div>
 <article class="note work">
   <span class="overline">Federal GTM</span>
-  <h1>You think you have a federal business. Let's find out.</h1>
-  <p class="dek">For companies deciding whether federal is real for them, and for people who need an honest read on a federal business somebody else says is real.</p>
-  <p>A federal customer liking your product isn't the same as a federal customer with money, a legal way to buy it, and a reason to do it this year. Most federal plans I've seen were built on the first part and assumed the rest. Hope is not evidence.</p>
-  <p>I spent 20 years as a Marine officer, some of it on the government side of technology buying, and later led Federal Partner Sales at Amazon across Defense, Federal Civilian, Federal Financial and National Security. I've watched this get bought from both sides of the table.</p>
+  <h1>You think you have a federal business? Let's find out.</h1>
+  <p>A federal customer who likes your product is a good start. It turns into a business when there's money for it, a legal way to buy it and a reason to do it this year. Most of the federal plans I've seen were built on the first part and assumed the rest.</p>
+  <p>I spent 20 years as a Marine officer, some of it on the government side of technology buying, and later led Federal Partner Sales at Amazon across Defense, Federal Civilian, Federal Financial and National Security. I've seen how this gets bought from both sides. If you want me to look at your federal plan, your pipeline or a federal business you're thinking about buying, send it over. I'll tell you what I think.</p>
+  <p class="offer-cta"><a class="btn btn-primary" href="''' + _mail('Federal second opinion') + '''">Send it over</a> <a class="offer-alt" href="#ask">or start with a free 20 minutes</a></p>
 
-  <h2>Who this is for</h2>
+  <h2>Who this is usually for</h2>
   <ul>
     <li>Startups thinking about federal, and commercial technology companies moving into the public sector</li>
     <li>SaaS companies getting pulled into federal by a customer</li>
     <li>Companies trying to figure out partners, primes and integrators</li>
-    <li>Sales leaders inheriting a federal business, or making their first federal sales hire</li>
-    <li>Investors and acquirers who need to know whether a federal pipeline is real</li>
+    <li>Sales leaders inheriting a federal business or making their first federal sales hire</li>
+    <li>Investors and acquirers who want to know whether a federal pipeline is real</li>
   </ul>
 
-''' + offer_card('pressure-test', 'Federal GTM Pressure Test', '$600',
-    "A working session for a founder, CRO or sales leader. We go through actual customer demand, funding, the buying path, partners, product readiness, sales coverage, your current pipeline and timing, and what should happen over the next 6 to 12 months.",
-    ['A 90-minute working session.', 'Written observations and priorities afterward.'],
-    'Email Mark about this', 'Federal GTM Pressure Test', 'An easy first step, not a consulting proposal.') + offer_card('sprint', 'Federal GTM Sprint', 'Starting at $2,500',
-    "For a company that needs more than a conversation. A short, finite engagement that ends with a pressure test and a working plan: which customers and accounts to start with, how they can buy, the likely contract vehicles, a partner and prime strategy, what the federal fiscal year means for your timing, a pipeline reality check, the profile of your first federal hire, first-year priorities, and the risks and assumptions underneath all of it.",
-    ['A working plan you can run, with the assumptions written down.', 'A pressure test of the plan before you spend money on it.'],
-    'Email Mark about this', 'Federal GTM Sprint', 'A working plan, not a 75-slide strategy deck.') + offer_card('revenue-reality-check', 'Federal Revenue Reality Check', 'Starting at $3,500',
-    "For investors, acquirers or executives who need an experienced outside read on a federal business. Is the pipeline real, and how old are the opportunities? Who's the incumbent? How much depends on one partner or one contract vehicle? What has actually been won, where is it concentrated, and who walks out the door with the relationships? What's coming up for recompete, and how much of the claimed traction is funded work?",
-    ['A scoped review of the pipeline, history and dependencies you can share.', 'A plain written read on what holds up and what doesn\'t.'],
-    'Talk to Mark about it', 'Federal Revenue Reality Check') + '''
+  <h2>What it costs</h2>
+''' + offer_plain('pressure-test', 'Federal GTM Pressure Test', '$600', [
+    "A working session with a founder, CRO or sales leader. We go through who's actually asking for it, where the money would come from, how they'd buy it, which partners you'd need, whether the product is ready, who's covering it, your current pipeline and timing, and what should happen in the next 6 to 12 months.",
+    "It's 90 minutes, and afterward I send you my observations and priorities in writing. It's meant to be an easy first step."], 'Send it over', 'Federal GTM Pressure Test') + offer_plain('sprint', 'Federal GTM Sprint', 'Starting at $2,500', [
+    "For a company that needs more than one conversation. It's a short engagement with an end date, and you come out of it with a working plan: which customers and accounts to start with, how they can buy, the contract vehicles you're likely to need, which partners and primes matter, what the federal fiscal year means for your timing, a look at your pipeline, the profile of your first federal hire, and the first year's priorities, with the risks and assumptions written down.",
+    "What you get is a working plan you can actually run, kept short enough that people will read it."], 'Ask about a sprint', 'Federal GTM Sprint') + offer_plain('revenue-reality-check', 'Federal Revenue Reality Check', 'Starting at $3,500', [
+    "For investors, acquirers or executives who want an experienced outside read on a federal business. I look at whether the pipeline is real and how old the opportunities are, who the incumbent is, how much depends on one partner or contract vehicle, what's actually been won, where it's concentrated, who'd leave with the relationships, what's coming up for recompete, and how much of the claimed traction is funded work.",
+    "We scope it around what you can share, and you get a plain written read on what holds up and what doesn't."], 'Talk to Mark about it', 'Federal Revenue Reality Check') + '''
   <h2>Some free places to start</h2>
   <ul>
-    <li><a href="/federal-readiness/">Federal Readiness Check</a>: five skeptical questions on whether there's a federal business here.</li>
-    <li><a href="/deal/">Deal Check</a>: pressure-test one federal opportunity on customer, money, power, path and now.</li>
+    <li><a href="/federal-readiness/">Federal Readiness Check</a>: five questions on whether there's a federal business here.</li>
+    <li><a href="/deal/">Deal Check</a>: pressure-test one federal opportunity on customer, money, power, path and timing.</li>
     <li><a href="/seller/#s-sep30">Working back from September 30</a>: the federal year-end chapter of the Seller's Field Kit.</li>
     <li><a href="https://fedhoo.com" rel="noopener">FedHoo</a>: federal market data tools I built.</li>
   </ul>
 
-''' + ask_block('federal') + '''</article>
+''' + ask_plain('federal') + '''</article>
 
 ''' + NOTE_TAIL
 for _name, _html in (('work-with-mark', _work), ('federal', _fed)):
@@ -3560,15 +3516,15 @@ def current_of(path):
     return '/' if path == 'index.html' else '/' + path.rsplit('/', 1)[0] + '/'
 def header(path):
     b = root_of(path)
-    ask = '/ask/'
+    ask = '/work-with-mark/'
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'ask/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/', 'work-with-mark/', 'federal/')) else '/' + path.split('/')[0] + '/')}
+      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/', 'work-with-mark/', 'federal/')) else '/' + path.split('/')[0] + '/')}
       <a class="toplink" href="/kits/">Field Kits</a>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
-      <a class="chip chip-ask" href="{ask}">Ask Mark</a>
+      <a class="chip chip-ask" href="{ask}"><span class="ask-long">Work with Mark</span><span class="ask-short">Ask Mark</span></a>
     </nav>
   </header>'''
 def chrome(path):
@@ -3578,7 +3534,7 @@ def chrome(path):
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
     ask = '/ask/'
-    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a><a href="{ask}">Ask Mark</a><a href="/privacy/">Privacy</a></p>'
+    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a><a href="/privacy/">Privacy</a></p>'
     s = re.sub(r'\s*<p class="foot-nav">.*?</p>', '', s, count=1, flags=re.S)          # the footer nav is regenerated every build, so every page matches
     s = s.replace('<footer class="sitefoot">', '<footer class="sitefoot">\n  ' + nav, 1)
     # one contact line in every footer, for questions and security issues
@@ -3595,7 +3551,7 @@ def chrome(path):
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
 PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY)] \
-        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'ask/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html', 'work-with-mark/index.html', 'federal/index.html'] + ['404.html']
+        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html', 'work-with-mark/index.html', 'federal/index.html'] + ['404.html']
 for _p in PAGES:
     chrome(_p)
 print('chrome', len(PAGES))
@@ -3663,7 +3619,7 @@ for g, items in groups:
     lines.append('')
 lines += ['## Methodology and benchmarks', '', f"- [How QuotaBird's numbers work]({site}/methodology/): where every range and benchmark on QuotaBird comes from, labelled as published data, a common rule of thumb, or a QuotaBird working range. Quota-to-OTE working ranges: bookings 4 to 6x (built on Bridge Group 2026 median 4.6x, 158 B2B companies), run rate or consumption growth 15 to 30x, whole book 40 to 80x (QuotaBird working ranges, derived from quota / OTE = variable share / commission rate). Includes each tool's formula and a last-reviewed date.", f"- [Quota by the numbers]({site}/quota-by-the-numbers/): sourced quota and compensation benchmarks: attainment, median quota and OTE, pay mix, ramp, over-assignment, accelerators.", '']
 lines += ['## Working with Mark', '', '- [Work with Mark](https://quotabird.com/work-with-mark/): paid help on one sales problem (Sales Reality Check, $200), Manager Wingman (from $750 a month) and Team Reality Check (from $1,500). The tools stay free.', '- [Federal GTM](https://quotabird.com/federal/): for companies deciding whether federal is real for them: Federal GTM Pressure Test ($600), Federal GTM Sprint (from $2,500) and Federal Revenue Reality Check for investors (from $3,500).', '']
-lines += ['## Ask Mark', '', f'- [Ask Mark]({site}/ask/): a free twenty-minute call to start; Manager Wingman (monthly calls for sales managers) and team sessions (pipeline or deal reviews, account planning, manager workshops) if it needs more.', '', '## Stuff I Like', '', f'- [Stuff I Like]({site}/stuff/): ten books and ten podcasts Mark has gotten something from, each with one line on why. No affiliate links.', '']
+lines += ['## Talking to Mark', '', f'- [The free twenty minutes]({site}/work-with-mark/#ask): a free first conversation about one sales problem; if Mark doesn\'t think you need help, he says so.', '']
 lines += ['## Free printable', '', f"- [The Manager's Field Kit]({site}/kit/): a free, printable field kit for sales managers: how your team's number got built, fighting the plan without losing, handing down a tough quota and still crushing it, inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, managing high performers, and nine worksheets.", f"- [The Seller's Field Kit]({site}/seller/): a free, printable field kit for sellers: where your quota came from, checking it and pushing back, crushing a tough number anyway, is it a real deal, pipeline math, one deal carrying the quarter, single-threaded accounts, discounts, quiet deals, falling behind, and keeping your manager informed.", f"- [The Leadership Field Kit]({site}/leader/): a free, printable field kit for managers who want their influence to travel beyond their team: shaping the number before it shapes your team, what to be known for, a point of view, receipts, templates others can borrow, the right rooms, and developing the people behind you.", '', '## Sales Math Library', ''] + [f'- [{p["title"]}]({site}/math/{p["slug"]}/): {p["answer"]}' for p in MATH] + ['', '## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
 open('llms.txt', 'w').write('\n'.join(lines))
 entries = []
