@@ -112,8 +112,8 @@
         <p class="startnote fields-note"><span id="exnote">Example numbers. Type yours over them.</span></p>
         <label class="tf"><span class="tf-label">Target for the year</span>
           <input id="goal" type="text" inputmode="decimal" value="$10M"></label>
-        <label class="tf"><span class="tf-label">Qualified pipeline closing this year <small>(full deal values, not weighted)</small></span>
-          <input id="pipe" type="text" inputmode="decimal" value="$32M"></label>
+        <label class="tf"><span class="tf-label">Qualified pipeline closing this year</span>
+          <input id="pipe" type="text" inputmode="decimal" value="$32M" placeholder="Full value, not weighted"></label>
         <label class="tf"><span class="tf-label">Your qualified win rate</span>
           <input id="win" type="text" inputmode="decimal" value="20%"></label>
         <div class="chips presets" style="margin:8px 0 14px;" aria-label="Win rate presets">
@@ -129,10 +129,13 @@
         </div>
         <label class="tf"><span class="tf-label">Already closed this year <small>(optional)</small></span>
           <input id="closed" type="text" inputmode="decimal" placeholder="$0"></label>
-        <label class="tf"><span class="tf-label">Biggest single deal <small>(optional)</small></span>
+
+        <details class="more-fields" id="pmore"><summary>More details <span>optional</span></summary>
+        <label class="tf"><span class="tf-label">Biggest single deal</span>
           <input id="big" type="text" inputmode="decimal" placeholder="$0"></label>
-        <label class="tf"><span class="tf-label">Weighted pipeline from your CRM <small>(optional)</small></span>
+        <label class="tf"><span class="tf-label">Weighted pipeline from your CRM</span>
           <input id="wtd" type="text" inputmode="decimal" placeholder="$0"></label>
+        </details>
         <div class="chips presets" style="margin:8px 0 14px;" aria-label="Year end">
           <button class="chip on" data-ye="cy" type="button">Year ends Dec 31</button>
           <button class="chip" data-ye="fy" type="button">Sep 30</button>
@@ -174,7 +177,7 @@
     <p class="lede">Unweighted pipeline is the full value of your deals. Weighted pipeline multiplies each deal by its stage probability first.</p>
     <p>A $1M deal counts as $1M unweighted. At a 60% stage it counts as $600K weighted. Both can be useful, but they answer different questions, and mixing them breaks the math.</p>
     <p>This check uses unweighted pipeline and your real win rate: full values, divided by how much of them you actually win. Weighted pipeline is already discounted, so you compare it straight to what's left of the target, and 1.0X is enough. Holding weighted pipeline to 3X, or multiplying it by your win rate, counts the discount twice.</p>
-    <p>The catch is where the weights come from. Most CRMs assign stage probabilities by default, and nobody checks them against what actually closes. Put your CRM's weighted total in the optional field, and the check shows the win rate your weights assume next to the one you actually get. <a href="/notes/weighted-pipeline/">Weighted pipeline is only as good as the weights →</a></p>
+    <p>The catch is where the weights come from. Most CRMs assign stage probabilities by default, and nobody checks them against what actually closes. Put your CRM's weighted total under More details, and the check shows the win rate your weights assume next to the one you actually get. <a href="/notes/weighted-pipeline/">Weighted pipeline is only as good as the weights →</a></p>
   </div>
 </section>
 
@@ -345,7 +348,7 @@ function readHash() {
   const set = (id, v, fmt) => { $(id).value = v ? fmt(v) : ''; };
   set('goal', parseMoney(p.get('t')), fullMoney); set('pipe', parseMoney(p.get('p')), fullMoney);
   set('win', parseRate(p.get('w')), pct); set('size', parseMoney(p.get('s')), fullMoney);
-  set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), fullMoney); set('big', parseMoney(p.get('b')), fullMoney); set('wtd', parseMoney(p.get('v')), fullMoney);
+  set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), fullMoney); set('big', parseMoney(p.get('b')), fullMoney); set('wtd', parseMoney(p.get('v')), fullMoney); if (p.get('b') || p.get('v')) $('pmore').open = true;
   yearEnd = p.get('y') === 'fy' ? 'fy' : 'cy';
   // Quota Check sends only a target: start from the 3X ballpark it quoted, so the page opens on a verdict
   if (p.has('t') && !p.has('p')) { const t = parseMoney(p.get('t')); if (t > 0) {
@@ -422,10 +425,10 @@ function render() {
     </div>
     <p class="clock">${esc(clock + paceLine)}</p>
     ${s.wt ? `<p class="wline">${esc(s.wt.bad
-        ? "Your weighted number is bigger than your full pipeline. Weighted pipeline is the full value times each deal's probability, so it should be smaller. Check the two numbers."
-        : `Your CRM's weights say you'll close ${money(s.wt.amt)}, ${X(s.wt.cov)} of what's left (1.0X needed when it's weighted). ` + (s.win > 0
-          ? `Your ${pct(s.win)} win rate says about ${money(s.wt.expect)}. Your weights assume a ${pct(s.wt.implied)} win rate.` + (s.wt.implied - s.win > .10 ? " That's optimistic. Plan on the win rate you actually get." : s.win - s.wt.implied > .10 ? ' Your weights are more cautious than your track record.' : ' They roughly match your track record.')
-          : `Your weights assume a ${pct(s.wt.implied)} win rate. Add your real win rate to compare.`))}</p>` : ''}
+        ? 'Your weighted number is bigger than your full pipeline. Check the two numbers.'
+        : `Your CRM's weights assume you'll win ${pct(s.wt.implied)} of this pipeline. ` + (s.win > 0
+          ? `You actually win ${pct(s.win)}.` + (s.wt.implied - s.win > .10 ? ' Your weighted forecast is too optimistic.' : s.win - s.wt.implied > .10 ? ' Your weighted forecast is too cautious.' : '')
+          : 'Add your real win rate to compare.'))}</p>` : ''}
     ${s.win > .10 ? `<div class="breakit"><span>Before you defend it, try to break it.</span><button class="btn btn-tonal" id="stress" type="button">Try 5 points lower</button></div>` : ''}
 <div class="card mark-card" style="margin-top:20px;">
       <h3>Stuck on where it comes from?</h3>
@@ -611,6 +614,7 @@ function xApply(remap) {
   if (owners && owners.size) set('reps', owners.size, String);
   const wp = counted.filter(r => r.prob != null);   // CRM probabilities fill the weighted comparison only, never the coverage math
   if (XMAP.prob >= 0 && wp.length === counted.length && counted.length) set('wtd', wp.reduce((t, r) => t + r.amt * r.prob, 0)); else set('wtd', 0);
+  if (parseMoney($('big').value) || parseMoney($('wtd').value)) $('pmore').open = true;
   // a win rate from closed deals, offered, never filled in silently, and only with enough deals behind it
   const cw = XROWS.filter(r => xWon(r.stage)), cl = XROWS.filter(r => xLost(r.stage)), nClosed = cw.length + cl.length;
   const wr = nClosed ? s$(cw) / (s$(cw) + s$(cl)) : 0;
