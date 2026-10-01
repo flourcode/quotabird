@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-04.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-04.1500** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -89,9 +89,11 @@ Every result hands off to the most useful next thing for that verdict, usually a
 
 ## Who's behind the site, for people and AI (Nov 4)
 
+- **Say Amazon, not AWS** (Mark's call, Nov 4): many readers don't know the abbreviation. Mark's bio, the description sentence and the kits say "Amazon". Job data from RepVue spells out "Amazon Web Services" (an "Amazon account manager" could read as retail or advertising). Links keep their real addresses.
+
 - **/privacy/**: what Google Analytics 4 records (pages and the usual visit details, plus named usage events with no content), what stays in the browser (everything typed; base, variable and quota in local storage key `qb-numbers`, cleared with "Clear them"), that shared links carry their numbers after the # and never reach the server or Google, and the outside services a visitor might click to (Calendly, LinkedIn). `PRIVACY_UPDATED` in make-tools.py: change it whenever the page changes, and update the page whenever tracking or storage changes.
 - **Every footer** carries a Privacy link and "Questions or security issues: mark@quotabird.com", added in the shared footer step (`chrome()`), so hand-written pages get them too. The 404 page has no footer by design.
-- **The one-sentence description**, used in the home meta description, the "Who is this for?" FAQ (visible and structured data, kept identical), structured data, and the top of llms.txt: "QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, a former AWS sales leader."
+- **The one-sentence description**, used in the home meta description, the "Who is this for?" FAQ (visible and structured data, kept identical), structured data, and the top of llms.txt: "QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, a former Amazon sales leader."
 - **Structured data on the home page:** WebSite (publisher Mark), Person (Mark: About page, photo, LinkedIn as the only sameAs; fedhoo.com removed because it's a different site, not a profile of Mark), Organization (QuotaBird, founder Mark, email), the tool list, and the FAQ. Don't add a company LinkedIn; there isn't one.
 - **Becoming a known entity happens off the site:** the Claude plugin directory listing (submitted, awaiting approval), LinkedIn posts that link to specific tools, podcast and guest appearances, and other people citing the methodology page. Don't create a Wikidata entry.
 

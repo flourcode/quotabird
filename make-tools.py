@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-04.0900'
+BUILD = '2026-11-04.1500'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -314,7 +314,7 @@ PARTNER = dict(
   handoff: (s) => s.total >= 55
     ? { overline: 'Is there a deal inside this partnership?', text: 'Run it through Deal Check. A real partner deal survives the same five questions any deal does.', href: '/deal/', label: 'Check your deal' }
     : { overline: 'How much of your number is leaning on them?', text: 'If this partner is in your coverage math, the math is wrong. Pipeline Check shows you by how much.', href: '/pipeline/', label: 'Check your pipeline' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I spent six years leading federal partner sales teams at AWS, and I sat on the partner side before that. Plenty of partnerships look great in the QBR and never produce anything. Tell me about yours." },
+  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I spent six years leading federal partner sales teams at Amazon, and I sat on the partner side before that. Plenty of partnerships look great in the QBR and never produce anything. Tell me about yours." },
   dm: (s) => `Mark, ran a partner through Partner Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure what to do with it. Worth 20 minutes?`,
 });''',
 )
@@ -2309,7 +2309,7 @@ KIT_BODY = '''
 KIT_CTA = '''
   <section class="kit-cta" aria-labelledby="kit-cta-h">
     <h2 id="kit-cta-h">Sometimes you just need another set of eyes</h2>
-    <p>I'm Mark. I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. If you're staring at a deal, a forecast, a rep problem or a number that doesn't make sense, tell me about it.</p>
+    <p>I'm Mark. I spent six years leading federal partner sales teams at Amazon, after plenty of years carrying a number myself. If you're staring at a deal, a forecast, a rep problem or a number that doesn't make sense, tell me about it.</p>
     <p class="kit-cta-terms">A free twenty-minute call, no pitch.</p>
     <div class="btn-row kit-cta-row">
       <a class="btn btn-primary btn-lg" id="kitBook" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=kit&amp;utm_content=kit_cta" target="_blank" rel="noopener">Chat with Mark</a>
@@ -2451,7 +2451,7 @@ LEADER_BODY = '''
 LEADER_CTA = '''
   <section class="kit-cta" aria-labelledby="leader-cta-h">
     <h2 id="leader-cta-h">Sometimes you just need another set of eyes</h2>
-    <p>I'm Mark. I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number myself. If you've got something you need to defend to your VP, send it over and we can talk it through.</p>
+    <p>I'm Mark. I spent six years leading federal partner sales teams at Amazon, after plenty of years carrying a number myself. If you've got something you need to defend to your VP, send it over and we can talk it through.</p>
     <p class="kit-cta-job">If this gets you into one better room, good enough.</p>
     <p class="kit-cta-terms">A free twenty-minute call, no pitch.</p>
     <div class="btn-row kit-cta-row">
@@ -2540,7 +2540,7 @@ SELLER_BODY = '''
   <section class="kit-ch" id="s-where">
     <h2>1. Where your quota came from</h2>
     <p>Most reps get a number and a kickoff slide and never find out how the number got made. You should, because you can't push back on a number you don't understand, and you can't plan against it either.</p>
-    <p>At a cloud provider the number almost always starts with prior year revenue, with a growth rate on top. At AWS that growth rate was usually set above the geo VP. By the time it got to your territory, nobody in your chain had actually picked the number. They just divided it up. SaaS works the same way with different words: last year's ARR or bookings, plus the growth the company promised its board.</p>
+    <p>At a cloud provider the number almost always starts with prior year revenue, with a growth rate on top. At Amazon that growth rate was usually set above the geo VP. By the time it got to your territory, nobody in your chain had actually picked the number. They just divided it up. SaaS works the same way with different words: last year's ARR or bookings, plus the growth the company promised its board.</p>
     <p>Every layer on the way down adds a little cushion. Most sales plans are over-assigned so a few misses don't sink the year, and a common planning rule of thumb is 20 to 30%. It's a big part of why only about half of AEs hit quota while the company still makes its number.</p>
     <p>Then find out what your number is measured in, because it changes everything:</p>
     <ul>
@@ -2841,7 +2841,7 @@ _ask = note_head('Ask Mark', _ask_desc, _ask_url).replace('| QuotaBird</title>',
 
   <div class="who ask-me">
     <img src="/mark.jpg" alt="Mark Flournoy" width="96" height="96" loading="lazy" decoding="async">
-    <p>I'm Mark. I spent six years leading federal partner sales teams at AWS, after plenty of years carrying a number
+    <p>I'm Mark. I spent six years leading federal partner sales teams at Amazon, after plenty of years carrying a number
       myself. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've
       probably never heard of.</p>
   </div>
@@ -2901,7 +2901,7 @@ _how = note_head('How Quotas Usually Get Built', "Where your sales quota probabl
     start from the same handful of things.</p>
 
   <h2>How a big company builds your number</h2>
-  <p>At a company the size of AWS, Microsoft or Google, your quota is the last step of a long chain. It usually runs in
+  <p>At a company the size of Amazon, Microsoft or Google, your quota is the last step of a long chain. It usually runs in
     this order:</p>
   <ol class="chain">
     <li><strong>The company number.</strong> Leadership commits to a growth target. Everything after this is that number, divided.</li>
@@ -2999,7 +2999,7 @@ def stat(value, label, emph=False):
     return f'<div class="stat{" emph" if emph else ""}"><div class="stat-value">{value}</div><div class="stat-label">{label}</div></div>'
 def stat_grid(cards):
     return '<div class="stat-grid">' + ''.join(stat(*c) for c in cards) + '</div>'
-_num = note_head('Quota by the Numbers', 'Sales quota and comp benchmarks with sources: how many reps hit quota, median quota and OTE, quota-to-OTE, pay mix, ramp, over-assignment, accelerators, and what reps at AWS and Microsoft report.', 'https://quotabird.com/quota-by-the-numbers/') + '''</head>
+_num = note_head('Quota by the Numbers', 'Sales quota and comp benchmarks with sources: how many reps hit quota, median quota and OTE, quota-to-OTE, pay mix, ramp, over-assignment, accelerators, and what reps at Amazon Web Services and Microsoft report.', 'https://quotabird.com/quota-by-the-numbers/') + '''</head>
 <body>
 
 <div class="wrap">
@@ -3027,8 +3027,8 @@ _num = note_head('Quota by the Numbers', 'Sales quota and comp benchmarks with s
     years. <a href="/quota/">Quota Check</a> puts your multiple next to these.</p>
 
   <h2>At the big cloud providers</h2>
-  ''' + stat_grid([('$280K', 'AWS Account Manager OTE'), ('$150K', 'AWS Account Manager base'), ('54:46', 'AWS Account Manager pay mix'),
-                   ('64%', 'of AWS Account Managers say they hit quota'), ('56%', 'of Microsoft Enterprise AEs say they did'), ('67%', 'of Microsoft SLED AEs say they did')]) + '''
+  ''' + stat_grid([('$280K', 'Amazon Web Services Account Manager OTE'), ('$150K', 'Amazon Web Services Account Manager base'), ('54:46', 'Amazon Web Services Account Manager pay mix'),
+                   ('64%', 'of Amazon Web Services Account Managers say they hit quota'), ('56%', 'of Microsoft Enterprise AEs say they did'), ('67%', 'of Microsoft SLED AEs say they did')]) + '''
   <p class="fine">RepVue, self-reported by current and former employees, 2026.</p>
   <p>These are reps rating their own employers, so treat them as a rough read. Many cloud-provider quotas are measured in consumption growth, which is why their multiples run far higher than SaaS; <a href="/how-quotas-get-built/">here's why</a>.</p>
 
@@ -3121,7 +3121,7 @@ _method = note_head("How QuotaBird's Numbers Work", "Where every range and bench
 
   <h3>Where the run-rate and whole-book ranges come from</h3>
   <p>One identity ties quota, pay and commission rate together: quota ÷ OTE equals the variable share of OTE divided by the commission rate at 100% attainment. It follows from the definition of a commission rate, so it holds for any plan.</p>
-  <p>With a 46% variable share, the 54:46 pay mix RepVue reports for AWS Account Managers:</p>
+  <p>With a 46% variable share, the 54:46 pay mix RepVue reports for Amazon Web Services account managers:</p>
   ''' + _mt(['Measured on', 'Typical rate on the number', 'Implied quota ÷ OTE'], [
       ['Bookings', 'about 8 to 12%', 'about 4 to 6×'],
       ['Run rate (consumption growth)', 'about 1.5 to 3%', 'about 15 to 30×'],
@@ -3133,7 +3133,7 @@ _method = note_head("How QuotaBird's Numbers Work", "Where every range and bench
       ['48% of AEs hit quota in 2026 (51% in 2024, 66% in 2022)', 'Published data', 'Bridge Group, 2026 and 2024'],
       ['$960K median AE quota, $200K median OTE, 4.6× quota to OTE', 'Published data', 'Bridge Group, 2026, 158 B2B companies'],
       ['6.2 months for a new AE to ramp', 'Published data', 'Bridge Group, 2026'],
-      ['Attainment and pay for all, enterprise, federal and SLED AEs, and AWS and Microsoft roles', 'Published data, self-reported', 'RepVue, September 2026 snapshot'],
+      ['Attainment and pay for all, enterprise, federal and SLED AEs, and Amazon Web Services and Microsoft roles', 'Published data, self-reported', 'RepVue, September 2026 snapshot'],
       ['43.8% of sellers hit quota across 272 software companies', 'Published data', 'RepVue Cloud Sales Index, Q4 2025. It covers software sellers, not cloud-provider consumption sellers.'],
       ['20 to 30% over-assignment', 'Common rule of thumb', 'Mostly Metrics and planning practice'],
       ['1.5 to 2× accelerators above quota', 'Common rule of thumb', 'QuotaPath and comp plan guides'],
@@ -3437,7 +3437,7 @@ for g, h, n, d in TOOLS:
     if g != last: groups.append([g, []]); last = g
     groups[-1][1].append((h, n, d))
 site = 'https://quotabird.com'
-lines = ['# QuotaBird', '', '> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at AWS. ' + f'{len([1 for g, h, n, d in TOOLS])} one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.', '',
+lines = ['# QuotaBird', '', '> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. ' + f'{len([1 for g, h, n, d in TOOLS])} one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.', '',
          'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor\'s own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Privacy: https://quotabird.com/privacy/', '']
 for g, items in groups:
     lines.append(f'## {g}'); lines.append('')
