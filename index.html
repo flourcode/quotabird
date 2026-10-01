@@ -200,10 +200,10 @@
         },
         {
           "@type": "Question",
-          "name": "What does it cost?",
+          "name": "Is there a Claude plugin?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The tools are free. If you want to talk something through, the first conversation is free too."
+            "text": "Yes. Search for QuotaBird in Claude's plugin directory. It runs thirteen of these checks inside Claude, from quota and pipeline to comp plans and offers, and it works alongside Anthropic's Sales plugin: that one runs the sales day from your CRM, and QuotaBird checks the number. What does it cost? The tools are free. If you want to talk something through, the first conversation is free too."
           }
         }
       ]
@@ -211,7 +211,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="site.50961ab4.css">
+<link rel="stylesheet" href="site.bb30245e.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -376,6 +376,9 @@
       <div class="body">No. Everything runs in your browser, so there's no account, no CRM connection and nothing sent to a server. QuotaBird uses Google Analytics to count page views, but it never sees your answers or your numbers. Base, variable and quota can be remembered in your own browser so the next tool fills them in. Nothing leaves the page unless you share a result. The details are on the <a href="/privacy/">privacy page</a>.</div></details>
     <details class="exp"><summary>Is any of this AI?</summary>
       <div class="body">No. It's questions and arithmetic, so the same inputs always give the same answer, and it shows the math. Your forecast has enough imagination in it already.</div></details>
+    <details class="exp"><summary>Is there a Claude plugin?</summary>
+      <div class="body">Yes. Search for QuotaBird in Claude's plugin directory. It runs thirteen of these checks inside Claude, from quota and pipeline to comp plans and offers, and it works alongside Anthropic's Sales plugin: that one runs the sales day from your CRM, and QuotaBird checks the number.</div>
+    </details>
     <details class="exp"><summary>What does it cost?</summary>
       <div class="body">The tools are free. If you want to talk something through, the first conversation is free too.</div></details>
   </div>
@@ -389,7 +392,7 @@
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-04.1500';
+window.QB_BUILD = '2026-11-05.0900';
 // the Tools menu closes on an outside tap or Escape (the tool pages get this from their engines)
 document.addEventListener('click', (e) => { document.querySelectorAll('details.menu[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; }); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('details.menu[open]').forEach(d => { d.open = false; d.querySelector('summary').focus(); }); });

@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-04.1500'
+BUILD = '2026-11-05.0900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -2511,7 +2511,7 @@ open('leader/index.html', 'w').write(_leader)
 print('leader kit', len(_leader))
 
 
-SELLER_PAGES = '7'   # set from the rendered PDF
+SELLER_PAGES = '8'   # set from the rendered PDF
 # ────────────────────────────── THE SELLER'S FIELD KIT (/seller/) ──────────────────────────────
 # Bottom rung of the ladder: carry the number. Not sales training; what a working seller reaches for in a bad week.
 SELLER_BODY = '''
@@ -2526,6 +2526,7 @@ SELLER_BODY = '''
         <li><a href="#s-crazy">Your quota feels crazy</a><span>Chapter 2</span></li>
         <li><a href="#s-crush">Tough number, now what?</a><span>Chapter 3</span></li>
         <li><a href="#s-deal">Is it a real deal?</a><span>Chapter 4</span></li>
+        <li><a href="#s-sep30">Federal deal, year end</a><span>Chapter 12</span></li>
         <li><a href="#s-pipe">Not enough pipeline</a><span>Chapter 5</span></li>
         <li><a href="#s-big">One deal carries it</a><span>Chapter 6</span></li>
         <li><a href="#s-thread">Only one contact</a><span>Chapter 7</span></li>
@@ -2730,6 +2731,28 @@ SELLER_BODY = '''
       <p class="sheet-label">What I need from you, and by when</p><div class="lines l1"></div>
     </div>
   </section>
+  <section class="kit-ch" id="s-sep30">
+    <h2>12. Working back from September 30</h2>
+    <p>The federal fiscal year ends September 30. Most one-year money that isn't obligated by then can't be used for new work, which is why so many federal deals close in September, and why so many slip into October.</p>
+    <p>The date that matters usually isn't September 30. It's the contracting office's cutoff for getting a package in the door, and many offices set it in the summer so they have time to award. Ask your customer for their office's year-end dates in the spring, not in August.</p>
+    <p>Then work backward from that cutoff. Before the package goes in, the customer needs the requirement written down, the money identified on a specific line, a way to buy it (a contract vehicle they can use, a task order on an existing contract, or a marketplace purchase), and the approvals lined up. Each of those takes weeks, and none of them is your job, which is exactly why they need dates and names on them.</p>
+    <p>If the year starts under a continuing resolution, new starts are often on hold until a budget passes. Plan for a slow first quarter and build pipeline anyway.</p>
+    <p>Put the dates on one page with the customer. If they won't put dates on it, it isn't a September deal yet. Run it through Deal Check.</p>
+    <div class="sheet">
+      <h3>Worksheet: Working back from September 30</h3>
+      <p class="sheet-meta">Deal __________________ &nbsp; Contracting office cutoff __________ &nbsp; <span class="sheet-tool">Online: quotabird.com/deal</span></p>
+      <div class="mtable"><table class="ws"><thead><tr><th>Step, latest first</th><th>Date</th><th>Customer owner</th><th>Done</th></tr></thead><tbody>
+        <tr><td>Award signed</td><td></td><td></td><td></td></tr>
+        <tr><td>Package in to the contracting office</td><td></td><td></td><td></td></tr>
+        <tr><td>Requirement written down</td><td></td><td></td><td></td></tr>
+        <tr><td>Money identified on a specific line</td><td></td><td></td><td></td></tr>
+        <tr><td>Buying route agreed</td><td></td><td></td><td></td></tr>
+        <tr><td>Approvals lined up</td><td></td><td></td><td></td></tr>
+        <tr><td>Technical evaluation finished</td><td></td><td></td><td></td></tr>
+      </tbody></table></div>
+      <p class="sheet-foot">Any blank date is the next conversation with the customer.</p>
+    </div>
+  </section>
 '''
 SELLER_CTA = '''
   <section class="kit-cta" aria-labelledby="seller-cta-h">
@@ -2771,7 +2794,7 @@ _seller = note_head("The Seller's Field Kit", _sl_desc, _sl_url).replace("| Quot
     </div>
     <div class="kit-promo-body">
       <span class="pill">Free printable</span>
-      <p class="kit-hero-meta">__PAGES__ pages, prints on letter or A4. Eleven short chapters and eight worksheets.</p>
+      <p class="kit-hero-meta">__PAGES__ pages, prints on letter or A4. Twelve short chapters and nine worksheets.</p>
       <div class="kit-promo-actions">
         <a class="btn btn-primary btn-lg btn-icon" href="/seller/seller-field-kit.pdf" download>Download the PDF{_DL_ICON}</a>
         <button class="btn btn-text" id="kitPrint" type="button">Print this page</button>
@@ -3198,6 +3221,7 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
   <h2>What stays in your browser</h2>
   <ul>
     <li><strong>Your numbers and answers.</strong> Every calculation happens on your device. Nothing you type goes to a server or a CRM.</li>
+    <li><strong>A pipeline export.</strong> If you load a CSV into Pipeline Check, it's read in your browser to count the deals. The file is never uploaded, and nothing in it is kept after you leave the page.</li>
     <li><strong>Base, variable and quota.</strong> If you type them into one tool, your browser remembers them so the next tool can fill them in. They're stored only in your browser's local storage, on your device. Use "Clear them" on any tool that shows them, or clear your browser's site data for quotabird.com.</li>
   </ul>
 

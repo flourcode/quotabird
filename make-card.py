@@ -162,7 +162,7 @@ brand(im, d, M, M - 6)
 LW = 590
 if arg in KITCARDS:
     K = KITCARDS[arg]; title = ' '.join(K['title']); label = 'FREE PRINTABLE'; url = K['url']
-    pages = {'seller': '7', 'kit': '11', 'leader': '3'}[arg]
+    pages = {'seller': '8', 'kit': '11', 'leader': '3'}[arg]
     card = (pages + ' pages', 'Free to print', ' '.join(K['sub']), 'grey')
 else:
     C = CARDS[arg]; title = ' '.join(x for x in C['headline'] if x).replace("  ", " "); url = C['url']
