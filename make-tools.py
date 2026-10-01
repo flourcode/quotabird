@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-06.1700'
+BUILD = '2026-11-06.1900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -3295,7 +3295,7 @@ def ask_block(src):
   </section>
 '''
 PROOF = '''  <h2>The specifics</h2>
-  <p>As a Marine officer I did government technology and acquisition work, including as a COTR, so I've sat on the buying side. Then about fifteen years in enterprise technology sales at Red Hat, F5 and Amazon. At Amazon I led Federal Partner Sales across Defense, Federal Civilian, Federal Financial and National Security: about 25 partner sales managers carrying a shared goal above $1B. Along the way I closed a $54M four-year committed cloud agreement with a major DoD systems integrator, and made President's Circle at F5.</p>
+  <p>As a Marine officer I did government technology and acquisition work, including as a COTR, so I've sat on the buying side. Then about fifteen years in enterprise technology sales at Red Hat, F5 and Amazon. At Amazon I was a Senior Sales Manager leading federal partner sales teams covering Defense, Federal Civilian, Federal Financial and National Security: about 25 partner sales managers working toward a shared goal above $1B. Along the way I closed a $54M four-year committed cloud agreement with a major DoD systems integrator, and made President's Circle at F5.</p>
   <p>Seller, manager, government guy, partner guy. And I built these tools, which is probably the best evidence of how I think about these problems.</p>
 '''
 def offer_plain(oid, name, price, paras, cta_label, subject):
@@ -3347,7 +3347,7 @@ _work = note_head('Work with Mark', "Need a second opinion on a deal, quota, ter
   </section>
 ''' + ask_plain('work') + '''
   <h2>A few specifics</h2>
-  <p>At Amazon I led Federal Partner Sales across Defense, Federal Civilian, Federal Financial and National Security, with about 25 partner sales managers and a shared goal over $1B. I closed a $54M four-year cloud agreement with a major DoD systems integrator. Before Amazon I was at F5, where I made President's Circle, and Red Hat. In the Marine Corps I worked on the government side of technology buying, including as a COTR. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've probably never heard of.</p>
+  <p>At Amazon I was a Senior Sales Manager leading federal partner sales teams covering Defense, Federal Civilian, Federal Financial and National Security, about 25 partner sales managers working toward a shared goal of more than $1B. I closed a $54M four-year cloud agreement with a major DoD systems integrator. Before Amazon I was at F5, where I made President's Circle, and Red Hat. In the Marine Corps I worked on the government side of technology buying, including as a COTR. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've probably never heard of.</p>
 </article>
 
 ''' + NOTE_TAIL
@@ -3361,7 +3361,7 @@ _fed = note_head('Federal GTM', "Trying to figure out whether there's a real fed
   <span class="overline">Federal GTM</span>
   <h1>You think you have a federal business? Let's find out.</h1>
   <p>A federal customer who likes your product is a good start. It turns into a business when there's money for it, a legal way to buy it and a reason to do it this year. Most of the federal plans I've seen were built on the first part and assumed the rest.</p>
-  <p>I spent 20 years as a Marine officer, some of it on the government side of technology buying, and later led Federal Partner Sales at Amazon across Defense, Federal Civilian, Federal Financial and National Security. I've seen how this gets bought from both sides. If you want me to look at your federal plan, your pipeline or a federal business you're thinking about buying, send it over. I'll tell you what I think.</p>
+  <p>I spent 20 years as a Marine officer, some of it on the government side of technology buying, and later, as a Senior Sales Manager at Amazon, led federal partner sales teams covering Defense, Federal Civilian, Federal Financial and National Security. I've seen how this gets bought from both sides. If you want me to look at your federal plan, your pipeline or a federal business you're thinking about buying, send it over. I'll tell you what I think.</p>
   <p class="offer-cta"><a class="btn btn-primary" href="''' + _mail('Federal second opinion') + '''">Send it over</a> <a class="offer-alt" href="#ask">or start with a free 20 minutes</a></p>
 
   <h2>Who this is usually for</h2>
