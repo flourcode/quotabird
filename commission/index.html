@@ -86,7 +86,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.f77e50a6.css">
+<link rel="stylesheet" href="../site.60284d13.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -187,15 +187,15 @@
   <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../calc.90387e77.js"></script>
+<script src="../calc.c2f63bf9.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-06.2330';
+window.QB_BUILD = '2026-11-07.0900';
 CalcTool({
   slug: 'commission', answers: {"Take-home": "That's your take-home."}, name: 'Commission Check', url: 'https://quotabird.com/commission/',
   fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'credit', kind: 'pct' }, { id: 'mult', kind: 'pct' }, { id: 'buffer', kind: 'pct' }],
   compute(v) {
-    if (!(v.deal > 0 && v.rate > 0)) return null;
+    if (!(v.deal > 0 && v.rate > 0)) return { msg: v.deal > 0 ? 'Add your commission rate, as a percent.' : v.rate > 0 ? 'Add the deal size.' : 'Add the deal size and your commission rate.' };
     const money = (n) => n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3).toLocaleString() + 'K' : '$' + Math.round(n).toLocaleString();
     const tax = v.buffer > 0 ? v.buffer : .30;
     const credit = v.credit > 0 ? v.credit : 1, mult = v.mult > 0 ? v.mult : 1, credited = v.deal * credit * mult, split = credit !== 1 || mult !== 1;

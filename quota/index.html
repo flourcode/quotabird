@@ -94,7 +94,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.f77e50a6.css">
+<link rel="stylesheet" href="../site.60284d13.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -216,15 +216,15 @@
   <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../calc.90387e77.js"></script>
+<script src="../calc.c2f63bf9.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-06.2330';
+window.QB_BUILD = '2026-11-07.0900';
 CalcTool({
   slug: 'quota', answers: {"Low": "It's unusually low.", "Favorable": "No. It's favorable.", "Standard": "No. It's standard.", "A stretch": "Not crazy. A stretch.", "Aggressive": "Close. It's aggressive.", "Crazy": "Yes. It's crazy."}, name: 'Quota Check', url: 'https://quotabird.com/quota/',
   fields: [{ id: 'basis', kind: 'choice', example: 'cloud' }, { id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],
   compute(v) {
-    if (!(v.base > 0 && v.variable > 0 && v.quota > 0)) return null;
+    if (!(v.base > 0 && v.variable > 0 && v.quota > 0)) { const m = [v.quota > 0 ? '' : 'your quota', v.base > 0 ? '' : 'your base', v.variable > 0 ? '' : 'your variable'].filter(Boolean); return { msg: 'Add ' + (m.length > 1 ? m.slice(0, -1).join(', ') + ' and ' + m[m.length - 1] : m[0]) + '.' }; }
     const ote = v.base + v.variable, mult = v.quota / ote, share = v.variable / ote, rate = v.variable / v.quota;
     const X = (mult >= 10 ? Math.round(mult) : mult.toFixed(1)) + '×';
     const pct = (r) => Math.round(r * 100) + '%';

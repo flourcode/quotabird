@@ -86,7 +86,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.f77e50a6.css">
+<link rel="stylesheet" href="../site.60284d13.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -184,15 +184,15 @@
   <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../calc.90387e77.js"></script>
+<script src="../calc.c2f63bf9.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-06.2330';
+window.QB_BUILD = '2026-11-07.0900';
 CalcTool({
   slug: 'discount', answers: {"Normal": "This much is normal.", "Meaningful": "This much needs a trade.", "Expensive": "This much is expensive.", "Giveaway": "This much is too much."}, name: 'Discount Check', url: 'https://quotabird.com/discount/',
   fields: [{ id: 'list', kind: 'money' }, { id: 'disc', kind: 'pct' }, { id: 'margin', kind: 'pct' }, { id: 'rate', kind: 'pct' }],
   compute(v) {
-    if (!(v.list > 0 && v.disc > 0)) return null;
+    if (!(v.list > 0 && v.disc > 0)) return { msg: v.list > 0 ? 'Add the discount, as a percent of list. It has to be under 100%.' : 'Add the list price.' };
     const pct = (r) => Math.round(r * 100) + '%';
     const money = (n) => { const neg = n < 0; n = Math.abs(n); const t = n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n); return (neg ? '-' : '') + t; };
     const discounted = v.list * (1 - v.disc), given = v.list - discounted;

@@ -94,7 +94,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="/site.f77e50a6.css">
+<link rel="stylesheet" href="/site.60284d13.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="/analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -130,16 +130,13 @@
           <button class="chip" data-win="25" type="button">25%</button>
           <button class="chip" data-win="33" type="button">33%</button>
         </div>
-        <div class="tf-grid">
-          <label class="tf"><span class="tf-label">Average deal size</span>
-            <input id="size" type="text" inputmode="decimal" value="$500K"></label>
-          <label class="tf"><span class="tf-label">Sellers on quota</span>
-            <input id="reps" type="text" inputmode="numeric" value="8"></label>
-        </div>
-        <label class="tf"><span class="tf-label">Already closed this year <small>(optional)</small></span>
-          <input id="closed" type="text" inputmode="decimal" placeholder="$0"></label>
-
         <details class="more-fields" id="pmore"><summary>More details <span>optional</span></summary>
+        <label class="tf"><span class="tf-label">Average deal size</span>
+          <input id="size" type="text" inputmode="decimal" value="$500K"></label>
+        <label class="tf"><span class="tf-label">Sellers on quota</span>
+          <input id="reps" type="text" inputmode="numeric" value="8"></label>
+        <label class="tf"><span class="tf-label">Already closed this year</span>
+          <input id="closed" type="text" inputmode="decimal" placeholder="$0"></label>
         <label class="tf"><span class="tf-label">Biggest single deal</span>
           <input id="big" type="text" inputmode="decimal" placeholder="$0"></label>
         <label class="tf"><span class="tf-label">Weighted pipeline from your CRM</span>
@@ -230,7 +227,7 @@
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-06.2330';
+window.QB_BUILD = '2026-11-07.0900';
 const track = (n) => { if (typeof window.qbTrack === 'function') window.qbTrack(n); else (window.qbTrackQ = window.qbTrackQ || []).push(n); };
 const esc = (s) => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const $ = (id) => document.getElementById(id);
@@ -368,7 +365,7 @@ function readHash() {
   const set = (id, v, fmt) => { $(id).value = v ? fmt(v) : ''; };
   set('goal', parseMoney(p.get('t')), fullMoney); set('pipe', parseMoney(p.get('p')), fullMoney);
   set('win', parseRate(p.get('w')), pct); set('size', parseMoney(p.get('s')), fullMoney);
-  set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), fullMoney); set('big', parseMoney(p.get('b')), fullMoney); set('wtd', parseMoney(p.get('v')), fullMoney); if (p.get('b') || p.get('v')) $('pmore').open = true;
+  set('reps', parseCount(p.get('n')), String); set('closed', parseMoney(p.get('c')), fullMoney); set('big', parseMoney(p.get('b')), fullMoney); set('wtd', parseMoney(p.get('v')), fullMoney); if (p.get('b') || p.get('v') || p.get('s') || p.get('n') || p.get('c')) $('pmore').open = true;
   yearEnd = p.get('y') === 'fy' ? 'fy' : 'cy';
   // Quota Check sends only a target: start from the 3X ballpark it quoted, so the page opens on a verdict
   if (p.has('t') && !p.has('p')) { const t = parseMoney(p.get('t')); if (t > 0) {
@@ -454,8 +451,8 @@ function render() {
       <h3>Stuck on where it comes from?</h3>
       <p>I'm Mark. The math shows you how big the hole is. "Prospect harder" isn't a plan. Send me the multiples and where you think the rest is coming from.</p>
       <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=pipeline&utm_content=after_score&a1=${encodeURIComponent(bookNote(s))}" target="_blank" rel="noopener" style="margin-top:14px;">Grab 20 minutes</a>
-      <button class="btn btn-lg btn-full" id="dmBtn" type="button" style="margin-top:8px;">DM me on LinkedIn</button>
-      <p class="fine" style="text-align:center;margin:8px 0 0;">It's free, and if I can't help, I'll say so. The DM button copies a short note you can paste.</p>
+      <p class="dm-alt"><button class="linkbtn" id="dmBtn" type="button">or message me on LinkedIn</button></p>
+      <p class="fine" style="text-align:center;margin:8px 0 0;">It's free, and if I can't help, I'll say so. The LinkedIn link copies a short note you can paste.</p>
       ${s.reps > 1 ? `<p class="offer-line">Want to run the same reality check across the whole team? <a href="/work-with-mark/#team-reality-check">Team Reality Check →</a></p>` : ''}
     </div>
         ${s.ratio < .5 ? `<div class="card card-accent">
@@ -635,7 +632,7 @@ function xApply(remap) {
   if (owners && owners.size) set('reps', owners.size, String);
   const wp = counted.filter(r => r.prob != null);   // CRM probabilities fill the weighted comparison only, never the coverage math
   if (XMAP.prob >= 0 && wp.length === counted.length && counted.length) set('wtd', wp.reduce((t, r) => t + r.amt * r.prob, 0)); else set('wtd', 0);
-  if (parseMoney($('big').value) || parseMoney($('wtd').value)) $('pmore').open = true;
+  $('pmore').open = true;   // an export fills these, so show them
   // a win rate from closed deals, offered, never filled in silently, and only with enough deals behind it
   const cw = XROWS.filter(r => xWon(r.stage)), cl = XROWS.filter(r => xLost(r.stage)), nClosed = cw.length + cl.length;
   const wr = nClosed ? s$(cw) / (s$(cw) + s$(cl)) : 0;

@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-06.2330'
+BUILD = '2026-11-07.0900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -1504,7 +1504,7 @@ CALCS = [
   slug: 'quota-case', answers: {"Supported": "Yes. It already adds up.", "Tight": "You're a little short.", "You've got a gap": "You've got a gap.", "Can't see it": "You've got a big gap."}, name: 'Quota Case', url: 'https://quotabird.com/quota-case/',
   fields: [{ id: 'basis', kind: 'choice' }, { id: 'lastyear', kind: 'money' }, { id: 'oneoff', kind: 'money' }, { id: 'runrate', kind: 'money' }, { id: 'pipeline', kind: 'money' }, { id: 'win', kind: 'pct' }, { id: 'repsthen', kind: 'count' }, { id: 'repsnow', kind: 'count' }, { id: 'quota', kind: 'money' }],
   compute(v) {
-    if (!(v.quota > 0 && v.lastyear > 0)) return null;
+    if (!(v.quota > 0 && v.lastyear > 0)) return { msg: v.lastyear > 0 ? 'Add the new quota.' : v.quota > 0 ? "Add last year's number, on the same measure as the quota." : "Add last year's number and the new quota, on the same measure." };
     const money = (n) => { const a = Math.abs(n); return (n < 0 ? '-' : '') + (a >= 1e6 ? '$' + (a / 1e6).toFixed(1).replace(/\\.0$/, '') + 'M' : a >= 1e3 ? '$' + Math.round(a / 1e3) + 'K' : '$' + Math.round(a)); };
     const pct = (r) => Math.round(r * 100) + '%';
     const bookings = v.basis === 'saas';
@@ -1570,7 +1570,10 @@ CALCS = [
   slug: 'commit', answers: {"Overage": "Yes, and then some.", "On pace": "Yes. They're on pace.", "Behind": "Not at this pace.", "Short": "No. They'll fall short.", "Way short": "No. Not even close."}, name: 'Commit Check', url: 'https://quotabird.com/commit/',
   fields: [{ id: 'commit', kind: 'money' }, { id: 'term', kind: 'count' }, { id: 'elapsed', kind: 'count' }, { id: 'used', kind: 'money' }, { id: 'monthly', kind: 'money' }],
   compute(v) {
-    if (!(v.commit > 0 && v.term > 0 && v.elapsed > 0 && v.elapsed < v.term && v.used >= 0)) return null;
+    if (!(v.commit > 0)) return { msg: 'Add the total commit.' };
+    if (!(v.term > 0)) return { msg: 'Add the length of the commit, in months.' };
+    if (!(v.elapsed > 0)) return { msg: 'Add how many months into the commit they are.' };
+    if (v.elapsed >= v.term) return { msg: 'Months in has to be less than the term. If the term is over, compare what they spent with the commit.' };
     const pct = (r) => Math.round(r * 100) + '%';
     const money = (n) => { const neg = n < 0; n = Math.abs(n); const t = n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n); return (neg ? '-' : '') + t; };
     const left = v.term - v.elapsed;
@@ -1624,7 +1627,7 @@ CALCS = [
   slug: 'quota', answers: {"Low": "It's unusually low.", "Favorable": "No. It's favorable.", "Standard": "No. It's standard.", "A stretch": "Not crazy. A stretch.", "Aggressive": "Close. It's aggressive.", "Crazy": "Yes. It's crazy."}, name: 'Quota Check', url: 'https://quotabird.com/quota/',
   fields: [{ id: 'basis', kind: 'choice', example: 'cloud' }, { id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'quota', kind: 'money' }, { id: 'closed', kind: 'money' }],
   compute(v) {
-    if (!(v.base > 0 && v.variable > 0 && v.quota > 0)) return null;
+    if (!(v.base > 0 && v.variable > 0 && v.quota > 0)) { const m = [v.quota > 0 ? '' : 'your quota', v.base > 0 ? '' : 'your base', v.variable > 0 ? '' : 'your variable'].filter(Boolean); return { msg: 'Add ' + (m.length > 1 ? m.slice(0, -1).join(', ') + ' and ' + m[m.length - 1] : m[0]) + '.' }; }
     const ote = v.base + v.variable, mult = v.quota / ote, share = v.variable / ote, rate = v.variable / v.quota;
     const X = (mult >= 10 ? Math.round(mult) : mult.toFixed(1)) + '×';
     const pct = (r) => Math.round(r * 100) + '%';
@@ -1672,7 +1675,7 @@ CALCS = [
   slug: 'discount', answers: {"Normal": "This much is normal.", "Meaningful": "This much needs a trade.", "Expensive": "This much is expensive.", "Giveaway": "This much is too much."}, name: 'Discount Check', url: 'https://quotabird.com/discount/',
   fields: [{ id: 'list', kind: 'money' }, { id: 'disc', kind: 'pct' }, { id: 'margin', kind: 'pct' }, { id: 'rate', kind: 'pct' }],
   compute(v) {
-    if (!(v.list > 0 && v.disc > 0)) return null;
+    if (!(v.list > 0 && v.disc > 0)) return { msg: v.list > 0 ? 'Add the discount, as a percent of list. It has to be under 100%.' : 'Add the list price.' };
     const pct = (r) => Math.round(r * 100) + '%';
     const money = (n) => { const neg = n < 0; n = Math.abs(n); const t = n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3) + 'K' : '$' + Math.round(n); return (neg ? '-' : '') + t; };
     const discounted = v.list * (1 - v.disc), given = v.list - discounted;
@@ -1720,7 +1723,7 @@ CALCS = [
   slug: 'pay', answers: {"Real upside": "Yes, it pays for beating the number.", "Some upside": "A little extra above 100%.", "Straight line": "It pays in a straight line.", "Thin upside": "Not much above 100%.", "Capped": "The cap takes the upside."}, name: 'Pay Check', url: 'https://quotabird.com/pay/',
   fields: [{ id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'accel', kind: 'pctx' }, { id: 'start', kind: 'pctx' }, { id: 'cap', kind: 'pctx' }, { id: 'threshold', kind: 'pct' }],
   compute(v) {
-    if (!(v.variable > 0)) return null;
+    if (!(v.variable > 0)) return { msg: 'Add your target variable at 100% of quota.' };
     const base = v.base > 0 ? v.base : 0;
     const money = (n) => n >= 1e6 ? '$' + parseFloat((n / 1e6).toFixed(2)) + 'M' : '$' + Math.round(n / 1e3) + 'K';
     const pct = (r) => Math.round(r * 100) + '%';
@@ -1769,7 +1772,7 @@ CALCS = [
   slug: 'offer', share: { baseA: 'base', varA: 'variable' }, answers: {"Close": "About the same money.", "A pays more": "Offer A pays more in a normal year.", "B pays more": "Offer B pays more in a normal year."}, name: 'Offer Check', url: 'https://quotabird.com/offer/',
   fields: [{ id: 'baseA', kind: 'money' }, { id: 'varA', kind: 'money' }, { id: 'rampA', kind: 'count' }, { id: 'guarA', kind: 'pctx' }, { id: 'baseB', kind: 'money' }, { id: 'varB', kind: 'money' }, { id: 'rampB', kind: 'count' }, { id: 'guarB', kind: 'pctx' }, { id: 'attain', kind: 'pctx' }],
   compute(v) {
-    if (!(v.baseA > 0 && v.baseB > 0 && v.varA >= 0 && v.varB >= 0)) return null;
+    if (!(v.baseA > 0 && v.baseB > 0)) return { msg: v.baseA > 0 ? "Add Offer B's base." : v.baseB > 0 ? "Add Offer A's base." : "Add both offers' base and variable." };
     const money = (n) => n >= 1e6 ? '$' + parseFloat((n / 1e6).toFixed(2)) + 'M' : '$' + Math.round(n / 1e3) + 'K';
     const at = v.attain > 0 ? v.attain : .85;
     const year1 = (base, vari, ramp, guar) => { const r = Math.min(12, ramp || 0); return base + vari / 12 * (r * (guar > 0 ? guar : at * .5) + (12 - r) * at); };
@@ -1812,7 +1815,7 @@ CALCS = [
   slug: 'commission', answers: {"Take-home": "That's your take-home."}, name: 'Commission Check', url: 'https://quotabird.com/commission/',
   fields: [{ id: 'deal', kind: 'money' }, { id: 'rate', kind: 'pct' }, { id: 'credit', kind: 'pct' }, { id: 'mult', kind: 'pct' }, { id: 'buffer', kind: 'pct' }],
   compute(v) {
-    if (!(v.deal > 0 && v.rate > 0)) return null;
+    if (!(v.deal > 0 && v.rate > 0)) return { msg: v.deal > 0 ? 'Add your commission rate, as a percent.' : v.rate > 0 ? 'Add the deal size.' : 'Add the deal size and your commission rate.' };
     const money = (n) => n >= 1e6 ? '$' + (n / 1e6).toFixed(2).replace(/\\.?0+$/, '') + 'M' : n >= 1e3 ? '$' + Math.round(n / 1e3).toLocaleString() + 'K' : '$' + Math.round(n).toLocaleString();
     const tax = v.buffer > 0 ? v.buffer : .30;
     const credit = v.credit > 0 ? v.credit : 1, mult = v.mult > 0 ? v.mult : 1, credited = v.deal * credit * mult, split = credit !== 1 || mult !== 1;
@@ -3253,7 +3256,7 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
   <ul>
     <li><strong>Booking a call</strong> opens Calendly, which collects what you enter there under its own privacy policy.</li>
     <li><strong>Sending a note on LinkedIn</strong> happens on LinkedIn, under its own privacy policy. The DM button only copies a note to your clipboard.</li>
-    <li><strong>Email</strong> to mark@quotabird.com is read by Mark and not shared.</li>
+    <li><strong>Email</strong> to mark@quotabird.com is read by Mark and treated as confidential. Please don't send classified, export-controlled or restricted information. The details are on the <a href="/work-with-mark/">Work with Mark</a> page.</li>
   </ul>
 
   <h2>What QuotaBird doesn't do</h2>
@@ -3314,6 +3317,9 @@ def ask_plain(src):
     <p class="offer-cta"><a class="btn btn-primary" href="{CAL}{src}&utm_content=page" target="_blank" rel="noopener">Grab 20 minutes</a> <a class="offer-alt" href="https://www.linkedin.com/in/markflournoy/" rel="noopener">or message me on LinkedIn</a></p>
   </section>
 '''
+CONF_BLOCK = '''  <h2>Confidentiality</h2>
+  <p>I treat what you share with me as confidential and don't share company, deal, personnel or customer-specific information without your permission. For company engagements, I'm happy to sign a reasonable NDA. Please don't send me classified information, export-controlled material, government-sensitive information you aren't authorized to share, or anything your employer's policies prohibit you from sharing.</p>
+'''
 _work = note_head('Work with Mark', "Need a second opinion on a deal, quota, territory, pipeline or comp plan? Send it over and I'll tell you what I think. Paid help starts at $200; the tools stay free.", 'https://quotabird.com/work-with-mark/') + '''</head>
 <body>
 
@@ -3331,21 +3337,23 @@ _work = note_head('Work with Mark', "Need a second opinion on a deal, quota, ter
   <p>I'm retired now, so I get to be selective about what I work on. I still like sales problems, especially the ones where something doesn't quite add up.</p>
   <p>If you want me to take a look at a deal, quota, territory, pipeline, comp plan or whatever else is bothering you, send it over. I'll tell you what I think.</p>
   <p class="offer-cta"><a class="btn btn-primary" href="''' + _mail('A second opinion') + '''">Send it over</a> <a class="offer-alt" href="#ask">or start with a free 20 minutes</a></p>
+  <p class="how-note">Send me a few lines about the problem and whatever numbers or documents you can share, at <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>. I usually reply within one business day with a couple of times. The $200 and $600 sessions are paid with a link I'll send you. Manager Wingman, team sessions and anything a company pays for are invoiced. The written recap comes within two business days of the session.</p>
 
   <h2>What it costs</h2>
   <p>The tools on this site are free and they'll stay that way. If you want my time, here's how that usually works.</p>
 ''' + offer_plain('sales-reality-check', 'Sales Reality Check', '$200', [
     "One problem, like a deal, a quota, a territory, a pipeline, a comp plan, a QBR or a job offer. We spend an hour on it together, and afterward I send you a short write-up of what I think, what I'd push back on and what I'd do next.",
-    "I priced it so you can pay for it yourself without asking anybody."], 'Send it over', 'Sales Reality Check') + offer_plain('manager-wingman', 'Manager Wingman', 'Starting at $750 a month', [
+    "I priced it so you can pay for it yourself without asking anybody. You pay with a link I send you, and the written recap comes within two business days."], 'Send it over', 'Sales Reality Check') + offer_plain('manager-wingman', 'Manager Wingman', 'Starting at $750 a month', [
     "For sales managers who want somebody outside the company to look at what they're seeing. We meet twice a month, and in between I'll look at a forecast, a rep situation, a territory question or a spreadsheet before an important meeting.",
-    "Think of it as a former sales leader you can call when something looks off."], 'Ask about Manager Wingman', 'Manager Wingman') + offer_plain('team-reality-check', 'Team Reality Check', 'Starting at $1,500', [
+    "Think of it as a former sales leader you can call when something looks off. I usually respond within one business day.",
+    "It's month to month and invoiced monthly. Cancel anytime before the next billing date. There's no long-term contract. Use me while I'm useful, and stop when I'm not."], 'Ask about Manager Wingman', 'Manager Wingman') + offer_plain('team-reality-check', 'Team Reality Check', 'Starting at $1,500', [
     "For a sales leader who wants the same kind of look across the whole team: the pipeline, quotas and territories, the forecast, a few big deals, or a working session with your managers. We can do it virtually or as part of an offsite.",
-    "I priced it so it can come out of a team budget without a purchasing process."], 'Ask about a team session', 'Team Reality Check') + '''  <section class="offer offer-fed">
+    "I priced it so it can come out of a team budget without a purchasing process. A bigger team, more than one session, or travel to an offsite costs more, and I'll tell you the price before we start. It's invoiced to the company."], 'Ask about a team session', 'Team Reality Check') + '''  <section class="offer offer-fed">
     <h3>Federal</h3>
     <p>If you're trying to figure out whether there's a real federal business in front of you, or whether a federal business somebody's selling you is real, that has its own page.</p>
     <p class="offer-cta"><a class="btn btn-tonal" href="/federal/">Federal GTM</a></p>
   </section>
-''' + ask_plain('work') + '''
+''' + CONF_BLOCK + ask_plain('work') + '''
   <h2>A few specifics</h2>
   <p>At Amazon I was a Senior Sales Manager leading federal partner sales teams covering Defense, Federal Civilian, Federal Financial and National Security, about 25 partner sales managers working toward a shared goal of more than $1B. I closed a $54M four-year cloud agreement with a major DoD systems integrator. Before Amazon I was at F5, where I made President's Circle, and Red Hat. In the Marine Corps I worked on the government side of technology buying, including as a COTR. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've probably never heard of.</p>
 </article>
@@ -3363,6 +3371,7 @@ _fed = note_head('Federal GTM', "Trying to figure out whether there's a real fed
   <p>A federal customer who likes your product is a good start. It turns into a business when there's money for it, a legal way to buy it and a reason to do it this year. Most of the federal plans I've seen were built on the first part and assumed the rest.</p>
   <p>I spent 20 years in the Marine Corps, some of it on the government side of technology buying, and later, as a Senior Sales Manager at Amazon, led federal partner sales teams covering Defense, Federal Civilian, Federal Financial and National Security. I've seen how this gets bought from both sides. If you want me to look at your federal plan, your pipeline or a federal business you're thinking about buying, send it over. I'll tell you what I think.</p>
   <p class="offer-cta"><a class="btn btn-primary" href="''' + _mail('Federal second opinion') + '''">Send it over</a> <a class="offer-alt" href="#ask">or start with a free 20 minutes</a></p>
+  <p class="how-note">Send me a few lines about the problem and whatever numbers or documents you can share, at <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>. I usually reply within one business day with a couple of times. The $200 and $600 sessions are paid with a link I'll send you. Manager Wingman, team sessions and anything a company pays for are invoiced. The written recap comes within two business days of the session.</p>
 
   <h2>Who this is usually for</h2>
   <ul>
@@ -3376,11 +3385,11 @@ _fed = note_head('Federal GTM', "Trying to figure out whether there's a real fed
   <h2>What it costs</h2>
 ''' + offer_plain('pressure-test', 'Federal GTM Pressure Test', '$600', [
     "A working session with a founder, CRO or sales leader. We go through who's actually asking for it, where the money would come from, how they'd buy it, which partners you'd need, whether the product is ready, who's covering it, your current pipeline and timing, and what should happen in the next 6 to 12 months.",
-    "It's 90 minutes, and afterward I send you my observations and priorities in writing. It's meant to be an easy first step."], 'Send it over', 'Federal GTM Pressure Test') + offer_plain('sprint', 'Federal GTM Sprint', 'Starting at $2,500', [
+    "It's 90 minutes, and within two business days I send you my observations and priorities in writing. You pay with a link I send you. It's meant to be an easy first step."], 'Send it over', 'Federal GTM Pressure Test') + offer_plain('sprint', 'Federal GTM Sprint', 'Starting at $2,500', [
     "For a company that needs more than one conversation. It's a short engagement with an end date, and you come out of it with a working plan: which customers and accounts to start with, how they can buy, the contract vehicles you're likely to need, which partners and primes matter, what the federal fiscal year means for your timing, a look at your pipeline, the profile of your first federal hire, and the first year's priorities, with the risks and assumptions written down.",
-    "What you get is a working plan you can actually run, kept short enough that people will read it."], 'Ask about a sprint', 'Federal GTM Sprint') + offer_plain('revenue-reality-check', 'Federal Revenue Reality Check', 'Starting at $3,500', [
+    "What you get is a working plan you can actually run, kept short enough that people will read it. The price depends on how much ground we need to cover, and I'll quote it before we start. It's invoiced."], 'Ask about a sprint', 'Federal GTM Sprint') + offer_plain('revenue-reality-check', 'Federal Revenue Reality Check', 'Starting at $3,500', [
     "For investors, acquirers or executives who want an experienced outside read on a federal business. I look at whether the pipeline is real and how old the opportunities are, who the incumbent is, how much depends on one partner or contract vehicle, what's actually been won, where it's concentrated, who'd leave with the relationships, what's coming up for recompete, and how much of the claimed traction is funded work.",
-    "We scope it around what you can share, and you get a plain written read on what holds up and what doesn't."], 'Talk to Mark about it', 'Federal Revenue Reality Check') + '''
+    "We scope it around what you can share, and you get a plain written read on what holds up and what doesn't. The price depends on the scope, and I'll quote it before we start. It's invoiced, and I'll sign a reasonable NDA."], 'Talk to Mark about it', 'Federal Revenue Reality Check') + '''
   <h2>Some free places to start</h2>
   <ul>
     <li><a href="/federal-readiness/">Federal Readiness Check</a>: five questions on whether there's a federal business here.</li>
@@ -3389,7 +3398,7 @@ _fed = note_head('Federal GTM', "Trying to figure out whether there's a real fed
     <li><a href="https://fedhoo.com" rel="noopener">FedHoo</a>: federal market data tools I built.</li>
   </ul>
 
-''' + ask_plain('federal') + '''</article>
+''' + CONF_BLOCK + ask_plain('federal') + '''</article>
 
 ''' + NOTE_TAIL
 for _name, _html in (('work-with-mark', _work), ('federal', _fed)):

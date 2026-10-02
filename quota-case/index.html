@@ -94,7 +94,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.f77e50a6.css">
+<link rel="stylesheet" href="../site.60284d13.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -187,15 +187,15 @@
   <p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>
   <p>Not affiliated with the U.S. government or Amazon.</p>
 </footer>
-<script src="../calc.90387e77.js"></script>
+<script src="../calc.c2f63bf9.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-06.2330';
+window.QB_BUILD = '2026-11-07.0900';
 CalcTool({
   slug: 'quota-case', answers: {"Supported": "Yes. It already adds up.", "Tight": "You're a little short.", "You've got a gap": "You've got a gap.", "Can't see it": "You've got a big gap."}, name: 'Quota Case', url: 'https://quotabird.com/quota-case/',
   fields: [{ id: 'basis', kind: 'choice' }, { id: 'lastyear', kind: 'money' }, { id: 'oneoff', kind: 'money' }, { id: 'runrate', kind: 'money' }, { id: 'pipeline', kind: 'money' }, { id: 'win', kind: 'pct' }, { id: 'repsthen', kind: 'count' }, { id: 'repsnow', kind: 'count' }, { id: 'quota', kind: 'money' }],
   compute(v) {
-    if (!(v.quota > 0 && v.lastyear > 0)) return null;
+    if (!(v.quota > 0 && v.lastyear > 0)) return { msg: v.lastyear > 0 ? 'Add the new quota.' : v.quota > 0 ? "Add last year's number, on the same measure as the quota." : "Add last year's number and the new quota, on the same measure." };
     const money = (n) => { const a = Math.abs(n); return (n < 0 ? '-' : '') + (a >= 1e6 ? '$' + (a / 1e6).toFixed(1).replace(/\.0$/, '') + 'M' : a >= 1e3 ? '$' + Math.round(a / 1e3) + 'K' : '$' + Math.round(a)); };
     const pct = (r) => Math.round(r * 100) + '%';
     const bookings = v.basis === 'saas';

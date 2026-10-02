@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-06.2330** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-07.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -86,6 +86,15 @@ Every result hands off to the most useful next thing for that verdict, usually a
 - Commit Check: behind → Account Check (burning a commit takes more than one team); on pace or over → Quota Case.
 
 **Considered and deliberately not built (Nov 1):** marketplace fee and co-sell quota-retirement calculators, multi-year crediting and side-by-side deal comparisons. The rules differ by company and change often, so a generic tool would be wrong for many users. Worth building later as their own projects: a manager team roll-up ("team health"), and churn / NRR ("how much new just to stand still"). Danger-zone colours and shareable scenario links already exist.
+
+**Mark's operating rules (Nov 7), stated on Work with Mark and Federal GTM; keep every page consistent with them:**
+- Payment: a payment link for the small fixed-price sessions ($200 Sales Reality Check, $600 Federal GTM Pressure Test); an invoice for recurring, team and company work (Manager Wingman, Team Reality Check, the Federal GTM Sprint, the Federal Revenue Reality Check). The site says "a link I'll send you"; there's no public payment link yet.
+- Manager Wingman: month to month, invoiced monthly, cancel anytime before the next billing date, no long-term contract.
+- Response: "I usually reply within one business day." Never "24 hours."
+- Written recap: within two business days of the session.
+- "Starting at" prices: a bigger team, more sessions or offsite travel cost more; the price is quoted before work starts.
+- Confidentiality (exact text on both pages): treated as confidential, nothing company-, deal-, personnel- or customer-specific shared without permission, a reasonable NDA for company engagements, and no classified, export-controlled, unauthorized government-sensitive or employer-prohibited material. Never promise privilege, classified handling, a secure data room, or "100% confidential."
+Also this round: calculators say exactly what's missing or wrong instead of "Fill in the numbers below" (a tool's compute can return { msg }); the LinkedIn option under results is a text link under the one "Grab 20 minutes" button; Pipeline Check's average deal size, sellers on quota and already closed live under More details (opens when a link or export fills them).
 
 ## Math audit (Nov 6)
 
