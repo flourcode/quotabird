@@ -110,7 +110,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.60284d13.css">
+<link rel="stylesheet" href="../site.a2fb86f6.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -228,7 +228,7 @@
 <script src="../check.a8c6a7f6.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-07.0900';
+window.QB_BUILD = '2026-11-07.2000';
 CheckTool({
   slug: 'olr', answers: {"Ready": "Yes. You're ready.", "Not yet": "Not yet.", "A story": "Not really. It's a story.", "No receipts": "No. No receipts."}, name: 'Talent Review Check', url: 'https://quotabird.com/olr/',
   questions: [
@@ -280,7 +280,6 @@ CheckTool({
   handoff: (s) => s.total >= 75
     ? { overline: 'The assessment is ready. Is the year set up?', text: "Next year's assessment starts now. Is the rep in a territory that can produce one? Rep Check asks that first.", href: '/rep/', label: 'Check your rep' }
     : { overline: 'The fastest receipt', text: 'A deal you watched them run. Sit in their next customer meeting and go through it with Deal Check afterward.', href: '/deal/', label: 'Check your deal' },
-  offer: () => ({ text: "Sometimes the spreadsheet isn't the hard part.", href: '/work-with-mark/#manager-wingman', label: 'Manager Wingman' }),
   mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've written glowing reviews that got taken apart in the room, and usually the problem was how I'd made the case. Tell me about yours." },
   dm: (s) => `Mark, ran a rep's talent review assessment through Talent Review Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. OLR is coming and I'm not sure it holds. Worth 20 minutes?`,
   dmGrill: (s, missed) => `Mark, ran a rep's talent review assessment through Talent Review Check and couldn't answer ${missed} of the room's 3 ${s.weak.n.toLowerCase()} questions. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,

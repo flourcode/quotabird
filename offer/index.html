@@ -86,7 +86,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.60284d13.css">
+<link rel="stylesheet" href="../site.a2fb86f6.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -175,12 +175,13 @@
 <script src="../calc.c2f63bf9.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-07.0900';
+window.QB_BUILD = '2026-11-07.2000';
 CalcTool({
   slug: 'offer', share: { baseA: 'base', varA: 'variable' }, answers: {"Close": "About the same money.", "A pays more": "Offer A pays more in a normal year.", "B pays more": "Offer B pays more in a normal year."}, name: 'Offer Check', url: 'https://quotabird.com/offer/',
   fields: [{ id: 'baseA', kind: 'money' }, { id: 'varA', kind: 'money' }, { id: 'rampA', kind: 'count' }, { id: 'guarA', kind: 'pctx' }, { id: 'baseB', kind: 'money' }, { id: 'varB', kind: 'money' }, { id: 'rampB', kind: 'count' }, { id: 'guarB', kind: 'pctx' }, { id: 'attain', kind: 'pctx' }],
   compute(v) {
     if (!(v.baseA > 0 && v.baseB > 0)) return { msg: v.baseA > 0 ? "Add Offer B's base." : v.baseB > 0 ? "Add Offer A's base." : "Add both offers' base and variable." };
+    if (v.guarA > 1 || v.guarB > 1) return { msg: `Offer ${v.guarA > 1 ? 'A' : 'B'}'s ramp guarantee is a share of its target variable, from 0 to 100%. Check that number.` };
     const money = (n) => n >= 1e6 ? '$' + parseFloat((n / 1e6).toFixed(2)) + 'M' : '$' + Math.round(n / 1e3) + 'K';
     const at = v.attain > 0 ? v.attain : .85;
     const year1 = (base, vari, ramp, guar) => { const r = Math.min(12, ramp || 0); return base + vari / 12 * (r * (guar > 0 ? guar : at * .5) + (12 - r) * at); };
@@ -192,7 +193,13 @@ CalcTool({
     if (rel < .03) t = ['Close', 'proof', 'Close enough that the rest of the job should decide it: the territory, the manager, and how many people actually hit quota.'];
     else t = [lead + ' pays more', 'proof', 'That assumes the same attainment at both jobs. If one quota is much harder, lower its attainment and run it again.'];
     let attack = rel < .03 ? `At ${Math.round(at * 100)}% attainment, the two offers are within ${money(Math.abs(diff))} of each other in a normal year.` : `At ${Math.round(at * 100)}% attainment, Offer ${lead} pays ${money(Math.abs(diff))} more in a normal year.`;
-    if (Math.sign(d1) !== Math.sign(diff) && Math.abs(d1) > 1000) attack += ` Offer ${other} pays ${money(Math.abs(d1))} more in year one, because of its ramp or guarantee.`;
+    // year one always gets its own sentence, so changing a ramp or a guarantee visibly changes the answer
+    const y1lead = d1 > 0 ? 'B' : 'A';
+    if (Math.abs(d1) < 1000) attack += ' Year one comes out about even.';
+    else if (rel >= .03 && y1lead !== lead) attack += ` In year one, Offer ${y1lead} pays ${money(Math.abs(d1))} more, because of its ramp or guarantee.`;
+    else attack += ` In year one, Offer ${y1lead} pays ${money(Math.abs(d1))} more.`;
+    const long = ['A', 'B'].filter(k => v['ramp' + k] > 12);
+    if (long.length) attack += long.length === 2 ? " Both ramps run past the first year, so all of year one is ramp pay." : ` Offer ${long[0]}'s ramp runs past the first year, so all of year one is ramp pay.`;
     const rows = [['Offer A at 100% (OTE)', money(v.baseA + v.varA)], ['Offer B at 100% (OTE)', money(v.baseB + v.varB)],
       ['Offer A, year one', money(y1A)], ['Offer B, year one', money(y1B)],
       [`Offer A, normal year at ${Math.round(at * 100)}%`, money(normA)], [`Offer B, normal year at ${Math.round(at * 100)}%`, money(normB)]];

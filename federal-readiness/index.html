@@ -78,7 +78,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.60284d13.css">
+<link rel="stylesheet" href="../site.a2fb86f6.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -143,7 +143,7 @@
 <script src="../check.a8c6a7f6.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-07.0900';
+window.QB_BUILD = '2026-11-07.2000';
 CheckTool({
   slug: 'federal-readiness', answers: {"Real": "Yes. There's a business here.", "Maybe": "Maybe. Prove the weak part.", "Mostly hope": "Not yet. It's mostly hope.", "Not yet": "No. Not yet."}, name: 'Federal Readiness Check', url: 'https://quotabird.com/federal-readiness/',
   questions: [
@@ -179,7 +179,6 @@ CheckTool({
   handoff: (s) => s.total >= 55
     ? { overline: 'Next: the first real deal', text: 'Deal Check pressure-tests one federal opportunity: customer, money, power, path and now.', href: '/deal/', label: 'Check the deal' }
     : { overline: 'Before you build the plan', text: 'How federal technology actually gets bought, and what a believable first year looks like.', href: '/federal/', label: 'Federal GTM' },
-  offer: () => ({ text: "Trying to figure out whether there's actually a federal business here?", href: '/federal/#pressure-test', label: 'Federal GTM Pressure Test' }),
   mark: { title: () => 'Not sure it adds up?', body: "I'm Mark. I spent 20 years on the government side and the last stretch of my career selling into it. Tell me what you're seeing. No company name needed." },
   dm: (s) => `Mark, ran Federal Readiness Check. ${s.label}, weakest is ${s.weak.n.toLowerCase()}. Worth 20 minutes?`,
 });

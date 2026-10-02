@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-07.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-07.2000** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -87,7 +87,16 @@ Every result hands off to the most useful next thing for that verdict, usually a
 
 **Considered and deliberately not built (Nov 1):** marketplace fee and co-sell quota-retirement calculators, multi-year crediting and side-by-side deal comparisons. The rules differ by company and change often, so a generic tool would be wrong for many users. Worth building later as their own projects: a manager team roll-up ("team health"), and churn / NRR ("how much new just to stand still"). Danger-zone colours and shareable scenario links already exist.
 
-**Mark's operating rules (Nov 7), stated on Work with Mark and Federal GTM; keep every page consistent with them:**
+**Controls (Nov 7): one style per role, set in the CONTROLS block at the end of site.css. Keep that block last, and don't style buttons or switches anywhere else.**
+- Switches (the home hero's Bookings / Run rate / Whole book, every calculator's choice row, Pipeline Check's win-rate and year-end rows): a 12px-rounded container with a 4px inset, 52px tall; segments rounded 8px (12 minus the inset, so the corners nest), 44px tall, 15px semibold (14px on the smallest phones).
+- Main buttons (See the whole plan, Grab 20 minutes, Pick a time, Download the PDF): 12px corners, 52px tall, 17px bold.
+- Secondary and text buttons (Check your pipeline, Try 5 points lower, Choose a CSV file, Share, What's inside): 12px corners, 48px tall, 17px semibold.
+- Answer buttons (Yes / Sort of / No): 12px corners, larger, since they're the main thing tapped in those tools.
+Before this, the home switch was a rounded box while the same switch on the tools was a pill with square-ish segments inside, and main buttons were 48 or 54px depending on the page.
+
+**The funnel (Mark's call, Nov 7, replaces the priced offer pages):** the first step is always the free 20-minute call on Mark's Calendly. Work with Mark and Federal GTM lead with "Grab 20 minutes" (LinkedIn as a text link), say "It's free... If you want more help after that, we can talk about what that looks like on the call," describe the ways Mark helps in plain words with no prices, no payment terms and no per-offer buttons, then Confidentiality, A few specifics, and a closing "Pick a time". No "Send it over" email buttons, no price cards, no product-named next-step lines under tool results (the result card's "Grab 20 minutes" is the only ask). Prices, payment, cancellation and response times are Mark's to discuss on the call; the operating rules below are his reference for those conversations, not site copy.
+
+**Mark's operating rules (Nov 7), for his calls; not shown on the site:**
 - Payment: a payment link for the small fixed-price sessions ($200 Sales Reality Check, $600 Federal GTM Pressure Test); an invoice for recurring, team and company work (Manager Wingman, Team Reality Check, the Federal GTM Sprint, the Federal Revenue Reality Check). The site says "a link I'll send you"; there's no public payment link yet.
 - Manager Wingman: month to month, invoiced monthly, cancel anytime before the next billing date, no long-term contract.
 - Response: "I usually reply within one business day." Never "24 hours."
@@ -142,6 +151,7 @@ QuotaBird is not becoming a consulting-company site. The free tools stay the cen
 ## Website design skill v2.1 pass (Nov 3)
 
 - **Home page, one route to each tool.** The two jobs are lists of rows, side by side: "The number they gave you." (the guide, Quota Case, Territory, Pipeline, Discount, and "The number isn't changing" note) and "What they'll pay you for it." (Pay, Commission, Comp Plan, Offer). Below the Shorts, "Also useful." holds Your deal, Your team, and Print and learn. Brief Check is off the home page and the menu; its page and the plugin skill stay. The home block uses class `jobs` (not `pillars`, which is the uppercase label strip on tool pages).
+- **Offer Check, year one is always stated (Nov 7):** ramp and guarantee only affect year one, so the headline sentence now always adds a year-one comparison ("In year one, Offer B pays $74K more", plus "because of its ramp or guarantee" when year one flips). A guarantee over 100% returns a message instead of a result; a ramp over 12 months adds "runs past the first year, so all of year one is ramp pay." The plugin's offer-check reference still only mentions year one when it flips: update it in the next plugin release.
 - **The home calculator shares the remembered numbers too (fixed Nov 6):** it reads `qb-numbers` on load, shows the same "remembered in this browser only. Clear them" note, saves what's typed there, and passes the shown values to Quota Check, so the home page and Quota Check always show the same multiple. Before this, a visitor who had used another tool saw 21× on the home page and 24× after "See the whole plan".
 - **Numbers carry between tools.** Base, variable and quota are remembered in the visitor's browser (localStorage key `qb-numbers`) and prefill Quota Check, Quota Case, Pay Check and Offer Check (Offer A). The page says so and offers "Clear them". Nothing is sent anywhere. Fields map through `share` in a tool's config.
 - **Optional fields fold away** under "More details" (`more=True` on a field; `head='…'` adds a small section heading). The panel opens itself when a shared link or remembered number fills one of its fields.
