@@ -1,8 +1,8 @@
 # QuotaBird
 
-> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. 19 one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.
+> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. 22 one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.
 
-The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor's own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Privacy: https://quotabird.com/privacy/
+The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor's own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Four pages are the exception: Ask QuotaBird (https://quotabird.com/ask-quotabird/), Meeting Prep, Account Plan and Update Upward send what the visitor types to Google Gemini through QuotaBird's own server, which stores nothing; the AI writes words only, and every number still comes from the browser. Privacy: https://quotabird.com/privacy/
 
 ## Your number
 
@@ -10,6 +10,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 - [Quota Case](https://quotabird.com/quota-case/): Find the gap between last year and this year's quota: run rate or ARR, pipeline at your real win rate, headcount, one-time deals. Then push back with it, or close it with growth in existing accounts and net-new ones. (when you need to push back.)
 - [Territory Check](https://quotabird.com/territory/): Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers. (month one in a new territory.)
 - [Discount Check](https://quotabird.com/discount/): How much discount is too much? See what it costs in your commission and the company's margin before you say yes. (when they ask you to sharpen the pencil.)
+- [Update Upward](https://quotabird.com/update-upward/): Write the update a seller or manager sends upward: a weekly note, a forecast call, calling a miss, or a monthly business review. (before you tell your boss.)
 
 ## Your pay
 
@@ -30,6 +31,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 - [Deal Check](https://quotabird.com/deal/): Five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal. (before you put it in commit.)
 - [Account Check](https://quotabird.com/account/): Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. (when you only know one person there.)
+- [Account Plan](https://quotabird.com/account-plan/): Turn what a seller knows about one account into a plan with a number on it: coverage at the win rate, the money by the customer's own quarters, the gaps, who to meet, milestones. (when the account needs a plan with a number on it.)
 - [Commit Check](https://quotabird.com/commit/): For cloud and consumption sellers: will the customer use their committed spend? See the pace, the monthly spend it takes from here, and the shortfall or overage. (when a commit might not burn.)
 - [Federal Readiness Check](https://quotabird.com/federal-readiness/): Five skeptical questions on whether a company has a real federal business: customer, money, buying path, partners and team. (before you bet on federal.)
 - [Competition Check](https://quotabird.com/competition/): Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. (when you're not sure you're ahead.)
@@ -37,6 +39,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 ## Any meeting
 
 - [Brief Check](https://quotabird.com/brief/): Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. (when someone in the room can say no.)
+- [Meeting Prep](https://quotabird.com/meeting-prep/): Prepare for one important customer meeting: the objective, what you know and do not, their likely priorities, questions to ask, objections, landmines and the next step to ask for. (before the meeting that matters.)
 
 ## Methodology and benchmarks
 

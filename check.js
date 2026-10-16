@@ -80,27 +80,33 @@
     btn.onclick = () => { window.scrollTo({ top: 0 }); const prep = document.getElementById('prep'); if (prep) prep.click(); };
   }
 
+  /* The scoring itself, with no page attached. CheckTool uses it, and Ask QuotaBird loads the same
+     function to score a check's five answers, so the two can never disagree. */
+  function scoreWith(cfg, a) {
+    const P = cfg.questions;
+    let total = 0, wsum = 0;
+    P.forEach(p => { total += VAL[a[p.k]] * cfg.weights[p.k]; wsum += cfg.weights[p.k]; });
+    total = Math.round(total / wsum);
+    if (cfg.capOnNo !== false && P.some(p => a[p.k] === 'no')) total = Math.min(total, 74);
+    const ranked = P.slice().sort((x, y) => (VAL[a[x.k]] - VAL[a[y.k]]) || (cfg.weights[y.k] - cfg.weights[x.k]));
+    const weak = ranked[0];
+    const v = cfg.verdict(a, total, weak);
+    const moves = ranked.filter(p => a[p.k] !== 'yes').slice(0, 3).map(p => cfg.moves[p.k]);
+    // The literal count: yes is one, sort of is a half. This is the number people see.
+    const proven = P.reduce((n, p) => n + (a[p.k] === 'yes' ? 1 : a[p.k] === 'sort' ? .5 : 0), 0);
+    const provenText = (proven % 1 ? Math.floor(proven) + '½' : String(proven)) + ' of ' + P.length + ' ' + (cfg.countNoun || 'proven');
+    const meta = (cfg.count === false ? '' : provenText + '. ') + 'Weakest: ' + weak.n.toLowerCase() + '.';
+    return Object.assign({ total, weak, moves, answers: a, proven, provenText, meta }, v);
+  }
+  window.QBCheckScore = scoreWith;
+
   window.CheckTool = function (cfg) {
     const answerOf = (s) => (cfg.answers && cfg.answers[s.label]) || s.label;   // the verdict, worded as an answer to the tool's question
     const P = cfg.questions;
     let answers = {}, lastScore = null, shared = false;
     const INTRO_HTML = el().innerHTML;
 
-    function score(a) {
-      let total = 0, wsum = 0;
-      P.forEach(p => { total += VAL[a[p.k]] * cfg.weights[p.k]; wsum += cfg.weights[p.k]; });
-      total = Math.round(total / wsum);
-      if (cfg.capOnNo !== false && P.some(p => a[p.k] === 'no')) total = Math.min(total, 74);
-      const ranked = P.slice().sort((x, y) => (VAL[a[x.k]] - VAL[a[y.k]]) || (cfg.weights[y.k] - cfg.weights[x.k]));
-      const weak = ranked[0];
-      const v = cfg.verdict(a, total, weak);
-      const moves = ranked.filter(p => a[p.k] !== 'yes').slice(0, 3).map(p => cfg.moves[p.k]);
-      // The literal count: yes is one, sort of is a half. This is the number people see.
-      const proven = P.reduce((n, p) => n + (a[p.k] === 'yes' ? 1 : a[p.k] === 'sort' ? .5 : 0), 0);
-      const provenText = (proven % 1 ? Math.floor(proven) + '½' : String(proven)) + ' of ' + P.length + ' ' + (cfg.countNoun || 'proven');
-      const meta = (cfg.count === false ? '' : provenText + '. ') + 'Weakest: ' + weak.n.toLowerCase() + '.';
-      return Object.assign({ total, weak, moves, answers: a, proven, provenText, meta }, v);
-    }
+    const score = (a) => scoreWith(cfg, a);
     const encode = () => P.map(p => CODE[answers[p.k]]).join('');
     function readHash() {
       const h = (location.hash || '').replace(/^#/, '');

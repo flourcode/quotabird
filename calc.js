@@ -63,11 +63,13 @@
   // the big result number stays on one line: shrink it just enough to fit its card ("+$98K", "$12.4M")
   function fitBig(root) { const el = root && root.querySelector('.verdict-number'); if (!el) return; el.style.fontSize = ''; let s = parseFloat(getComputedStyle(el).fontSize) || 96; while (el.scrollWidth > el.clientWidth + 1 && s > 34) { s -= 3; el.style.fontSize = s + 'px'; } }
   window.addEventListener('resize', () => document.querySelectorAll('.verdict').forEach(v => fitBig(v.parentNode)));
+  /* Field parsing and formatting, shared with Ask QuotaBird so a number typed there reads exactly as it does here. */
+  const fmt = { money: fullMoney, pct: (r) => (r * 100).toFixed(1).replace(/\.0$/, '') + '%', pctx: (r) => (r * 100).toFixed(1).replace(/\.0$/, '') + '%', count: String, choice: String };
+  const parse = { money: parseMoney, pct: parsePct, pctx: parsePctX, count: (v) => Math.max(0, parseInt(String(v || '').replace(/[^0-9]/g, ''), 10) || 0), choice: (v) => v };
+  window.QBParse = parse; window.QBFormat = fmt;
   window.CalcTool = function (cfg) {
     const answerOf = (s) => (cfg.answers && cfg.answers[s.label]) || s.label;   // the verdict, worded as an answer to the tool's question
     const F = cfg.fields; let shared = false, touched = false, lastS = null, prevLabel = null; const fromHash = new Set();
-    const fmt = { money: fullMoney, pct: (r) => (r * 100).toFixed(1).replace(/\.0$/, '') + '%', pctx: (r) => (r * 100).toFixed(1).replace(/\.0$/, '') + '%', count: String, choice: String };
-    const parse = { money: parseMoney, pct: parsePct, pctx: parsePctX, count: (v) => Math.max(0, parseInt(String(v || '').replace(/[^0-9]/g, ''), 10) || 0), choice: (v) => v };
     const read = () => { const v = {}; F.forEach(f => { v[f.id] = f.kind === 'choice' ? (document.querySelector(`[data-choice="${f.id}"].on`) || {}).dataset?.v ?? f.example : parse[f.kind]($(f.id).value); }); return v; };
     const encode = () => { const p = new URLSearchParams(); const v = read(); F.forEach(f => { if (v[f.id] !== 0 && v[f.id] !== '' && v[f.id] != null) p.set(f.id, (f.kind === 'pct' || f.kind === 'pctx') ? Math.round(v[f.id] * 1000) / 10 : f.kind === 'money' ? Math.round(v[f.id]) : v[f.id]); }); return p.toString(); };
     function readHash() {

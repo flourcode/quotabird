@@ -27,8 +27,8 @@
         "quota to OTE ratio for cloud sales",
         "is my sales quota fair"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -57,8 +57,8 @@
         "find the gap between last year and this year's quota",
         "my quota went up and my territory did not"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -86,8 +86,8 @@
         "is my sales territory viable",
         "new territory sizing check"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -115,12 +115,42 @@
         "should I give a 15 percent discount",
         "discount impact on margin and commission"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
         "usesAI": false,
+        "audience": "Your number"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:update-upward-check",
+      "displayName": "Update Upward",
+      "type": "text/html",
+      "url": "https://quotabird.com/update-upward/",
+      "description": "Update Upward: Write the update a seller or manager sends upward: a weekly note, a forecast call, calling a miss, or a monthly business review.",
+      "tags": [
+        "your-number",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "UpdateUpward"
+      ],
+      "representativeQueries": [
+        "how to tell my boss I will miss my number",
+        "weekly sales update template for my manager",
+        "what to say on a forecast call",
+        "monthly business review for sales"
+      ],
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": true,
         "audience": "Your number"
       }
     },
@@ -146,8 +176,8 @@
         "what does OTE really pay",
         "comp plan payout curve"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -175,8 +205,8 @@
         "commission take home after taxes",
         "commission check calculator"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -206,8 +236,8 @@
         "commission clawback rules",
         "who gets credit on a split deal"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -237,8 +267,8 @@
         "sales job offer ramp guarantee",
         "year one sales compensation with ramp"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -266,8 +296,8 @@
         "pipeline coverage calculator with my win rate",
         "is 3X pipeline coverage enough"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -295,8 +325,8 @@
         "pipeline concentration and aging risk",
         "4X coverage but still at risk"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -324,8 +354,8 @@
         "why is my sales rep underperforming",
         "rep problem or territory problem"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -353,8 +383,8 @@
         "is my channel partner actually selling",
         "partner check for co-sell"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -382,8 +412,8 @@
         "will my case for a rep survive talent review",
         "Amazon OLR prep for managers"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -411,8 +441,8 @@
         "qualify a federal sales deal before commit",
         "what will my manager ask about this deal"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -440,12 +470,42 @@
         "am I single-threaded in this account",
         "federal account check"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
         "usesAI": false,
+        "audience": "Your deal"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:account-plan-check",
+      "displayName": "Account Plan",
+      "type": "text/html",
+      "url": "https://quotabird.com/account-plan/",
+      "description": "Account Plan: Turn what a seller knows about one account into a plan with a number on it: coverage at the win rate, the money by the customer's own quarters, the gaps, who to meet, milestones.",
+      "tags": [
+        "your-deal",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "AccountPlan"
+      ],
+      "representativeQueries": [
+        "how to write a sales account plan",
+        "account plan template with pipeline coverage",
+        "federal account plan by fiscal quarter",
+        "strategic account plan for a quota carrier"
+      ],
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": true,
         "audience": "Your deal"
       }
     },
@@ -471,8 +531,8 @@
         "customer is behind on their committed spend",
         "how much monthly spend to use a cloud commitment"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -502,8 +562,8 @@
         "how do federal agencies buy software",
         "federal sales readiness checklist"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -531,8 +591,8 @@
         "am I beating the incumbent",
         "competitive position check for a deal"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -560,12 +620,43 @@
         "pressure test my brief before the meeting",
         "what question am I hoping nobody asks"
       ],
-      "version": "2026.11.07",
-      "updatedAt": "2026-11-07T00:00:00Z",
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
         "usesAI": false,
+        "audience": "Any meeting"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:meeting-prep-check",
+      "displayName": "Meeting Prep",
+      "type": "text/html",
+      "url": "https://quotabird.com/meeting-prep/",
+      "description": "Meeting Prep: Prepare for one important customer meeting: the objective, what you know and do not, their likely priorities, questions to ask, objections, landmines and the next step to ask for.",
+      "tags": [
+        "any-meeting",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "MeetingPrep"
+      ],
+      "representativeQueries": [
+        "prepare for an important customer meeting",
+        "questions to ask a CIO in a sales meeting",
+        "what objections to expect in a customer meeting",
+        "how to brief a general officer or SES",
+        "meeting prep for enterprise sales"
+      ],
+      "version": "2026.11.08",
+      "updatedAt": "2026-11-08T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": true,
         "audience": "Any meeting"
       }
     }

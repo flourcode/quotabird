@@ -1067,3 +1067,82 @@ input.needs::placeholder { color:var(--ink); opacity:.7; }
 @media (max-width:360px) { .hc-chips .chip, .chips .chip, [data-hb] { font-size:14px !important; padding:0 4px !important; } }
 .btn-primary, .btn-lg { height:52px !important; }
 .btn-tonal, .btn-text, label.btn { height:auto !important; }
+
+/* ── Ask QuotaBird and the workflow pages (Meeting Prep, Account Plan, Update Upward) ── */
+.ask-page .wrap { max-width:920px; }
+#screen.ask-screen { max-width:680px; }
+.ask-screen h1, .ask-screen .dek { max-width:620px; }
+.ask-form .tf, .wf-form .tf { display:block; background:var(--card); border-radius:16px; padding:12px 16px 10px; margin:0 0 8px; }
+.ask-form .tf:focus-within, .wf-form .tf:focus-within { box-shadow:inset 0 0 0 2px var(--ink); }
+.ask-form .tf-label, .wf-form .tf-label { display:block; font-size:14px; font-weight:600; color:var(--mut); margin:0 0 4px; }
+.wf-form .tf-label small { font-weight:400; color:var(--mut); }
+.ask-form textarea, .wf-form textarea, .wf-form .tf input { display:block; width:100%; min-height:30px; height:auto; padding:2px 0; margin:0; border:0 !important; border-radius:0 !important;
+  background:transparent !important; box-shadow:none !important; font:400 18px/1.45 var(--font); letter-spacing:-.005em; color:var(--ink); resize:none; outline:none; }
+.ask-form textarea { font-size:20px; min-height:96px; }
+.ask-form textarea::placeholder, .wf-form textarea::placeholder, .wf-form .tf input::placeholder { color:var(--mut); opacity:.85; }
+.wf-form .tf .chips { margin-top:6px; }
+.ask-form .btn-primary, .wf-form .btn-primary { margin-top:8px; }
+.ask-note { margin-top:10px; }
+.ask-note a, .wf-form .startnote a { color:inherit; text-decoration:underline; text-underline-offset:3px; }
+.ask-examples { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:20px; }
+.ask-ex-h { font-size:14px; font-weight:600; color:var(--mut); margin-right:2px; }
+.ask-ex { height:36px; padding:0 14px; border:0; border-radius:18px; background:var(--seg); color:var(--ink); font:600 15px/1 var(--font); cursor:pointer; }
+.ask-ex:hover { background:var(--card); box-shadow:inset 0 0 0 1px var(--ink); }
+.ask-wait { display:flex; align-items:center; gap:10px; margin:24px 2px; color:var(--mut); font-size:15px; }
+.ask-wait .dot { width:10px; height:10px; border-radius:50%; background:var(--ink); animation:askpulse 1s ease-in-out infinite; }
+@keyframes askpulse { 0%, 100% { opacity:.25; } 50% { opacity:1; } }
+@media (prefers-reduced-motion: reduce) { .ask-wait .dot { animation:none; } }
+.ask-error { margin-top:16px; color:var(--ink); }
+.ask-head { margin:36px 0 12px; padding-top:24px; border-top:1px solid var(--hair); }
+.ask-head h2 { margin:4px 0 6px; }
+.ask-why { font-size:17px; line-height:1.45; color:var(--ink); margin:0 0 6px; }
+.ask-head .fine { margin:0; }
+.ask-calc .calc-in { margin-top:4px; }
+.calc-in .tf.said .tf-label { font-weight:600; }
+.said-note { display:inline-block; margin-left:8px; font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--mut); cursor:help; }
+.calc-in .ask-choice { display:block; background:var(--card); padding:10px 16px 12px; margin:0; position:relative; }
+.calc-in .ask-choice .tf-label { font-size:16px; color:var(--ink); }
+.calc-in label.tf + .ask-choice::before, .calc-in .ask-choice + label.tf::before { content:""; position:absolute; top:0; left:16px; right:0; height:1px; background:var(--hair); }
+.calc-in > .ask-choice:first-child { border-radius:16px 16px 0 0; margin-top:12px; }
+.calc-in > .ask-choice:last-child { border-radius:0 0 16px 16px; }
+.ask-qs { display:flex; flex-direction:column; gap:8px; }
+.ask-q { background:var(--card); border-radius:16px; padding:14px 16px 12px; }
+.ask-qt { font-size:18px; line-height:1.35; font-weight:600; color:var(--ink); margin:4px 0 8px; }
+.ask-q .chips { background:var(--page); }
+#aRes { margin-top:16px; }
+.ask-explain, .wf-out .card { padding:20px 20px 16px; }
+.ask-explain h3, .wf-out h3 { font-size:17px; font-weight:800; letter-spacing:-.01em; margin:0 0 6px; color:var(--ink); }
+.ask-explain h3:not(:first-child), .wf-out .card h3:not(:first-child) { margin-top:18px; }
+.ask-list { margin:0 0 4px; padding-left:20px; }
+.ask-list li { font-size:17px; line-height:1.45; color:var(--ink); margin:0 0 8px; }
+.card .ask-list li { color:var(--ink); }
+.src { display:inline-block; margin-left:6px; font-size:12px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--mut); white-space:nowrap; }
+.ask-foot { margin:12px 0 0; }
+#aExplain { margin-top:16px; }
+.wf-out { margin-top:28px; display:flex; flex-direction:column; gap:12px; outline:none; }
+.wf-out .card + .card { margin-top:0; }
+.wf-out .list { margin:0; }
+.wf-lead .lede { font-size:20px; line-height:1.4; font-weight:600; color:var(--ink) !important; margin:4px 0 0; }
+.wf-math { margin:4px 0 12px; }
+.list-item.ms { justify-content:flex-start; align-items:flex-start; }
+.list-item.ms .trailing { flex:none; width:8.5em; white-space:normal; color:var(--mut); font-weight:600; font-size:14px; padding-top:2px; }
+.list-item.ms .headline { font-size:16px; line-height:1.4; }
+.ask-actions { margin-top:4px; }
+@media (min-width:880px) {
+  #screen.ask-screen { max-width:880px; }
+  .ask-form, .wf-form, .wf-out, .ask-head, .ask-qs, #aRes, #aExplain, .ask-none, #askOut > .banner { max-width:680px; }
+}
+@media print {
+  .ask-page .appbar, .ask-page #about, .ask-page #faq, .ask-page .sitefoot, .ask-page .wf-form, .ask-page .ask-form, .ask-page .ask-actions, .ask-page .tool-name, .ask-page .dek, #aExplainBtn { display:none !important; }
+  .ask-page h1 { font-size:24px; margin:0 0 12px; }
+  .wf-out .card, .ask-explain, .wf-out .list { background:#fff !important; border:1px solid #ccc !important; break-inside:avoid; }
+  .ask-list li, .wf-lead .lede { color:#000 !important; font-size:11pt; }
+}
+/* four-way choices on the workflow pages wrap to two rows on a phone instead of clipping */
+.wf-form .chips { flex-wrap:wrap !important; row-gap:3px !important; }
+.wf-form .chips .chip { flex:1 1 40% !important; }
+@media (min-width:600px) { .wf-form .chips .chip { flex:1 1 0 !important; } }
+
+.hc-ask { text-align:center; margin:12px 0 0; font-size:15px; }
+.hc-ask a { color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
+@media (min-width:960px) { .hero-calc .hc-ask { grid-column:1; } }

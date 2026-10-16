@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-07.2300** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-08.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -10,7 +10,7 @@ quotabird.com, by Mark Flournoy (retired; six years leading federal partner sale
 
 **The guardrail:** know the math well enough to tell whether they're screwing you. Not a grievance site. Sometimes the quota is crazy, sometimes it's hard but fair, sometimes the rep just doesn't like the number.
 
-Free tools, no login, no AI, nothing stored. The consulting offer (a free 20-minute call, then Manager Wingman or a team session) is the business. Not affiliated with the U.S. government or Amazon.
+Free tools, no login, nothing stored. The tools use no AI. Four pages do, for words only (see "Ask QuotaBird and the AI pages"). The consulting offer (a free 20-minute call, then Manager Wingman or a team session) is the business. Not affiliated with the U.S. government or Amazon.
 
 ## Voice
 
@@ -123,7 +123,7 @@ QuotaBird is not becoming a consulting-company site. The free tools stay the cen
 - **Starting a paid engagement:** each offer's button is a pre-addressed email to mark@quotabird.com with the offer as the subject. Swap in paid booking links later if Mark wants.
 - **Federal Readiness Check** (/federal-readiness/): Customer, Money, Path, Partners, Team (weights 24/24/20/14/18, any-no cap 74). Answers: "Yes. There's a business here." / "Maybe. Prove the weak part." / "Not yet. It's mostly hope." / "No. Not yet." Left out of the Tools menu (MENU_SKIP); reached from /federal/ and the home list.
 - **Quiet next steps** (`offer` in a tool config; one line at the bottom of the Mark card, after the useful result; never a banner, modal or gate): Quota Case with a gap, Sales Reality Check; Deal Check when not healthy, Sales Reality Check; Pipeline Check with more than one seller, Team Reality Check; Rep, Talent Review and Risk, Manager Wingman; Federal Readiness, Federal GTM Pressure Test. No line on other tools.
-- **Proof** is only what Mark can substantiate: 20 years in the Marine Corps, including two tours in Iraq and joint tours at DISA (Defense Information Systems Agency), SOCOM and SOUTHCOM, where he was the government customer: managing joint programs, fielding RFPs and overseeing procurement, including as a COTR (spell out DISA the first time on general pages; the Federal page can use the acronyms), about 15 years in enterprise technology sales at Red Hat, F5 and Amazon, a Sales Manager at Amazon leading federal partner sales teams across four markets with a shared goal above $1B (no team-size number), a $54M four-year committed cloud agreement with a major DoD systems integrator, President's Circle at F5. Add testimonials or anonymized examples only when Mark provides them.
+- **Proof** is only what Mark can substantiate: 20 years in the Marine Corps (COTR, government technology and acquisition work), about 15 years in enterprise technology sales at Red Hat, F5 and Amazon, a Sales Manager at Amazon leading federal partner sales teams across four markets with a shared goal above $1B (no team-size number), a $54M four-year committed cloud agreement with a major DoD systems integrator, President's Circle at F5. Add testimonials or anonymized examples only when Mark provides them.
 - **Not built, on purpose:** a newsletter platform, email capture, a training catalog, a page per offer. A LinkedIn follow is enough for now.
 - Voice on these pages is the site's voice: plain, dry, skeptical, never guru. Banned there too: transformation, unlock, optimize, excellence, world-class, fractional CRO.
 
@@ -304,11 +304,33 @@ Calendly: calendly.com/markflournoy/chat-with-mark (utm_source=quotabird, utm_me
 
 Header: Tools ▾ · Field Kits · Field Notes · About · Ask Mark. Don't add to it. In the Tools menu, four groups sit two by two: Your number over Your pay on the left, Your deal over Your team on the right (about 590px open on a phone, 44px tap targets). Brief Check is deliberately left out of the menu (Mark's call, Nov 3: not important enough for the menu); it stays on the home page tool list, at /brief/, and in the plugin. To leave another tool out of the menu, add its path to `MENU_SKIP` in `menu()`. The Tools menu leads with Your number (Quota Check, Quota Case, Territory, Commission, Discount), then Your team, Your deal, Any meeting. Footer: "QuotaBird is a pile of free sales tools. I built them because they helped me, and maybe they'll help you." and "Not affiliated with the U.S. government or Amazon."
 
+## Ask QuotaBird and the AI pages (Nov 8)
+
+From the AskArti audit (the doc "AskArti → QuotaBird audit"): AskArti's useful judgment becomes three workflows plus a front door, and the AI runs on the **existing SideFrog Lambda**, not new infrastructure. Mark's call (Oct 16): no new API Gateway, no new Lambda, no Claude call; same function, same Function URL, same Gemini 3.5 Flash-Lite config as sidefrog.com.
+
+**The pages** (all built by `make-ask.py`, which `make-tools.py` runs before the chrome pass):
+- **/ask-quotabird/** "What's the problem?" One text box. The Lambda picks the tool and pulls out the numbers the person typed, each with a quote of their own words (no quote, no number). The page loads that tool's own math (`tools/<slug>.<hash>.js`) and runs it live; numbers from the text are marked "you said" and editable. Question tools show their five questions; the person answers, never the AI. "Explain it" sends the computed result to the Lambda for What stands out / What's wrong / What to do next, each line labelled You said, QuotaBird math or A guess. "Open the full <tool>" links to the real tool with the inputs in the hash. Workflow questions hand off to the workflow page prefilled (`#p=` base64 JSON).
+- **/meeting-prep/** "Got a meeting that matters?" Objective, what you know (you said), what you don't, likely priorities (labelled), questions, objections with answers, landmines, the next step to ask for. Federal toggle adds the federal knowledge.
+- **/account-plan/** "Do you have a plan for this account?" The page does the math (open pipeline, coverage, pipeline needed at the win rate, the gap, deals placed in the customer's fiscal quarters from their close month; Oct start for federal) and sends it; the plan (priorities, how to close the gap, unknowns, who to meet, milestones by their quarter, next two weeks) can't change those numbers.
+- **/update-upward/** "What are you telling your boss?" Weekly, forecast call, calling a miss, monthly review. The number lines are page math; the AI writes the headline, top deals, blockers with asks, recovery (miss only) and the boss's likely questions. Copy gives the paste-ready update (without the prep questions); Print hides the form.
+- Menu: Update Upward under Your number, Account Plan under Your deal, Meeting Prep under Any meeting (Brief Check still skipped). Home: "Not a quota question? Describe the problem instead →" under the hero button, and a "Before the meeting" group on the shelf.
+
+**The one rule:** the model never does arithmetic and never states a fact nobody gave it. Enforced in code, not just in the prompt: routing drops any input whose quote isn't in the person's text or whose number isn't in the quote; every answer's dollar amounts, percentages, multiples and numbers of 100 or more must match the person's text or the page's math, or that line is dropped (the page says so). Labels are required by the response schema.
+
+**One source for the math:** `tools/<slug>.js` is generated from the same config text each calculator and question page runs, and Pipeline/Deal are cut from their pages between markers (`const TARGET = 3;` … `/* ── the coverage bar`, and `/* ── Five things ── */` … `/* ── state ── */`; keep those markers). `check.js` exposes the scoring as `window.QBCheckScore(cfg, answers)` and `calc.js` exposes `QBParse`/`QBFormat`, both used by the tool pages themselves too. Parity tests (`tests/parity.mjs`): 7,473 cases against the pre-change pages, 0 differences; 204 browser comparisons of old vs new tool pages, 0 differences.
+
+**The Lambda** (`lambda/` in the delivery, not deployed with the site): `index.mjs` (SideFrog's, v3.8.0, with QuotaBird wired in), `quotabird.mjs` (the five routes: `qb_route`, `qb_explain`, `qb_meeting_prep`, `qb_account_plan`, `qb_update_upward`; voice, knowledge, schemas, the number check) and `quotabird-catalog.mjs` (generated by the site build; redeploy it whenever a tool's fields or questions change). SideFrog's behavior is unchanged; its 8 KB limit stays, QuotaBird gets 16 KB and its own rate limit (`QB_RATE_LIMIT_PER_MINUTE` 10, `QB_RATE_LIMIT_PER_HOUR` 60). The endpoint is set in `make-ask.py` (`ASK_ENDPOINT`). Requests are `text/plain` (no CORS preflight), like SideFrog. Nothing typed is logged or stored; keep it that way or change the FAQ and Privacy copy.
+
+**Privacy copy:** every AI page says it uses AI near the button and in its FAQ; Privacy has a section "The four pages that use AI"; the home FAQ says the tools don't and these four do. Use a paid Gemini API key (free-tier prompts can be used by Google to improve its products, which would contradict that copy).
+
+**Analytics** (names only, never text): `ask_route`, `ask_routed_<slug>`, `ask_explain`, `ask_example`, `ask_route_error`, `<page>_run`, `<page>_done`, `<page>_error`, `<page>_from_ask`, `<page>_copy`, `<page>_print`.
+
 ## Build and deploy
 
 - **Edit:** `make-tools.py` (every generated page), `home.src.html`, `pipeline.src.html`, `deal/index.html`, `check.js`, `calc.js`, `analytics.js`, `site.css`, `partials/*.html`, `404.html`, `make-card.py`, `make-social.py`.
 - **Never edit by hand:** built `index.html` files, `sitemap.xml`, `llms.txt`, `ai-catalog.json`, the fingerprinted `site.<hash>.css` / `check.<hash>.js` / `calc.<hash>.js` / `analytics.<hash>.js`, `card*.jpg`.
 - **Build:** `python3 make-tools.py` (pages, sitemap, llms.txt, ai-catalog, fingerprints). Share cards: `python3 make-card.py <slug|home|banner|seller|kit|leader>`, then rebuild. Each card is the tool's question as a chunky headline beside a result card in its verdict tint, using the page's real default answer (calculators) or a real verdict word (question tools); the list is `RESULTS` in `make-card.py`, so update it if a default changes. The banner keeps its text clear of the lower-left, where LinkedIn places the profile photo. Kit PDFs: start the local server, then `node kitpdf.js` (saved with the build tools); re-check 4 / 8 / 3 pages afterwards. Social images: `python3 make-social.py`. Copy workbook: `python3 extract-copy.py`.
+- **Lambda:** after a site build, copy `lambda/quotabird-catalog.mjs` next to `quotabird.mjs` and `index.mjs`, zip the three, upload to the shared SideFrog function. Tests: `node tests/lambda.test.mjs` (mocked Gemini), `node tests/parity.mjs`, and `tests/e2e.py` with `tests/mockserver.mjs` running.
 - **Deploy:** AWS Amplify from GitHub. `customHttp.yml` caches css/js for a year (safe: names change with content) and html not at all. Rewrites in `amplify-rewrites.json` (45 rules, 404 catch-all last); every new page needs a `/<slug>` → `/<slug>/` rule. Never edit the live site directly.
 
 ## Data (researched Sept 27, 2026; refresh yearly)

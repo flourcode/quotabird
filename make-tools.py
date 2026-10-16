@@ -3,12 +3,13 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-07.2300'
+BUILD = '2026-11-08.0900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
     ('Your number', '/territory/', 'Territory Check', 'Month one in a new territory'),
     ('Your number', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
+    ('Your number', '/update-upward/', 'Update Upward', 'Before you tell your boss'),
     ('Your pay', '/pay/', 'Pay Check', 'When you want to know what the plan really pays'),
     ('Your pay', '/commission/', 'Commission Check', 'When it closes'),
     ('Your pay', '/comp-plan/', 'Comp Plan Check', 'Before you count on the plan'),
@@ -20,10 +21,12 @@ TOOLS = [
     ('Your team', '/olr/', 'Talent Review', 'Review season'),
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
     ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
+    ('Your deal', '/account-plan/', 'Account Plan', 'When the account needs a plan with a number on it'),
     ('Your deal', '/commit/', 'Commit Check', 'When a commit might not burn'),
     ('Your deal', '/federal-readiness/', 'Federal Readiness Check', 'Before you bet on federal'),
     ('Your deal', '/competition/', 'Competition Check', 'When you\'re not sure you\'re ahead'),
     ('Any meeting', '/brief/', 'Brief Check', 'When someone in the room can say no'),
+    ('Any meeting', '/meeting-prep/', 'Meeting Prep', 'Before the meeting that matters'),
 ]
 
 def menu(current):
@@ -3224,7 +3227,7 @@ open('methodology/index.html', 'w').write(_method)
 
 # ────────────────────────────── PRIVACY (/privacy/) ───────────────────────────
 PRIVACY_UPDATED = 'October 2026'
-_privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your browser, and how to clear it. No accounts, no ads, and the numbers you type are never sent anywhere.', 'https://quotabird.com/privacy/') + f'''</head>
+_privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your browser, and how to clear it. No accounts, no ads. The tools never send what you type anywhere; four AI pages do, and this says exactly how.', 'https://quotabird.com/privacy/') + f'''</head>
 <body>
 
 <div class="wrap">
@@ -3237,7 +3240,7 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
   <p class="fine">Last updated {PRIVACY_UPDATED}. Questions: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
 
   <h2>The short version</h2>
-  <p>QuotaBird has no accounts, no ads and no sign-up. The numbers and answers you type into the tools are worked out in your browser and never sent to QuotaBird or anyone else. QuotaBird counts page views and which tools get used, so it knows what's worth improving.</p>
+  <p>QuotaBird has no accounts, no ads and no sign-up. The numbers and answers you type into the tools are worked out in your browser and never sent to QuotaBird or anyone else. Four pages are different, because they use AI: Ask QuotaBird, Meeting Prep, Account Plan and Update Upward. What you type on those goes to Google's Gemini through QuotaBird's server, which doesn't keep it. QuotaBird counts page views and which tools get used, so it knows what's worth improving.</p>
 
   <h2>What QuotaBird counts</h2>
   <p>QuotaBird uses Google Analytics 4 to count visits. Google Analytics records the pages you visit and the usual technical details that come with any visit, such as your browser, device type, approximate location and the site that sent you. It sets cookies in your browser to tell visits apart.</p>
@@ -3251,6 +3254,11 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
     <li><strong>Base, variable and quota.</strong> If you type them into one tool, your browser remembers them so the next tool can fill them in. They're stored only in your browser's local storage, on your device. Use "Clear them" on any tool that shows them, or clear your browser's site data for quotabird.com.</li>
   </ul>
 
+  <h2>The four pages that use AI</h2>
+  <p>Ask QuotaBird, Meeting Prep, Account Plan and Update Upward send what you type, when you press the button, to a small QuotaBird server, which passes it to Google's Gemini API and sends the answer back to your browser. The server doesn't log or store what you typed or what came back, and QuotaBird never reads it. Google processes it under the <a href="https://ai.google.dev/gemini-api/terms" rel="noopener">Gemini API terms</a>.</p>
+  <p>The math on those pages still runs in your browser, with the same code as the tools. The AI picks the tool, pulls numbers out of your words (and shows you each one so you can change it), and writes the explanation. Any number in its answer that didn't come from you or the math is removed before you see it.</p>
+  <p>Don't paste anything that isn't yours to share: nothing classified, controlled unclassified, export-controlled, or marked internal, and no customer information you wouldn't put in an email to a stranger. The analytics events on these pages say which page was used and which tool was picked, never what you typed.</p>
+
   <h2>Shared links</h2>
   <p>When you share a result, the numbers or answers ride along in the link itself, after the # sign. That part of a link isn't sent to QuotaBird's server or to Google Analytics, but anyone you send the link to can see what's in it. Share accordingly.</p>
 
@@ -3262,7 +3270,7 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
   </ul>
 
   <h2>What QuotaBird doesn't do</h2>
-  <p>No accounts, no advertising, no selling or renting data, and no AI processing of anything you type. The Field Kits are plain PDF files.</p>
+  <p>No accounts, no advertising, and no selling or renting data. The tools themselves use no AI; only the four pages above do, and only when you press their button. The Field Kits are plain PDF files.</p>
 
   <h2>Changes and questions</h2>
   <p>If this page changes, the date at the top changes with it. Questions about privacy or security go to <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
@@ -3354,7 +3362,7 @@ _work = note_head('Work with Mark', "Need a second opinion on a deal, quota, ter
 
 ''' + CONF_BLOCK + '''
   <h2>A few specifics</h2>
-  <p>At Amazon I was a Sales Manager leading federal partner sales teams covering Defense, Federal Civilian, Federal Financial and National Security, with a shared goal of more than $1B. I closed a $54M four-year cloud agreement with a major DoD systems integrator. Before Amazon I was at F5, where I made President's Circle, and Red Hat. In the Marine Corps I served two tours in Iraq and joint tours at the Defense Information Systems Agency (DISA), SOCOM and SOUTHCOM, where I was the customer: managing joint programs, fielding RFPs and overseeing procurement, including as a COTR. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've probably never heard of.</p>
+  <p>At Amazon I was a Sales Manager leading federal partner sales teams covering Defense, Federal Civilian, Federal Financial and National Security, with a shared goal of more than $1B. I closed a $54M four-year cloud agreement with a major DoD systems integrator. Before Amazon I was at F5, where I made President's Circle, and Red Hat. In the Marine Corps I worked on the government side of technology buying, including as a COTR. People I've helped have worked at Amazon, Microsoft, Google, Oracle and a lot of smaller companies you've probably never heard of.</p>
   <section class="offer offer-ask" id="ask">
     <h2>Grab 20 minutes</h2>
     <p>Tell me what you're wrestling with and I'll tell you what I think. If I don't think you need help, I'll say so.</p>
@@ -3373,7 +3381,7 @@ _fed = note_head('Federal GTM', "Trying to figure out whether there's a real fed
   <span class="overline">Federal GTM</span>
   <h1>You think you have a federal business? Let's find out.</h1>
   <p>A federal customer who likes your product is a good start. It turns into a business when there's money for it, a legal way to buy it and a reason to do it this year. Most of the federal plans I've seen were built on the first part and assumed the rest.</p>
-  <p>I spent 20 years in the Marine Corps, including two tours in Iraq and joint tours at DISA, SOCOM and SOUTHCOM. I was the customer: I managed joint programs, fielded RFPs and oversaw procurement. Later, as a Sales Manager at Amazon, I led federal partner sales teams covering Defense, Federal Civilian, Federal Financial and National Security. I've seen how this gets bought from both sides. If you want me to look at your federal plan, your pipeline or a federal business you're thinking about buying, grab 20 minutes and tell me about it. I'll tell you what I think.</p>
+  <p>I spent 20 years in the Marine Corps, some of it on the government side of technology buying, and later, as a Sales Manager at Amazon, led federal partner sales teams covering Defense, Federal Civilian, Federal Financial and National Security. I've seen how this gets bought from both sides. If you want me to look at your federal plan, your pipeline or a federal business you're thinking about buying, grab 20 minutes and tell me about it. I'll tell you what I think.</p>
 ''' + talk_cta('federal') + '''
   <h2>Who this is usually for</h2>
   <ul>
@@ -3566,8 +3574,9 @@ def chrome(path):
         elif path in SELLERCARD_PAGES and 'kit-band' not in mark: mark = SELLERCARD_SRC + mark
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
+exec(open('make-ask.py', encoding='utf-8').read())   # Ask QuotaBird, the workflow pages, tools/*.js, lambda/quotabird-catalog.mjs
 PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY)] \
-        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html', 'work-with-mark/index.html', 'federal/index.html'] + ['404.html']
+        + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html', 'work-with-mark/index.html', 'federal/index.html'] + ASK_PAGES + ['404.html']
 for _p in PAGES:
     chrome(_p)
 print('chrome', len(PAGES))
@@ -3602,6 +3611,7 @@ DESC = {'/pipeline/': 'Pipeline Check: target, pipeline and win rate in, the gap
         '/deal/': 'Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.'}
 for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
 for c in CALCS: DESC['/' + c['slug'] + '/'] = c['name'] + ': ' + c['desc']
+for w in WORKFLOWS: DESC[w['url']] = w['name'] + ': ' + w['desc']
 QUERIES = {'/federal-readiness/': ['is my company ready to sell to the federal government', 'federal go-to-market readiness', 'do I need a prime contractor', 'how do federal agencies buy software', 'federal sales readiness checklist'],
            '/offer/': ['compare two sales job offers', 'which sales offer pays more', 'OTE vs realistic earnings calculator', 'sales job offer ramp guarantee', 'year one sales compensation with ramp'],
            '/pay/': ['how much will my sales comp plan pay at 150% of quota', 'sales accelerator calculator', 'does my commission cap limit my upside', 'what does OTE really pay', 'comp plan payout curve'],
@@ -3620,6 +3630,9 @@ QUERIES = {'/federal-readiness/': ['is my company ready to sell to the federal g
            '/brief/': ['will my QBR survive the room', 'pressure test my brief before the meeting', 'what question am I hoping nobody asks'],
            '/account/': ['do I know the account or just my contact', 'am I single-threaded in this account', 'federal account check'],
            '/risk/': ['how fragile is my pipeline', 'pipeline concentration and aging risk', '4X coverage but still at risk'],
+           '/meeting-prep/': ['prepare for an important customer meeting', 'questions to ask a CIO in a sales meeting', 'what objections to expect in a customer meeting', 'how to brief a general officer or SES', 'meeting prep for enterprise sales'],
+           '/account-plan/': ['how to write a sales account plan', 'account plan template with pipeline coverage', 'federal account plan by fiscal quarter', 'strategic account plan for a quota carrier'],
+           '/update-upward/': ['how to tell my boss I will miss my number', 'weekly sales update template for my manager', 'what to say on a forecast call', 'monthly business review for sales'],
            '/competition/': ['why would they pick us over doing nothing', 'am I beating the incumbent', 'competitive position check for a deal']}
 groups, last = [], None
 for g, h, n, d in TOOLS:
@@ -3627,7 +3640,7 @@ for g, h, n, d in TOOLS:
     groups[-1][1].append((h, n, d))
 site = 'https://quotabird.com'
 lines = ['# QuotaBird', '', '> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. ' + f'{len([1 for g, h, n, d in TOOLS])} one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.', '',
-         'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor\'s own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Privacy: https://quotabird.com/privacy/', '']
+         'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor\'s own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Four pages are the exception: Ask QuotaBird (' + site + '/ask-quotabird/), Meeting Prep, Account Plan and Update Upward send what the visitor types to Google Gemini through QuotaBird\'s own server, which stores nothing; the AI writes words only, and every number still comes from the browser. Privacy: https://quotabird.com/privacy/', '']
 for g, items in groups:
     lines.append(f'## {g}'); lines.append('')
     for h, n, d in items:
@@ -3644,7 +3657,7 @@ for g, h, n, d in TOOLS:
     entries.append({"identifier": f"urn:air:quotabird.com:tools:{slug}-check", "displayName": n, "type": "text/html", "url": site + h,
                     "description": DESC[h], "tags": [g.lower().replace(' ', '-'), 'sales', 'free', 'no-login'],
                     "capabilities": [n.replace(' ', '')], "representativeQueries": QUERIES[h][:5], "version": BUILD[:10].replace('-', '.'),
-                    "updatedAt": BUILD[:10] + 'T00:00:00Z', "metadata": {"runsInBrowser": True, "storesData": False, "usesAI": False, "audience": g}})
+                    "updatedAt": BUILD[:10] + 'T00:00:00Z', "metadata": {"runsInBrowser": True, "storesData": False, "usesAI": h in {w["url"] for w in WORKFLOWS}, "audience": g}})
 catalog = {"specVersion": "1.0", "host": {"displayName": "QuotaBird", "identifier": "https://quotabird.com", "documentationUrl": site + "/llms.txt", "logoUrl": site + "/logo.png"}, "entries": entries}
 os.makedirs('.well-known', exist_ok=True)
 for path in ['.well-known/ai-catalog.json', 'ai-catalog.json']:
@@ -3664,7 +3677,7 @@ print('sitemap', len(_urls), 'urls')
 # The plain files stay for editing; only the current hashed copies are kept.
 import hashlib as _hl, glob as _g
 _ASSETS = {}
-for _f in ('site.css', 'check.js', 'calc.js', 'analytics.js'):
+for _f in ('site.css', 'check.js', 'calc.js', 'analytics.js', 'ask.js'):
     _h = _hl.sha1(open(_f, 'rb').read()).hexdigest()[:8]; _base, _ext = _f.rsplit('.', 1)
     _name = f'{_base}.{_h}.{_ext}'
     for _old in _g.glob(f'{_base}.*.{_ext}'):
