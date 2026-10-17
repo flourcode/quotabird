@@ -79,21 +79,23 @@ await t('coach: Arti answers a plain question, all seven personas, tool suggesti
   assert.equal(calls.at(-1).body.generationConfig.maxOutputTokens, 4096);
 });
 await t('coach: too short', async () => { const r = await call({ kind: 'qb_coach', situation: 'hi' }); assert.equal(r.status, 400); });
-await t('meeting prep: one box', async () => {
-  reply = { objective: 'They agree to a pilot.', read: 'The deputy owns it.', agenda: ['Open, 5 min'], questions: ['a?', 'b?', 'c?', 'd?'], objections: [{ objection: 'No money', answer: 'Ask which line.' }], landmines: ['The old pilot'], next_step: 'Kickoff by the 30th.', within_72_hours: ['Send the recap'] };
-  const r = await call({ kind: 'qb_meeting_prep', situation: 'Thursday with the HHS deputy CIO about a pilot.' });
-  assert.equal(r.status, 200); assert.equal(r.body.meeting.questions.length, 4); assert.equal(r.body.meeting.next_step, 'Kickoff by the 30th.');
-  assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.startsWith('You are Arti'));
+await t('meeting prep: Arti picks the sections, voice rules in the prompt', async () => {
+  reply = { sections: [{ heading: "What's really going on.", body: 'That director gets measured on — partner revenue.\n- Bring two deals\n- One ask' }, { heading: 'The ask', body: 'One intro, with a date.' }] };
+  const r = await call({ kind: 'qb_meeting_prep', situation: 'Meeting with the Director of Public Sector Partners next week.' });
+  assert.equal(r.status, 200); assert.equal(r.body.sections.length, 2);
+  assert.equal(r.body.sections[0].heading, "What's really going on"); assert.ok(!r.body.sections[0].body.includes('—')); assert.ok(r.body.sections[0].body.includes('\n- Bring two deals'));
+  const sys = calls.at(-1).body.systemInstruction.parts[0].text;
+  assert.ok(sys.startsWith('You are Arti')); assert.ok(sys.includes('No consultant language')); assert.ok(sys.includes('What good sounds like'));
 });
-await t('account plan: one box', async () => {
-  reply = { summary: 'VA is single-threaded.', mission: 'Claims backlog.', money: 'Renewal in August, Q4 of their year.', path: 'Through Carahsoft.', people: [{ role: 'Program manager', play: 'Ask for an intro up.' }], plays: ['Expand to appeals'], quarters: [{ quarter: 'Q1 (Oct to Dec)', focus: 'Meet the CIO' }], risks: ['One contact'], within_72_hours: ['Ask for the intro'] };
+await t('account plan: sections', async () => {
+  reply = { sections: [{ heading: 'Where it stands', body: 'One thread.' }, { heading: 'This week', body: '- Ask for the intro' }] };
   const r = await call({ kind: 'qb_account_plan', situation: 'VA claims office, $2M number, through Carahsoft.' });
-  assert.equal(r.status, 200); assert.equal(r.body.plan.people[0].role, 'Program manager'); assert.equal(r.body.plan.quarters.length, 1);
+  assert.equal(r.status, 200); assert.equal(r.body.sections[1].body, '- Ask for the intro');
 });
-await t('update upward: one box, type honored', async () => {
-  reply = { headline: 'I will land $2.6M of $3M.', update: 'First paragraph.\n\nSecond paragraph.', asks: ['Call their GC'], questions: [{ q: 'Worst case?', a: '$1.4M.' }] };
+await t('update upward: type honored, sections', async () => {
+  reply = { sections: [{ heading: 'The update', body: "I'll land $2.6M of $3M.\n\nNorthwind is in legal." }, { heading: 'Your boss will ask', body: '- Worst case? $1.4M.' }] };
   const r = await call({ kind: 'qb_update_upward', type: 'miss', situation: '$3M number, $1.2M closed, Northwind in legal.' });
-  assert.equal(r.status, 200); assert.equal(r.body.update.type, 'miss'); assert.equal(r.body.update.update.length, 2);
+  assert.equal(r.status, 200); assert.equal(r.body.type, 'miss'); assert.equal(r.body.sections[0].heading, 'The update');
   assert.ok(calls.at(-1).body.contents[0].parts[0].text.includes('calling a miss early'));
 });
 await t('rate limit is per visitor and separate from SideFrog', async () => {

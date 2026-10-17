@@ -107,9 +107,10 @@
       const { data, error } = await post({ kind, situation, type: choice('type') });
       busy(btn, false);
       if (error) { track(slug + '_error'); return errorBox(out, error); }
-      if (page === 'meeting-prep') renderMeeting(data.meeting || {});
-      else if (page === 'account-plan') renderPlan(data.plan || {});
-      else renderUpdate(data.update || {});
+      // the current Lambda sends sections; an older one sends { meeting | plan | update: {...} }, which still gets shown
+      const secs = Array.isArray(data.sections) ? data.sections : legacySections(data.meeting || data.plan || data.update);
+      if (!secs.length) { track(slug + '_empty'); return errorBox(out, "The answer came back empty. Try again in a moment."); }
+      renderSections(secs, data.type || (data.update && data.update.type));
       track(slug + '_done');
     });
     function finish(html, textFn) {
@@ -117,28 +118,25 @@
       actions(out.querySelector('.wf-out'), textFn, slug);
       const card = out.querySelector('.wf-out'); scrollTo(card); try { card.focus({ preventScroll: true }); } catch {}
     }
-    const lead = (label, text) => text ? `<div class="card wf-lead"><span class="overline">${esc(label)}</span><p class="lede">${esc(text)}</p></div>` : '';
-    const card = (h, body) => body ? `<div class="card"><h3>${esc(h)}</h3>${body}</div>` : '';
-    const pgr = (t) => t ? `<p class="pg">${esc(t)}</p>` : '';
-    function renderMeeting(x) {
-      finish(lead('A win looks like', x.objective) + card("Arti's read", pgr(x.read)) + card('The agenda', ul(x.agenda, undefined, 'ol')) + card('Questions to ask', ul(x.questions, undefined, 'ol'))
-        + card('Objections, and what to say', ul(x.objections, (o) => `<strong>${esc(o.objection)}</strong><br>${esc(o.answer)}`)) + card('Landmines', ul(x.landmines))
-        + lead('The next step to ask for', x.next_step) + card('Within 72 hours', ul(x.within_72_hours)),
-        () => P('A win looks like', x.objective) + P("Arti's read", x.read) + T('The agenda', x.agenda) + T('Questions to ask', x.questions) + T('Objections', x.objections, (o) => `${o.objection} → ${o.answer}`) + T('Landmines', x.landmines) + P('The next step to ask for', x.next_step) + T('Within 72 hours', x.within_72_hours));
+    function legacySections(o) {
+      if (!o || typeof o !== 'object') return [];
+      const name = (k) => ({ objective: 'A win looks like', read: "Arti's read", next_step: 'The next step to ask for', within_72_hours: 'Within 72 hours', who_to_meet: 'Who to meet', next_actions: 'Next actions' }[k] || (k.charAt(0).toUpperCase() + k.slice(1).replace(/_/g, ' ')));
+      const line = (v) => typeof v === 'string' ? v : v && typeof v === 'object' ? Object.values(v).filter(x => typeof x === 'string').join(': ') : '';
+      return Object.entries(o).filter(([k]) => !['type', 'trimmed'].includes(k)).map(([k, v]) => ({ heading: name(k), body: Array.isArray(v) ? v.map(line).filter(Boolean).map(x => '- ' + x).join('\n') : line(v) })).filter(x => x.body);
     }
-    function renderPlan(x) {
-      finish(lead('Where it stands', x.summary) + card('Mission', pgr(x.mission)) + card('Money', pgr(x.money)) + card('How they buy', pgr(x.path))
-        + card('The people', ul(x.people, (p) => `<strong>${esc(p.role)}</strong>. ${esc(p.play)}`)) + card('How you grow it', ul(x.plays))
-        + (x.quarters && x.quarters.length ? `<div class="list" aria-label="The year"><div class="list-item compact"><span class="headline">The year, on their fiscal quarters</span></div>${x.quarters.map(q => `<div class="list-item ms"><span class="trailing">${esc(q.quarter)}</span><span class="headline">${esc(q.focus)}</span></div>`).join('')}</div>` : '')
-        + card('Risks', ul(x.risks)) + card('Within 72 hours', ul(x.within_72_hours)),
-        () => P('Where it stands', x.summary) + P('Mission', x.mission) + P('Money', x.money) + P('How they buy', x.path) + T('The people', x.people, (p) => `${p.role}: ${p.play}`) + T('How you grow it', x.plays) + T('The year', x.quarters, (q) => `${q.quarter}: ${q.focus}`) + T('Risks', x.risks) + T('Within 72 hours', x.within_72_hours));
-    }
-    function renderUpdate(x) {
-      finish(lead({ weekly: 'Weekly update', forecast: 'Forecast call', miss: 'Calling a miss', monthly: 'Monthly review' }[x.type] || 'Update', x.headline)
-        + `<div class="card update-body">${(x.update || []).map(p => `<p class="pg">${esc(p)}</p>`).join('')}</div>`
-        + card('The asks', ul(x.asks)) + `<div class="ask-prep">${card('Your boss will ask', ul(x.questions, (q) => `<strong>${esc(q.q)}</strong><br>${esc(q.a)}`))}</div>`,
-        // what gets copied is the update itself, ready to paste; the boss's questions are prep, so they stay out
-        () => (x.headline ? x.headline + '\n\n' : '') + (x.update || []).join('\n\n') + (x.asks && x.asks.length ? '\n\nWhat I need:\n' + x.asks.map(a => '- ' + a).join('\n') : ''));
+    // Arti picks the sections; each body is short paragraphs or "- " lists.
+    const bodyHtml = (t) => {
+      const out = []; let list = [];
+      const flush = () => { if (list.length) { out.push(`<ul class="ask-list">${list.map(i => `<li>${esc(i)}</li>`).join('')}</ul>`); list = []; } };
+      String(t || '').split('\n').forEach(l => { if (/^- /.test(l)) list.push(l.slice(2)); else { flush(); if (l.trim()) out.push(`<p class="pg">${esc(l)}</p>`); } });
+      flush(); return out.join('');
+    };
+    function renderSections(secs, type) {
+      const isUpdate = page === 'update-upward';
+      const html = secs.map((x, i) => `<div class="card${i === 0 ? ' wf-first' : ''}${isUpdate && /boss will ask/i.test(x.heading) ? ' ask-prep' : ''}"><h3>${esc(x.heading)}</h3>${bodyHtml(x.body)}</div>`).join('');
+      // for an update, Copy gives the message itself (ready to paste); the boss's questions are prep
+      finish(html, () => isUpdate && secs.length ? secs.filter(x => !/boss will ask/i.test(x.heading)).map(x => /^the update$/i.test(x.heading) ? x.body : `${x.heading.toUpperCase()}\n${x.body}`).join('\n\n')
+        : secs.map(x => `${x.heading.toUpperCase()}\n${x.body}`).join('\n\n'));
     }
   }
 
