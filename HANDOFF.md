@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-11.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-11.1000** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -314,6 +314,10 @@ Two offers side by side isn't how people job-hunt now. Most people have one offe
 - **Just check the offer.** No comparison. Big number is a normal year at a realistic attainment (default 80%), with year one, the share of pay riding on quota, the ramp and the Bridge Group 2026 median AE OTE ($200K) for context. "Maybe. Read the fine print." when more than 55% rides on quota or the ramp is 6+ months with nothing guaranteed; "A solid offer, if the quota is." when 50% or less rides on quota and the ramp is protected (3 months or less, or 50%+ guaranteed); otherwise "Fair, if the quota is." Both point to Quota Check for whether the quota itself is sane.
 
 Mechanics: a field with `when='mode=jump'` renders `data-when` on its label (and its group heading); calc.js `applyWhen` hides those while the other choice is on, and hidden fields are left out of the Ask Mark handoff. CSS: `.calc-in label.tf[hidden]` needs the extra specificity to beat the grid's `display:flex !important`. Shared numbers map into your current job (`share: {curBase:'base', curVar:'variable'}`). The Lambda catalog labels now carry the group heading ("Your job now: Base (only when mode=jump)") so the AI doesn't confuse the two Base fields; the pay playbook talks about current job vs. offer. OG card: "+$17K / Yes, after a dip." tests/parity.mjs fuzzes Offer Check for sanity (no NaN, every verdict worded) instead of matching the original; render_parity skips it.
+
+## Disclaimers (Nov 11)
+
+Kept short on purpose, so they don't read like a bank's liability waiver. Under every chat box (home, Ask Mark, Meeting Prep, Account Plan, Update Upward): "AI, not Mark. It can be wrong. Nothing you type is stored." (`_chat` note in make-ask.py). In every footer, added by the page pass in make-tools.py next to the contact line: `<p class="foot-advice">For information only. Not legal, tax or financial advice. Use your own judgment.</p>`. No pop-ups, no agree gates, no disclaimer on each AI reply. A Terms page ("as is, no warranty") is the next step if Mark wants more cover; have a lawyer look at that wording.
 
 ## Navigation
 

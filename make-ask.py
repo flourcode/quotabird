@@ -219,7 +219,7 @@ def _box(label, ph, cta, note='Uses AI. <a href="#faq">What gets sent</a>', extr
             f'      <p class="startnote">{note}</p>\n    </form>\n    <div id="wfOut" aria-live="polite"></div>')
 
 CAL_ASK = 'https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=ask-mark'
-def _chat(placeholder, examples, tryone='', note='AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a>', rows=2):
+def _chat(placeholder, examples, tryone='', note='AI, not Mark. It can be wrong. Nothing you type is stored. <a href="#faq">What gets sent</a>', rows=2):
     """The chat: Mark's bubbles, the follow-up row, the composer, example chips, and the real-Mark card.
     The three workflow pages use the same chat with their own placeholder and examples; the Lambda gets the page name."""
     ex = ''.join(f'      <button class="ask-ex" type="button" data-example="{html_mod.escape(t, quote=True)}">{html_mod.escape(l)}</button>\n' for l, t in examples)

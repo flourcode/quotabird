@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-11.0900'
+BUILD = '2026-11-11.1000'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -3589,7 +3589,8 @@ def chrome(path):
     s = s.replace('<footer class="sitefoot">', '<footer class="sitefoot">\n  ' + nav, 1)
     # one contact line in every footer, for questions and security issues
     s = re.sub(r'\s*<p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>', '', s)
-    s = s.replace('<p>Not affiliated with the U.S. government or Amazon.</p>', '<p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>\n  <p>Not affiliated with the U.S. government or Amazon.</p>', 1)
+    s = re.sub(r'\s*<p class="foot-advice">.*?</p>', '', s)   # and one advice line: the tools and the AI are information, not advice
+    s = s.replace('<p>Not affiliated with the U.S. government or Amazon.</p>', '<p>Questions or security issues: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a></p>\n  <p class="foot-advice">For information only. Not legal, tax or financial advice. Use your own judgment.</p>\n  <p>Not affiliated with the U.S. government or Amazon.</p>', 1)
     if path != '404.html':
         # the full story lives on the About page; every other page gets the short "Made by Mark" card
         src = MARK_SRC if path == 'about/index.html' else MADEBY_SRC
