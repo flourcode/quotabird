@@ -145,6 +145,59 @@ def save(im, out):
     im.save(out, quality=90, optimize=True, subsampling=0); print(out, os.path.getsize(out), 'bytes')
 
 arg = sys.argv[1] if len(sys.argv) > 1 else 'home'
+
+# Ask Mark: the same white page and chunky headline, but the right-hand card is a two-turn chat, the way the
+# page looks after the first answer. The exchange is real Mark voice, picked for the person who's had the week.
+ASKCARDS = {
+  'ask-mark': dict(out='card-ask-mark.jpg', wordmark='ASK MARK',
+    headline="Stuck on a deal? Ask a guy who's been stuck on worse.",
+    dek='The AI version of Mark. Twenty years of federal sales, no sugarcoating, free.',
+    url='quotabird.com/ask-mark',
+    you='My boss hates me. Every forecast call is a public execution.',
+    mark="He doesn't hate you. He's getting grilled by his own VP. Bring him the ugly deals before he finds them."),
+  'ask-mark-b': dict(out='card-ask-mark-b.jpg', wordmark='ASK MARK',
+    headline='Hope is not evidence.',
+    dek='Tell the AI version of Mark about the deal. He\'ll say what your manager is about to.',
+    url='quotabird.com/ask-mark',
+    you="My champion says it'll close this quarter.",
+    mark="Your champion may believe it. Until procurement moves, you've got enthusiasm, not a close. Who has to touch this next?"),
+}
+def chat_card(im, d, box, you, mark):
+    x0, y0, x1, y1 = box; d.rounded_rectangle(box, radius=34, fill=hexc(TINT['grey'][0]))
+    pad = 30; w = x1 - x0 - 2 * pad
+    uf = font(500, 25); mf = font(500, 25); lh = 33
+    ulines = wrap(d, you, uf, int(w * .84) - 32); mlines = wrap(d, mark, mf, w - 72)
+    uh = len(ulines) * lh + 26; mh = len(mlines) * lh
+    total = uh + 22 + max(mh, 56)
+    y = y0 + (y1 - y0 - total) // 2
+    # the person's bubble, right-aligned, in the page's tint
+    bw = max(d.textlength(l, font=uf) for l in ulines) + 32; bx1 = x1 - pad; bx0 = bx1 - bw
+    d.rounded_rectangle((bx0, y, bx1, y + uh), radius=22, fill=(0xDC, 0xE6, 0xF5)); d.rounded_rectangle((bx1 - 22, y + uh - 22, bx1, y + uh), radius=4, fill=(0xDC, 0xE6, 0xF5))
+    ty = y + 13
+    for l in ulines: d.text((bx0 + 16, ty), l, font=uf, fill=INK); ty += lh
+    y += uh + 22
+    # Mark: face and plain text, as on the page
+    face = Image.open('mark.jpg').convert('RGB').resize((56, 56), Image.LANCZOS)
+    mask = Image.new('L', (56, 56), 0); ImageDraw.Draw(mask).ellipse((0, 0, 55, 55), fill=255)
+    im.paste(face, (x0 + pad, y), mask)
+    ty = y + 2
+    for l in mlines: d.text((x0 + pad + 72, ty), l, font=mf, fill=INK); ty += lh
+    d.text((x0 + pad + 72, ty + 8), 'AI, not the real Mark.', font=font(500, 17), fill=MUT)
+
+if arg in ASKCARDS:
+    A = ASKCARDS[arg]; W, H, M = 1200, 630, 64
+    im = Image.new('RGB', (W, H), WHITE); d = ImageDraw.Draw(im); brand(im, d, M, M - 6)
+    LW = 560; y = 150
+    d.text((M, y), A['wordmark'], font=font(700, 22), fill=MUT); y += 44
+    f, lines, s = fit(d, A['headline'], 900, 76, LW, 3, 44)
+    for l in lines: d.text((M - 3, y), l, font=f, fill=INK); y += int(s * 1.02)
+    df = font(500, 26); ty = y + 18; dek = wrap(d, A['dek'], df, LW)[:3]
+    while ty + len(dek) * 34 > H - M - 44 and len(dek) > 1: dek = dek[:-1]   # never over the URL
+    for tl in dek: d.text((M, ty), tl, font=df, fill=MUT); ty += 34
+    d.text((M, H - M - 28), A['url'], font=font(700, 28), fill=INK)
+    chat_card(im, d, (W - M - 470, M + 20, W - M, H - M - 20), A['you'], A['mark'])
+    save(im, A['out']); sys.exit(0)
+
 if arg == 'banner':
     for sc, out in ((1, 'linkedin-banner.jpg'), (2, 'linkedin-banner@2x.jpg')):
         W, H = 1584 * sc, 396 * sc; im = Image.new('RGB', (W, H), WHITE); d = ImageDraw.Draw(im)

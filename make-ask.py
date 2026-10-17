@@ -119,6 +119,7 @@ _ARTI_FAQ = ("Who's answering?", "The AI version of Mark: set up to answer the w
 def _ask_page(slug, name, title, desc, h1, dek, body, faq, scripts):
     faq_html = ''.join(f'    <details class="exp"><summary>{q}</summary>\n      <div class="body">{a}</div></details>\n' for q, a in faq)
     faq_ld = ',\n'.join(json.dumps({"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r'<[^>]+>', '', a)}}) for q, a in faq)
+    card = f'card-{slug}.jpg' if os.path.exists(f'card-{slug}.jpg') else 'card.jpg'   # its own share card when one has been made (make-card.py)
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -137,13 +138,14 @@ def _ask_page(slug, name, title, desc, h1, dek, body, faq, scripts):
 <meta property="og:title" content="{name}: {h1}">
 <meta property="og:description" content="{desc}">
 <meta property="og:site_name" content="QuotaBird">
-<meta property="og:image" content="https://quotabird.com/card.jpg">
+<meta property="og:image" content="https://quotabird.com/{card}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{name}: {h1}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{name}: {h1}">
 <meta name="twitter:description" content="{desc}">
-<meta name="twitter:image" content="https://quotabird.com/card.jpg">
+<meta name="twitter:image" content="https://quotabird.com/{card}">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B1215">
