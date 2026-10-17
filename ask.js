@@ -90,6 +90,14 @@
     const KEY = 'qb-chat-' + (WORKFLOW ? CFG.page : 'mark');
     const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify({ history: history.slice(-24), last })); } catch (e) {} };
     const forget = () => { try { sessionStorage.removeItem(KEY); } catch (e) {} };
+    // Starting over keeps the last conversation one tap away, in case the logo or Start over was a slip
+    const PREV = KEY + '-prev';
+    const archive = (h, l) => { try { if (h && h.length) sessionStorage.setItem(PREV, JSON.stringify({ history: h.slice(-24), last: l })); } catch (e) {} };
+    const readPrev = () => { try { const p = JSON.parse(sessionStorage.getItem(PREV) || 'null'); return p && Array.isArray(p.history) && p.history.length ? p : null; } catch (e) { return null; } };
+    const prevRow = document.createElement('p'); prevRow.className = 'ask-prev'; prevRow.hidden = true;
+    prevRow.innerHTML = '<button class="linkbtn" type="button">\u21a9 Pick up your last conversation</button>';
+    examples.parentNode.insertBefore(prevRow, examples);
+    const showPrev = () => { prevRow.hidden = !(history.length === 0 && readPrev()); };
     const CAL = 'https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=' + slug + '&utm_content=in_chat';
     const fit = () => { text.style.height = 'auto'; text.style.height = Math.min(200, text.scrollHeight) + 'px'; };
     text.addEventListener('input', fit); fit();
@@ -133,7 +141,7 @@
     const reveal = (el) => { if (!el) return; const pad = form.offsetHeight + 24; const r = el.getBoundingClientRect(); if (r.bottom > window.innerHeight - pad || r.top < 0) window.scrollBy({ top: Math.min(r.top - 96, r.bottom - (window.innerHeight - pad)), behavior: reduced() ? 'auto' : 'smooth' }); };
     const ROWS = text.rows || 1;   // a workflow page opens with a taller box; once the conversation starts it's a one-line composer
     // once the conversation starts the intro collapses (the answer gets the room) and the box becomes a one-line composer
-    const started = (on) => { bar.hidden = !on; examples.hidden = on; form.classList.toggle('is-sticky', on); document.body.classList.toggle('is-chatting', on); text.placeholder = on ? PH_MORE : PH_FIRST; text.rows = on ? 1 : ROWS; fit(); };
+    const started = (on) => { if (on && typeof prevRow !== 'undefined') prevRow.hidden = true; bar.hidden = !on; examples.hidden = on; form.classList.toggle('is-sticky', on); document.body.classList.toggle('is-chatting', on); text.placeholder = on ? PH_MORE : PH_FIRST; text.rows = on ? 1 : ROWS; fit(); };
     // What to ask next: Mark's own follow-up suggestions as chips (tap to send), and the one tool that runs
     // their numbers as the outlined chip at the end. Sits between his reply and the box so the box reads as "reply".
     const send = (q, why) => { text.value = q; fit(); track(why); form.requestSubmit(); };
@@ -149,7 +157,27 @@
       next.hidden = false;
     }
     document.querySelectorAll('[data-example]').forEach(b => b.onclick = () => { text.value = b.dataset.example; fit(); track('ask_example'); form.requestSubmit(); });
-    fresh.onclick = () => { run++; history.length = 0; last = { followups: [], tool: null }; forget(); chat.innerHTML = ''; offer([], null); started(false); text.value = ''; fit(); text.focus(); track('ask_new'); };
+    function startOver(why) {
+      run++; archive(history.slice(), last);
+      history.length = 0; last = { followups: [], tool: null }; forget();
+      chat.innerHTML = ''; offer([], null); started(false); text.value = ''; fit(); showPrev();
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      if (!touch()) text.focus({ preventScroll: true });
+      track(why || 'ask_new');
+    }
+    fresh.onclick = () => startOver('ask_new');
+    // the logo means "home, clean slate": it links to /#start, which starts over here (Back still restores)
+    const freshStart = () => { if (location.hash === '#start') { try { window.history.replaceState(null, '', location.pathname); } catch (e) {} return true; } return false; };
+    window.addEventListener('hashchange', () => { if (freshStart()) startOver('ask_logo_restart'); });
+    prevRow.querySelector('button').onclick = () => {
+      const p = readPrev(); if (!p) return;
+      run++; archive(history.slice(), last);
+      history.length = 0; chat.innerHTML = '';
+      p.history.forEach(m => { history.push({ role: m.role === 'mark' ? 'mark' : 'user', text: m.text }); m.role === 'mark' ? markBubble(paras(m.text)) : userBubble(m.text); });
+      last = p.last || { followups: [], tool: null }; save(); started(true); prevRow.hidden = true;
+      if (history[history.length - 1].role === 'mark') offer(last.followups, last.tool); else ask();
+      track('ask_prev_restored');
+    };
     // A tool handing over its result: /ask-mark/#ask=<the person's numbers as their first message>. The fragment
     // never reaches the server or analytics; it's dropped from the address bar as soon as it's read, and sent once.
     let seed = '';
@@ -199,14 +227,18 @@
       track((CFG.page === 'ask-mark' ? 'ask' : slug) + (history.filter(m => m.role === 'user').length === 1 ? '_first' : '_followup'));   // home_first, ask_first, meeting_prep_first...
       ask();
     });
-    // back from a tool, a link or a reload in the same tab: the conversation is where they left it
+    // back from a tool, a link or a reload in the same tab: the conversation is where they left it.
+    // Arriving from the logo (/#start): the old conversation is archived and the page starts clean.
+    const cleanStart = !WORKFLOW && freshStart();
+    if (cleanStart) { try { const old = JSON.parse(sessionStorage.getItem(KEY) || 'null'); if (old) archive(old.history, old.last); } catch (e) {} forget(); track('ask_logo_restart'); }
     try {
-      const saved = JSON.parse(sessionStorage.getItem(KEY) || 'null');
+      const saved = cleanStart ? null : JSON.parse(sessionStorage.getItem(KEY) || 'null');
       if (saved && Array.isArray(saved.history) && saved.history.length) {
         saved.history.forEach(m => { if (!m || typeof m.text !== 'string') return; history.push({ role: m.role === 'mark' ? 'mark' : 'user', text: m.text }); m.role === 'mark' ? markBubble(paras(m.text)) : userBubble(m.text); });
         if (history.length) { started(true); last = saved.last || last; if (history[history.length - 1].role === 'mark') offer(last.followups, last.tool); else if (!seed.trim()) ask(); track('ask_restored'); }
       }
     } catch (e) {}
+    showPrev();
     if (seed.trim().length >= 3) { text.value = seed.slice(0, 2500); fit(); track('ask_from_tool'); form.requestSubmit(); }
   }
 

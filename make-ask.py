@@ -217,7 +217,7 @@ def _chat(placeholder, examples, tryone='', note='AI, not the real Mark. Nothing
     """The chat: Mark's bubbles, the follow-up row, the composer, example chips, and the real-Mark card.
     The three workflow pages use the same chat with their own placeholder and examples; the Lambda gets the page name."""
     ex = ''.join(f'      <button class="ask-ex" type="button" data-example="{html_mod.escape(t, quote=True)}">{html_mod.escape(l)}</button>\n' for l, t in examples)
-    return f'''    <div class="chat-bar" id="chatBar" hidden><span class="chat-bar-l">This conversation stays in this tab.</span><button class="btn btn-text" id="askNew" type="button">New chat</button></div>
+    return f'''    <div class="chat-bar" id="chatBar" hidden><span class="chat-bar-l">This conversation stays in this tab.</span><button class="btn-start" id="askNew" type="button"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Start over</button></div>
     <div class="chat" id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
     <div class="ask-next" id="askNext" role="group" aria-label="Ask next" hidden></div>
     <form class="composer" id="askForm" autocomplete="off" novalidate>

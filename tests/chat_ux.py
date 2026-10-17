@@ -85,6 +85,28 @@ async def main():
         await pg.screenshot(path='/tmp/claude-0/shots/chatux-handoff.png')
         await ctx.close()
 
+        # 9. the logo starts fresh; one link brings the last conversation back; Back still restores
+        ctx2 = await b.new_context(viewport={'width': 1280, 'height': 900}); await setup(ctx2); pg = await ctx2.new_page()
+        await pg.goto(BASE + '/'); await pg.click('.ask-ex[data-example] >> nth=0'); await wait_replies(pg, 1)
+        label = (await pg.inner_text('#askNew')).strip()
+        await pg.goto(BASE + '/quota/'); await pg.click('a.logo'); await pg.wait_for_url(BASE + '/'); await pg.wait_for_timeout(400)
+        fresh_msgs = await pg.locator('.msg').count(); prev_shown = await pg.locator('.ask-prev').is_visible(); intro = await pg.locator('.mark-intro').is_visible()
+        await pg.click('.ask-prev button'); await pg.wait_for_timeout(300)
+        back_msgs = await pg.locator('.msg').count()
+        print('9 logo from a tool page:', fresh_msgs, 'messages, intro shown', intro, '| pick-up link', prev_shown, '| after pick-up', back_msgs, 'messages | button says', repr(label))
+        assert fresh_msgs == 0 and prev_shown and intro and back_msgs == 2 and label == 'Start over'
+        await pg.click('a.logo'); await pg.wait_for_timeout(400)
+        print('   logo on the home page itself:', await pg.locator('.msg').count(), 'messages, url', pg.url, ', pick-up link', await pg.locator('.ask-prev').is_visible())
+        assert await pg.locator('.msg').count() == 0 and pg.url == BASE + '/'
+        await pg.click('.ask-prev button'); await pg.wait_for_timeout(300)
+        await pg.click('#askNew'); await pg.wait_for_timeout(200)
+        print('   Start over:', await pg.locator('.msg').count(), 'messages, pick-up link', await pg.locator('.ask-prev').is_visible())
+        assert await pg.locator('.msg').count() == 0 and await pg.locator('.ask-prev').is_visible()
+        await pg.click('.ask-ex[data-example] >> nth=1'); await wait_replies(pg, 1)
+        assert not await pg.locator('.ask-prev').is_visible(), 'the link hides once a new conversation starts'
+        await pg.screenshot(path='/tmp/claude-0/shots/startover-bar.png', clip={'x': 0, 'y': 0, 'width': 1280, 'height': 420})
+        await ctx2.close()
+
         # 8. on a phone, return makes a new line; the send button sends
         ctx = await b.new_context(viewport={'width': 390, 'height': 844}, has_touch=True, is_mobile=True, device_scale_factor=2); await setup(ctx); pg = await ctx.new_page()
         await pg.goto(BASE + '/ask-mark/'); await pg.click('#askText'); await pg.keyboard.type('Two lines'); await pg.keyboard.press('Enter'); await pg.keyboard.type('here'); await pg.wait_for_timeout(300)
