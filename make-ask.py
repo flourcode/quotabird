@@ -214,7 +214,7 @@ CAL_ASK = 'https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird
 _ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minus the Wait',
     "Ask the AI version of Mark Flournoy a sales question: a stuck federal deal, a prime that won't move, a quota that landed, a comp plan, a boss who wants it in commit. Blunt, useful, and twenty minutes from the real Mark.",
     'Ask me anything about selling.',
-    "I'm the AI version of Mark. Twenty years in the Marine Corps, fifteen selling and leading federal sales at Red Hat, F5 and Amazon, boiled down into a chat box. Deals, partners, quota, comp, your boss. I'll be blunt. If you want the real one, he's twenty minutes away, link's at the bottom.",
+    "I'm the AI version of Mark. Twenty years in the Marines, fifteen in federal sales at Red Hat, F5 and Amazon, uploaded into a chatbot.<br>Deals, partners, quota, comp, forecasts, your boss. Try me, I won't sugarcoat it.",
     '''    <div class="chat-bar" id="chatBar" hidden><span class="chat-bar-l">This conversation stays in this tab.</span><button class="btn btn-text" id="askNew" type="button">New chat</button></div>
     <div class="chat" id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
     <form class="composer" id="askForm" autocomplete="off" novalidate>
@@ -224,11 +224,11 @@ _ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minu
       </div>
       <p class="startnote ask-note">AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a></p>
     </form>
-    <div class="ask-examples" id="askExamples" role="group" aria-label="Examples"><span class="ask-ex-h">Or start with:</span>
-      <button class="ask-ex" type="button" data-example="My champion at DHS says the CIO wants our zero trust tool, but the contracting officer says there's no vehicle we're on and the end of the fiscal year is coming fast.">No vehicle, it's August</button>
-      <button class="ask-ex" type="button" data-example="I sell cloud. My biggest customer signed a $3M three-year commit and is burning about half of pace. My manager wants me to forecast the full number. What do I do?">The commit isn't burning</button>
-      <button class="ask-ex" type="button" data-example="We're an ISV. A big prime wants us as a sub on an Air Force recompete but won't say what our workshare is, and the incumbent has been there eight years. Worth it?">Teaming with a prime</button>
-      <button class="ask-ex" type="button" data-example="My quota went up 30% and my territory didn't change. How do I push back without sounding like I'm whining?">Quota went up 30%</button>
+    <div class="ask-examples" id="askExamples" role="group" aria-label="Examples"><span class="ask-ex-h">Try one:</span>
+      <button class="ask-ex" type="button" data-example="I think my boss hates me. Every forecast call turns into him picking apart my deals in front of everybody, and my one-on-ones are all about what I haven't done. I'm at 70% of plan. How do I turn this around?">My boss hates me</button>
+      <button class="ask-ex" type="button" data-example="My customer went dark. The program manager was all in on a pilot, we sent the proposal three weeks ago, and now nothing. No reply to two emails. What do I do?">My customer went dark</button>
+      <button class="ask-ex" type="button" data-example="My quota went up 30% and my territory didn't change. How do I push back without sounding like I'm whining?">My quota went up 30%</button>
+      <button class="ask-ex" type="button" data-example="I need more pipeline. I'm at 1.5X on what's left of my number with five months to go, and most of what I have is early stage. Where does the rest come from?">I need more pipeline</button>
     </div>
     <div class="card mark-card real-mark">
       <h3>Want the real one?</h3>

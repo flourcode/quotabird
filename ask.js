@@ -102,7 +102,7 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const situation = box.value.trim();
-      if (situation.length < 8) { errorBox(out, 'Tell Arti a little more first. A few sentences is plenty.'); box.focus(); return; }
+      if (situation.length < 8) { errorBox(out, 'Tell Mark a little more first. A few sentences is plenty.'); box.focus(); return; }
       busy(btn, true, 'Working on it…'); wait(out, 'Arti is on it. About fifteen seconds.');
       track(slug + '_run');
       const kind = { 'meeting-prep': 'qb_meeting_prep', 'account-plan': 'qb_account_plan', 'update-upward': 'qb_update_upward' }[page];

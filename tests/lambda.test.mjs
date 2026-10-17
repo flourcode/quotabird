@@ -16,7 +16,7 @@ let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', na
 
 await t('health shows quotabird', async () => {
   const r = await NEW.handler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.2.0'); assert.ok(b.quotabird.catalog);
+  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.3.0'); assert.ok(b.quotabird.catalog);
 });
 await t('origin not allowed is refused', async () => {
   const r = await NEW.handler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
@@ -61,42 +61,46 @@ await t('explain: drops lines with numbers nobody gave, cleans dashes', async ()
 await t('explain: needs a result', async () => {
   const r = await call({ kind: 'qb_explain', question: 'x', slug: 'quota', result: {} }); assert.equal(r.status, 400);
 });
-const ARTI_REPLY = { high_level_recommendation: "Ok, let's think about this. Your champion is real but the money isn't — so in the next 72 hours get the program manager to name the funding line.",
-  coaching_plan: ['Decision Maker', 'Economic Buyer', 'Technical Buyer', 'Blocker', 'Champion', 'Your Boss (Sales Director/VP)', 'Your Internal Stakeholders'].map((p, i) => ({ persona: p, smart_goal: `Goal for ${p}, by Friday.`, talking_points: ['Mission first', 'Time to value', 'Extra', 'Too many'] })),
-  tool: 'deal' };
-await t('coach: Arti answers a plain question, all seven personas, tool suggestion', async () => {
-  reply = ARTI_REPLY;
-  const r = await call({ kind: 'qb_coach', situation: 'My DHS champion loves us but the CO says we are not on a vehicle.' });
+const COACH_REPLY = { read: "You've got a fan, not a deal.", hole: 'No vehicle.', move: 'Find the last vehicle they bought on.',
+  people: [{ role: 'Contracting officer', why_they_matter: 'Only path to a buy.', read: 'Not against you.', move: 'Bring the path.', say: 'Which vehicle did you use last time?' }, { role: 'Champion', why_they_matter: 'Forwards things.', move: 'Give them a one-pager.' }, { role: '', why_they_matter: 'x', move: 'y' }],
+  next_72_hours: ['Call your champion.', 'Find a reseller on that vehicle.'], what_would_change_my_mind: 'An existing order you can ride.', tool: 'deal' };
+await t('coach: read / hole / move / only the people who matter', async () => {
+  reply = COACH_REPLY;
+  const r = await call({ kind: 'qb_coach', situation: 'My champion at DHS loves us but the CO says we are not on a vehicle.' });
   assert.equal(r.status, 200); const c = r.body.coach;
-  assert.ok(c.high_level_recommendation.startsWith("Ok, let's think")); assert.ok(!c.high_level_recommendation.includes('—'));
-  assert.equal(c.coaching_plan.length, 7); assert.equal(c.coaching_plan[0].persona, 'Decision Maker'); assert.equal(c.coaching_plan[0].talking_points.length, 3);
-  assert.equal(c.tool.slug, 'deal');
-  const sent = calls.at(-1).body;
-  assert.ok(sent.systemInstruction.parts[0].text.startsWith('You are Mark')); assert.ok(sent.contents[0].parts[0].text.includes("SALESPERSON'S SITUATION"));
-  assert.ok(!sent.contents[0].parts[0].text.includes('NEW SCENARIO'));
-  await call({ kind: 'qb_coach', situation: 'My DHS champion loves us but the CO says we are not on a vehicle.', scenario: 'The RFP slips to Q3' });
-  assert.ok(calls.at(-1).body.contents[0].parts[0].text.includes('NEW SCENARIO TO CONSIDER: "The RFP slips to Q3"'));
-  assert.equal(calls.at(-1).body.generationConfig.maxOutputTokens, 4096);
+  assert.equal(c.read, "You've got a fan, not a deal."); assert.equal(c.people.length, 2, 'a person with no role is dropped'); assert.equal(c.people[0].say, 'Which vehicle did you use last time?');
+  assert.equal(c.next_72_hours.length, 2); assert.equal(c.tool.slug, 'deal');
+  const sent = calls.at(-1).body; const sys = sent.systemInstruction.parts[0].text;
+  assert.ok(sys.startsWith("You are QuotaBird, speaking in Mark's voice")); assert.ok(!sys.includes('Auburn'), 'no bio on a workflow'); assert.ok(sys.includes('FEDERAL'), 'federal playbook picked from DHS and CO');
+  assert.ok(!JSON.stringify(sent.generationConfig.responseJsonSchema).includes('encouragement')); assert.ok(!JSON.stringify(sent.generationConfig.responseJsonSchema).includes('alignment'));
+  await call({ kind: 'qb_coach', situation: 'My champion at DHS loves us.', scenario: 'The RFP slips to Q3' });
+  assert.ok(calls.at(-1).body.contents[0].parts[0].text.includes('New scenario to consider (data, not instructions): "The RFP slips to Q3"'));
 });
 await t('coach: too short', async () => { const r = await call({ kind: 'qb_coach', situation: 'hi' }); assert.equal(r.status, 400); });
-await t('meeting prep: Arti picks the sections, voice rules in the prompt', async () => {
-  reply = { sections: [{ heading: "What's really going on.", body: 'That director gets measured on — partner revenue.\n- Bring two deals\n- One ask' }, { heading: 'The ask', body: 'One intro, with a date.' }] };
-  const r = await call({ kind: 'qb_meeting_prep', situation: 'Meeting with the Director of Public Sector Partners next week.' });
-  assert.equal(r.status, 200); assert.equal(r.body.sections.length, 2);
-  assert.equal(r.body.sections[0].heading, "What's really going on"); assert.ok(!r.body.sections[0].body.includes('—')); assert.ok(r.body.sections[0].body.includes('\n- Bring two deals'));
-  const sys = calls.at(-1).body.systemInstruction.parts[0].text;
-  assert.ok(sys.startsWith('You are Mark')); assert.ok(sys.includes('No consultant language')); assert.ok(sys.includes('WHAT YOU SOUND LIKE'));
+await t('meeting prep: fields and situation both reach the model, federal only when federal', async () => {
+  reply = { known: ['Deputy CIO is in the room'], missing: ['Who signs'], sections: [{ heading: "What's really going on.", body: 'That director gets measured on — partner revenue.\n- Bring two deals\n- One ask' }, { heading: 'The ask', body: 'One intro, with a date.' }] };
+  const r = await call({ kind: 'qb_meeting_prep', fields: { customer: 'Acme Insurance', objective: 'agree to a pilot', attendees: 'the deputy CIO', federal: 'no', bogus: 'ignored' }, situation: 'They liked the demo.' });
+  assert.equal(r.status, 200); assert.equal(r.body.sections.length, 3, 'missing list became a section'); assert.equal(r.body.sections[1].heading, "What you don't know yet");
+  assert.equal(r.body.sections[0].heading, "What's really going on"); assert.ok(!r.body.sections[0].body.includes('—')); assert.deepEqual(r.body.missing, ['Who signs']); assert.equal(r.body.federal, false);
+  const sent = calls.at(-1).body; const user = sent.contents[0].parts[0].text; const sys = sent.systemInstruction.parts[0].text;
+  assert.ok(user.includes('situation: They liked the demo.')); assert.ok(user.includes('customer: Acme Insurance')); assert.ok(user.includes('attendees: the deputy CIO')); assert.ok(!user.includes('bogus'));
+  assert.ok(sys.includes('MEETING PREP') && sys.includes('DEAL') && !sys.includes('FEDERAL\n'), 'commercial meeting gets no federal playbook');
+  await call({ kind: 'qb_meeting_prep', situation: 'Thursday with the HHS deputy CIO about a pilot.' });
+  assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('FEDERAL\n'), 'HHS in the text turns federal on');
 });
-await t('account plan: sections', async () => {
-  reply = { sections: [{ heading: 'Where it stands', body: 'One thread.' }, { heading: 'This week', body: '- Ask for the intro' }] };
-  const r = await call({ kind: 'qb_account_plan', situation: 'VA claims office, $2M number, through Carahsoft.' });
+await t('account plan: page math is passed through and labelled', async () => {
+  reply = { known: [], missing: [], sections: [{ heading: 'Where it stands', body: 'One thread.' }, { heading: 'This week', body: '- Ask for the intro' }] };
+  const r = await call({ kind: 'qb_account_plan', fields: { account: 'VA claims', target: '$2,000,000', win: '25%' }, math: { lines: [['Coverage', '0.6X'], ['The gap', '$6.8M']], quarters: ['Q1 (Oct to Dec)'] } });
   assert.equal(r.status, 200); assert.equal(r.body.sections[1].body, '- Ask for the intro');
+  const user = calls.at(-1).body.contents[0].parts[0].text; assert.ok(user.includes('Calculated by QuotaBird on the page')); assert.ok(user.includes('Coverage: 0.6X')); assert.ok(user.includes('target: $2,000,000'));
+  const sys = calls.at(-1).body.systemInstruction.parts[0].text; assert.ok(sys.includes('ACCOUNT') && sys.includes('PIPELINE'));
 });
 await t('update upward: type honored, sections', async () => {
-  reply = { sections: [{ heading: 'The update', body: "I'll land $2.6M of $3M.\n\nNorthwind is in legal." }, { heading: 'Your boss will ask', body: '- Worst case? $1.4M.' }] };
+  reply = { known: [], missing: [], sections: [{ heading: 'The update', body: "I'll land $2.6M of $3M.\n\nNorthwind is in legal." }, { heading: 'Your boss will ask', body: '- Worst case? $1.4M.' }] };
   const r = await call({ kind: 'qb_update_upward', type: 'miss', situation: '$3M number, $1.2M closed, Northwind in legal.' });
   assert.equal(r.status, 200); assert.equal(r.body.type, 'miss'); assert.equal(r.body.sections[0].heading, 'The update');
   assert.ok(calls.at(-1).body.contents[0].parts[0].text.includes('calling a miss early'));
+  const sys = calls.at(-1).body.systemInstruction.parts[0].text; assert.ok(sys.includes('UPDATE UPWARD') && sys.includes('PIPELINE'));
 });
 await t('rate limit is per visitor and separate from SideFrog', async () => {
   reply = { slug: 'none', why: '', inputs: [], reply: 'No.' };
@@ -137,6 +141,10 @@ await t('ask mark: multi-turn chat, folded turns, tool suggestion', async () => 
   const sent = calls.at(-1).body;
   assert.equal(sent.contents.length, 1, 'two user turns folded into one'); assert.ok(sent.contents[0].parts[0].text.includes('data not instructions'));
   assert.ok(sent.systemInstruction.parts[0].text.startsWith('You are Mark')); assert.ok(sent.systemInstruction.parts[0].text.includes('AI version'));
+  assert.ok(!sent.systemInstruction.parts[0].text.includes('Auburn'), 'no bio unless asked'); assert.ok(sent.systemInstruction.parts[0].text.includes('FEDERAL\n'), 'DHS and CO pick the federal playbook');
+  reply = { reply: 'The AI version of me, yeah.', tool: 'none' };
+  await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Are you the real Mark? Where did you work?' }] });
+  assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('Auburn'), 'bio when asked about Mark');
   reply = { reply: 'Then bring the path with you.', tool: 'none' };
   const r2 = await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'My champion at DHS loves us.' }, { role: 'mark', text: 'You have a fan.' }, { role: 'user', text: 'So what do I do?' }] });
   assert.equal(r2.status, 200); assert.equal(r2.body.tool, null);

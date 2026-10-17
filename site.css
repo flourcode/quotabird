@@ -1166,9 +1166,10 @@ input.needs::placeholder { color:var(--ink); opacity:.7; }
    44px targets) and the conversation patterns people know from Google's apps: the other side's messages
    sit plain on the page with an avatar, yours in a tinted bubble with one square corner, a pill composer
    with a round send button that stays at the bottom while you read, messages that ease in. */
-.mark-intro { display:flex; gap:14px; align-items:flex-start; margin:0 0 24px; }
-.mark-intro img { flex:none; width:56px; height:56px; border-radius:50%; object-fit:cover; margin-top:4px; }
-.mark-intro .dek { margin:0; font-size:19px; }
+.mark-intro { display:flex; gap:12px; align-items:flex-start; margin:0 0 18px; }
+.mark-intro img { flex:none; width:44px; height:44px; border-radius:50%; object-fit:cover; margin-top:2px; }
+.mark-intro .dek { margin:0; font-size:17px; line-height:1.4; }
+.ask-screen h1 { margin-bottom:10px; }
 .chat-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:44px; margin:0 0 4px; font-size:13px; color:var(--mut); }
 .chat-bar .btn-text { height:40px; padding:0 8px; }
 .chat { display:flex; flex-direction:column; gap:16px; margin:0 0 20px; }
