@@ -1238,10 +1238,7 @@ a.chip-ask:hover, a.chip-ask.current { text-decoration:underline !important; tex
 @media (min-width: 960px) { .front-ask h1 { font-size: 56px; } }
 .front-ask .mark-intro { margin-bottom: 18px; max-width: 640px; }
 .front-ask .mark-intro .dek { font-size: 16px; line-height: 1.45; }
-.front-ask .composer .ask-note { display: none; }
-body.is-chatting .front-ask .composer .ask-note { display: block; }
-.front-ask .ask-note-quiet { margin: 14px 0 0; font-size: 12px; color: var(--mut); opacity: .85; }
-body.is-chatting .front-ask .ask-note-quiet { display: none; }
+
 .front-ask .home-sec:first-of-type { margin-top: 34px; }
 /* the tool cards on the home page: the name first, the question under it */
 .home-grid .ck { flex-direction: column-reverse; min-height: 0; padding: 14px 16px 14px; }
@@ -1251,7 +1248,6 @@ body.is-chatting .front-ask .ask-note-quiet { display: none; }
 .home-grid .ck:active .cb, .home-grid .ck:active .cq { color: var(--on-blue); }
 .front-ask .composer-box textarea[rows="2"] { min-height: 58px; }
 .front-ask .ask-examples { margin-top: 14px; }
-.front-ask .ask-examples .ask-ex-h:empty { display: none; }
 .front-ask .ask-ex { font-weight: 500; }
 .home-sec { margin-top: 44px; }
 .home-sec .overline { display: block; margin-bottom: 6px; }
@@ -1271,3 +1267,49 @@ body.is-chatting .front > .tool-name { margin-bottom: 2px; }
 .topnav a.chip-ask { order: -1; }
 .ask-examples .ask-ex { height:auto; min-height:36px; padding:7px 14px; line-height:1.25; text-align:left; white-space:normal; }
 @media (min-width: 880px) { .home-grid-3 { grid-template-columns: 1fr 1fr 1fr; } }
+
+/* ═══ Brand pass (Nov 10): one pattern for every chat page, the site's own shapes, nothing that isn't doing work ═══ */
+/* the AI note: footnote-quiet under the examples until a conversation starts, then under the box */
+.composer .ask-note { display: none; }
+body.is-chatting .composer .ask-note { display: block; }
+.ask-note-quiet { margin: 14px 0 0; font-size: 12px !important; color: var(--mut); text-align: left; }
+.ask-note-quiet a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+body.is-chatting .ask-note-quiet { display: none; }
+.ask-ex-h:empty { display: none; }
+/* chat shapes follow the site: 16px panels, 12px buttons, no pill or circle */
+.composer-box { border-radius: 16px; padding: 6px 6px 6px 16px; }
+.send { width: 44px; height: 44px; border-radius: 12px; }
+.msg-user .msg-body { border-radius: 16px 16px 4px 16px; }
+.ask-ex { border-radius: 12px; font-weight: 500; }
+.ask-next .ask-ex-tool { border-radius: 12px; }
+/* the sticky composer sits on the page colour with a hairline, not a fade */
+.composer.is-sticky { background: var(--page); border-top: 1px solid var(--hair); padding-top: 10px; margin-top: 8px; }
+/* the New chat bar: one size of quiet text */
+.chat-bar { display: flex; align-items: center; justify-content: space-between; }
+.chat-bar .chat-bar-l { font-size: 13px; color: var(--mut); }
+.chat-bar .btn-text { font-size: 13px !important; min-height: 44px !important; padding: 0 !important; font-weight: 600 !important; text-decoration: underline; text-underline-offset: 3px; }
+/* hover rings only where there's a pointer that hovers, so a tapped chip doesn't stay outlined on a phone */
+@media (hover: none) { .ask-ex:hover { background: var(--seg); box-shadow: none; } .home-grid .ck:hover .cb > span { text-decoration: none; } }
+
+/* tool links: the name first, the question under it, the arrow at the end. Cards on the home page, rows on /tools/ and 404. */
+.home-grid .ck, .shelf-grid .ck { display: grid !important; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name arrow" "q arrow"; align-items: center; column-gap: 12px; row-gap: 2px; text-align: left !important; }
+.home-grid .ck .cb, .shelf-grid .ck .cb { display: contents !important; }
+.home-grid .ck .cb > span, .shelf-grid .ck .cb > span { grid-area: name; font-size: 17px; font-weight: 800; letter-spacing: -.015em; color: var(--ink); white-space: normal; }
+.home-grid .ck .cb > svg, .shelf-grid .ck .cb > svg { grid-area: arrow; width: 18px; height: 18px; color: var(--ink); }
+.home-grid .ck .cq, .shelf-grid .ck .cq { grid-area: q; margin: 0 !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.35; color: var(--mut); }
+.home-grid .ck { padding: 14px 16px; min-height: 0; }
+.shelf-grid .ck { padding: 12px 6px !important; }
+.home-grid .ck:hover .cb > span, .shelf-grid .ck:hover .cb > span { text-decoration: underline; text-underline-offset: 3px; }
+.shelf-grid .ck:hover .cq { text-decoration: none; }
+.home-grid .ck:active .cb > span, .home-grid .ck:active .cq, .home-grid .ck:active svg { color: var(--on-blue); }
+
+/* index pages (/tools/) take the same heading size as /notes/ */
+.front-index h1 { font-size: 36px !important; margin-bottom: 10px; }
+.front-index .dek { margin-bottom: 28px; max-width: 680px; }
+
+/* the top links mark where you are the same way: an underline, nothing else */
+.topnav a[aria-current="page"] { text-decoration: underline !important; text-underline-offset: 4px; text-decoration-thickness: 2px; }
+
+/* the secondary action on a next-step card is an underlined link, the same as on the booking card */
+.card-accent .btn:not(.btn-primary) { text-decoration: underline !important; text-underline-offset: 3px; min-height: 44px !important; height: auto !important; }
+body.is-chatting .composer .ask-note { text-align: left; }

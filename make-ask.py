@@ -213,7 +213,7 @@ def _box(label, ph, cta, note='Uses AI. <a href="#faq">What gets sent</a>', extr
             f'      <p class="startnote">{note}</p>\n    </form>\n    <div id="wfOut" aria-live="polite"></div>')
 
 CAL_ASK = 'https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=ask-mark'
-def _chat(placeholder, examples, tryone='Try one:', note='AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a>', rows=1):
+def _chat(placeholder, examples, tryone='', note='AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a>', rows=2):
     """The chat: Mark's bubbles, the follow-up row, the composer, example chips, and the real-Mark card.
     The three workflow pages use the same chat with their own placeholder and examples; the Lambda gets the page name."""
     ex = ''.join(f'      <button class="ask-ex" type="button" data-example="{html_mod.escape(t, quote=True)}">{html_mod.escape(l)}</button>\n' for l, t in examples)
@@ -229,17 +229,18 @@ def _chat(placeholder, examples, tryone='Try one:', note='AI, not the real Mark.
     </form>
     <div class="ask-examples" id="askExamples" role="group" aria-label="Examples"><span class="ask-ex-h">{tryone}</span>
 {ex}    </div>
+    <p class="startnote ask-note-quiet">{note}</p>
     <div class="card mark-card real-mark">
       <h3>Prefer the version with a pulse?</h3>
       <p>Talk to the real Mark for twenty minutes. Free, and if I don't think you need my help I'll say so.</p>
-      <a class="btn btn-primary btn-lg btn-full" href="''' + CAL_ASK + '''" target="_blank" rel="noopener" style="margin-top:14px;">Talk to Mark</a>
+      <a class="btn btn-full" href="''' + CAL_ASK + '''" target="_blank" rel="noopener" style="margin-top:6px;">Talk to the real Mark</a>
       <p class="fine" style="text-align:center;margin:8px 0 0;"><a href="/work-with-mark/">What working with Mark looks like</a></p>
     </div>'''
 _ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minus the Wait',
     "Ask the AI version of Mark Flournoy a sales question: a stuck federal deal, a prime that won't move, a quota that landed, a comp plan, a boss who wants it in commit. Blunt, useful, and twenty minutes from the real Mark.",
     'Ask me anything about selling.',
     "I'm the AI version of Mark. Twenty years in the Marine Corps, fifteen in federal tech sales at Red Hat, F5 and Amazon, compressed into a chatbot. Deals, partners, quota, comp, forecasts, your boss. I won't sugarcoat it.",
-    _chat('Ask Mark anything about selling', [
+    _chat("What's going on?", [
       ('My boss hates me', "I think my boss hates me. Every forecast call turns into him picking apart my deals in front of everybody, and my one-on-ones are all about what I haven't done. I'm at 70% of plan. How do I turn this around?"),
       ('My customer went dark', "My customer went dark. The program manager was all in on a pilot, we sent the proposal three weeks ago, and now nothing. No reply to two emails. What do I do?"),
       ('My quota went up 30%', "My quota went up 30% and my territory didn't change. How do I push back without sounding like I'm whining?"),
@@ -302,8 +303,7 @@ _home = _home.replace('__CHAT__', _chat("What's going on?", [
       ('My pipeline looks thin. Am I screwed?', "My pipeline looks thin. I'm at about 1.5X on what's left of my number with five months to go. Am I screwed?"),
       ("My champion says it's closing. I don't believe them.", "My champion says it's closing this quarter. Procurement hasn't engaged and I don't believe them. What do I do?"),
       ('Is this quota ridiculous?', "My quota went up 30% and my territory didn't change. Is this quota ridiculous, and how do I push back without whining?"),
-      ("My partner isn't doing anything.", "My partner keeps saying they'll introduce me to the account team and nothing happens. We've been partners for eight months.")],
-    tryone='', rows=2, note='<span class="when-chatting">AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a></span>').replace('    <div class="card mark-card real-mark">', '    <p class="startnote ask-note ask-note-quiet">AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a></p>\n    <div class="card mark-card real-mark">', 1).replace('    <div class="card mark-card real-mark">', '    <div class="card mark-card real-mark" hidden>'))   # the home page's real-Mark card sits lower, by About
+      ("My partner isn't doing anything.", "My partner keeps saying they'll introduce me to the account team and nothing happens. We've been partners for eight months.")]).replace('    <div class="card mark-card real-mark">', '    <div class="card mark-card real-mark" hidden>'))   # the home page's real-Mark card sits lower, by About
 _home = _home.replace('__TOOLS__', '\n'.join(_ck(x) for x in ('pipeline', 'quota', 'deal', 'pay', 'commission', 'territory')))
 _home = _home.replace('__WORK__', '\n'.join(_ck(x) for x in ('meeting-prep', 'account-plan', 'update-upward')))
 _home = re.sub(r"(window\.QB_BUILD = '[^']*';)", lambda m: m.group(1) + '\nwindow.QB_ASK = { endpoint: ' + json.dumps(ASK_ENDPOINT) + ', page: "home" };', _home, count=1)

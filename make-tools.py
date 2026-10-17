@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-10.1130'
+BUILD = '2026-11-10.1500'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -3517,7 +3517,7 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
 
 # ── the 404 page carries the same shelf as the home page (one copy of the covers, pulled at build time) ──
 _home_src = open('tools.src.html', encoding='utf-8').read()   # the shelves live on /tools/ now
-_shelf = re.search(r'    <div class="shelf-grid">.*?\n    </div>\n', _home_src, flags=re.S).group(0)
+_shelf = re.search(r'    <div class="shelf-grid jobs">.*?\n    </div>\n', _home_src, flags=re.S).group(0)   # the main shelf: the number and the pay
 _shelf = _shelf.replace('<h3 class="cg-h">Your number</h3><div class="cg-grid">\n', '<h3 class="cg-h">Your number</h3><div class="cg-grid">\n          <a class="ck" href="/quota/"><span class="cq">Is my quota crazy?</span><span class="cb"><span>Quota Check</span><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></span></a>\n', 1)
 _nf = open('404.html', encoding='utf-8').read()
 _nf = re.sub(r'<!--shelf-->.*?<!--/shelf-->', lambda m_: '<!--shelf-->\n' + _shelf + '<!--/shelf-->', _nf, count=1, flags=re.S)
@@ -3547,10 +3547,10 @@ def header(path):
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      <a class="chip chip-ask{' current' if path.startswith('ask-mark/') else ''}" href="{ask}">Ask Mark</a>
+      <a class="chip chip-ask{' current' if path.startswith('ask-mark/') else ''}" href="{ask}"{' aria-current="page"' if path.startswith('ask-mark/') else ''}>Ask Mark</a>
       {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/', 'work-with-mark/', 'federal/', 'ask-mark/', 'tools/')) else '/' + path.split('/')[0] + '/')}
-      <a class="toplink" href="/notes/">Field Notes</a>
-      <a class="toplink" href="/about/">About</a>
+      <a class="toplink" href="/notes/"{' aria-current="page"' if path.startswith('notes/') else ''}>Field Notes</a>
+      <a class="toplink" href="/about/"{' aria-current="page"' if path.startswith('about/') else ''}>About</a>
     </nav>
   </header>'''
 def chrome(path):
@@ -3568,6 +3568,8 @@ def chrome(path):
     if path != '404.html':
         # the full story lives on the About page; every other page gets the short "Made by Mark" card
         src = MARK_SRC if path == 'about/index.html' else MADEBY_SRC
+        if 'band-real' in s and src is MADEBY_SRC:   # the home page's booking card is right above; one filled booking button is enough
+            src = src.replace('<a class="btn btn-primary" href="/work-with-mark/">Work with Mark</a>', '<a href="/work-with-mark/">Work with Mark</a>')
         mark = src.replace('{ROOT}', root_of(path)).replace('{UTM}', utm_of(path))
         if path in KITCARD_PAGES | SELLERCARD_PAGES:   # only pages that get a card injected; /kits/ is made of cards
             s = re.sub(r'\s*<section class="band kit-band[^"]*"[^>]*>.*?</section>', '', s, flags=re.S)   # never let cards accumulate on hand-written pages
