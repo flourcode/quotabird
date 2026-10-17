@@ -1314,3 +1314,17 @@ body.is-chatting .ask-note-quiet { display: none; }
 .card-accent .btn:not(.btn-primary) { text-decoration: underline !important; text-underline-offset: 3px; min-height: 44px !important; height: auto !important; }
 body.is-chatting .composer .ask-note { text-align: left; }
 .mark-intro .dek, .dek, .lede { text-wrap: pretty; }
+
+/* the chat, after stepping back (Nov 10) */
+.msg-wait { margin-left: 10px; font-size: 14px; color: var(--mut); }
+.msg-more { margin: 6px 0 8px; }
+.msg-more summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--mut); list-style: revert; }
+.msg-more p { font-size: 15px !important; margin: 6px 0 0 !important; }
+.msg-retry { margin-top: 6px; padding: 0 !important; min-height: 44px !important; height: auto !important; font-size: 15px !important; font-weight: 700 !important; text-decoration: underline; text-underline-offset: 3px; color: var(--ink) !important; }
+.ask-real { flex-basis: 100%; margin: 6px 0 0; font-size: 14px; }
+.ask-real a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+@media (min-width:880px) { #screen.ask-screen .ask-next, .front-ask .ask-next, .front-ask .chat, .front-ask .chat-bar { max-width:680px; } }
+
+/* a streaming answer: the paragraphs appear as they arrive; the caret says it's still coming */
+.msg.is-streaming .msg-body p:last-child::after { content: ""; display: inline-block; width: 7px; height: 1em; margin-left: 3px; vertical-align: -2px; background: var(--mut); border-radius: 2px; animation: askpulse 1s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .msg.is-streaming .msg-body p:last-child::after { animation: none; } }

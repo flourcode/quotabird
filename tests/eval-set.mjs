@@ -1,7 +1,7 @@
 // The QuotaBird evaluation set: eighteen realistic situations run through the real Lambda code against the
 // real Gemini API, so a before/after or a model comparison uses the same questions every time.
 //
-//   GEMINI_API_KEY=... node tests/eval-set.mjs                          # the model in GEMINI_MODEL (SideFrog's)
+//   GEMINI_API_KEY=... node tests/eval-set.mjs                          # the model in GEMINI_MODEL
 //   GEMINI_API_KEY=... QB_GEMINI_MODEL=gemini-3.5-flash node tests/eval-set.mjs   # QuotaBird on a stronger model
 //   ... --out eval-flash.md                                             # write the answers to a file
 //
@@ -48,7 +48,7 @@ function render(kind, p) {
 const outIdx = process.argv.indexOf("--out");
 const outFile = outIdx > 0 ? process.argv[outIdx + 1] : null;
 const health = JSON.parse((await handler({ headers: {}, requestContext: { http: { method: "GET" } } })).body);
-const lines = [`# QuotaBird eval, ${new Date().toISOString().slice(0, 16)}, model ${health.quotabird?.model || health.model}, quotabird ${health.quotabird?.version}`, ""];
+const lines = [`# QuotaBird eval, ${new Date().toISOString().slice(0, 16)}, model ${health.model}, quotabird ${health.version}`, ""];
 for (const [name, kind, body] of CASES) {
   const t0 = Date.now();
   const r = await handler(ev({ kind, ...body }));

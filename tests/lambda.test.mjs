@@ -1,22 +1,21 @@
 import assert from 'node:assert/strict';
 process.env.GEMINI_API_KEY = 'test-key';
-process.env.ALLOWED_ORIGINS = 'https://sidefrog.com,https://quotabird.com';
+process.env.ALLOWED_ORIGINS = 'https://quotabird.com,https://www.quotabird.com';
 let reply = null, calls = [];
 const gem = (obj) => new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: JSON.stringify(obj) }] }, finishReason: 'STOP' }] }), { status: 200, headers: { 'content-type': 'application/json' } });
 globalThis.fetch = async (url, opts) => {
   calls.push({ url: String(url), body: opts?.body ? JSON.parse(opts.body) : null });
   if (String(url).includes('generativelanguage')) return typeof reply === 'function' ? reply(JSON.parse(opts.body)) : gem(reply);
-  if (String(url).includes('data.iana.org')) return new Response(JSON.stringify({ services: [[['com'], ['https://rdap.verisign.com/com/v1/']]] }), { status: 200, headers: { 'content-type': 'application/json' } });
-  return new Response('{}', { status: 404, headers: { 'content-type': 'application/rdap+json' } });
+  return new Response('{}', { status: 404 });
 };
 const NEW = await import(process.env.QB_LAMBDA || '../lambda/index.mjs');
 const ev = (body, extra = {}) => ({ headers: { origin: 'https://quotabird.com' }, requestContext: { http: { method: 'POST', sourceIp: extra.ip || '1.2.3.' + Math.floor(Math.random() * 250) } }, body: JSON.stringify(body), ...extra.ev });
 const call = async (body, extra) => { const r = await NEW.handler(ev(body, extra)); return { status: r.statusCode, body: JSON.parse(r.body || '{}') }; };
 let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', name); };
 
-await t('health shows quotabird', async () => {
+await t('health check', async () => {
   const r = await NEW.handler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.5.3'); assert.ok(b.quotabird.catalog);
+  assert.equal(b.service, 'quotabird'); assert.equal(b.version, '2.0.0'); assert.ok(b.catalog); assert.equal(b.stream, false); assert.equal(b.model, 'gemini-3.5-flash-lite');
 });
 await t('origin not allowed is refused', async () => {
   const r = await NEW.handler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
@@ -102,26 +101,20 @@ await t('update upward: type honored, sections', async () => {
   assert.ok(calls.at(-1).body.contents[0].parts[0].text.includes('calling a miss early'));
   const sys = calls.at(-1).body.systemInstruction.parts[0].text; assert.ok(sys.includes('UPDATE UPWARD') && sys.includes('PIPELINE'));
 });
-await t('rate limit is per visitor and separate from SideFrog', async () => {
+await t('rate limit is per visitor', async () => {
   reply = { slug: 'none', why: '', inputs: [], reply: 'No.' };
   let last; for (let i = 0; i < 11; i++) last = await call({ kind: 'qb_route', text: 'hello world' }, { ip: '7.7.7.7' });
   assert.equal(last.status, 429);
 });
-await t('size limits: QuotaBird 16 KB, SideFrog still 8 KB', async () => {
-  const big = 'x'.repeat(9000);
+await t('size limit 16 KB, unknown kinds refused', async () => {
   reply = { slug: 'none', why: '', inputs: [], reply: 'No.' };
-  let r = await call({ kind: 'qb_meeting_prep', situation: big }); assert.notEqual(r.status, 413);
-  r = await call({ kind: 'idea', idea: big }); assert.equal(r.status, 413);
+  let r = await call({ kind: 'qb_meeting_prep', situation: 'x'.repeat(9000) }); assert.notEqual(r.status, 413);
   r = await call({ kind: 'qb_route', text: 'y'.repeat(17000) }); assert.equal(r.status, 413);
+  r = await call({ kind: 'idea', idea: 'dog walking' }); assert.equal(r.status, 400, 'anything that is not a QuotaBird request is refused');
 });
 await t('gemini errors map to friendly messages', async () => {
   reply = () => new Response('busy', { status: 429 }); let r = await call({ kind: 'qb_route', text: 'is my quota crazy' }); assert.equal(r.status, 503);
   reply = () => new Response('{"candidates":[{"content":{"parts":[{"text":"not json"}]}}]}', { status: 200 }); r = await call({ kind: 'qb_route', text: 'is my quota crazy' }); assert.equal(r.status, 502);
-});
-await t('sidefrog idea route still works', async () => {
-  reply = { verdict: 'great', subject: 'Dog walking', verdictReason: 'People pay every week.', sharpenedIdea: 'Dog walking for seniors', whoPays: 'Owners', firstMove: 'Post on Nextdoor.', goodSign: '3 bookings', rethinkIf: 'none', watchOut: 'Nothing obvious', easyToStart: 'easy', firstDollar: 'about a week', testCost: '$0', keywords: ['dog walker near me', 'dog walking', 'pet care'], alternatives: [{ idea: 'Pet sitting', why: 'Same buyers', names: ['Pawsitter'] }, { idea: 'b', why: 'c', names: [] }, { idea: 'd', why: 'e', names: [] }], buildType: 'marketplace_gig', firstCustomers: { where: 'Nextdoor', say: 'Hi', offer: 'First walk free' }, nameIdeas: ['WalkyPaws', 'LeashLoop'], proposedName: '', nameComment: '' };
-  const r = await call({ kind: 'idea', idea: 'dog walking' }, { ev: { headers: { origin: 'https://sidefrog.com' } } });
-  assert.equal(r.status, 200); assert.equal(r.body.idea.verdict, 'great'); assert.equal(r.body.idea.names[0].status, 'likely_available');
 });
 await t('number check: size words without $, years, percentages', async () => {
   const q = (await import(process.env.QB_LAMBDA ? new URL('quotabird.mjs', 'file://' + process.env.QB_LAMBDA).href : '../lambda/quotabird.mjs'))._qbInternal;

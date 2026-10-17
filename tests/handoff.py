@@ -9,10 +9,12 @@ SHOTS = os.environ.get('QB_SHOTS', '/tmp')
 
 async def check_chat(pg, tag):
     await pg.wait_for_selector('.msg-user', timeout=8000)
-    await pg.wait_for_selector('.msg-mark:not(.is-thinking)', timeout=10000)
+    await pg.wait_for_selector('.msg-mark:not(.is-thinking):not(.is-streaming)', timeout=10000)
     assert '#' not in pg.url, pg.url
-    user = await pg.inner_text('.msg-user .msg-body')
-    reply = await pg.inner_text('.msg-mark .msg-body')
+    # hand-offs append to the conversation in this tab, so read the newest exchange
+    await pg.wait_for_function("[...document.querySelectorAll('.msg-user')].length === [...document.querySelectorAll('.msg-mark:not(.is-thinking):not(.is-streaming)')].length", timeout=10000)
+    user = await pg.locator('.msg-user .msg-body').last.inner_text()
+    reply = await pg.locator('.msg-mark:not(.is-thinking):not(.is-streaming) .msg-body').last.inner_text()
     assert 'What would you do with this?' in user, user
     print(f'  {tag}: chat url {pg.url} | first message {len(user)} chars, starts "{user[:60]}" | reply "{reply[:50]}"')
     return user
@@ -64,13 +66,13 @@ async def main():
         await pg.click('#askMarkBtn'); await check_chat(pg, 'rep')
 
         # Home: the chat is the hero; an example chip sends and the intro collapses
-        await pg.goto(BASE + '/'); await pg.wait_for_timeout(300)
+        await pg.evaluate("sessionStorage.clear()"); await pg.goto(BASE + '/'); await pg.wait_for_timeout(300)
         assert await pg.get_attribute('#askText', 'placeholder') == "What's going on?"
-        await pg.click('.ask-ex[data-example] >> nth=2'); await pg.wait_for_selector('.msg-mark:not(.is-thinking)', timeout=10000)
+        await pg.click('.ask-ex[data-example] >> nth=2'); await pg.wait_for_selector('.msg-mark:not(.is-thinking):not(.is-streaming)', timeout=10000)
         assert await pg.locator('.mark-intro').is_hidden() and await pg.locator('.ask-next .ask-ex-tool').count() == 1
         print('home: chat in place, intro collapsed, tool chip', await pg.inner_text('.ask-next .ask-ex-tool'))
         # A plain visit still shows the empty chat with chips; a junk fragment is ignored
-        await pg.goto(BASE + '/privacy/'); await pg.goto(BASE + '/ask-mark/#ask=x'); await pg.wait_for_timeout(400)
+        await pg.goto(BASE + '/privacy/'); await pg.evaluate("sessionStorage.clear()"); await pg.goto(BASE + '/ask-mark/#ask=x'); await pg.wait_for_timeout(400)
         assert await pg.locator('.msg').count() == 0 and not await pg.locator('#askExamples').is_hidden()
         print('junk fragment ignored, chips shown')
         await b.close()

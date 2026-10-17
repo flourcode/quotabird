@@ -25,12 +25,22 @@ function canned(sys, user) {
   }
   return {};
 }
-globalThis.fetch = async (url, opts) => { const b = JSON.parse(opts.body); return gem(canned(b.systemInstruction.parts[0].text, b.contents[0].parts[0].text)); };
-const { handler } = await import(process.env.QB_LAMBDA || '../lambda/index.mjs');
+// Gemini, streamed: the same canned answer, cut into pieces that arrive over about a second
+const sse = (obj) => { const j = JSON.stringify(obj), enc = new TextEncoder(), parts = []; for (let i = 0; i < j.length; i += 24) parts.push(j.slice(i, i + 24));
+  return new Response(new ReadableStream({ async pull(c) { const p = parts.shift(); if (p === undefined) return c.close(); await new Promise((r) => setTimeout(r, 35)); c.enqueue(enc.encode('data: ' + JSON.stringify({ candidates: [{ content: { parts: [{ text: p }] } }] }) + '\r\n\r\n')); } }), { status: 200, headers: { 'content-type': 'text/event-stream' } }); };
+globalThis.fetch = async (url, opts) => { const b = JSON.parse(opts.body); const a = canned(b.systemInstruction.parts[0].text, b.contents[0].parts[0].text);
+  if (String(url).includes(':streamGenerateContent')) { await new Promise((r) => setTimeout(r, 300)); return sse(a); }
+  return gem(a); };
+// Lambda's response stream, for the streaming handler: the metadata becomes the HTTP head, writes go straight out
+globalThis.awslambda = { streamifyResponse: (f) => f, HttpResponseStream: { from: (res, meta) => { res.writeHead(meta.statusCode, { ...meta.headers, 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'content-type' }); return res; } } };
+const { handler, streamingHandler } = await import(process.env.QB_LAMBDA || '../lambda/index.mjs');
+const BUFFERED = process.env.QB_MOCK_BUFFERED === '1';   // the Lambda before the switch: index.handler, plain JSON
 http.createServer(async (req, res) => {
   const cors = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'content-type' };
   if (req.method === 'OPTIONS') { res.writeHead(204, cors); return res.end(); }
   let body = ''; for await (const c of req) body += c;
-  const r = await handler({ headers: { origin: req.headers.origin || '' }, requestContext: { http: { method: req.method, sourceIp: '127.0.0.1' } }, body });
+  const ev = { headers: { origin: req.headers.origin || '' }, requestContext: { http: { method: req.method, sourceIp: '127.0.0.1' } }, body };
+  if (!BUFFERED) return streamingHandler(ev, res);
+  const r = await handler(ev);
   res.writeHead(r.statusCode, { ...r.headers, ...cors }); res.end(r.body);
-}).listen(8803, () => console.log('mock lambda on 8803'));
+}).listen(8803, () => console.log('mock lambda on 8803', BUFFERED ? '(buffered)' : '(streaming)'));

@@ -13,7 +13,7 @@
 # result it was handed. See HANDOFF.md, "Ask QuotaBird".
 import hashlib as _ahl, glob as _ag, html as html_mod
 
-ASK_ENDPOINT = 'https://4s7uc7iyyeh7p4sknfpo6agllq0ahdff.lambda-url.us-east-1.on.aws/'   # the shared Lambda (also serves SideFrog)
+ASK_ENDPOINT = 'https://4s7uc7iyyeh7p4sknfpo6agllq0ahdff.lambda-url.us-east-1.on.aws/'   # QuotaBird's Lambda (the function that used to be SideFrog's; same URL)
 
 # ── 1. The tool files ──
 os.makedirs('tools', exist_ok=True)
@@ -238,17 +238,17 @@ def _chat(placeholder, examples, tryone='', note='AI, not the real Mark. Nothing
     </div>'''
 _ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minus the Wait',
     "Ask the AI version of Mark Flournoy a sales question: a stuck federal deal, a prime that won't move, a quota that landed, a comp plan, a boss who wants it in commit. Blunt, useful, and twenty minutes from the real Mark.",
-    'Ask anything about sales.',
-    "Need a second opinion on a deal, your pipeline, or your boss? Ask the digital version of me. It'll help you decide what to do next.",
+    'Ask me anything about sales.',
+    "When a deal, your pipeline, or your boss goes sideways, ask the digital version of me. It'll help you figure out what to do next.",
     _chat("What's going on?", [
       ('My boss hates me', "I think my boss hates me. Every forecast call turns into him picking apart my deals in front of everybody, and my one-on-ones are all about what I haven't done. I'm at 70% of plan. How do I turn this around?"),
       ('My customer went dark', "My customer went dark. The program manager was all in on a pilot, we sent the proposal three weeks ago, and now nothing. No reply to two emails. What do I do?"),
       ('My quota went up 30%', "My quota went up 30% and my territory didn't change. How do I push back without sounding like I'm whining?"),
       ('I need more pipeline', "I need more pipeline. I'm at 1.5X on what's left of my number with five months to go, and most of what I have is early stage. Where does the rest come from?")]),
-    [("Is this really Mark?", "No, it's an AI set up to answer the way Mark would, built from what he's written and how he thinks about deals, partners, quota and comp. It's blunt because he is. It's not him, it doesn't know you, and it doesn't remember this conversation after you close the page. The real Mark is on the button at the bottom."),
+    [("Is this really Mark?", "No, it's an AI set up to answer the way Mark would, built from what he's written and how he thinks about deals, partners, quota and comp. It's blunt because he is. It's not him, it doesn't know you, and it forgets this conversation when you close the tab. The real Mark is on the button at the bottom."),
      ("What can I ask?", "Anything about selling, especially federal cloud and SaaS: a stuck deal, a prime that won't commit, a vehicle you're not on, a champion who can't sign, co-sell that goes nowhere, a commit that isn't burning, a quota that just landed, a comp plan with footnotes, a boss who wants it in commit. Commercial deals too. When the question is really arithmetic, it hands you to the QuotaBird tool that runs your numbers."),
      ("Can I trust it?", "Like advice from someone experienced who wasn't in the room. It knows how federal deals actually move and it'll tell you what to do this week. It doesn't know your customer's org chart or this year's budget line, so check any name, vehicle or number before you repeat it to a customer. When it doesn't know, it should say so."),
-     ("Does anything I type leave my device?", "Yes. This page uses AI. When you press Ask, your messages go to Google's Gemini through QuotaBird's own server, and the answer comes back here. The server doesn't save them, and the real Mark never sees them. The conversation lives in this tab and is gone when you close it. Don't paste anything that isn't yours to share: nothing classified or controlled unclassified, nothing marked internal, nothing about a customer you wouldn't put in an email to a stranger.")],
+     ("Does anything I type leave my device?", "Yes. This page uses AI. When you press Ask, your messages go to Google's Gemini through QuotaBird's own server, and the answer comes back here. The server doesn't save them, and the real Mark never sees them. The conversation lives in this tab: it survives a reload or a trip to one of the tools and back, and it's gone when you close the tab. Don't paste anything that isn't yours to share: nothing classified or controlled unclassified, nothing marked internal, nothing about a customer you wouldn't put in an email to a stranger.")],
     _SCRIPTS)
 # /ask-quotabird/ now points at Ask Mark
 os.makedirs('ask-quotabird', exist_ok=True)
