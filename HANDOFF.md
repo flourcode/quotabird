@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-10.1730** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-10.1800** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -351,7 +351,7 @@ Header: Tools ▾ · Field Notes · About · Ask Mark (blue, the AI chat at /ask
 
 **No sugarcoating, enforced (Nov 10, Lambda v1.5.2):** the page promises the twin won't sugarcoat it, so three layers keep the promise. (1) `MARK_VOICE` has an explicit rule: bad news goes in the first sentence, said plainly; no praise, sympathy or "the good news is" in front of it; no reassuring last line that walks it back; no "it depends" when you can say which way you'd bet; no reassurance when they're fishing for it unless the facts earn it; blunt about the situation, never about the person. The never-list adds "I hear you", "that's tough", "totally understandable", "don't worry", "good luck". (2) A worked example: "I'm at 40% with two months left... I can still make it, right?" answered "Probably not, and I wouldn't plan like you will." (3) `unCushion()` in `markChat` strips an opening sentence that is nothing but cushion ("I hear you, that's a tough spot.", "Great question.") and a closing pep talk ("You've got this.", "Good luck!"); when the cushion has a "but", the part after it stays ("I get it, but you won't make it" becomes "You won't make it"); real advice that happens to start "Don't worry about the label" is left alone. The eval set gains "fishing for reassurance" (eighteen cases) and a "no sugarcoating" scoring column.
 
-**Intro, final for now (Nov 10, Lambda v1.5.3):** "Need a quick second opinion on a deal, forecast, quota, comp plan, partner, or your boss? Ask the digital version of me. It'll help you figure out what to do next." The "20 years of sales experience" claim and the "sugarcoat" line are off the page, so the mismatch with the resume is gone. The twin now calls itself "the digital version of Mark" when asked (`FACT_RULES`, the "Are you a bot?" example); the no-sugarcoating rule, example and `unCushion()` guard all stay, since that's how Mark talks whether or not the page says so. "What to do next" was already the core of `MARK_VOICE` and the follow-up chips.
+**Intro, final for now (Nov 10, Lambda v1.5.3):** "Need a second opinion on a deal, your pipeline, or your boss? Ask the digital version of me. It'll help you decide what to do next." The "20 years of sales experience" claim and the "sugarcoat" line are off the page, so the mismatch with the resume is gone. The twin now calls itself "the digital version of Mark" when asked (`FACT_RULES`, the "Are you a bot?" example); the no-sugarcoating rule, example and `unCushion()` guard all stay, since that's how Mark talks whether or not the page says so. "What to do next" was already the core of `MARK_VOICE` and the follow-up chips.
 
 ## Build and deploy
 
