@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-11.1000** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-11.1030** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -317,7 +317,7 @@ Mechanics: a field with `when='mode=jump'` renders `data-when` on its label (and
 
 ## Disclaimers (Nov 11)
 
-Kept short on purpose, so they don't read like a bank's liability waiver. Under every chat box (home, Ask Mark, Meeting Prep, Account Plan, Update Upward): "AI, not Mark. It can be wrong. Nothing you type is stored." (`_chat` note in make-ask.py). In every footer, added by the page pass in make-tools.py next to the contact line: `<p class="foot-advice">For information only. Not legal, tax or financial advice. Use your own judgment.</p>`. No pop-ups, no agree gates, no disclaimer on each AI reply. A Terms page ("as is, no warranty") is the next step if Mark wants more cover; have a lawyer look at that wording.
+Kept short on purpose, so they don't read like a bank's liability waiver. Under every chat box (home, Ask Mark, Meeting Prep, Account Plan, Update Upward): "AI can be wrong. Nothing is stored on our servers." with the second sentence linking to the privacy page's AI section (/privacy/#ai), which says exactly what goes to Gemini (`_chat` note in make-ask.py). In every footer, added by the page pass in make-tools.py next to the contact line: `<p class="foot-advice">For information only. Not legal, tax or financial advice. Use your own judgment.</p>`. No pop-ups, no agree gates, no disclaimer on each AI reply. A Terms page ("as is, no warranty") is the next step if Mark wants more cover; have a lawyer look at that wording.
 
 ## Navigation
 

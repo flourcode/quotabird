@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-11.1000'
+BUILD = '2026-11-11.1030'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -3282,7 +3282,7 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
     <li><strong>Base, variable and quota.</strong> If you type them into one tool, your browser remembers them so the next tool can fill them in. They're stored only in your browser's local storage, on your device. Use "Clear them" on any tool that shows them, or clear your browser's site data for quotabird.com.</li>
   </ul>
 
-  <h2>The four pages that use AI</h2>
+  <h2 id="ai">The four pages that use AI</h2>
   <p>Ask Mark, Meeting Prep, Account Plan and Update Upward send what you type, when you press the button, to a small QuotaBird server, which passes it to Google's Gemini API and sends the answer back to your browser. The server doesn't log or store what you typed or what came back, and QuotaBird never reads it. Google processes it under the <a href="https://ai.google.dev/gemini-api/terms" rel="noopener">Gemini API terms</a>.</p>
   <p>On those pages the AI answers as a version of Mark: it reads what you wrote and writes advice the way he would. It's labelled as AI on every page, and it isn't him. It doesn't run the calculators. When a question is really about the math, it points you to the tool, which runs in your browser like always.</p>
   <p>Don't paste anything that isn't yours to share: nothing classified, controlled unclassified, export-controlled, or marked internal, and no customer information you wouldn't put in an email to a stranger. The analytics events on these pages say which page was used and which tool was picked, never what you typed.</p>
