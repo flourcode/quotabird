@@ -71,6 +71,15 @@ await t('workflow pages stream too, with their frame', async () => {
   const r = await viaStream({ kind: 'qb_mark', page: 'meeting-prep', stream: true, messages: [{ role: 'user', text: 'Thursday I meet the HHS deputy CIO about a pilot.' }] });
   assert.equal(lines(r.text).at(-1).t, 'done'); assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('Meeting Prep page'));
 });
+await t('Partner Check and Federal Readiness are chat pages with their own frame; Meeting Prep plays the room for a brief', async () => {
+  answer = { reply: 'Probably mostly talk. Give them one account and one date.', tool: 'none', followups: [] };
+  for (const [page, words] of [['partner', 'Partner Check page'], ['federal-readiness', 'Federal Readiness Check page'], ['meeting-prep', 'play the room']]) {
+    const r = await viaStream({ kind: 'qb_mark', page, stream: true, messages: [{ role: 'user', text: 'Our SI partner has had eight months and brought us nothing.' }] });
+    assert.equal(lines(r.text).at(-1).t, 'done', page); assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes(words), page);
+  }
+  const before = calls.length; await viaStream({ kind: 'qb_mark', page: 'risk', stream: true, messages: [{ role: 'user', text: 'Is my pipeline fragile?' }] });
+  assert.ok(!calls.at(-1).body.systemInstruction.parts[0].text.includes("Why they're here"), 'a retired page gets the plain chat'); assert.ok(calls.length > before);
+});
 await t('health check says which handler is serving', async () => {
   const s = { chunks: [], write(t) { this.chunks.push(t); }, end() {} }; await L.handler(ev(null, 'GET'), s);
   assert.equal(JSON.parse(s.chunks.join('')).stream, true);

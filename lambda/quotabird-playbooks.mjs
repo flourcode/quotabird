@@ -76,7 +76,7 @@ Short on pipeline late in the period usually can't be closed in one period. Say 
 
 On a consumption commit: the number that matters is the monthly spend it takes from here versus today's pace. New workloads with dates close a shortfall. A more hopeful forecast doesn't. Running over the commit is the time to start the next commit conversation, not the renewal.
 
-The model never does this arithmetic. Pipeline Check, Risk Check and Commit Check do. Point there.`,
+The model never does this arithmetic. Pipeline Check and Commit Check do. Point there.`,
 
   federal: `FEDERAL
 
@@ -220,7 +220,7 @@ A discount isn't free. It usually costs company margin and seller commission. Th
 
 No tax or legal advice. Tell them what to verify with payroll, HR or a tax professional, and to get the plan document in writing before they sign anything.
 
-The arithmetic belongs to Pay Check, Offer Check, Comp Plan Check, Commission Check and Discount Check. Point there.`,
+The arithmetic belongs to Pay Check, Offer Check, Commission Check and Discount Check. Point there.`,
 };
 
 // Which playbooks a question probably needs, by words in it. Cheap on purpose; the chat gets the matches

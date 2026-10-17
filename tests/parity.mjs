@@ -33,7 +33,7 @@ function oldScore(cfg, a) {
 // new check.js scoring, loaded from the built file
 const chk = {}; vm.runInNewContext(fs.readFileSync(NEW + '/check.js', 'utf8'), { window: chk, document: { addEventListener() {}, querySelectorAll() { return []; }, getElementById() { return null; } }, location: {}, history: {}, navigator: {}, matchMedia: () => ({}), setTimeout, IntersectionObserver: undefined, MutationObserver: function () {} });
 const combos = []; (function rec(p) { if (p.length === 5) { combos.push(p); return; } for (const v of ['yes', 'sort', 'no']) rec([...p, v]); })([]);
-for (const slug of ['rep', 'partner', 'territory', 'olr', 'brief', 'account', 'risk', 'competition', 'comp-plan', 'federal-readiness']) {
+for (const slug of ['rep']) {   // Nov 11: the other question checks were folded into host pages (no scoring left to compare)
   const cNew = loadToolFile(slug), cOld = oldInline(slug, 'CheckTool');
   for (const c of combos) {
     const a = {}; cNew.questions.forEach((q, i) => a[q.k] = c[i]);

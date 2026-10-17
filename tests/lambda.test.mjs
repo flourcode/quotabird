@@ -15,7 +15,7 @@ let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', na
 
 await t('health check', async () => {
   const r = await NEW.bufferedHandler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.service, 'quotabird'); assert.equal(b.version, '2.0.1'); assert.ok(b.catalog); assert.equal(b.stream, false); assert.equal(b.model, 'gemini-3.5-flash-lite');
+  assert.equal(b.service, 'quotabird'); assert.equal(b.version, '2.1.0'); assert.ok(b.catalog); assert.equal(b.stream, false); assert.equal(b.model, 'gemini-3.5-flash-lite');
 });
 await t('origin not allowed is refused', async () => {
   const r = await NEW.bufferedHandler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });

@@ -55,36 +55,8 @@
         "how to push back on a quota that is too high",
         "is my sales quota realistic compared to last year",
         "find the gap between last year and this year's quota",
-        "my quota went up and my territory did not"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your number"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:territory-check",
-      "displayName": "Territory Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/territory/",
-      "description": "Territory Check: Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers.",
-      "tags": [
-        "your-number",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "TerritoryCheck"
-      ],
-      "representativeQueries": [
-        "can my territory make the number",
-        "is my sales territory viable",
-        "new territory sizing check"
+        "my quota went up and my territory did not",
+        "can my territory make the number"
       ],
       "version": "2026.11.11",
       "updatedAt": "2026-11-11T00:00:00Z",
@@ -159,7 +131,7 @@
       "displayName": "Pay Check",
       "type": "text/html",
       "url": "https://quotabird.com/pay/",
-      "description": "Pay Check: Base, variable, accelerator, cap and threshold in. What the plan pays at 50% to 200% of quota out, and where the upside goes.",
+      "description": "Pay Check: Base, variable, accelerator, cap and threshold in. What the plan pays at 50% to 200% of quota out, where the upside goes, and the fine print to get in writing.",
       "tags": [
         "your-pay",
         "sales",
@@ -215,37 +187,6 @@
       }
     },
     {
-      "identifier": "urn:air:quotabird.com:tools:comp-plan-check",
-      "displayName": "Comp Plan Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/comp-plan/",
-      "description": "Comp Plan Check: Five questions that find the red flags in a sales comp plan: crediting, payout timing, upside, clawbacks and mid-year changes.",
-      "tags": [
-        "your-pay",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "CompPlanCheck"
-      ],
-      "representativeQueries": [
-        "comp plan red flags",
-        "is my sales commission plan fair",
-        "questions to ask about a sales comp plan",
-        "commission clawback rules",
-        "who gets credit on a split deal"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your pay"
-      }
-    },
-    {
       "identifier": "urn:air:quotabird.com:tools:offer-check",
       "displayName": "Offer Check",
       "type": "text/html",
@@ -281,7 +222,7 @@
       "displayName": "Pipeline Check",
       "type": "text/html",
       "url": "https://quotabird.com/pipeline/",
-      "description": "Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need.",
+      "description": "Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. Then five questions on the shape: spread, motion, next steps, timing, creation.",
       "tags": [
         "your-team",
         "sales",
@@ -294,36 +235,9 @@
       "representativeQueries": [
         "do I have enough pipeline to make my number",
         "pipeline coverage calculator with my win rate",
-        "is 3X pipeline coverage enough"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your team"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:risk-check",
-      "displayName": "Risk Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/risk/",
-      "description": "Risk Check: Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation.",
-      "tags": [
-        "your-team",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "RiskCheck"
-      ],
-      "representativeQueries": [
+        "is 3X pipeline coverage enough",
         "how fragile is my pipeline",
-        "pipeline concentration and aging risk",
-        "4X coverage but still at risk"
+        "pipeline concentration and aging risk"
       ],
       "version": "2026.11.11",
       "updatedAt": "2026-11-11T00:00:00Z",
@@ -339,7 +253,7 @@
       "displayName": "Rep Check",
       "type": "text/html",
       "url": "https://quotabird.com/rep/",
-      "description": "Rep Check: Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers that look at the territory before the person.",
+      "description": "Rep Check: Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers, and how to defend your people in a talent review.",
       "tags": [
         "your-team",
         "sales",
@@ -352,7 +266,9 @@
       "representativeQueries": [
         "is it the rep or the territory",
         "why is my sales rep underperforming",
-        "rep problem or territory problem"
+        "rep problem or territory problem",
+        "prepare for OLR calibration",
+        "will my case for a rep survive talent review"
       ],
       "version": "2026.11.11",
       "updatedAt": "2026-11-11T00:00:00Z",
@@ -368,7 +284,7 @@
       "displayName": "Partner Check",
       "type": "text/html",
       "url": "https://quotabird.com/partner/",
-      "description": "Partner Check: Five questions that separate a real partnership from promises: sourced deals, a named account, an owner who gets paid, a plan with dates, and pull.",
+      "description": "Partner Check: Tell the AI version of Mark about a partner, prime, reseller or SI and get a straight read on whether it is real work or promises, tested against sourced deals, a named account, an owner who gets paid, a plan with dates and pull.",
       "tags": [
         "your-team",
         "sales",
@@ -388,36 +304,7 @@
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
-        "usesAI": false,
-        "audience": "Your team"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:olr-check",
-      "displayName": "Talent Review",
-      "type": "text/html",
-      "url": "https://quotabird.com/olr/",
-      "description": "Talent Review Check: Five questions that test the assessment you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you.",
-      "tags": [
-        "your-team",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "TalentReview"
-      ],
-      "representativeQueries": [
-        "prepare for OLR calibration",
-        "will my case for a rep survive talent review",
-        "Amazon OLR prep for managers"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
+        "usesAI": true,
         "audience": "Your team"
       }
     },
@@ -426,7 +313,7 @@
       "displayName": "Deal Check",
       "type": "text/html",
       "url": "https://quotabird.com/deal/",
-      "description": "Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.",
+      "description": "Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal, then whether you know the account and why they would pick you.",
       "tags": [
         "your-deal",
         "sales",
@@ -439,36 +326,9 @@
       "representativeQueries": [
         "is my deal real or hopium",
         "qualify a federal sales deal before commit",
-        "what will my manager ask about this deal"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your deal"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:account-check",
-      "displayName": "Account Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/account/",
-      "description": "Account Check: Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy.",
-      "tags": [
-        "your-deal",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "AccountCheck"
-      ],
-      "representativeQueries": [
+        "what will my manager ask about this deal",
         "do I know the account or just my contact",
-        "am I single-threaded in this account",
-        "federal account check"
+        "am I single-threaded in this account"
       ],
       "version": "2026.11.11",
       "updatedAt": "2026-11-11T00:00:00Z",
@@ -541,11 +401,42 @@
       }
     },
     {
+      "identifier": "urn:air:quotabird.com:tools:meeting-prep-check",
+      "displayName": "Meeting Prep",
+      "type": "text/html",
+      "url": "https://quotabird.com/meeting-prep/",
+      "description": "Meeting Prep: Prepare for one important customer meeting, or an internal brief or QBR: the objective, what you know and do not, their likely priorities, questions to ask, objections, landmines and the next step to ask for.",
+      "tags": [
+        "your-deal",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "MeetingPrep"
+      ],
+      "representativeQueries": [
+        "prepare for an important customer meeting",
+        "questions to ask a CIO in a sales meeting",
+        "what objections to expect in a customer meeting",
+        "how to brief a general officer or SES",
+        "meeting prep for enterprise sales"
+      ],
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": true,
+        "audience": "Your deal"
+      }
+    },
+    {
       "identifier": "urn:air:quotabird.com:tools:federal-readiness-check",
       "displayName": "Federal Readiness Check",
       "type": "text/html",
       "url": "https://quotabird.com/federal-readiness/",
-      "description": "Federal Readiness Check: Five skeptical questions on whether a company has a real federal business: customer, money, buying path, partners and team.",
+      "description": "Federal Readiness Check: Tell the AI version of Mark what you sell and who in government wants it, and get a skeptical read on whether there is a federal business: customer, money, buying path, partners and team.",
       "tags": [
         "your-deal",
         "sales",
@@ -567,97 +458,8 @@
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
-        "usesAI": false,
-        "audience": "Your deal"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:competition-check",
-      "displayName": "Competition Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/competition/",
-      "description": "Competition Check: Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now.",
-      "tags": [
-        "your-deal",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "CompetitionCheck"
-      ],
-      "representativeQueries": [
-        "why would they pick us over doing nothing",
-        "am I beating the incumbent",
-        "competitive position check for a deal"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your deal"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:brief-check",
-      "displayName": "Brief Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/brief/",
-      "description": "Brief Check: Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you.",
-      "tags": [
-        "any-meeting",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "BriefCheck"
-      ],
-      "representativeQueries": [
-        "will my QBR survive the room",
-        "pressure test my brief before the meeting",
-        "what question am I hoping nobody asks"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Any meeting"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:meeting-prep-check",
-      "displayName": "Meeting Prep",
-      "type": "text/html",
-      "url": "https://quotabird.com/meeting-prep/",
-      "description": "Meeting Prep: Prepare for one important customer meeting: the objective, what you know and do not, their likely priorities, questions to ask, objections, landmines and the next step to ask for.",
-      "tags": [
-        "any-meeting",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "MeetingPrep"
-      ],
-      "representativeQueries": [
-        "prepare for an important customer meeting",
-        "questions to ask a CIO in a sales meeting",
-        "what objections to expect in a customer meeting",
-        "how to brief a general officer or SES",
-        "meeting prep for enterprise sales"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
         "usesAI": true,
-        "audience": "Any meeting"
+        "audience": "Your deal"
       }
     }
   ]

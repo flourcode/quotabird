@@ -1343,3 +1343,8 @@ body.is-chatting .composer .ask-note { text-align: left; }
 
 /* fields that belong to the other choice are out of the way, not just invisible */
 .tf[hidden], .tf-head[hidden], .calc-in label.tf[hidden], .hc-grid .tf[hidden] { display: none !important; }
+
+/* folded checks (Nov 11): five questions as a section on the page that absorbed them */
+.band[id] { scroll-margin-top:12px; }
+.fold-act { margin:26px 0 0; }
+.fold-was { margin:10px 0 0; text-align:center; }

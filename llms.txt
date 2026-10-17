@@ -1,45 +1,35 @@
 # QuotaBird
 
-> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. 22 one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.
+> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. 15 one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.
 
-The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor's own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Four pages are the exception: Ask Mark (https://quotabird.com/ask-mark/), Meeting Prep, Account Plan and Update Upward send what the visitor types to Google Gemini through QuotaBird's own server, which stores nothing; the AI writes coaching advice and points to the calculators, which still run in the browser. Privacy: https://quotabird.com/privacy/
+The tools are plain web pages. Each takes a few numbers or asks five questions (yes / sort of / no), then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor's own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. The AI pages are the exception: Ask Mark (https://quotabird.com/ask-mark/) and the chat on the home page, Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check send what the visitor types to Google Gemini through QuotaBird's own server, which stores nothing; the AI writes coaching advice and points to the calculators, which still run in the browser. Privacy: https://quotabird.com/privacy/
 
 ## Your number
 
 - [Quota Check](https://quotabird.com/quota/): Your quota against your on-target earnings, judged by what the number is measured in: new bookings, cloud consumption growth, or a whole book. (the day the number lands.)
-- [Quota Case](https://quotabird.com/quota-case/): Find the gap between last year and this year's quota: run rate or ARR, pipeline at your real win rate, headcount, one-time deals. Then push back with it, or close it with growth in existing accounts and net-new ones. (when you need to push back.)
-- [Territory Check](https://quotabird.com/territory/): Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers. (month one in a new territory.)
+- [Quota Case](https://quotabird.com/quota-case/): Find the gap between last year and this year's quota: run rate or ARR, pipeline at your real win rate, headcount, one-time deals. Then push back with it, or close it with growth in existing accounts and net-new ones. (when you need to push back, or a new territory.)
 - [Discount Check](https://quotabird.com/discount/): How much discount is too much? See what it costs in your commission and the company's margin before you say yes. (when they ask you to sharpen the pencil.)
 - [Update Upward](https://quotabird.com/update-upward/): Write the update a seller or manager sends upward: a weekly note, a forecast call, calling a miss, or a monthly business review. (before you tell your boss.)
 
 ## Your pay
 
-- [Pay Check](https://quotabird.com/pay/): Base, variable, accelerator, cap and threshold in. What the plan pays at 50% to 200% of quota out, and where the upside goes. (when you want to know what the plan really pays.)
+- [Pay Check](https://quotabird.com/pay/): Base, variable, accelerator, cap and threshold in. What the plan pays at 50% to 200% of quota out, where the upside goes, and the fine print to get in writing. (what the plan really pays, and the fine print.)
 - [Commission Check](https://quotabird.com/commission/): Deal size, commission rate and your share of the credit in, what you actually take home out, after the share you set aside for taxes. (when it closes.)
-- [Comp Plan Check](https://quotabird.com/comp-plan/): Five questions that find the red flags in a sales comp plan: crediting, payout timing, upside, clawbacks and mid-year changes. (before you count on the plan.)
 - [Offer Check](https://quotabird.com/offer/): Your current sales job against a new offer, each at a realistic attainment: what the offer really pays, what year one costs you with the ramp and what you leave behind, and when you come out ahead. Or check one offer on its own. (is the offer worth the jump?.)
 
 ## Your team
 
-- [Pipeline Check](https://quotabird.com/pipeline/): Target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. (quarterly, before the review.)
-- [Risk Check](https://quotabird.com/risk/): Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation. (when coverage looks fine and you don't trust it.)
-- [Rep Check](https://quotabird.com/rep/): Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers that look at the territory before the person. (when a rep is worrying you.)
-- [Partner Check](https://quotabird.com/partner/): Five questions that separate a real partnership from promises: sourced deals, a named account, an owner who gets paid, a plan with dates, and pull. (before you renew the partnership.)
-- [Talent Review](https://quotabird.com/olr/): Five questions that test the assessment you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you. (review season.)
+- [Pipeline Check](https://quotabird.com/pipeline/): Target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. Then five questions on the shape: spread, motion, next steps, timing, creation. (before the review: the size and the shape.)
+- [Rep Check](https://quotabird.com/rep/): Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers, and how to defend your people in a talent review. (when a rep is worrying you, or review season.)
+- [Partner Check](https://quotabird.com/partner/): Tell the AI version of Mark about a partner, prime, reseller or SI and get a straight read on whether it is real work or promises, tested against sourced deals, a named account, an owner who gets paid, a plan with dates and pull. (before you renew the partnership.)
 
 ## Your deal
 
-- [Deal Check](https://quotabird.com/deal/): Five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal. (before you put it in commit.)
-- [Account Check](https://quotabird.com/account/): Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy. (when you only know one person there.)
+- [Deal Check](https://quotabird.com/deal/): Five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal, then whether you know the account and why they would pick you. (before you put it in commit.)
 - [Account Plan](https://quotabird.com/account-plan/): Turn what a seller knows about one account into a plan with a number on it: coverage at the win rate, the money by the customer's own quarters, the gaps, who to meet, milestones. (when the account needs a plan with a number on it.)
 - [Commit Check](https://quotabird.com/commit/): For cloud and consumption sellers: will the customer use their committed spend? See the pace, the monthly spend it takes from here, and the shortfall or overage. (when a commit might not burn.)
-- [Federal Readiness Check](https://quotabird.com/federal-readiness/): Five skeptical questions on whether a company has a real federal business: customer, money, buying path, partners and team. (before you bet on federal.)
-- [Competition Check](https://quotabird.com/competition/): Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now. (when you're not sure you're ahead.)
-
-## Any meeting
-
-- [Brief Check](https://quotabird.com/brief/): Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you. (when someone in the room can say no.)
-- [Meeting Prep](https://quotabird.com/meeting-prep/): Prepare for one important customer meeting: the objective, what you know and do not, their likely priorities, questions to ask, objections, landmines and the next step to ask for. (before the meeting that matters.)
+- [Meeting Prep](https://quotabird.com/meeting-prep/): Prepare for one important customer meeting, or an internal brief or QBR: the objective, what you know and do not, their likely priorities, questions to ask, objections, landmines and the next step to ask for. (before the meeting, the brief or the QBR.)
+- [Federal Readiness Check](https://quotabird.com/federal-readiness/): Tell the AI version of Mark what you sell and who in government wants it, and get a skeptical read on whether there is a federal business: customer, money, buying path, partners and team. (before you bet on federal.)
 
 ## Methodology and benchmarks
 

@@ -3,36 +3,28 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-11.1030'
-TOOLS = [
+BUILD = '2026-11-11.1300'
+TOOLS = [   # Nov 11: nine five-question checks folded into these (see FOLDED CHECKS and REDIRECTS)
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
-    ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
-    ('Your number', '/territory/', 'Territory Check', 'Month one in a new territory'),
+    ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back, or a new territory'),
     ('Your number', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
     ('Your number', '/update-upward/', 'Update Upward', 'Before you tell your boss'),
-    ('Your pay', '/pay/', 'Pay Check', 'When you want to know what the plan really pays'),
+    ('Your pay', '/pay/', 'Pay Check', 'What the plan really pays, and the fine print'),
     ('Your pay', '/commission/', 'Commission Check', 'When it closes'),
-    ('Your pay', '/comp-plan/', 'Comp Plan Check', 'Before you count on the plan'),
     ('Your pay', '/offer/', 'Offer Check', 'Is the offer worth the jump?'),
-    ('Your team', '/pipeline/', 'Pipeline Check', 'Quarterly, before the review'),
-    ('Your team', '/risk/', 'Risk Check', 'When coverage looks fine and you don\'t trust it'),
-    ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
+    ('Your team', '/pipeline/', 'Pipeline Check', 'Before the review: the size and the shape'),
+    ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you, or review season'),
     ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
-    ('Your team', '/olr/', 'Talent Review', 'Review season'),
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
-    ('Your deal', '/account/', 'Account Check', 'When you only know one person there'),
     ('Your deal', '/account-plan/', 'Account Plan', 'When the account needs a plan with a number on it'),
     ('Your deal', '/commit/', 'Commit Check', 'When a commit might not burn'),
+    ('Your deal', '/meeting-prep/', 'Meeting Prep', 'Before the meeting, the brief or the QBR'),
     ('Your deal', '/federal-readiness/', 'Federal Readiness Check', 'Before you bet on federal'),
-    ('Your deal', '/competition/', 'Competition Check', 'When you\'re not sure you\'re ahead'),
-    ('Any meeting', '/brief/', 'Brief Check', 'When someone in the room can say no'),
-    ('Any meeting', '/meeting-prep/', 'Meeting Prep', 'Before the meeting that matters'),
 ]
 
 def menu(current):
     # Four groups in a two-by-two grid: Your number over Your pay on the left, Your deal over Your team on the right.
-    # Brief Check is left out of the menu on purpose (Mark's call, Nov 3); it stays on the home page and at /brief/.
-    MENU_SKIP = {'/brief/', '/federal-readiness/'}   # Federal Readiness lives on /federal/ and the home list
+    MENU_SKIP = {'/federal-readiness/'}   # Federal Readiness lives on /federal/ and the tools page
     groups, last = {}, []
     for g, h, n, d in TOOLS:
         if h in MENU_SKIP: continue
@@ -160,7 +152,7 @@ window.QB_BUILD = '{BUILD}';
 REP = dict(
     slug='rep', name='Rep Check',
     title='Rep Check: Is It the Rep or the Territory?',
-    desc='Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers that look at the territory before the person.',
+    desc='Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers, and how to defend your people in a talent review.',
     ogdesc='Before you write them up, figure out what you inherited. Five questions, one minute, no names.',
     h1='Is it the rep, or the territory?',
     dek='Five questions to tell a rep problem from a territory problem, a skill gap, or somebody who\'s stopped trying.',
@@ -193,7 +185,9 @@ REP = dict(
         ("Why does it never ask the rep's name?", 'It doesn\'t need one, and a tool shouldn\'t store opinions about named people. Run it, have the conversation, and nothing gets written down.'),
         ('What do the verdicts mean?', "<strong>They're fine:</strong> leave them alone. <strong>The situation:</strong> good rep, bad territory, number or plan; fix that. <strong>Coach them:</strong> good rep, skill gap. <strong>Manage them:</strong> capable rep, effort gap; expectations and dates. <strong>Wrong rep:</strong> reasonable situation, wrong person. <strong>Not sure:</strong> too many sort-ofs; sit in five of their deals and run it again."),
         ('Why is TERRITORY the first question?', 'Start with the territory and the number before you decide the rep is broken. You\'ll make a different decision.'),
-        ('Can I run it on myself?', 'Yes, and sellers should. If the territory answer is no, <a href="/territory/">Territory Check</a> makes that case to your manager with the sizing behind it.'),
+        ('Can I run it on myself?', 'Yes, and sellers should. If the territory answer is no, the <a href="/quota-case/#territory">territory questions on Quota Case</a> help you make that case to your manager with the sizing behind it.'),
+        ('What is OLR?', "OLR is Amazon's annual talent review. Managers bring an assessment of each person and defend it in calibration with other managers. Every company has a version of that room, whatever it calls it. The <a href=\"#review\">review season</a> section is the prep for it."),
+        ('Where did Talent Review Check go?', 'It\'s the review season section on this page. Same five questions: receipts, ownership, scope, how and next. If you want the room played for you, Ask Mark will pressure-test your case.'),
     ],
     config='''CheckTool({
   slug: 'rep', answers: {"They're fine": "Neither. They're fine.", "The situation": "The territory.", "Coach them": "The rep: a skill gap.", "Manage them": "The rep: an effort gap.", "Wrong rep": "The rep. Wrong fit.", "Not sure": "Not clear yet."}, name: 'Rep Check', url: 'https://quotabird.com/rep/',
@@ -239,738 +233,265 @@ REP = dict(
   },
   noMove: 'Nothing. Tell them the forecast looks good and ask what they need from you.',
   handoff: (s) => s.label === 'The situation'
-    ? { overline: 'It\\'s the territory', text: 'Send them Territory Check. Do the math before you turn it into a people argument.', href: '/territory/', label: 'Check your territory' }
+    ? { overline: 'It\\'s the territory', text: 'Size the territory before you turn it into a people argument. Quota Case runs the math, and has the five territory questions.', href: '/quota-case/#territory', label: 'Check the territory' }
     : { overline: 'Before you decide anything', text: "Sit with them and run their five biggest deals through Deal Check, and listen to how they answer. Ninety minutes of that beats a month of dashboards.", href: '/deal/', label: 'Check your deal' },
   mark: { title: (s) => 'Not sure it\\'s ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I once spent six months coaching a rep before I figured out it was the territory. Tell me what's going on with yours." },
   dm: (s) => `Mark, ran a rep through Rep Check. Verdict: ${s.label.toLowerCase()}. Weakest answer was ${s.weak.n.toLowerCase()}. Not sure I've got the right problem. Worth 20 minutes?`,
 });''',
 )
 
-# ────────────────────────────── PARTNER CHECK ──────────────────────────────
-PARTNER = dict(
-    slug='partner', name='Partner Check',
-    title='Partner Check: Is This Partner Doing Anything?',
-    desc='Five questions that separate a real partnership from promises: sourced deals, a named account, an owner who gets paid, a plan with dates, and pull.',
-    ogdesc='Before you renew the partnership, test it. Five questions, one minute, no names.',
-    h1='Is this partner doing anything?',
-    dek='Five questions that separate a real partnership from promises.',
-    cta='Check your partner',
-    questions=[
-        dict(k='sourced', n='SOURCED', q="Have they brought you an opportunity you didn't find yourself?"),
-        dict(k='accounts', n='ACCOUNTS', q='Is there a named account both sides are working right now?'),
-        dict(k='owner', n='OWNER', q='Does someone on their side carry a number that includes you?'),
-        dict(k='plan', n='PLAN', q='Is there a co-sell plan with dates on it, not a deck?'),
-        dict(k='pull', n='PULL', q='Would they call you if you stopped calling them?'),
-    ],
-    bands=[
-        ('how', 'What a real partner actually does', '''    <p class="lede">Everybody gets along. There have been plenty of meetings, maybe a joint slide deck. The question
-      is whether anyone can point to the account where the two companies are actually trying to win something together.</p>
-    SOURCED: Have they brought you anything? If they've never handed you a deal you didn't already have, you're working for them. One sourced deal is worth more than a year of joint webinars.
-    ACCOUNTS: Is there a named account, right now? Not a target list. A customer, a requirement, two sellers who know each other's names. If nobody can name one, it's a partnership on paper.
-    OWNER: Does someone on their side get paid when you win? Partnerships mostly run on comp plans. If nobody at the partner carries a number that includes you, every deal is a favor, and people run out of favors.
-    PLAN: Is there a plan with dates? A plan is three accounts, two dates and who owns each one. If it takes a deck to explain, it probably isn't a plan.
-    PULL: Would they call you first? Stop calling for two weeks and see what happens. A real partner will notice. Most won't.'''),
-        ('verdicts', 'Four kinds of partner', '''    <p><strong>Real.</strong> Deals are moving with both names on them. Feed it.</p>
-    All talk. Lots of activity, no deals. Most partnerships end up here and stay here.
-    <p><strong>Neighbors.</strong> You get along. That's all that's happening.</p>
-    <p><strong>Just promises.</strong> Plenty of meetings and co-branded slides, no deals. Stop
-      spending time on it and say so.</p>'''),
-    ],
-    faq=[
-        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('Does this work for the partner running it on me?', 'Yes. Run it on each other and compare answers. Start where you disagree.'),
-        ('What about a partner that\'s strategic but not producing yet?', 'Then the answer to SOURCED and ACCOUNTS is no, and the tool will say so. "Strategic" is what people call a partnership before it\'s produced anything.'),
-        ('Can I use it on a distributor or an SI?', 'Yes. The questions don\'t care which direction the paper flows. They care whether anyone on the other side is accountable for a deal with your name on it.'),
-    ],
-    config='''CheckTool({
-  aside: (s, a) => ['accounts', 'pull'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo ranks which primes actually pass work to subs and which resellers hold the right vehicles.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=partner&utm_content=verdict', label: 'Find a better route on fedhoo' } : null,
-  slug: 'partner', answers: {"Real": "Yes. Real work.", "All talk": "Mostly talk.", "Neighbors": "Not much.", "Just promises": "No. Just promises."}, name: 'Partner Check', url: 'https://quotabird.com/partner/',
-  questions: [
-    { k: 'sourced',  n: 'SOURCED',  q: "Have they brought you an opportunity you didn't find yourself?" },
-    { k: 'accounts', n: 'ACCOUNTS', q: 'Is there a named account both sides are working right now?' },
-    { k: 'owner',    n: 'OWNER',    q: 'Does someone on their side carry a number that includes you?' },
-    { k: 'plan',     n: 'PLAN',     q: 'Is there a co-sell plan with dates on it, not a deck?' },
-    { k: 'pull',     n: 'PULL',     q: 'Would they call you if you stopped calling them?' },
-  ],
-  weights: { sourced: 24, owner: 22, accounts: 20, pull: 18, plan: 16 },
-  verdict(a, total) {
-    if (total >= 75) return { label: 'Real', cls: 'ready', attack: 'This one is real. Feed it.', sub: 'Protect the time you spend here from the partners below.' };
-    if (total >= 55) return { label: 'All talk', cls: 'proof', attack: 'Lots of activity. No deals.', sub: 'Everybody is busy. Nothing closes. Most partnerships live here forever.' };
-    if (total >= 35) return { label: 'Neighbors', cls: 'prove', attack: "You get along. That's all that's happening.", sub: 'Pick one account and one date, or stop pretending this is a partnership.' };
-    return { label: 'Just promises', cls: 'dont', attack: "Lots of meetings. No deals.", sub: 'That\\'s the whole partnership. Say so, and put the time somewhere that produces.' };
-  },
-  askedBy: 'Your boss will ask',
-  grill: {
-    sourced: "What have they brought us that we didn't find ourselves?",
-    accounts: "Name one account where we're both working the same deal.",
-    owner: 'Who on their side gets paid when we win?',
-    plan: "What's on the co-sell plan that has a date on it?",
-    pull: 'When did they last call you first?',
-  },
-  moves: {
-    sourced: 'Ask them for one opportunity this month. Their answer is the diagnosis.',
-    accounts: 'Pick three accounts, get both sellers on one call, agree who does what by when.',
-    owner: 'Find out whose comp plan includes you. If the answer is nobody, that\\'s the problem.',
-    plan: 'Replace the deck with one page: three accounts, two dates, one owner each.',
-    pull: 'Stop calling for two weeks. See what happens.',
-  },
-  noMove: 'Keep doing what you\\'re doing, and write down why it works before someone changes it.',
-  handoff: (s) => s.total >= 55
-    ? { overline: 'Is there a deal inside this partnership?', text: 'Run it through Deal Check. A real partner deal survives the same five questions any deal does.', href: '/deal/', label: 'Check your deal' }
-    : { overline: 'How much of your number is leaning on them?', text: 'If this partner is in your coverage math, the math is wrong. Pipeline Check shows you by how much.', href: '/pipeline/', label: 'Check your pipeline' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I spent six years leading federal partner sales teams at Amazon, and I sat on the partner side before that. Plenty of partnerships look great in the QBR and never produce anything. Tell me about yours." },
-  dm: (s) => `Mark, ran a partner through Partner Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure what to do with it. Worth 20 minutes?`,
-});''',
-)
+# ────────────────────────────── FOLDED CHECKS (Nov 11) ──────────────────────────────
+# Nine five-question checks were folded into the pages people already use. Each one's five questions now live
+# as a section on its host page, with what to do this week and a starter for the chat. The old URL is a stub
+# that forwards to the section (REDIRECTS, below). Partner and Federal Readiness became chat pages in make-ask.py.
+import urllib.parse as _up
+def fold(fid, h2, lede, items, was, act_label, act_href=None, starter=None, move_label='This week:', extra=''):
+    """A folded check as a band: (id, h2, inner html). items: (NAME, question, why, move).
+    starter: on a chat page, a button that puts the words in the box; act_href: anywhere else, a link."""
+    body = f'    <p class="lede">{lede}</p>\n'
+    for n, q, why, move in items:
+        body += f'    <h3>{n}: {q}</h3>\n    <p>{why} <strong>{move_label}</strong> {move}</p>\n'
+    body += extra
+    if starter:
+        body += f'    <p class="fold-act"><button class="btn btn-tonal btn-full" type="button" data-starter="{html_esc(starter)}">{act_label}</button></p>\n'
+    else:
+        body += f'    <p class="fold-act"><a class="btn btn-tonal btn-full" href="{act_href}">{act_label}</a></p>\n'
+    body += f'    <p class="fine fold-was">This used to be {was}. Old links land here.</p>'
+    return (fid, h2, body)
+def html_esc(s): return s.replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;')
+def draft_link(page, words): return f'/{page}/#draft=' + _up.quote(words, safe='')
+def fold_html(b):   # a band for a page that isn't built from a bands list
+    fid, h2, body = b
+    return f'<!--fold:{fid}-->\n<section class="band fold" id="{fid}" aria-labelledby="{fid}-h">\n  <div class="band-inner">\n    <h2 id="{fid}-h">{h2}</h2>\n{body}\n  </div>\n</section>\n<!--/fold:{fid}-->\n\n'
+def inject_folds(path, bands):
+    """Put the folded sections into a page that's hand-written or built elsewhere, before its promos and About.
+    Idempotent: the old copies are taken out first."""
+    s = open(path, encoding='utf-8').read()
+    s = re.sub(r'<!--fold:([\w-]+)-->.*?<!--/fold:\1-->\n\n', '', s, flags=re.S)
+    m = re.search(r'<section class="band kit-band|<section class="band" id="about"', s)
+    assert m, path
+    s = s[:m.start()] + ''.join(fold_html(b) for b in bands) + s[m.start():]
+    open(path, 'w', encoding='utf-8').write(s)
 
-# ────────────────────────────── TERRITORY CHECK ──────────────────────────────
-TERRITORY = dict(
-    slug='territory', name='Territory Check',
-    title='Territory Check: Does This Territory Suck?',
-    desc='Can the territory make the number, or are you being asked to grow where nobody could? Five questions for sellers.',
-    ogdesc='Before you sign up for the number, test the territory. Five questions, one minute, no account names.',
-    h1='Does this territory suck?',
-    dek='Five questions before you sign up for a number the territory may not be able to produce.',
-    cta='Check your territory',
-    questions=[
-        dict(k='spend', n='SPEND', q='Is there enough addressable spend in the territory to make the number twice over?'),
-        dict(k='accounts', n='ACCOUNTS', q="Can you name ten accounts you'd expect to buy this year?"),
-        dict(k='base', n='BASE', q='Is there existing business to grow, not just logos to win?'),
-        dict(k='access', n='ACCESS', q='Do you have a way in: relationships, partners, contract vehicles?'),
-        dict(k='history', n='HISTORY', q='Has anyone made this number in this territory before?'),
-    ],
-    bands=[
-        ('how', 'What a territory has to have', '''    <p class="lede">Your quota assumes a lot about your territory. Check those assumptions before you sign up for it.</p>
-    SPEND: Is the money there twice over? Spend you can actually sell into, by named account. Selling government: agency budgets, program lines, contract ceilings. If the total addressable spend isn't at least double the number, you're counting on share you have no real reason to expect.
-    <p><strong>ACCOUNTS: Can you name ten?</strong> Not a list from the CRM. Ten accounts you personally expect to
-      buy this year, with a reason for each. If you can't get to ten, your manager should hear that in January,
-      not October.</p>
-    BASE: Is there anything to grow? Installed base gives you something to build on. All new logos means starting from zero every year. Know which one you've got, and put the inherited number on paper so nobody counts it twice.
-    ACCESS: Can you get in the door? A relationship, a partner who owns the account, a contract vehicle they already buy through. You need one route per account, or it's just a name on a list.
-    <p><strong>HISTORY: Has anyone done it?</strong> Find the last person who had the territory. If nobody has ever made
-      this number here, you're the experiment, and you should be paid like one.</p>'''),
-        ('now', 'What to do with the verdict', '''    <p>A bad verdict won't get you out of the number, but it will get you a better conversation about it. Take it to your manager in the first month, with the sizing behind it, and ask for one of three things: a different territory, a different number, or a different plan for how the gap gets filled. Doing the math in January goes over a lot better than discovering it in Q4.</p>
-    <p>A good verdict means the number's there, which puts it on you.</p>'''),
-    ],
-    faq=[
-        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('Is this just a way to argue about quota?', 'It\'s a way to argue about quota with evidence. Nobody wins that argument on feelings.'),
-        ('What if I\'m new and don\'t know the territory yet?', 'Then most answers will be sort of, and the verdict will say so. Run it again in 60 days and compare.'),
-        ('What about the coverage math?', 'That\'s the other tool. Once you know the territory can produce, <a href="/pipeline/">Pipeline Check</a> tells you how much pipeline it has to produce.'),
-    ],
-    config='''CheckTool({
-  aside: (s, a) => ['spend', 'access'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo shows what each agency in your territory actually spends, who's winning it, and what's expiring.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=territory&utm_content=verdict', label: 'Look up your territory on fedhoo' } : null,
-  slug: 'territory', answers: {"Workable": "No. It's workable.", "Thin": "A little. It's thin.", "A stretch": "Mostly, yes.", "Nobody could": "Yes. Nobody could hit this."}, name: 'Territory Check', url: 'https://quotabird.com/territory/',
-  questions: [
-    { k: 'spend',    n: 'SPEND',    q: 'Is there enough addressable spend in the territory to make the number twice over?' },
-    { k: 'accounts', n: 'ACCOUNTS', q: "Can you name ten accounts you'd expect to buy this year?" },
-    { k: 'base',     n: 'BASE',     q: 'Is there existing business to grow, not just logos to win?' },
-    { k: 'access',   n: 'ACCESS',   q: 'Do you have a way in: relationships, partners, contract vehicles?' },
-    { k: 'history',  n: 'HISTORY',  q: 'Has anyone made this number in this territory before?' },
-  ],
-  weights: { spend: 24, accounts: 22, access: 20, base: 18, history: 16 },
-  verdict(a, total) {
-    if (total >= 75) return { label: 'Workable', cls: 'ready', attack: "The number is there. Now it's on you.", sub: 'Which is worse news than you were hoping for.' };
-    if (total >= 55) return { label: 'Thin', cls: 'proof', attack: 'It can be done. Not by accident.', sub: 'The territory won\\'t carry you. Every account needs a plan.' };
-    if (total >= 35) return { label: 'A stretch', cls: 'prove', attack: "Something structural is wrong, and it isn't you.", sub: 'Take this to your manager in month one, with the sizing behind it.' };
-    return { label: 'Nobody could', cls: 'dont', attack: "You're being asked to grow where nobody could.", sub: 'Say so now, with the math. Not in Q4.' };
-  },
-  askedBy: 'Your manager will ask',
-  grill: {
-    spend: 'Where is the money in this territory, specifically?',
-    accounts: 'Which ten accounts?',
-    base: "What's the renewal and expansion number before any new logo?",
-    access: 'How are you getting in the door?',
-    history: "Who's made this number here before, and how?",
-  },
-  moves: {
-    spend: 'Size the territory: the spend you can actually sell into, account by account. One page.',
-    accounts: "Write the ten. If you can't get to ten, tell your manager now.",
-    base: 'Separate inherited from created. Put the inherited number on paper.',
-    access: 'Map one route per account: a relationship, a partner, or a vehicle.',
-    history: 'Find the last person who had the territory. Buy them coffee.',
-  },
-  noMove: 'Build the plan for the ten accounts. The territory isn\\'t the problem.',
-  handoff: (s, a) => (s.total >= 55 && a.spend !== 'no')
-    ? { overline: 'Now the coverage math', text: (s.total < 75 ? "It's thin, but it might produce." : a.spend === 'yes' ? 'The territory can produce.' : 'The territory can probably produce, if the spend is really there.') + ' Pipeline Check tells you how much it has to.', href: '/pipeline/', label: 'Check your pipeline' }
-    : { overline: 'Take it to your manager', text: "Their version of this question is Rep Check, and its first question is the territory. Send them that with your sizing.", href: '/rep/', label: 'Check your rep' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've inherited the territory nobody could grow, and I've handed one out by mistake. If yours really can't make the number, I can help you make that case to your boss." },
-  dm: (s) => `Mark, ran my territory through Territory Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Want to make the case to my manager and not sure how. Worth 20 minutes?`,
-});''',
-)
+FOLD_RISK = fold('risk', "Covered, and you still don't trust it?",
+    "Coverage is the size. These five are the shape. You can be at 4X and one slipped deal away from missing the year.",
+    [('SPREAD', 'Would you still make the number if your biggest deal slipped a quarter?',
+      "If a third of the number sits in one or two deals, your forecast is a bet on one customer's procurement calendar. The coverage ratio hides that. The review won't. Put the deal in <em>Your biggest deal</em> above and the page runs the slip for you.",
+      "Write the number without your biggest deal. That's the plan you're actually running."),
+     ('MOTION', 'Has every deal in commit moved stage in the last sixty days?',
+      "A deal that hasn't changed stage in sixty days is parked, whatever the CRM says, and parked deals leave the forecast all at once, usually in the last week of the quarter.",
+      "Move every deal that hasn't moved in sixty days back a stage. Then work the ones that argue."),
+     ('NEXT', 'Does every commit deal have a customer action on the calendar, not just yours?',
+      "If you're the only one who scheduled the next step, it's a task on your list, not a step in their process.",
+      "Get one customer action onto their calendar, or move the deal out of commit."),
+     ('TIMING', 'Is at least half of it due before the last month of the period?',
+      "If most of the number lands in the last month, you've built a year only December can save. Selling federal, a September close has nowhere to slip.",
+      "Pull one deal into an earlier month, or tell your manager the year is a December bet."),
+     ('FRESH', 'Did you create at least a quarter of it this quarter?',
+      "Pipeline you inherited or carried over runs out. If you're not creating, next year is already in trouble.",
+      "Block two mornings for creation. Nothing else fixes a crater.")],
+    'Risk Check', 'Walk Mark through the shape of it',
+    act_href=draft_link('ask-mark', "My coverage looks fine and I don't trust it. How much rides on my biggest deals, what hasn't moved, and when it lands: "))
 
-OLR = dict(
-    slug='olr', name='Talent Review Check',
-    title='Talent Review Check: Can You Defend Your People? (OLR Prep)',
-    desc="Five questions that test the assessment you're making for a rep in a talent review (OLR, at Amazon), then the room pressure-tests you.",
-    ogdesc='Before you walk into calibration, test your assessment. Five questions, then the room pressure-tests you. No names, no ratings.',
-    h1='Can you defend your people?',
-    dek='Five questions about your assessment, before the room asks them.',
-    cta='Test your assessment',
-    questions=[
-        dict(k='receipts', n='RECEIPTS', q='Can you name three things they delivered this year, each with a number on it?'),
-        dict(k='ownership', n='OWNERSHIP', q="For the biggest one, can you say what wouldn't have happened without them?"),
-        dict(k='scope', n='SCOPE', q='Can you explain why that was work at their level, not strong execution a level down?'),
-        dict(k='how', n='HOW', q="For every leadership principle you'll cite, do you have one specific example?"),
-        dict(k='next', n='NEXT', q="Can you name the harder thing you'd hand them next year, and why?"),
-    ],
-    bands=[
-        ('room', 'What the room is testing', '''    <p class="lede">The form is the easy part of a talent review. The hard part is explaining a human being in sixty
-      seconds to managers who don't know them, and having the explanation survive their questions.</p>
-    <p>Every calibration room runs the same way: you propose, they probe, and the evaluation moves if you can't hold it. The managers across the table aren't hostile. They just haven't seen your rep's year, so all they can test is your assessment. What holds up in that room is receipts, ownership, scope, behavior and what you'd hand them next. Adjectives get picked apart.</p>
-    <p><strong>RECEIPTS: Three things, each with a number.</strong> Amazon's own self-review now asks for three to five
-      accomplishments with measurable outcomes. If you can't name three with a number on them, the room hears "had a
-      good year," and "had a good year" loses to anyone who brought a spreadsheet.</p>
-    <p><strong>OWNERSHIP: What wouldn't have happened without them?</strong> The first question in any room is how much of
-      the outcome belongs to this person versus the team, the partner, or the market. If you can answer that in one
-      sentence for the biggest win, the rest of the assessment is easier.</p>
-    <p><strong>SCOPE: Their level, not the level below.</strong> "Strong L5 execution" is the polite way a room says no to
-      an L6 assessment. What made the problem their-level sized: the ambiguity, the number of teams, the absence of a
-      playbook, the decisions nobody else was going to make?</p>
-    HOW: One example per principle. The room is going to ask for the example. If you're citing four principles, bring four examples, and drop the ones you can't back.
-    NEXT: The harder thing. "I think she's a future VP" won't get you far. Say what problem you'd hand them next year that you wouldn't have handed them last year, and what they've already done that makes you sure.'''),
-        ('bias', 'Check yourself before the room does', '''    <p class="lede">The review that gets torn apart is usually a decent rep and a manager who brought opinions instead of receipts.</p>
-    <p><strong>Recency.</strong> How much of your judgment comes from the last sixty days?</p>
-    <p><strong>Visibility.</strong> Would you reach the same conclusion if this person weren't in your meetings every week?</p>
-    <p><strong>Halo.</strong> Remove their biggest win. What does the rest of the year look like?</p>
-    <p><strong>Horns.</strong> Remove their worst month. Same question.</p>
-    <p><strong>Style.</strong> Are you evaluating impact, or whether they communicate the way you do?</p>
-    CONTEXT: Did a reorg, manager change, leave or territory change alter what they could reasonably deliver? Say it before somebody else does.
-    <p>This grades your assessment, not your rep. It won't give you a rating. It asks the questions the room is going to ask before you get there.</p>'''),
-    ],
-    faq=[
-        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('Does it predict a rating?', 'No, and it never will. It grades whether you can defend the assessment. Your company already has plenty of machinery for the rating.'),
-        ('What is OLR?', "OLR is Amazon's annual talent review. Managers bring an assessment of each person and defend it in calibration with other managers. This is practice for the defending part."),
-        ('Is this only for Amazon?', 'OLR is Amazon\'s name for it, and that\'s where most of the people who use these tools have sat. But every calibration room asks the same five things, whatever the company calls it. Read "leadership principle" as your organization\'s behavioral standard and the tool works the same.'),
-        ('What does Pressure test do?', 'It plays the room. Three hard questions about your weakest answer. If you can\'t answer two of them, the assessment isn\'t ready. Better to find that out here.'),
-        ('Why does it never ask the rep\'s name?', 'It doesn\'t need one, and a tool shouldn\'t store opinions about named people. Run it, fix the assessment, and nothing gets written down.'),
-    ],
-    config='''CheckTool({
-  slug: 'olr', answers: {"Ready": "Yes. You're ready.", "Not yet": "Not yet.", "A story": "Not really. It's a story.", "No receipts": "No. No receipts."}, name: 'Talent Review Check', url: 'https://quotabird.com/olr/',
-  questions: [
-    { k: 'receipts',  n: 'RECEIPTS',  q: 'Can you name three things they delivered this year, each with a number on it?' },
-    { k: 'ownership', n: 'OWNERSHIP', q: "For the biggest one, can you say what wouldn't have happened without them?" },
-    { k: 'scope',     n: 'SCOPE',     q: 'Can you explain why that was work at their level, not strong execution a level down?' },
-    { k: 'how',       n: 'HOW',       q: "For every leadership principle you'll cite, do you have one specific example?" },
-    { k: 'next',      n: 'NEXT',      q: "Can you name the harder thing you'd hand them next year, and why?" },
-  ],
-  weights: { receipts: 26, ownership: 22, scope: 20, how: 16, next: 16 },
-  verdict(a, total) {
-    if (total >= 75) return { label: 'Ready', cls: 'ready', attack: 'The room can test this. Let it.', sub: 'Bring the receipts in the order you would say them, and say the weakest one first.' };
-    if (total >= 55) return { label: 'Not yet', cls: 'proof', attack: 'Your conclusion may be right. You haven\\'t documented enough to defend it.', sub: 'One more receipt on the weakest answer and this holds.' };
-    if (total >= 35) return { label: 'A story', cls: 'prove', attack: "You're telling a story. The room wants receipts.", sub: 'Adjectives and impressions where outcomes, examples and artifacts should be.' };
-    return { label: 'No receipts', cls: 'dont', attack: 'This won\\'t survive the first question.', sub: "It may still be a good rep. It isn't an assessment yet." };
-  },
-  askedBy: 'The room will ask',
-  grill: {
-    receipts: 'What are the three, with the numbers?',
-    ownership: 'How much of that outcome belongs to them versus the team around them?',
-    scope: 'What specifically makes that their-level work rather than strong execution a level down?',
-    how: 'Give me the example for that principle.',
-    next: 'What would you give them next year that you wouldn\\'t have given them last year?',
-  },
-  grillSet: {
-    receipts: ['You said they had a strong year. Which three things, and what were the numbers?', 'Remove the biggest win. What does the rest of the year look like?', 'Which of those three would still be true if the market had gone the other way?'],
-    ownership: ['What happened that wouldn\\'t have happened without them?', 'Who else touched that outcome, and what did they contribute?', "If I asked the partner or the customer who drove it, whose name would they say?"],
-    scope: ['What made this their-level work rather than strong execution one level down?', 'How many teams did they have to move without authority over any of them?', 'What decision did they make that nobody had made before?'],
-    how: ['Give me the example for the first principle you\\'re citing.', 'And the second one. Different example.', 'Which principle would you drop because you can\\'t back it, and why did it get in the draft?'],
-    next: ['What harder problem have they already shown they can handle?', 'Where did they grow scope without being asked?', 'What feedback did they get this year, and what observable behavior changed?'],
-  },
-  grillBy: 'The room', grillLabel: 'Pressure test', fixLabel: 'Before the room',
-  grillLines: { clean: 'Your assessment would survive.', one: 'Your assessment would mostly survive. One hole left.', bad: 'Your assessment wouldn\\'t survive.', cleanSub: 'Three questions from the room, three answers. Say the weakest receipt first.' },
-  fix: {
-    receipts: 'Write the three things down, each with its number, before you write anything else. If you can\\'t get to three, the assessment is the problem, not the rep.',
-    ownership: 'For the biggest win, write one sentence starting "Without them, ...". If you can\\'t finish it, find the win where you can.',
-    scope: 'Write what made the problem their-level sized: the teams, the ambiguity, the missing playbook, the decision nobody else would make.',
-    how: 'Cut every principle you can\\'t attach an example to. An assessment with two backed principles beats one with six adjectives.',
-    next: 'Name the harder assignment you would give them and the thing they already did that makes you sure. Potential is evidence, not a feeling.',
-  },
-  moves: {
-    receipts: 'Write the three things, each with its number. If you can\\'t get to three, that\\'s the finding.',
-    ownership: 'Write one sentence beginning "Without them, ..." for the biggest win.',
-    scope: 'Write what made it their-level work: teams moved, ambiguity, no playbook, the decision nobody else would make.',
-    how: 'Cut every principle without an example. Keep the ones you can prove.',
-    next: 'Name next year\\'s harder assignment and the evidence that says they can carry it.',
-  },
-  noMove: 'Put the weakest receipt first when you present. It\\'s easier to defend once you\\'ve said it yourself.',
-  handoff: (s) => s.total >= 75
-    ? { overline: 'The assessment is ready. Is the year set up?', text: "Next year's assessment starts now. Is the rep in a territory that can produce one? Rep Check asks that first.", href: '/rep/', label: 'Check your rep' }
-    : { overline: 'The fastest receipt', text: 'A deal you watched them run. Sit in their next customer meeting and go through it with Deal Check afterward.', href: '/deal/', label: 'Check your deal' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've written glowing reviews that got taken apart in the room, and usually the problem was how I'd made the case. Tell me about yours." },
-  dm: (s) => `Mark, ran a rep's talent review assessment through Talent Review Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. OLR is coming and I'm not sure it holds. Worth 20 minutes?`,
-  dmGrill: (s, missed) => `Mark, ran a rep's talent review assessment through Talent Review Check and couldn't answer ${missed} of the room's 3 ${s.weak.n.toLowerCase()} questions. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
-});''',
-)
+FOLD_ACCOUNT = fold('account', 'Real deal. Do you know the account?',
+    "The five questions above are about one opportunity. These are about the customer it lives in. You find out which one you've got the day your contact leaves.",
+    [('MISSION', 'Can you say what this account is trying to get done this year, in their words?',
+      "Not what you sell them. What the agency, the program or the business unit has to accomplish. If all you can describe is what they're buying from you, you know your deal and not much else.",
+      "Find the strategic plan, the budget justification or the all-hands deck, and write one sentence."),
+     ('MONEY', 'Do you know where their money comes from and when it moves, beyond your deal?',
+      "Know how their money moves and you hear about deals before they exist. Know only your deal's money and you'll hear about the next one from a competitor's press release.",
+      "Find the program line and their fiscal calendar."),
+     ('POWER', 'Have you met someone who matters beyond the deal in front of you?',
+      "Single-threaded is the most common way a good account goes quiet. One promotion or one reorg and you start over.",
+      "Ask your one contact for one introduction, upward or sideways."),
+     ('INCUMBENT', 'Do you know who already owns the relationships, the contracts and the workloads?',
+      "Somebody already does. Know who, and what they stand to lose, before you call it a competition.",
+      "List who owns what, and what each of them loses if you win."),
+     ('PATH', 'Do you know how this account actually buys, and who runs that process?',
+      "The contracting office, the vehicles they use, the approvals. It's usually the same for the next deal, so learn it properly once.",
+      "Find the contracting office and the vehicle they used last time, and ask how that buy went.")],
+    'Account Check', 'Build the plan for this account',
+    act_href='/account-plan/',
+    extra='    <p>Selling federal? <a href="https://fedhoo.com/?utm_source=quotabird&amp;utm_medium=deal&amp;utm_content=account" target="_blank" rel="noopener">fedhoo</a> shows an agency\'s current contracts, who holds them, and what it spends.</p>\n')
 
-BRIEF = dict(
-    slug='brief', name='Brief Check',
-    title='Brief Check: Will Your Brief Survive the Room?',
-    desc="Five questions about the doc, deck or QBR you're about to present, then the room pressure-tests you.",
-    ogdesc="Will your brief survive the room? Brief Check finds it before the meeting does.",
-    h1="Will your brief survive the room?",
-    dek='Five questions about the doc, the deck or the QBR, before the meeting asks them.',
-    cta='Check your brief',
-    questions=[
-        dict(k='point', n='POINT', q='Can you say in one sentence what you want them to decide, and why now?'),
-        dict(k='receipts', n='RECEIPTS', q="For the three claims the argument depends on, do you have evidence that isn't your own team's opinion?"),
-        dict(k='alternative', n='ALTERNATIVE', q='Have you dealt with the most credible other option, including doing nothing?'),
-        dict(k='hole', n='HOLE', q='Do you know the weakest assumption in your own argument, and who in the room will find it?'),
-        dict(k='ask', n='ASK', q='Is it completely clear what you need from them today, and who owns the next step?'),
-    ],
-    bands=[
-        ('how', 'What the room goes after', '''    <p class="lede">Nobody in that room cares much about your deck. They're going after the assumptions underneath it, and most briefs die when somebody asks the question the author was hoping nobody would.</p>
-    POINT: One sentence, and why now. If you can't say what you want the room to decide in one sentence, you don't have a point yet. Put the why-now in the same sentence, too. A room can agree with you and still do nothing.
-    <p><strong>RECEIPTS: Evidence for the three claims it depends on.</strong> Not every claim. The three that, if
-      false, take the recommendation down with them. Data, customer evidence, financials, documented behavior. And
-      at least one piece that didn't come from your own team, because the room discounts everything that did.</p>
-    ALTERNATIVE: What else could they do, including nothing? Why this instead of waiting? Why build instead of buy? Why you instead of them? Somebody in the room already likes another answer. Deal with it before they do.
-    <p><strong>HOLE: Your own weakest assumption, and who will find it.</strong> If you know the weak spot, say it before somebody else does. If you don't, somebody whose incentives differ from yours will find it, and they won't be gentle.</p>
-    <p><strong>ASK: What you need today, and who owns what next.</strong> A shocking number of decks survive thirty
-      slides and end with no decision. Is this an FYI, a discussion, a recommendation or a decision? What resource,
-      commitment or approval do you need before you leave the room? Who owns the next action, by when?</p>'''),
-        ('sharks', 'Who is in the room', '''    <p class="lede">The questions change with the chair. After the verdict, pick who is across the table and
-      the tool asks what they would ask.</p>
-    <p><strong>Finance.</strong> What does it cost, what does it return, what is the downside case, and which single
-      assumption drives most of the economics.</p>
-    <p><strong>The executive.</strong> Why are you telling me this, what is the decision, why now, and what are you
-      asking me to do.</p>
-    <p><strong>The tech leader.</strong> What has to be true for this to work, what is the hardest dependency,
-      and what are you hand-waving.</p>
-    <p><strong>The sales leader.</strong> Has a customer actually said they want this, who pays, who decides, and
-      what is stopping the deal today.</p>
-    <p><strong>The skeptic.</strong> Whoever in the room is accountable for something you're not. They know
-      something you don't. Find out what before the meeting.</p>
-    <p>You don't upload anything, and the tool never sees the document. It just asks whether you could answer for it.</p>'''),
-    ],
-    faq=[
-        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('What counts as a brief?', 'Anything you\'re about to argue for in front of people who can say no: a narrative doc, a strategy deck, a QBR, an account plan, a proposal, an investment memo, a capture review, or a recommendation you will make out loud. If it has a point and an ask, it\'s a brief.'),
-        ('Is this only for sales?', 'No. It started with sales reviews, and the sales leader is one of the sharks. But a six-pager in front of a VP dies exactly the way a QBR does: on the question the author hoped nobody would ask.'),
-        ('What does Pressure test do?', 'It plays the room. Pick who\'s across the table, and it asks three of their questions about your weakest answer, one at a time. You say honestly whether you could answer.'),
-    ],
-    config='''CheckTool({
-  slug: 'brief', answers: {"Room ready": "Yes. It's room-ready.", "A fight": "Maybe. It'll be a fight.", "Shark food": "No. Shark food.", "No point": "No. There's no point yet."}, name: 'Brief Check', url: 'https://quotabird.com/brief/',
-  questions: [
-    { k: 'point',       n: 'POINT',       q: 'Can you say in one sentence what you want them to decide, and why now?' },
-    { k: 'receipts',    n: 'RECEIPTS',    q: "For the three claims the argument depends on, do you have evidence that isn't your own team's opinion?" },
-    { k: 'alternative', n: 'ALTERNATIVE', q: 'Have you dealt with the most credible other option, including doing nothing?' },
-    { k: 'hole',        n: 'HOLE',        q: 'Do you know the weakest assumption in your own argument, and who in the room will find it?' },
-    { k: 'ask',         n: 'ASK',         q: 'Is it completely clear what you need from them today, and who owns the next step?' },
-  ],
-  weights: { point: 24, receipts: 22, hole: 20, alternative: 18, ask: 16 },
-  verdict(a, total) {
-    if (total >= 75) return { label: 'Room ready', cls: 'ready', attack: 'Your argument is clear and the claims have receipts.', sub: 'Lead with the hole. Say the weak spot before somebody else does.' };
-    if (total >= 55) return { label: 'A fight', cls: 'proof', attack: "Your recommendation may be sound. You've left an opening.", sub: 'They will find it. Better you find it first.' };
-    if (total >= 35) return { label: 'Shark food', cls: 'prove', attack: "You're relying on assumptions, vague impact, or an unclear ask.", sub: 'The room won\\'t argue with you. It will just move on.' };
-    return { label: 'No point', cls: 'dont', attack: "There isn't a decision in this brief yet.", sub: 'Find the one sentence first. Everything else is formatting.' };
-  },
-  askedBy: 'The room will ask',
-  grill: {
-    point: "You have twenty seconds. What's the point?",
-    receipts: 'Where did that number come from?',
-    alternative: "Why shouldn't we just do nothing?",
-    hole: "What's the sentence in this brief you hope nobody challenges?",
-    ask: 'What exactly do you need from me today?',
-  },
-  grillSet: {
-    point: ["You have twenty seconds. What's the point?", 'I read the whole thing. What exactly are you recommending?', 'If I remember one sentence tomorrow, what should it be?'],
-    receipts: ['Where did that number come from? Actual, forecast, modeled, or anecdotal?', "Give me one piece of evidence that didn't come from your own team.", 'Revenue went up. And? Adoption grew. And? Customers asked. And?'],
-    alternative: ["Why shouldn't we just do nothing for six months?", "What's the cheapest reasonable alternative, and why is it wrong?", 'What would someone who disagrees with you recommend instead?'],
-    hole: ["What's the sentence in this brief you hope nobody challenges?", 'Which assumption, if false, takes the recommendation down with it?', 'Which number are you least confident in?'],
-    ask: ['Is this an FYI, a discussion, a recommendation, or a decision?', 'What exactly do you need from me before you leave this room?', 'Who owns the next action, and by when?'],
-  },
-  sharks: {
-    finance:   { name: 'Finance',              qs: { point: ['What does this cost?', "What's the return, and over what period?", "What's the downside case?"], receipts: ['Which assumption drives most of the economics?', 'Is that number actual, forecast, or modeled?', "What's the denominator?"], alternative: ['What does doing nothing cost us?', "What's the cheapest version of this that gets 80% of the value?", 'Why is that not good enough?'], hole: ['Which number would you least like me to check?', 'What happens to the case if that number is half?', 'What did you leave out of the model?'], ask: ['How much, when, and from whose budget?', 'What do you need me to approve today versus later?', 'What can you deliver with half of it?'] } },
-    executive: { name: 'The executive',        qs: { point: ['Why are you telling me this?', "What's the decision?", 'Why now?'], receipts: ['Who else believes this besides your team?', 'Has a customer said this, or have we inferred it?', 'How recent is that?'], alternative: ["What's the alternative you're not recommending, and why?", 'Why not wait a quarter?', 'Who else has tried this?'], hole: ["What's the question you're hoping I don't ask?", 'What would make you wrong?', "What's the thing you're least sure of?"], ask: ['What are you asking me to do?', 'What happens if I say no?', 'Who owns this after today?'] } },
-    technical: { name: 'The tech leader', qs: { point: ['What has to be true technically for this to work?', "What's the one-line architecture?", 'What are you hand-waving?'], receipts: ['Has this been built, or is this a diagram?', 'What did the prototype actually show?', "What's the failure mode you've seen so far?"], alternative: ['Why build instead of buy?', "What's the boring option, and why not that?", 'What did the last team that tried this learn?'], hole: ["What's the hardest dependency?", "What's the assumption about scale that nobody's tested?", 'What breaks first?'], ask: ['How many people, for how long?', 'What do you need from my team?', "What's the first milestone I can check?"] } },
-    sales:     { name: 'The sales leader',     qs: { point: ['What does this do for the number?', 'Which deals does this move, by name?', 'Why this quarter?'], receipts: ['Has a customer actually said they want this?', 'Who pays, and who decides?', "What's stopping the deal today?"], alternative: ["What do we lose if we sell what we've got?", "What's the competitor doing instead?", 'Why not a partner?'], hole: ["Which deal is this really about, and what's its problem?", "What's the customer objection you haven't answered?", "What's the price?"], ask: ['What do you need from sales?', 'When can I put it in a forecast?', 'Who carries the number?'] } },
-    skeptic:   { name: 'The skeptic',          qs: { point: ["What's the real reason you want this?", "What problem does this solve that we didn't have last year?", "Whose idea was this, and what do they get?"], receipts: ['What evidence would change your mind?', "What's the best argument against this?", 'Who disagrees, and why are they wrong?'], alternative: ['What did the alternative look like before you wrote it to lose?', 'Why is doing nothing not the answer?', 'What would you recommend if this were someone else\\'s idea?'], hole: ["What's the sentence you hope nobody challenges?", "What's the assumption you haven't been able to prove?", 'What are you not telling this room?'], ask: ['What are you actually asking for?', "What's the smallest commitment that tests this?", 'What will you show us in ninety days?'] } },
-  },
-  sharkPrompt: "Who's across the table?",
-  grillBy: 'The room', grillLabel: 'Pressure test', fixLabel: 'Before the meeting',
-  grillLines: { clean: 'Your brief would survive.', one: 'Your brief would mostly survive. One hole left.', bad: 'Your brief wouldn\\'t survive.', cleanSub: 'Three questions, three answers. Lead with the hole anyway.' },
-  fix: {
-    point: 'Write the one sentence: what you want them to decide, and why now. Put it at the top. If it takes two sentences, you have two briefs.',
-    receipts: 'For each of the three load-bearing claims, write where the evidence came from and how old it is. Cut any claim that only your own team believes.',
-    alternative: 'Write the alternative someone in the room already prefers, in their words, then why it falls short. Include doing nothing.',
-    hole: 'Name the weakest assumption in one line and put it in the brief yourself, with what you would do if it proved false.',
-    ask: 'End with a decision box: what you need, from whom, by when, and who owns the next action.',
-  },
-  moves: {
-    point: 'Write the one sentence: what to decide, and why now. Put it first.',
-    receipts: 'For the three load-bearing claims, write the source and its date. Cut what only your team believes.',
-    alternative: "Write the alternative the room already prefers, in their words, and why it's not enough.",
-    hole: 'Name your weakest assumption in the brief before they do.',
-    ask: 'End with what you need, from whom, by when, and who owns what next.',
-  },
-  noMove: 'Say your weakest assumption out loud in the first minute. Then the argument happens on your terms.',
-  handoff: (s) => s.total >= 75
-    ? { overline: 'If the brief is about a deal', text: 'Somebody\\'s going to ask whether the deal underneath it is real. Deal Check will tell you before they do.', href: '/deal/', label: 'Check your deal' }
-    : { overline: 'If the brief is about the number', text: 'Vague impact usually means the coverage math is missing. Pipeline Check puts a number on it.', href: '/pipeline/', label: 'Check your pipeline' },
-  mark: { title: (s) => 'Stuck on the ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've written docs that got shredded and a few that got funded. The bad ones usually had a question I hadn't asked myself. Tell me about yours if you want." },
-  dm: (s) => `Mark, ran a brief through Brief Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is the ${s.weak.n.toLowerCase()}. Meeting is coming and I'm not sure it holds. Worth 20 minutes?`,
-  dmGrill: (s, missed) => `Mark, ran a brief through Brief Check and couldn't answer ${missed} of the room's 3 questions about the ${s.weak.n.toLowerCase()}. Verdict was ${s.label.toLowerCase()}. Want to tell me what you'd go fix first?`,
-});''',
-)
+FOLD_COMPETITION = fold('competition', 'Why you and not them?',
+    "Most lost deals are lost to nothing. The customer kept what they had, the money went somewhere else, the project waited a year. So start with doing nothing, then the incumbent.",
+    [('NOTHING', 'Do you know what it costs them to do nothing, in their numbers?',
+      "If the answer is \"not much,\" doing nothing is free, and free usually wins.",
+      "Ask what happens if they do nothing this year, and write the answer down in their words."),
+     ('SWITCH', 'Do you know what it costs them to leave the incumbent, and who feels it?',
+      "Incumbents mostly win because changing is a pain: retraining, migration, the person whose job is the current system.",
+      "List what leaving costs them and who carries each cost. Then deal with the person, not the cost."),
+     ('PREFERENCE', 'Has the customer told you, unprompted, why they would prefer you?',
+      "Not \"we like your solution.\" A reason, in their words. Until you've heard it, you're one column in their spreadsheet.",
+      "Ask what would make them choose you over the alternative. Then stop talking."),
+     ('PROOF', 'Do you have proof only you can show them: a reference, a pilot, a result?',
+      "Anybody can make claims. Something they can check is a lot harder for the incumbent to match.",
+      "Line up one reference they can call, or a pilot in their environment. Not a deck."),
+     ('ACCESS', 'Do you know who at the customer the competitor already owns?',
+      "Somebody in that account has been having lunch with the other side for three years. Find out who now, or you'll find out in the loss review.",
+      "Ask your champion who the competitor knows. They know.")],
+    'Competition Check', "Ask Mark who's beating you",
+    act_href=draft_link('ask-mark', "I'm not sure I'm ahead on a deal. The incumbent, a competitor or doing nothing might be beating me. Here's the situation: "),
+    extra='    <p>Selling federal? <a href="https://fedhoo.com/?utm_source=quotabird&amp;utm_medium=deal&amp;utm_content=competition" target="_blank" rel="noopener">fedhoo</a> shows who holds the incumbent contract, what it\'s worth, and when it ends.</p>\n')
 
-# ────────────────────────────── ACCOUNT CHECK ──────────────────────────────
-ACCOUNT = dict(
-    slug='account', name='Account Check',
-    title='Account Check: Do You Know Your Customer?',
-    desc='Five questions that tell you whether you know the account or only the opportunity in front of you: mission, money, power, incumbents, how they buy.',
-    ogdesc='Do you know your customer? Five questions, one minute, no names.',
-    h1='Do you know your customer?',
-    dek="Five questions. They'll show you where you're single-threaded.",
-    cta='Check your account',
-    questions=[
-        dict(k='mission', n='MISSION', q='Can you say what this account is trying to get done this year, in their words?'),
-        dict(k='money', n='MONEY', q='Do you know where their money comes from and when it moves, beyond your deal?'),
-        dict(k='power', n='POWER', q='Have you met someone who matters beyond the deal in front of you?'),
-        dict(k='incumbent', n='INCUMBENT', q='Do you know who already owns the relationships, the contracts and the workloads?'),
-        dict(k='path', n='PATH', q='Do you know how this account actually buys, and who runs that process?'),
-    ],
-    bands=[
-        ('how', 'Do you know the account, or one deal?', '''    <p class="lede">Deal Check asks whether one opportunity is real. Account Check asks whether you know the customer beyond that deal. You'll find out which one you have the day your contact leaves.</p>
-    MISSION: What are they trying to get done? Not what you sell them. What the agency, the program or the business unit has to accomplish this year, in words they'd recognize. If all you can describe is what they're buying from you, you know your deal and not much else.
-    MONEY: Where does it come from, beyond your deal? Appropriations, program lines, colors of money, fiscal calendars, the budget office. If you know how their money moves, you hear about deals before they exist. If you only know the money for your deal, you'll probably hear about the next one from a competitor's press release.
-    POWER: Who matters beyond this deal? Being single-threaded is the most common way a good account goes quiet. If every conversation runs through one person, you're one promotion or one reorg away from starting over.
-    INCUMBENT: Who already owns it? The relationships, contracts and workloads already belong to somebody. Know who, and what they stand to lose, before you call it a competition.
-    PATH: How do they actually buy? The contracting office, the vehicles they use, the approvals, the people who run the process. It's usually the same for the next deal, so it's worth learning properly the first time.'''),
-        ('verdicts', 'Four kinds of coverage', '''    <p><strong>Mapped.</strong> You know the mission, the money, the people and the process. Now find the next deal
-      before anyone else does.</p>
-    Half mapped. You know the parts your deal touches. Fill in the gaps before a reorg forces you to.
-    One thread. Everything runs through one person, and that's a risk. Get introduced upward and sideways this month.
-    <p><strong>A contact.</strong> You know one person. That's not an account yet.</p>'''),
-    ],
-    faq=[
-        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('How is this different from Deal Check?', 'Deal Check is about one opportunity: is it real, will it close. Account Check is about the customer it lives in: do you know enough about them to find the next deal, survive a reorg, or beat the incumbent. Good sellers get blindsided that way, with a real deal in an account they didn\'t really know.'),
-        ('Is this only for federal?', 'The questions were written with agencies in mind, where mission, colors of money and contract vehicles are everything. But every enterprise account has a mission, a budget process, an incumbent and a way it buys. Read the words that way and it works the same.'),
-    ],
-    config='''CheckTool({
-  aside: (s, a) => ['incumbent', 'money'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo shows the agency's current contracts, who holds them, and what it spends.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=account&utm_content=verdict', label: 'Look up the agency on fedhoo' } : null,
-  slug: 'account', answers: {"Mapped": "Yes. You know the account.", "Half mapped": "Partly.", "One thread": "Barely. One thread.", "A contact": "No. You know one person."}, name: 'Account Check', url: 'https://quotabird.com/account/',
-  questions: [
-    { k: 'mission',   n: 'MISSION',   q: 'Can you say what this account is trying to get done this year, in their words?' },
-    { k: 'money',     n: 'MONEY',     q: 'Do you know where their money comes from and when it moves, beyond your deal?' },
-    { k: 'power',     n: 'POWER',     q: 'Have you met someone who matters beyond the deal in front of you?' },
-    { k: 'incumbent', n: 'INCUMBENT', q: 'Do you know who already owns the relationships, the contracts and the workloads?' },
-    { k: 'path',      n: 'PATH',      q: 'Do you know how this account actually buys, and who runs that process?' },
-  ],
-  weights: { power: 24, money: 22, mission: 20, incumbent: 18, path: 16 },
-  verdict(a, total) {
-    if (total >= 75) return { label: 'Mapped', cls: 'ready', attack: 'You know the account, not just the deal.', sub: 'Now find the next one before anyone else does.' };
-    if (total >= 55) return { label: 'Half mapped', cls: 'proof', attack: 'You know the parts your deal touches.', sub: 'Fill in the gaps before a reorg forces you to.' };
-    if (total >= 35) return { label: 'One thread', cls: 'prove', attack: 'Everything runs through one person.', sub: "Everything runs through one person, and that's a risk. Get introduced upward and sideways this month." };
-    return { label: 'A contact', cls: 'dont', attack: 'You know one person. That\\'s a contact.', sub: 'Start with the mission and the money. The people are easier to figure out after that.' };
-  },
-  askedBy: 'Your boss will ask',
-  grill: {
-    mission: 'What is this account trying to get done this year, in their words?',
-    money: 'Where does their money come from, and when does it move?',
-    power: 'Who have you met who matters beyond this deal?',
-    incumbent: 'Who owns the relationships, the contracts and the workloads today?',
-    path: 'How does this account buy, and who runs it?',
-  },
-  moves: {
-    mission: 'Find the strategic plan, the budget justification or the all-hands deck. Read it. Write one sentence.',
-    money: 'Find the program line and the fiscal calendar. Know when money moves before it does.',
-    power: 'Ask your one contact for one introduction, upward or sideways, this week.',
-    incumbent: 'List who owns the contracts and the workloads, and what each would lose if you won.',
-    path: 'Find the contracting office and the vehicle they used last time. Ask how the last buy happened.',
-  },
-  noMove: 'Write it down while you still know it. Reorgs have a way of erasing account knowledge.',
-  handoff: (s) => s.total >= 55
-    ? { overline: 'Now the deal inside it', text: 'You know the account. Is the opportunity in it real? Deal Check asks the five questions your manager will.', href: '/deal/', label: 'Check your deal' }
-    : { overline: 'Before you build the account', text: "Can the territory it sits in make the number at all? Territory Check answers that before you spend a year here.", href: '/territory/', label: 'Check your territory' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've built accounts starting from one contact, and I've watched \\"mapped\\" accounts fall apart after one reorg. Tell me what you've got and I'll tell you where I'd start." },
-  dm: (s) => `Mark, ran an account through Account Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure where to start. Worth 20 minutes?`,
-});''',
-)
+FOLD_REVIEW = fold('review', 'Review season: can you defend them?',
+    "Same rep, different room. In calibration you propose, the room probes, and the rating moves if you can't hold it. The managers across the table haven't seen your rep's year, so all they can test is your case. Adjectives get picked apart. Receipts survive.",
+    [('RECEIPTS', 'Can you name three things they delivered this year, each with a number on it?',
+      "If you can't, the room hears \"had a good year,\" and that loses to anyone who brought a spreadsheet.",
+      "Write the three, each with its number, before you write anything else."),
+     ('OWNERSHIP', "For the biggest one, can you say what wouldn't have happened without them?",
+      "The first question in any room is how much of the outcome belongs to them, and how much to the team, the partner or the market.",
+      "Write one sentence that starts \"Without them, ...\""),
+     ('SCOPE', 'Can you explain why that was work at their level, not strong execution a level down?',
+      "\"Strong execution\" is how a room politely says no to a promotion case.",
+      "Write what made it their-level work: the teams they moved, the ambiguity, the missing playbook, the decision nobody else would make."),
+     ('HOW', "For every leadership principle you'll cite, do you have one specific example?",
+      "The room is going to ask for the example. Two principles you can back beat six adjectives.",
+      "Cut every principle you can't attach an example to."),
+     ('NEXT', "Can you name the harder thing you'd hand them next year, and why?",
+      "\"Future VP\" won't get you far. Potential is evidence, not a feeling.",
+      "Name next year's harder assignment and what they've already done that says they can carry it.")],
+    'Talent Review Check (OLR prep)', 'Have Mark play the calibration room',
+    act_href=draft_link('ask-mark', "I'm taking a rep's assessment into talent review. Play the calibration room and pressure-test it. Here's my case: "),
+    move_label='Before the room:',
+    extra="    <p><strong>Then check yourself before the room does.</strong> How much of your judgment comes from the last sixty days? Would you say the same thing if they weren't in your meetings every week? Take away their biggest win, then their worst month, and see if the year still reads the same. Are you judging impact, or whether they communicate the way you do? And if a reorg, a manager change or a territory change got in their way, say it before somebody else does.</p>\n")
 
-# ────────────────────────────── RISK CHECK ──────────────────────────────
-RISK = dict(
-    slug='risk', name='Risk Check',
-    title='Risk Check: Are Two Deals Carrying Your Year?',
-    desc='Coverage says whether you have enough pipeline. This says how fragile it is: concentration, aging, next steps, timing and creation.',
-    ogdesc='Are two deals carrying your year? Five questions, one minute, no deal names.',
-    h1='Are two deals carrying your year?',
-    dek='Five questions about the shape of your pipeline, not the size.',
-    cta='Check your risk',
-    questions=[
-        dict(k='spread', n='SPREAD', q='Would you still make the number if your biggest deal slipped a quarter?'),
-        dict(k='motion', n='MOTION', q='Has every deal in commit moved stage in the last sixty days?'),
-        dict(k='next', n='NEXT', q='Does every commit deal have a customer action on the calendar, not just yours?'),
-        dict(k='timing', n='TIMING', q='Is at least half of it due before the last month of the period?'),
-        dict(k='fresh', n='FRESH', q='Did you create at least a quarter of it this quarter?'),
-    ],
-    bands=[
-        ('how', 'Five ways a covered pipeline falls over', '''    <p class="lede">Pipeline Check asks whether you have enough. This asks whether it would survive a bad week. You can be at 4X and one slipped deal away from missing the year.</p>
-    <p><strong>SPREAD: What if the big one slips?</strong> If a third of the number sits in one or two deals, your
-      forecast is a bet on one customer's procurement calendar. Managers can't see this in the coverage ratio, which is
-      why they ask about it in the review.</p>
-    MOTION: Is it moving? A deal that hasn't changed stage in sixty days is parked, whatever stage the CRM says, and parked deals leave the forecast all at once, usually in the last week of the quarter.
-    NEXT: Whose calendar is the next step on? If you're the only one who scheduled it, it's a task on your list. You want the customer to have put it on their calendar, and if none of your commit deals have that, worry.
-    TIMING: When is it due? If most of the number lands in the last month of the period, you've built a year that only December can save. Federal wrinkle: a September close has nowhere to slip.
-    FRESH: Are you still creating? Pipeline you inherited or carried over runs out. If a quarter of what you're carrying wasn't created this quarter, next year is already in trouble.'''),
-        ('verdicts', 'Four states of a pipeline', '''    <p><strong>Sturdy.</strong> Spread out, moving, with customers on the calendar. Go get the coverage number too.</p>
-    Lopsided. There's one weakness, so fix it before the review finds it.
-    <p><strong>Fragile.</strong> A slip or a quiet customer takes you off the number. Re-underwrite the commit deals now.</p>
-    Looks covered. Don't trust it. Rebuild it from the customers up.'''),
-    ],
-    faq=[
-        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('I\'m at 4X coverage. Why does this say fragile?', 'Coverage only tells you how much. Four times the number in two deals that haven\'t moved since spring is a lot less than it looks. Run Pipeline Check for the size and this for the shape.'),
-        ('Should a manager run this on the team?', 'Yes, deal by deal is even better. They\'re the questions a good forecast call asks anyway, so you might as well answer them first.'),
-    ],
-    config='''CheckTool({
-  slug: 'risk', answers: {"Sturdy": "No. It's spread out.", "Lopsided": "Almost. It's lopsided.", "Fragile": "Yes. It's fragile.", "Won't hold": "Yes. It won't hold."}, name: 'Risk Check', url: 'https://quotabird.com/risk/',
-  questions: [
-    { k: 'spread', n: 'SPREAD', q: 'Would you still make the number if your biggest deal slipped a quarter?' },
-    { k: 'motion', n: 'MOTION', q: 'Has every deal in commit moved stage in the last sixty days?' },
-    { k: 'next',   n: 'NEXT',   q: 'Does every commit deal have a customer action on the calendar, not just yours?' },
-    { k: 'timing', n: 'TIMING', q: 'Is at least half of it due before the last month of the period?' },
-    { k: 'fresh',  n: 'FRESH',  q: 'Did you create at least a quarter of it this quarter?' },
-  ],
-  weights: { spread: 24, next: 22, motion: 20, fresh: 18, timing: 16 },
-  verdict(a, total) {
-    if (total >= 75) return { label: 'Sturdy', cls: 'ready', attack: 'Spread out, moving, customers on the calendar.', sub: 'Now check the coverage number too. A well-spread pipeline can still be too small.' };
-    if (total >= 55) return { label: 'Lopsided', cls: 'proof', attack: 'One weakness, and it\\'s the one the review will find.', sub: 'Fix the weakest answer before someone asks about it.' };
-    if (total >= 35) return { label: 'Fragile', cls: 'prove', attack: 'A slip or a quiet customer takes you off the number.', sub: 'Re-underwrite every commit deal this week. Whose calendar is the next step on?' };
-    return { label: 'Won\\'t hold', cls: 'dont', attack: 'It looks like coverage, but it\\'s mostly hope.', sub: 'Rebuild it from the customers up, starting with the deals that haven\\'t moved.' };
-  },
-  askedBy: 'Your boss will ask',
-  grill: {
-    spread: 'What happens to the number if the big one slips a quarter?',
-    motion: 'Which commit deals haven\\'t changed stage since last quarter?',
-    next: "Which commit deals have a customer action on the customer's calendar?",
-    timing: 'How much of the number lands in the last month?',
-    fresh: 'How much of this did you create this quarter?',
-  },
-  moves: {
-    spread: 'Write the number without your biggest deal. That\\'s the plan you\\'re actually running.',
-    motion: 'Move every deal that hasn\\'t changed stage in sixty days back a stage, today. Then work the ones that argue.',
-    next: 'For each commit deal, get one customer action onto their calendar this week or move it out of commit.',
-    timing: 'Pull one deal into an earlier month, or accept that the year is a December bet and tell your manager so.',
-    fresh: 'Block two mornings this week for creation. Nothing else fixes a crater.',
-  },
-  noMove: 'Keep the shape. Now check the size: run the coverage math with your real win rate.',
-  handoff: (s) => ({ overline: 'Shape checked. Now the size.', text: 'This checked the shape of your pipeline. Pipeline Check looks at whether there\\'s enough of it.', href: '/pipeline/', label: 'Check your pipeline' }),
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I once forecast a year on two deals and watched both slip the same week. Send me the shape of the pipeline, no customer names or dollars." },
-  dm: (s) => `Mark, ran my pipeline through Risk Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Coverage looks fine and I don't trust it. Worth 20 minutes?`,
-});''',
-)
+FOLD_TERRITORY = fold('territory', 'New territory? Check it before you sign up for the number.',
+    "Your quota assumes a lot about your territory. Here are five things it has to have. Take the answers to your manager in the first month, with the sizing behind them. In January it's planning. In Q4 it sounds like an excuse.",
+    [('SPEND', 'Is there enough addressable spend in the territory to make the number twice over?',
+      "Spend you can actually sell into, by named account. If it isn't at least double the number, you're counting on share you have no real reason to expect.",
+      "Size the territory account by account. One page."),
+     ('ACCOUNTS', "Can you name ten accounts you'd expect to buy this year?",
+      "Not a list from the CRM. Ten accounts you personally expect to buy, with a reason for each.",
+      "Write the ten. If you can't get to ten, tell your manager now."),
+     ('BASE', 'Is there existing business to grow, not just logos to win?',
+      "An installed base gives you something to build on. All new logos means starting from zero every year.",
+      "Split inherited from created, and put the inherited number on paper so nobody counts it twice."),
+     ('ACCESS', 'Do you have a way in: relationships, partners, contract vehicles?',
+      "You need one route per account, or it's just a name on a list.",
+      "Map one route per account: a relationship, a partner or a vehicle."),
+     ('HISTORY', 'Has anyone made this number in this territory before?',
+      "If nobody ever has, you're the experiment, and you should be paid like one.",
+      "Find the last person who had the territory and buy them coffee.")],
+    'Territory Check', 'Talk the territory through with Mark',
+    act_href=draft_link('ask-mark', "I just got a territory and I'm not sure it can make the number. Here's what I know about it: "),
+    extra="    <p>A bad answer won't get you out of the number, but it gets you a better conversation about it: a different territory, a different number, or a plan for how the gap gets filled. Selling federal? <a href=\"https://fedhoo.com/?utm_source=quotabird&amp;utm_medium=quota-case&amp;utm_content=territory\" target=\"_blank\" rel=\"noopener\">fedhoo</a> shows what each agency in your territory spends and who's winning it.</p>\n")
 
-# ────────────────────────────── COMPETITION CHECK ──────────────────────────────
-COMPETITION = dict(
-    slug='competition', name='Competition Check',
-    title='Competition Check: Why You and Not Them?',
-    desc='Five questions that tell you whether the incumbent, the competitor, or doing nothing is beating you right now.',
-    ogdesc='Why you and not them? Five questions, one minute, no names.',
-    h1='Why you and not them?',
-    dek='Five questions that tell you whether the incumbent, or doing nothing, is beating you.',
-    cta='Check your position',
-    questions=[
-        dict(k='nothing', n='NOTHING', q='Do you know what it costs them to do nothing, in their numbers?'),
-        dict(k='switch', n='SWITCH', q='Do you know what it costs them to leave the incumbent, and who feels it?'),
-        dict(k='preference', n='PREFERENCE', q='Has the customer told you, unprompted, why they would prefer you?'),
-        dict(k='proof', n='PROOF', q='Do you have proof only you can show them: a reference, a pilot, a result?'),
-        dict(k='access', n='ACCESS', q='Do you know who at the customer the competitor already owns?'),
-    ],
-    bands=[
-        ('how', 'Where deals really get lost', '''    <p class="lede">Most lost deals are lost to nothing. The customer kept what they had, the money went somewhere else, the project waited a year. So this checks whether you're beating nothing before it checks anybody else.</p>
-    NOTHING: What happens if they do nothing? If the answer is "not much," doing nothing is free and free usually wins. Sellers skip this because the answer lives in the customer's world, not ours.
-    SWITCH: What does leaving cost them? Incumbents mostly win because changing is a pain: retraining, migration, the person whose job is the current system. Know that cost and who carries it, or you'll lose to someone who never showed up to a meeting.
-    PREFERENCE: Have they said it? Not "we like your solution." An unprompted reason, in their words, why you instead of the alternative. Until you've heard it, you're one column in their comparison spreadsheet.
-    PROOF: What can only you show? A reference they can call, a pilot in their environment, a result at a customer they respect. Anybody can make claims. Something they can check is a lot harder for the incumbent to match.
-    ACCESS: Who does the competitor own? Somewhere in the account there's a person the other side has been having lunch with for three years. Find out who, or you'll find out in the loss review.'''),
-        ('verdicts', 'Four positions', '''    <p><strong>Preferred.</strong> They've told you why, you can prove it, and you know the cost of nothing. Close.</p>
-    In the mix. You're a real option, but so is something else. Find the reason they'd pick you and get it in their words.
-    <p><strong>Behind.</strong> The incumbent or the competitor has something you don't: access, proof, or a friend.
-      Name it before you spend another quarter here.</p>
-    Nothing wins. Doing nothing is beating you. Until it costs them something they can count, they'll keep doing nothing.'''),
-    ],
-    faq=[
-        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('What if there\'s no competitor?', 'There\'s always one: doing nothing. Most deals that are "uncontested" are lost to the status quo, which is why the first question is about the cost of inaction rather than a named rival. Answer it honestly and the tool will tell you whether nothing is winning.'),
-        ('Is this a battlecard?', 'No. Battlecards are about the competitor. This is about the customer: what happens if they do nothing, what switching costs, what they\'ve actually said, what you can prove, and who the other side already knows.'),
-    ],
-    config='''CheckTool({
-  aside: (s, a) => ['switch', 'access'].some(k => a[k] && a[k] !== 'yes') ? { text: "Selling federal? fedhoo shows who holds the incumbent contract, what it's worth, and when it ends.", href: 'https://fedhoo.com/?utm_source=quotabird&utm_medium=competition&utm_content=verdict', label: 'Look up the incumbent on fedhoo' } : null,
-  slug: 'competition', answers: {"Preferred": "They prefer you.", "In the mix": "You're in the mix.", "Behind": "You're behind.", "Nothing wins": "Doing nothing is winning."}, name: 'Competition Check', url: 'https://quotabird.com/competition/',
-  questions: [
-    { k: 'nothing',    n: 'NOTHING',    q: 'Do you know what it costs them to do nothing, in their numbers?' },
-    { k: 'switch',     n: 'SWITCH',     q: 'Do you know what it costs them to leave the incumbent, and who feels it?' },
-    { k: 'preference', n: 'PREFERENCE', q: 'Has the customer told you, unprompted, why they would prefer you?' },
-    { k: 'proof',      n: 'PROOF',      q: 'Do you have proof only you can show them: a reference, a pilot, a result?' },
-    { k: 'access',     n: 'ACCESS',     q: 'Do you know who at the customer the competitor already owns?' },
-  ],
-  weights: { nothing: 24, preference: 22, proof: 20, switch: 18, access: 16 },
-  verdict(a, total) {
-    if (total >= 75) return { label: 'Preferred', cls: 'ready', attack: "They've told you why, and you can prove it.", sub: 'Close it before the incumbent finds a friend.' };
-    if (total >= 55) return { label: 'In the mix', cls: 'proof', attack: "You're a real option. So is something else.", sub: 'Find the reason they would pick you and get it in their words.' };
-    if (total >= 35) return { label: 'Behind', cls: 'prove', attack: 'The other side has something you don\\'t.', sub: 'Name it: access, proof, or a friend. Then decide whether to spend another quarter here.' };
-    return { label: 'Nothing wins', cls: 'dont', attack: "Doing nothing is beating you, and it isn't even trying.", sub: "Until doing nothing costs them something they can count, they're going to keep doing nothing." };
-  },
-  askedBy: 'Your boss will ask',
-  grill: {
-    nothing: 'What does it cost them to do nothing this year?',
-    switch: 'What does it cost them to leave what they have, and who takes the hit?',
-    preference: 'What did they say, in their words, about why they would pick us?',
-    proof: 'What can we show them that the incumbent cannot?',
-    access: 'Who does the other side already have in the account?',
-  },
-  moves: {
-    nothing: "Ask the customer what happens if they do nothing this year. Write the number down in their words.",
-    switch: 'List what leaving the incumbent costs them and who carries each cost. Then address the person, not the cost.',
-    preference: 'Ask one question on the next call: what would make you choose us over the alternative? Then stop talking.',
-    proof: 'Line up one reference they can call this month, or one pilot in their environment. Not a deck.',
-    access: 'Find out who the competitor knows in the account. Ask your champion; they know.',
-  },
-  noMove: 'You\\'re preferred. Write down why, in their words, so the reason survives the next reorg.',
-  handoff: (s) => s.total >= 55
-    ? { overline: 'Now the deal itself', text: 'Where you stand against them is one thing. Whether the deal is real is another, and that\\'s Deal Check.', href: '/deal/', label: 'Check your deal' }
-    : { overline: 'Do you know your customer?', text: 'Being behind usually means the other side knows the account better. Account Check finds where.', href: '/account/', label: 'Check your account' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've lost to incumbents I never saw coming, and to customers who decided to do nothing, more often than I like to admit. Tell me what you're up against." },
-  dm: (s) => `Mark, ran a deal through Competition Check. ${s.label[0] + s.label.slice(1).toLowerCase()}, ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. Not sure I'm ahead. Worth 20 minutes?`,
-});''',
-)
+FOLD_PLAN = fold('plan', 'Before you count on it, get five things in writing',
+    "The math above is what the plan pays. Most comp plan problems aren't in the rate, though. They're in the parts nobody explains until a big deal closes. Ask your manager these now, while nothing is riding on the answer.",
+    [('CREDIT', 'Is it written down who gets credit for a deal, including partner, marketplace and split deals?',
+      "If the crediting rules aren't written down, you find out what they are after the fact.",
+      "\"Who gets credit when a partner, the marketplace or another rep is on the deal, and where is that written?\""),
+     ('PAYOUT', 'Do you know when each commission gets paid, and does it show up within a quarter of the deal?',
+      "Some plans pay the next month, some quarterly, and some hold part of it until the customer pays.",
+      "\"When does commission on a deal I close this month actually hit my paycheck?\""),
+     ('UPSIDE', 'Can you earn above your target without a cap or decelerator taking most of it?',
+      "An accelerator is only worth something if the plan lets you keep it. The rows above at 125% and 150% show what yours does.",
+      "\"What happens to my rate above 100%, and is there a cap anywhere in the plan?\""),
+     ('CLAWBACK', 'Are clawbacks spelled out, with a time limit on them?',
+      "A customer who cancels in the first 90 days is a common trigger. An open-ended clawback is a red flag.",
+      "\"What can be clawed back, for how long, and why?\""),
+     ('CHANGES', "Does the plan say mid-year changes aren't retroactive, and that quota moves when territory does?",
+      "You want changes to apply going forward, and a territory change to come with a quota change.",
+      "\"If my territory or quota changes mid-year, what happens to deals I already worked?\"")],
+    'Comp Plan Check', 'Ask Mark about the fine print',
+    act_href=draft_link('ask-mark', "Here's the part of my comp plan I don't trust: "),
+    move_label='Ask:',
+    extra='    <p>None of this is legal advice. For your rights under the plan or employment law, talk to HR or an employment attorney. <a href="/notes/read-your-comp-plan/">How to read a comp plan, in Field Notes →</a></p>\n')
 
-COMPPLAN = dict(
-    slug='comp-plan', name='Comp Plan Check',
-    title='Comp Plan Check: Can You Trust This Comp Plan?',
-    desc='Five questions that find the red flags in a sales comp plan: crediting, payout timing, upside, clawbacks and mid-year changes.',
-    ogdesc='Before you count on the plan, check the fine print. Five questions, about a minute.',
-    h1='Can you trust this comp plan?',
-    dek='Five questions that find the red flags before your first check does.',
-    cta='Check your plan',
-    questions=[
-        dict(k='credit', n='CREDIT', q='Is it written down who gets credit for a deal, including partner, marketplace and split deals?'),
-        dict(k='payout', n='PAYOUT', q='Do you know when each commission gets paid, and does it show up within a quarter of the deal?'),
-        dict(k='upside', n='UPSIDE', q='Can you earn above your target without a cap or decelerator taking most of it?'),
-        dict(k='clawback', n='CLAWBACK', q='Are clawbacks spelled out, with a time limit on them?'),
-        dict(k='changes', n='CHANGES', q="Does the plan say mid-year changes aren't retroactive, and that quota moves when territory does?"),
-    ],
-    bands=[
-        ('how', 'What to look for in a comp plan', '''    <p class="lede">Most comp plan problems aren't in the rate. They're in the parts nobody explains until a big deal closes.</p>
-    <p><strong>Credit.</strong> Who gets credit when a partner brought the deal, when it went through a cloud marketplace, or when another rep or a specialist worked it too. If the rules aren't written down, you'll find out what they are after the fact.</p>
-    <p><strong>Payout.</strong> When a deal you close this month actually shows up in your paycheck. Some plans pay the next month, some pay quarterly, and some hold part of it until the customer pays.</p>
-    <p><strong>Upside.</strong> What happens above 100%. An accelerator is only worth something if the plan lets you keep it. A cap or a decelerator can take most of it back.</p>
-    <p><strong>Clawbacks.</strong> What can be taken back, why, and for how long. A customer who cancels in the first 90 days is a common trigger. An open-ended clawback is a red flag.</p>
-    <p><strong>Changes.</strong> What happens when the plan, the quota or the territory changes mid-year. You want changes to apply going forward, and a territory change to come with a quota change.</p>'''),
-        ('verdicts', 'What the answers mean', '''    <p>A clear plan still might not be a generous one. <a href="/pay/">Pay Check</a> shows what it pays at 50% to 200% of quota. This check is about whether you can trust how it pays.</p>'''),
-    ],
-    faq=[
-        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('Is this legal or financial advice?', 'No. It points you to the questions worth asking about your plan. For anything about your rights under a contract or employment law, talk to HR or an employment attorney.'),
-        ('What about stock, RSUs and ESPPs?', 'They can matter a lot, and they get complicated fast: vesting schedules, refresh grants, purchase windows, taxes. QuotaBird doesn\'t value them or give financial advice. Read the grant documents, and talk to a financial professional if the equity is a big part of your decision.'),
-    ],
-    config='''CheckTool({
-  slug: 'comp-plan', answers: {"Clear": "Yes. It's clear.", "Mostly clear": "Mostly. Get a few answers in writing.", "Unclear": "Not yet. Too much is unwritten.", "Red flags": "No. Get answers before you count on it."}, name: 'Comp Plan Check', url: 'https://quotabird.com/comp-plan/',
-  questions: [
-    { k: 'credit',   n: 'CREDIT',   q: 'Is it written down who gets credit for a deal, including partner, marketplace and split deals?' },
-    { k: 'payout',   n: 'PAYOUT',   q: 'Do you know when each commission gets paid, and does it show up within a quarter of the deal?' },
-    { k: 'upside',   n: 'UPSIDE',   q: 'Can you earn above your target without a cap or decelerator taking most of it?' },
-    { k: 'clawback', n: 'CLAWBACK', q: 'Are clawbacks spelled out, with a time limit on them?' },
-    { k: 'changes',  n: 'CHANGES',  q: "Does the plan say mid-year changes aren't retroactive, and that quota moves when territory does?" },
-  ],
-  weights: { credit: 24, upside: 22, changes: 20, payout: 18, clawback: 16 },
-  verdict(a, total) {
-    if (total >= 75) return { label: 'Clear', cls: 'ready', attack: 'You know how it pays, when it pays, and what can change.', sub: 'Keep the plan and your quota letter somewhere you can find them.' };
-    if (total >= 55) return { label: 'Mostly clear', cls: 'proof', attack: "Most of it is written down. A couple of things aren't.", sub: 'Get the missing answers in writing before a big deal closes.' };
-    if (total >= 35) return { label: 'Unclear', cls: 'prove', attack: "Too much of how you get paid is in somebody's head.", sub: 'Ask for the written rules now, while nothing is riding on the answer.' };
-    return { label: 'Red flags', cls: 'dont', attack: "You can't tell how, when or whether you'll get paid.", sub: 'Get answers in writing before you count on this plan, or before you sign it.' };
-  },
-  askedBy: 'Ask your manager',
-  grill: {
-    credit: 'Who gets credit when a partner, the marketplace or another rep is on the deal, and where is that written?',
-    payout: 'When does commission on a deal I close this month actually hit my paycheck?',
-    upside: 'What happens to my rate above 100%, and is there a cap anywhere in the plan?',
-    clawback: 'What can be clawed back, for how long, and why?',
-    changes: 'If my territory or quota changes mid-year, what happens to deals I already worked?',
-  },
-  moves: {
-    credit: 'Ask for the crediting rules in writing, with one example deal worked through.',
-    payout: 'Get the payout schedule and put the next three paydays on your calendar.',
-    upside: 'Run your plan through Pay Check and look at the 125% and 150% rows.',
-    clawback: 'Ask what triggers a clawback and how long the window lasts. Write down the answer.',
-    changes: 'Ask how mid-year changes are handled before one happens.',
-  },
-  noMove: 'Keep a copy of the plan, your quota letter and every change notice in one folder.',
-  handoff: (s) => s.total >= 55
-    ? { overline: 'Now the payout math', text: 'Pay Check shows what the plan pays at 50% to 200% of quota, and where the upside goes.', href: '/pay/', label: 'Check your pay' }
-    : { overline: 'Before you count on it', text: 'How to read a comp plan, and what to ask when something is missing.', href: '/notes/read-your-comp-plan/', label: 'Read: How your plan pays' },
-  mark: { title: (s) => 'Stuck on ' + s.weak.n.toLowerCase() + '?', body: "I'm Mark. I've read a lot of comp plans, and the problems are usually in the parts nobody explains. Tell me what's unclear in yours, and leave out the company name and the dollars." },
-  dm: (s) => `Mark, ran my comp plan through Comp Plan Check. ${s.label}, weakest is ${s.weak.n.toLowerCase()}. Worth 20 minutes?`,
-});''',
-)
+FOLD_BRIEF = fold('brief', 'Presenting a brief, a deck or a QBR?',
+    "Same prep, different room. Nobody in there cares much about the deck. They go after the assumptions under it, and most briefs die on the question the author hoped nobody would ask. Check these five, then tell me about it above and I'll play the room.",
+    [('POINT', 'Can you say in one sentence what you want them to decide, and why now?',
+      "If it takes two sentences, you have two briefs. And a room can agree with you and still do nothing, so the why-now goes in the same sentence.",
+      "Write the one sentence and put it first."),
+     ('RECEIPTS', "For the three claims the argument depends on, do you have evidence that isn't your own team's opinion?",
+      "Not every claim. The three that take the recommendation down with them if they're false.",
+      "Write the source and the date for each of the three. Cut what only your team believes."),
+     ('ALTERNATIVE', 'Have you dealt with the most credible other option, including doing nothing?',
+      "Somebody in the room already likes another answer.",
+      "Write their alternative in their words, and why it falls short."),
+     ('HOLE', 'Do you know the weakest assumption in your own argument, and who in the room will find it?',
+      "If you say it first, the argument happens on your terms. If you don't, somebody whose incentives differ from yours will find it, and they won't be gentle.",
+      "Put the weakest assumption in the brief yourself."),
+     ('ASK', 'Is it completely clear what you need from them today, and who owns the next step?',
+      "A shocking number of decks survive thirty slides and end with no decision.",
+      "End with what you need, from whom, by when, and who owns the next action.")],
+    'Brief Check', 'Have Mark play the room',
+    starter="I'm presenting a brief and want you to play the room. What it's about, who's in the room, and what I need them to decide: ",
+    move_label='Before the meeting:',
+    extra="    <p><strong>Who's across the table changes the questions.</strong> Finance asks what it costs, what it returns, and which assumption drives the economics. The executive asks why you're telling them, what the decision is, and why now. The tech leader asks what has to be true and what you're hand-waving. The sales leader asks whether a customer actually said they want it, and who pays. The skeptic is whoever's accountable for something you're not, and they know something you don't. Tell me who's in the room and I'll ask what they'd ask.</p>\n")
 
-FEDREADY = dict(
-    slug='federal-readiness', name='Federal Readiness Check',
-    title='Federal Readiness Check: Is There a Federal Business Here?',
-    desc='Five skeptical questions on whether a company has a real federal business: customer, money, buying path, partners and team.',
-    ogdesc='You think you have a federal business. Five questions to find out.',
-    h1='Is there a federal business here?',
-    dek='Five skeptical questions for founders, sales leaders and anyone betting on federal.',
-    cta='Check your federal plan',
-    questions=[
-        dict(k='customer', n='CUSTOMER', q='Is there an actual federal customer asking for this?'),
-        dict(k='money', n='MONEY', q='Do you know where the funding would come from?'),
-        dict(k='path', n='PATH', q='Do you know how they can legally buy it?'),
-        dict(k='partners', n='PARTNERS', q='Do you know whether you need a prime, reseller, marketplace or other partner?'),
-        dict(k='team', n='TEAM', q='Do you have somebody who understands how to navigate all of the above?'),
-    ],
-    bands=[
-        ('how', 'What this checks', '''    <p class="lede">A federal customer liking your product isn't the same as a federal business.</p>
-    <p>A business needs a customer who has actually asked for the thing, money that can pay for it, a legal way to buy it, the right partner if the customer can't buy from you directly, and somebody on your side who knows how all of that works. Miss one and the deal waits, usually until next fiscal year.</p>
-    <p>These five questions are skeptical on purpose. Answer them the way a federal buyer would, not the way the pitch deck does. More on how federal technology actually gets bought, and what a believable first year looks like, is on the <a href="/federal/">Federal GTM</a> page.</p>'''),
-    ],
-    faq=[
-        ('Does anything I enter leave my device?', 'No. Your answers get scored right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your answers, and nothing leaves the page unless you share a result.'),
-        ('Is this legal or contracting advice?', 'No. It points to the questions a federal buyer will ask. For contracts, compliance and authorization questions, talk to people who do that work for a living.'),
-    ],
-    config='''CheckTool({
-  slug: 'federal-readiness', answers: {"Real": "Yes. There's a business here.", "Maybe": "Maybe. Prove the weak part.", "Mostly hope": "Not yet. It's mostly hope.", "Not yet": "No. Not yet."}, name: 'Federal Readiness Check', url: 'https://quotabird.com/federal-readiness/',
-  questions: [
-    { k: 'customer', n: 'CUSTOMER', q: 'Is there an actual federal customer asking for this?' },
-    { k: 'money',    n: 'MONEY',    q: 'Do you know where the funding would come from?' },
-    { k: 'path',     n: 'PATH',     q: 'Do you know how they can legally buy it?' },
-    { k: 'partners', n: 'PARTNERS', q: 'Do you know whether you need a prime, reseller, marketplace or other partner?' },
-    { k: 'team',     n: 'TEAM',     q: 'Do you have somebody who understands how to navigate all of the above?' },
-  ],
-  weights: { customer: 24, money: 24, path: 20, team: 18, partners: 14 },
-  verdict(a, total) {
-    if (total >= 75) return { label: 'Real', cls: 'ready', attack: 'A customer, money, a way to buy and people who know the way. That is the start of a federal business.', sub: "Now pressure-test the timing. Federal deals take longer than anyone's plan says." };
-    if (total >= 55) return { label: 'Maybe', cls: 'proof', attack: 'Most of it is there. One piece is still a guess.', sub: 'Fix the weakest answer before you hire anybody or tell the board it is a business.' };
-    if (total >= 35) return { label: 'Mostly hope', cls: 'prove', attack: "You have interest. You don't have a business yet.", sub: 'Hope is not evidence. Start with the customer and the money.' };
-    return { label: 'Not yet', cls: 'dont', attack: 'Nothing here would survive a hard question from a federal buyer.', sub: "That's fine for a first look. It isn't fine for a plan." };
-  },
-  askedBy: 'Your board will ask',
-  grill: {
-    customer: 'Who in the government has asked for this, by name and office?',
-    money: 'What budget pays for it, and when is that money available?',
-    path: 'How can they legally buy it from you today?',
-    partners: 'Do you need a prime, a reseller or a marketplace, and which one?',
-    team: 'Who on your team has sold this way before?',
-  },
-  moves: {
-    customer: 'Name one federal customer who has asked for this, and write down what they asked for in their words.',
-    money: 'Find out which budget the money would come from, and when that money is available.',
-    path: "Write down how they would buy it: a contract vehicle they can use, a marketplace, a partner's contract, or something else.",
-    partners: 'Decide whether you need a prime, a reseller or a marketplace, and talk to one this month.',
-    team: 'Get somebody involved who has sold to the federal government before, even part time.',
-  },
-  noMove: 'Put dates on the next three steps with the customer. Then run Deal Check on the first real opportunity.',
-  handoff: (s) => s.total >= 55
-    ? { overline: 'Next: the first real deal', text: 'Deal Check pressure-tests one federal opportunity: customer, money, power, path and now.', href: '/deal/', label: 'Check the deal' }
-    : { overline: 'Before you build the plan', text: 'How federal technology actually gets bought, and what a believable first year looks like.', href: '/federal/', label: 'Federal GTM' },
-  mark: { title: () => 'Not sure it adds up?', body: "I'm Mark. I spent 20 years on the government side and the last stretch of my career selling into it. Tell me what you're seeing. No company name needed." },
-  dm: (s) => `Mark, ran Federal Readiness Check. ${s.label}, weakest is ${s.weak.n.toLowerCase()}. Worth 20 minutes?`,
-});''',
-)
+FOLD_PARTNER = fold('five', 'What a real partner actually does',
+    "Everybody gets along. There have been plenty of meetings, maybe a joint slide deck. The question is whether anyone can point to the account where the two companies are actually trying to win something together. I test every partner against these five.",
+    [('SOURCED', "Have they brought you an opportunity you didn't find yourself?",
+      "If they've never handed you a deal you didn't already have, you're working for them. One sourced deal is worth more than a year of joint webinars.",
+      "Ask them for one opportunity this month. Their answer is the diagnosis."),
+     ('ACCOUNTS', 'Is there a named account both sides are working right now?',
+      "Not a target list. A customer, a requirement, and two sellers who know each other's names.",
+      "Pick three accounts, get both sellers on one call, and agree who does what by when."),
+     ('OWNER', 'Does someone on their side carry a number that includes you?',
+      "Partnerships mostly run on comp plans. If nobody at the partner gets paid when you win, every deal is a favor, and people run out of favors.",
+      "Find out whose comp plan includes you. If it's nobody, that's the problem."),
+     ('PLAN', 'Is there a co-sell plan with dates on it, not a deck?',
+      "A plan is three accounts, two dates and an owner for each. If it takes a deck to explain, it isn't a plan.",
+      "Replace the deck with one page."),
+     ('PULL', 'Would they call you if you stopped calling them?',
+      "A real partner notices when you go quiet. Most won't.",
+      "Stop calling for two weeks and see what happens.")],
+    'a five-question check', 'Tell me about your partner',
+    starter="Here's the partner, how long we've worked together, and what they've actually done: ",
+    move_label='Test it:',
+    extra='    <p>Selling federal? <a href="https://fedhoo.com/?utm_source=quotabird&amp;utm_medium=partner&amp;utm_content=page" target="_blank" rel="noopener">fedhoo</a> ranks which primes actually pass work to subs and which resellers hold the right vehicles.</p>\n')
 
-for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY):
+FOLD_FEDERAL = fold('five', 'What a federal business needs',
+    "A federal customer liking your product isn't the same as a federal business. A business needs all five of these. Miss one and the deal waits, usually until next fiscal year. I'll ask about each one the way a federal buyer would, not the way the pitch deck does.",
+    [('CUSTOMER', 'Is there an actual federal customer asking for this?',
+      "Someone, by name and office, who has asked for the thing. Interest after a demo doesn't count yet.",
+      "Write down what they asked for, in their words."),
+     ('MONEY', 'Do you know where the funding would come from?',
+      "Federal money has a name: an appropriation, a program line, a color of money with a fiscal year attached. \"They have budget\" isn't an answer.",
+      "Find out which budget it would come from, and when that money is available."),
+     ('PATH', 'Do you know how they can legally buy it?',
+      "A contract vehicle they already use, a marketplace, a partner's contract, or something else. If nobody can name it, there's no way to buy.",
+      "Write down how they'd buy it, and who runs that process."),
+     ('PARTNERS', 'Do you know whether you need a prime, reseller, marketplace or other partner?',
+      "Most commercial companies sell their first federal deals through somebody who already holds the paper.",
+      "Decide which kind you need, and talk to one this month."),
+     ('TEAM', 'Do you have somebody who understands how to navigate all of the above?',
+      "Federal is a different motion. Someone who has done it saves you a fiscal year.",
+      "Get somebody involved who has sold to the government before, even part time.")],
+    'a five-question check', 'Tell me what you sell and who wants it',
+    starter="Here's what we sell, who in government wants it, and how far we've gotten: ",
+    move_label='Next:',
+    extra='    <p>How federal technology actually gets bought, and what a believable first year looks like, is on the <a href="/federal/">Federal GTM</a> page.</p>\n')
+
+# Old URL → where its questions live now. Each old URL keeps a small page that forwards there (noindex, canonical
+# to the new page), so shared links, the printed Field Kits and search results all still land somewhere useful.
+REDIRECTS = {
+    'risk': ('/pipeline/#risk', 'Risk Check', 'Pipeline Check'),
+    'account': ('/deal/#account', 'Account Check', 'Deal Check'),
+    'competition': ('/deal/#competition', 'Competition Check', 'Deal Check'),
+    'olr': ('/rep/#review', 'Talent Review Check', 'Rep Check'),
+    'talent-review': ('/rep/#review', 'Talent Review Check', 'Rep Check'),
+    'territory': ('/quota-case/#territory', 'Territory Check', 'Quota Case'),
+    'comp-plan': ('/pay/#plan', 'Comp Plan Check', 'Pay Check'),
+    'brief': ('/meeting-prep/#brief', 'Brief Check', 'Meeting Prep'),
+}
+for _old, (_to, _was, _now) in REDIRECTS.items():
+    os.makedirs(_old, exist_ok=True)
+    _canon = 'https://quotabird.com' + _to.split('#')[0]
+    open(f'{_old}/index.html', 'w').write(f'''<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>{_was} is now part of {_now} | QuotaBird</title>
+<meta name="robots" content="noindex"><link rel="canonical" href="{_canon}">
+<meta http-equiv="refresh" content="0; url={_to}">
+<script>location.replace({json.dumps(_to)});</script></head>
+<body><p>{_was} is now part of {_now}. <a href="{_to}">It's here.</a></p></body></html>
+''')
+print('redirect stubs', len(REDIRECTS))
+
+REP['bands'].append(FOLD_REVIEW)   # review season lives on Rep Check now
+for t in (REP,):
     os.makedirs(t['slug'], exist_ok=True)
     html = page(t)
     assert '—' not in html and '–' not in html, t['slug']
@@ -1014,7 +535,7 @@ NOTES = [
       used to say, and then spent the year explaining. And don't let anybody close the gap on paper by assuming AI will
       make the reps more productive. It can write the follow-up email. It can't make the customer care.</p>
     <p>If only 20% of a reasonably tenured team hits quota year after year, stop assuming every miss is its own rep problem.</p>''',
-         tool=('/quota/', 'Quota Check', 'does the multiple and the implied rate in about ten seconds. Pipeline Check and Territory Check cover the rest of the math.')),
+         tool=('/quota/', 'Quota Check', 'does the multiple and the implied rate in about ten seconds. Pipeline Check and Quota Case cover the rest of the math.')),
     dict(slug='review-an-offer', title='How to review an offer, and push back on it',
          dek="The offer letter tells you what they'll pay if everything goes right. Find out what you'll make in a normal year.",
          body='''    <p class="lede">An offer letter shows you the OTE. That's what you make if you hit 100%, and about half of AEs don't. Before you sign, figure out what the job pays in a normal year.</p>
@@ -1154,8 +675,8 @@ NOTES = [
     </ul>
     <p>None of these are unusual, and some are reasonable. The point is to know they're there before you plan on a big year.</p>
     <h3>What to ask</h3>
-    <p>"Is there anything in the plan, or in a separate policy, that can reduce the payout on a large deal? Has it been used in the last two years?" Get the answer in writing. <a href="/comp-plan/">Comp Plan Check</a> covers the rest of what to look for.</p>''',
-         tool=('/comp-plan/', 'Comp Plan Check', 'finds the red flags in a comp plan: crediting, payout timing, upside, clawbacks and mid-year changes.')),
+    <p>"Is there anything in the plan, or in a separate policy, that can reduce the payout on a large deal? Has it been used in the last two years?" Get the answer in writing. <a href="/pay/#plan">Pay Check</a> lists the rest of what to get in writing.</p>''',
+         tool=('/pay/', 'Pay Check', 'shows what the plan pays from 50% to 200% of quota, and the five things to get in writing before you count on it.')),
  dict(slug='weighted-pipeline', title='Weighted pipeline is only as good as the weights',
          dek="Your CRM's stage probabilities are numbers somebody typed in once. Check them against what you actually win.",
          body='''    <p class="lede">Weighted pipeline takes every open deal, multiplies it by its stage probability, and adds them up. It's supposed to tell you what you'll actually close. It's only as good as the probabilities.</p>
@@ -1450,7 +971,7 @@ SHORTS = [
     dict(tag='Coverage', num='3X', fact='is a 33% win rate wearing a nicer shirt.', line='Win 20% and you need 5X.', src='The math', href='/pipeline/', go='Check your pipeline', k='#E77A3C', ink='#282C2F'),
     dict(tag='Cloud', fact="On a consumption plan, a commit nobody uses doesn't retire much quota.", line='The customer has to run the stuff.', src='Microsoft Partner Center', href='/quota/', go='Check your quota', k='#D9B265', ink='#282C2F'),
     dict(tag='Comp', num='1.5-2×', fact='is a common accelerator range above quota.', line='Where they start matters more than the rate.', src='Comp plan surveys, 2026', href='/notes/read-your-comp-plan/', go='Read your comp plan', k='#0A504B', ink='#FFFFFF'),
-    dict(tag='Federal', num='46%', fact='of federal AEs say they hit quota.', line='SLED is 45%. Self-reported.', src='RepVue, Sept. 2026', href='/territory/', go='Check your territory', k='#BEAAA3', ink='#282C2F'),
+    dict(tag='Federal', num='46%', fact='of federal AEs say they hit quota.', line='SLED is 45%. Self-reported.', src='RepVue, Sept. 2026', href='/quota-case/#territory', go='Check your territory', k='#BEAAA3', ink='#282C2F'),
 ]
 def _short(s, i):
     src = f'<span class="short-src">{esc_html(s["src"])}</span>' if s['src'] else ''
@@ -1473,6 +994,8 @@ open('tools/index.html', 'w').write(open('tools.src.html').read().replace('__BUI
 # Pipeline Check lives at /pipeline/ again (it was the home page until the shelf took over)
 os.makedirs('pipeline', exist_ok=True)
 open('pipeline/index.html', 'w').write(open('pipeline.src.html').read().replace('__BUILD__', BUILD))
+inject_folds('pipeline/index.html', [FOLD_RISK])                   # the shape of the pipeline, after the size
+inject_folds('deal/index.html', [FOLD_ACCOUNT, FOLD_COMPETITION])   # the account and the competition, after the deal
 
 # ────────────────────────────── CALCULATORS (Quota, Discount, Commission) ──────────────────────────────
 # Rebuilt from the old Fedmo tools: Is My Quota Crazy?, They Want a Discount, Commissions Take-Home.
@@ -1594,7 +1117,7 @@ CALCS = [
     return { label: t[0], cls: t[1], attack, sub: t[2], big: pct(ratio), rows, ratio, commitm: money(v.commit), projm: money(projected), stripText: '' };
   },
   handoff: (s) => s.ratio < .95
-    ? { overline: 'Who else could use it?', text: 'Burning a commit takes more than one team. See how well you know the rest of the account.', href: '/account/', label: 'Check the account' }
+    ? { overline: 'Who else could use it?', text: 'Burning a commit takes more than one team. Build a plan for the rest of the account.', href: '/account-plan/', label: 'Plan the account' }
     : { overline: 'Now put it in your number', text: 'An account running at or ahead of its commit is your easiest expansion. Make sure your quota case counts it.', href: '/quota-case/', label: 'Build your quota case' },
   mark: { title: () => 'Commit not burning?', body: "I'm Mark. I've sat in plenty of true-up conversations, the calm ones and the other kind. Send me the shape of it, no customer names." },
   dm: (s) => `Mark, ran a commit through Commit Check: ${s.projm} projected against a ${s.commitm} commit. Not sure what to do with the gap. Worth 20 minutes?`,
@@ -1614,7 +1137,7 @@ CALCS = [
     <p>Better yet, get into planning the year before, while somebody still has the spreadsheet open. <a href="/notes/prove-the-quota-is-crazy/">Your quota is crazy. Now prove it.</a> walks through it, with an example you can steal. If you're the rep, start with <a href="/notes/push-back-as-a-rep/">this one</a>. If you're the manager handing it down, <a href="/notes/handing-down-a-tough-quota/">this one</a>.</p>'''),('how','Why the multiple depends on what you sell','''    <p class="lede">Divide your quota by your on-target earnings. That one number tells you a lot about the plan, once you know what the quota is measured in.</p>
     <p>For a new-bookings AE, 4 to 6 times OTE is a useful working range. Bridge Group's 2026 median was 4.6, and enterprise roles run a little higher. That range is really just a commission rate, stated another way. At a 50/50 pay mix and roughly 10% on new ARR, quota works out to about five times OTE. Below 3 is unusual and usually means a ramp, an overlay, or a plan with a condition in it. Above 8 the plan is asking for something the territory may not have.</p>
     <p>Cloud consumption is a different animal, and it's the one most people on this site carry. The number is incremental revenue growth on a book, typically paid at a low single-digit percentage, roughly 1.5 to 3%, so the same arithmetic gives 15 to 30 times OTE at a big cloud provider and higher in strategic accounts. A rep carrying a $6M growth target on a $280K OTE is at 21×, and that's ordinary, not crazy. Whole-book targets (retention plus growth on the full run rate) are paid at around half a percent to one percent and run higher still, 40 to 80 times OTE, because most of that revenue would have happened anyway. <a href="/methodology/">How these ranges are derived</a>.</p>
-    <p>The number to watch across all three is the implied rate: your variable divided by your quota. If it's well under what your peers are paid on the same kind of number, the plan is heavier than the multiple alone suggests. And if you closed last year, the growth the new number implies is the real measure of how much harder this year is. Whether the territory can produce it is <a href="/territory/">Territory Check</a>; how much pipeline it takes is <a href="/pipeline/">Pipeline Check</a>.</p>'''),
+    <p>The number to watch across all three is the implied rate: your variable divided by your quota. If it's well under what your peers are paid on the same kind of number, the plan is heavier than the multiple alone suggests. And if you closed last year, the growth the new number implies is the real measure of how much harder this year is. Whether the territory can produce it is the <a href="/quota-case/#territory">territory section of Quota Case</a>; how much pipeline it takes is <a href="/pipeline/">Pipeline Check</a>.</p>'''),
          ('ranges',"QuotaBird's working ranges",'''    <p>These ranges come from plans at cloud providers, SaaS companies and their partners. They're guides, not rules, and roles differ. Quota ÷ OTE:</p>
     <p><strong>New bookings.</strong> Under 3: low. 3 to 4: favorable. 4 to 6: standard. 6 to 8: a stretch. 8 to 12: aggressive. Over 12: crazy.</p>
     <p><strong>Cloud consumption growth.</strong> Under 8: low. 8 to 15: favorable. 15 to 30: standard. 30 to 45: a stretch. 45 to 60: aggressive. Over 60: crazy.</p>
@@ -1702,7 +1225,7 @@ CALCS = [
 });'''),
  dict(slug='pay', name='Pay Check',
   title='Pay Check: What Does This Comp Plan Actually Pay?',
-  desc='Base, variable, accelerator, cap and threshold in. What the plan pays at 50% to 200% of quota out, and where the upside goes.',
+  desc='Base, variable, accelerator, cap and threshold in. What the plan pays at 50% to 200% of quota out, where the upside goes, and the fine print to get in writing.',
   ogdesc='What does this plan actually pay at 75%, 100% and 150% of quota? Base, variable, accelerator and cap in.',
   h1='What does this plan actually pay?', dek='Put in your base, your variable and how the plan pays above 100%. See what you make at 50% to 200% of quota.',
   fields=[dict(id='base',kind='money',label='Base salary',example='$150,000'),
@@ -1742,7 +1265,7 @@ CALCS = [
     const attack = `At 150% of quota you'd make ${money(base + pay(1.5))}, ${money(extra)} more than at 100%.`;
     return { label: t[0], cls: t[1], attack, sub: t[2], big: '+' + money(extra), rows, ote: money(base + v.variable), extram: money(extra), stripText: '' };
   },
-  handoff: (s) => ({ overline: 'Can you trust the rest of it?', text: 'The rate is only half of it. Comp Plan Check covers crediting, payout timing, clawbacks and mid-year changes.', href: '/comp-plan/', label: 'Check your comp plan' }),
+  handoff: (s) => ({ overline: 'Can you trust the rest of it?', text: 'The rate is only half of it. Crediting, payout timing, clawbacks and mid-year changes are below: five things to get in writing.', href: '#plan', label: 'See the fine print' }),
   mark: { title: () => 'Plan look thin?', body: "I'm Mark. I've seen plans that sound great in the offer and pay very little above quota. Send me the shape of yours, no company name." },
   dm: (s) => `Mark, ran my comp plan through Pay Check: ${s.extram} more at 150% than at 100%, on a ${s.ote} OTE. Is that normal? Worth 20 minutes?`,
   bookNote: (s) => `Pay Check: ${s.extram} extra at 150%, OTE ${s.ote}.`,
@@ -1982,6 +1505,12 @@ window.QB_BUILD = '{BUILD}';
 </body>
 </html>
 '''
+# the folded checks that live on calculator pages (FOLDED CHECKS, near the top)
+_CBY = {c['slug']: c for c in CALCS}
+_CBY['quota-case']['bands'].append(FOLD_TERRITORY)
+_CBY['quota-case']['faq'].append(('Where did Territory Check go?', 'It\'s the <a href="#territory">new territory</a> section on this page: spend, accounts, base, access and history. The math above tells you how big the gap is. Those five tell you whether the territory can close it.'))
+_CBY['pay']['bands'].append(FOLD_PLAN)
+_CBY['pay']['faq'].append(('Where did Comp Plan Check go?', 'It\'s the <a href="#plan">fine print</a> section on this page: crediting, payout timing, upside, clawbacks and mid-year changes, with the exact question to ask your manager for each.'))
 for t in CALCS:
     os.makedirs(t['slug'], exist_ok=True)
     html = calc_page(t)
@@ -3231,7 +2760,7 @@ _method = note_head("How QuotaBird's Numbers Work", "Where every range and bench
     <li><strong>Offer Check:</strong> a normal year = base + variable × the attainment you enter, for the offer and for your job now (each at its own attainment). Year one also counts the ramp: during ramp months you earn the guarantee if there is one, and otherwise half your normal attainment, an assumption the page states; it adds any sign-on bonus and subtracts what you'd leave behind. The catch-up month is the first month the offer's running total passes staying put. With no current job, the page reports what the offer pays at that attainment, the share of pay that rides on quota, and whether the ramp is protected.</li>
     <li><strong>Commission Check:</strong> your credit = deal × your share of the credit × any product multiplier. Commission = credit × your rate, minus the withholding percentage you enter. A planning estimate, not tax advice.</li>
     <li><strong>Commit Check:</strong> projected spend = spent so far + current monthly spend × months left. The monthly spend needed = (commit minus spent so far) ÷ months left.</li>
-    <li><strong>The question checks</strong> (Deal, Rep, Territory, Account, Competition, Risk, Partner, Talent Review, Brief, Comp Plan and Federal Readiness) weight five yes, sort of or no answers into a score. They are structured judgment, not statistics.</li>
+    <li><strong>The question checks</strong> (Deal and Rep) weight five yes, sort of or no answers into a score. They are structured judgment, not statistics. The other five-question lists on the site (the shape of a pipeline, the account, the competition, a territory, the fine print in a comp plan, a talent review, a brief, a partner, a federal plan) are checklists with no score, and the AI pages test a situation against them in conversation.</li>
   </ul>
 
   <h2>What QuotaBird doesn't model</h2>
@@ -3255,7 +2784,7 @@ open('methodology/index.html', 'w').write(_method)
 
 # ────────────────────────────── PRIVACY (/privacy/) ───────────────────────────
 PRIVACY_UPDATED = 'October 2026'
-_privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your browser, and how to clear it. No accounts, no ads. The tools never send what you type anywhere; four AI pages do, and this says exactly how.', 'https://quotabird.com/privacy/') + f'''</head>
+_privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your browser, and how to clear it. No accounts, no ads. The tools never send what you type anywhere; the AI pages do, and this says exactly how.', 'https://quotabird.com/privacy/') + f'''</head>
 <body>
 
 <div class="wrap">
@@ -3268,7 +2797,7 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
   <p class="fine">Last updated {PRIVACY_UPDATED}. Questions: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
 
   <h2>The short version</h2>
-  <p>QuotaBird has no accounts, no ads and no sign-up. The numbers and answers you type into the tools are worked out in your browser and never sent to QuotaBird or anyone else. Four pages are different, because they use AI: Ask Mark, Meeting Prep, Account Plan and Update Upward. What you type on those goes to Google's Gemini through QuotaBird's server, which doesn't keep it. QuotaBird counts page views and which tools get used, so it knows what's worth improving.</p>
+  <p>QuotaBird has no accounts, no ads and no sign-up. The numbers and answers you type into the tools are worked out in your browser and never sent to QuotaBird or anyone else. The pages that use AI are different: Ask Mark (and the chat on the home page), Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check. What you type on those goes to Google's Gemini through QuotaBird's server, which doesn't keep it. QuotaBird counts page views and which tools get used, so it knows what's worth improving.</p>
 
   <h2>What QuotaBird counts</h2>
   <p>QuotaBird uses Google Analytics 4 to count visits. Google Analytics records the pages you visit and the usual technical details that come with any visit, such as your browser, device type, approximate location and the site that sent you. It sets cookies in your browser to tell visits apart.</p>
@@ -3282,8 +2811,8 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
     <li><strong>Base, variable and quota.</strong> If you type them into one tool, your browser remembers them so the next tool can fill them in. They're stored only in your browser's local storage, on your device. Use "Clear them" on any tool that shows them, or clear your browser's site data for quotabird.com.</li>
   </ul>
 
-  <h2 id="ai">The four pages that use AI</h2>
-  <p>Ask Mark, Meeting Prep, Account Plan and Update Upward send what you type, when you press the button, to a small QuotaBird server, which passes it to Google's Gemini API and sends the answer back to your browser. The server doesn't log or store what you typed or what came back, and QuotaBird never reads it. Google processes it under the <a href="https://ai.google.dev/gemini-api/terms" rel="noopener">Gemini API terms</a>.</p>
+  <h2 id="ai">The pages that use AI</h2>
+  <p>Ask Mark (and the chat on the home page), Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check send what you type, when you press the button, to a small QuotaBird server, which passes it to Google's Gemini API and sends the answer back to your browser. The server doesn't log or store what you typed or what came back, and QuotaBird never reads it. Google processes it under the <a href="https://ai.google.dev/gemini-api/terms" rel="noopener">Gemini API terms</a>.</p>
   <p>On those pages the AI answers as a version of Mark: it reads what you wrote and writes advice the way he would. It's labelled as AI on every page, and it isn't him. It doesn't run the calculators. When a question is really about the math, it points you to the tool, which runs in your browser like always.</p>
   <p>Don't paste anything that isn't yours to share: nothing classified, controlled unclassified, export-controlled, or marked internal, and no customer information you wouldn't put in an email to a stranger. The analytics events on these pages say which page was used and which tool was picked, never what you typed.</p>
 
@@ -3298,7 +2827,7 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
   </ul>
 
   <h2>What QuotaBird doesn't do</h2>
-  <p>No accounts, no advertising, and no selling or renting data. The tools themselves use no AI; only the four pages above do, and only when you press their button. The Field Kits are plain PDF files.</p>
+  <p>No accounts, no advertising, and no selling or renting data. The tools themselves use no AI; only the pages above do, and only when you press their button. The Field Kits are plain PDF files.</p>
 
   <h2>Changes and questions</h2>
   <p>If this page changes, the date at the top changes with it. Questions about privacy or security go to <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
@@ -3429,7 +2958,7 @@ _fed = note_head('Federal GTM', "Trying to figure out whether there's a real fed
 
   <h2>Some free places to start</h2>
   <ul>
-    <li><a href="/federal-readiness/">Federal Readiness Check</a>: five questions on whether there's a federal business here.</li>
+    <li><a href="/federal-readiness/">Federal Readiness Check</a>: tell the AI version of Mark what you sell and who wants it, and get a skeptical read on whether there's a federal business here.</li>
     <li><a href="/deal/">Deal Check</a>: pressure-test one federal opportunity on customer, money, power, path and timing.</li>
     <li><a href="/seller/#s-sep30">Working back from September 30</a>: the federal year-end chapter of the Seller's Field Kit.</li>
     <li><a href="https://fedhoo.com" rel="noopener">FedHoo</a>: federal market data tools I built.</li>
@@ -3502,14 +3031,7 @@ assert '—' not in _stuff and '–' not in _stuff
 os.makedirs('stuff', exist_ok=True)
 open('stuff/index.html', 'w').write(_stuff)
 
-# /talent-review/ forwards to Talent Review Check (at /olr/) (the kit prints the universal name; the tool keeps its name)
-os.makedirs('talent-review', exist_ok=True)
-open('talent-review/index.html', 'w').write('''<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><title>Talent review prep | QuotaBird</title>
-<meta name="robots" content="noindex"><link rel="canonical" href="https://quotabird.com/olr/">
-<meta http-equiv="refresh" content="0; url=/olr/"></head>
-<body><p><a href="/olr/">Talent review prep is here.</a></p></body></html>
-''')
+# /talent-review/ forwards with the other folded checks (REDIRECTS, above)
 
 # ────────────────────────────── ABOUT ──────────────────────────────
 os.makedirs('about', exist_ok=True)
@@ -3557,8 +3079,8 @@ KITCARD_SRC = open('partials/kit-card.html').read()
 LEADERCARD_SRC = open('partials/leader-card.html').read()
 LEADERCARD_PAGES = {'notes/index.html'}
 SELLERCARD_SRC = open('partials/seller-card.html').read()
-SELLERCARD_PAGES = {'deal/index.html', 'quota/index.html', 'territory/index.html', 'discount/index.html', 'commission/index.html', 'account/index.html', 'competition/index.html'}
-KITCARD_PAGES = {'index.html', 'rep/index.html', 'partner/index.html', 'olr/index.html', 'risk/index.html', 'notes/index.html', 'math/index.html'}
+SELLERCARD_PAGES = {'deal/index.html', 'quota/index.html', 'quota-case/index.html', 'discount/index.html', 'commission/index.html'}
+KITCARD_PAGES = {'index.html', 'rep/index.html', 'partner/index.html', 'notes/index.html', 'math/index.html'}
 def root_of(path):
     if path == '404.html': return '/'
     return '../' * path.count('/')
@@ -3604,7 +3126,7 @@ def chrome(path):
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
 exec(open('make-ask.py', encoding='utf-8').read())   # Ask Mark, the workflow pages, tools/*.js, lambda/quotabird-catalog.mjs
-PAGES = ['index.html', 'tools/index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY)] \
+PAGES = ['index.html', 'tools/index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP,)] \
         + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html', 'work-with-mark/index.html', 'federal/index.html'] + ASK_PAGES + ['404.html']
 for _p in PAGES:
     chrome(_p)
@@ -3636,41 +3158,34 @@ for _p in PAGES:
 # Both are generated from the same tool list as the site, so they cannot drift.
 # llms.txt follows llmstxt.org (H1, blockquote summary, H2 sections of "- [name](url): description").
 # ai-catalog.json follows the ARD ai-catalog schema 1.0 (ards-project/ard-spec); each tool is a text/html entry.
-DESC = {'/pipeline/': 'Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need.',
-        '/deal/': 'Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal.'}
-for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
+DESC = {'/pipeline/': 'Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. Then five questions on the shape: spread, motion, next steps, timing, creation.',
+        '/deal/': 'Deal Check: five questions (customer, money, power, path, now) that separate proof from hopium in a federal deal, then whether you know the account and why they would pick you.'}
+for t in (REP,): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
 for c in CALCS: DESC['/' + c['slug'] + '/'] = c['name'] + ': ' + c['desc']
 for w in WORKFLOWS: DESC[w['url']] = w['name'] + ': ' + w['desc']
 DESC['/ask-mark/'] = 'Ask Mark: the AI version of Mark Flournoy answers sales questions, mostly federal cloud and SaaS: deals, partners, vehicles, quota, comp, your boss. Blunt and useful, and it says it is AI.'
 QUERIES = {'/federal-readiness/': ['is my company ready to sell to the federal government', 'federal go-to-market readiness', 'do I need a prime contractor', 'how do federal agencies buy software', 'federal sales readiness checklist'],
            '/offer/': ['is this sales job offer worth it', 'should I take the sales job offer', 'current job vs new offer calculator', 'sales offer OTE vs realistic earnings', 'sales job offer ramp guarantee', 'year one pay cut changing sales jobs'],
-           '/pay/': ['how much will my sales comp plan pay at 150% of quota', 'sales accelerator calculator', 'does my commission cap limit my upside', 'what does OTE really pay', 'comp plan payout curve'],
-           '/comp-plan/': ['comp plan red flags', 'is my sales commission plan fair', 'questions to ask about a sales comp plan', 'commission clawback rules', 'who gets credit on a split deal'],
+           '/pay/': ['how much will my sales comp plan pay at 150% of quota', 'sales accelerator calculator', 'does my commission cap limit my upside', 'what does OTE really pay', 'comp plan payout curve', 'comp plan red flags', 'is my sales commission plan fair', 'questions to ask about a sales comp plan', 'commission clawback rules', 'who gets credit on a split deal'],
            '/commit/': ['will my customer burn their cloud commit', 'committed spend vs actual consumption', 'EDP commit burn down calculator', 'customer is behind on their committed spend', 'how much monthly spend to use a cloud commitment'],
-           '/quota-case/': ['how to push back on a quota that is too high', 'is my sales quota realistic compared to last year', 'find the gap between last year and this year\'s quota', 'my quota went up and my territory did not'],
-           '/pipeline/': ['do I have enough pipeline to make my number', 'pipeline coverage calculator with my win rate', 'is 3X pipeline coverage enough'],
-           '/deal/': ['is my deal real or hopium', 'qualify a federal sales deal before commit', 'what will my manager ask about this deal'],
+           '/quota-case/': ['how to push back on a quota that is too high', 'is my sales quota realistic compared to last year', "find the gap between last year and this year's quota", 'my quota went up and my territory did not', 'can my territory make the number', 'is my sales territory viable', 'new territory sizing check'],
+           '/pipeline/': ['do I have enough pipeline to make my number', 'pipeline coverage calculator with my win rate', 'is 3X pipeline coverage enough', 'how fragile is my pipeline', 'pipeline concentration and aging risk', '4X coverage but still at risk'],
+           '/deal/': ['is my deal real or hopium', 'qualify a federal sales deal before commit', 'what will my manager ask about this deal', 'do I know the account or just my contact', 'am I single-threaded in this account', 'federal account check', 'why would they pick us over doing nothing', 'am I beating the incumbent', 'competitive position check for a deal'],
            '/quota/': ['is my quota crazy', 'quota to OTE ratio for cloud sales', 'is my sales quota fair'],
-           '/territory/': ['can my territory make the number', 'is my sales territory viable', 'new territory sizing check'],
            '/discount/': ['what does a discount cost me in commission', 'should I give a 15 percent discount', 'discount impact on margin and commission'],
            '/commission/': ['how much of my commission do I take home', 'commission take home after taxes', 'commission check calculator'],
-           '/rep/': ['is it the rep or the territory', 'why is my sales rep underperforming', 'rep problem or territory problem'],
+           '/rep/': ['is it the rep or the territory', 'why is my sales rep underperforming', 'rep problem or territory problem', 'prepare for OLR calibration', 'will my case for a rep survive talent review', 'Amazon OLR prep for managers'],
            '/partner/': ['is this partner real or a logo', 'is my channel partner actually selling', 'partner check for co-sell'],
-           '/olr/': ['prepare for OLR calibration', 'will my case for a rep survive talent review', 'Amazon OLR prep for managers'],
-           '/brief/': ['will my QBR survive the room', 'pressure test my brief before the meeting', 'what question am I hoping nobody asks'],
-           '/account/': ['do I know the account or just my contact', 'am I single-threaded in this account', 'federal account check'],
-           '/risk/': ['how fragile is my pipeline', 'pipeline concentration and aging risk', '4X coverage but still at risk'],
-           '/meeting-prep/': ['prepare for an important customer meeting', 'questions to ask a CIO in a sales meeting', 'what objections to expect in a customer meeting', 'how to brief a general officer or SES', 'meeting prep for enterprise sales'],
+           '/meeting-prep/': ['prepare for an important customer meeting', 'questions to ask a CIO in a sales meeting', 'what objections to expect in a customer meeting', 'how to brief a general officer or SES', 'meeting prep for enterprise sales', 'will my QBR survive the room', 'pressure test my brief before the meeting', 'what question am I hoping nobody asks'],
            '/account-plan/': ['how to write a sales account plan', 'account plan template with pipeline coverage', 'federal account plan by fiscal quarter', 'strategic account plan for a quota carrier'],
-           '/update-upward/': ['how to tell my boss I will miss my number', 'weekly sales update template for my manager', 'what to say on a forecast call', 'monthly business review for sales'],
-           '/competition/': ['why would they pick us over doing nothing', 'am I beating the incumbent', 'competitive position check for a deal']}
+           '/update-upward/': ['how to tell my boss I will miss my number', 'weekly sales update template for my manager', 'what to say on a forecast call', 'monthly business review for sales'],}
 groups, last = [], None
 for g, h, n, d in TOOLS:
     if g != last: groups.append([g, []]); last = g
     groups[-1][1].append((h, n, d))
 site = 'https://quotabird.com'
 lines = ['# QuotaBird', '', '> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. ' + f'{len([1 for g, h, n, d in TOOLS])} one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.', '',
-         'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor\'s own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Four pages are the exception: Ask Mark (' + site + '/ask-mark/), Meeting Prep, Account Plan and Update Upward send what the visitor types to Google Gemini through QuotaBird\'s own server, which stores nothing; the AI writes coaching advice and points to the calculators, which still run in the browser. Privacy: https://quotabird.com/privacy/', '']
+         'The tools are plain web pages. Each takes a few numbers or asks five questions (yes / sort of / no), then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor\'s own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. The AI pages are the exception: Ask Mark (' + site + '/ask-mark/) and the chat on the home page, Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check send what the visitor types to Google Gemini through QuotaBird\'s own server, which stores nothing; the AI writes coaching advice and points to the calculators, which still run in the browser. Privacy: https://quotabird.com/privacy/', '']
 for g, items in groups:
     lines.append(f'## {g}'); lines.append('')
     for h, n, d in items:

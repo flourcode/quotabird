@@ -89,7 +89,7 @@ def shelf():
         sub = bk.select_one('.bk-sub')
         if sub: add(1, 'Home', f'Book cover: {lab}, small print', sub.get_text(' '), 90)
 
-TOOLS_Q = ['deal', 'account', 'competition', 'territory', 'risk', 'rep', 'partner', 'olr', 'brief']
+TOOLS_Q = ['deal', 'rep']   # Nov 11: the other question checks were folded into host pages
 TOOLS_C = ['pipeline', 'quota', 'discount', 'commission']
 NAMES = {'olr': 'Talent Review', 'deal': 'Deal Check', 'account': 'Account Check', 'competition': 'Competition Check', 'territory': 'Territory Check',
          'risk': 'Risk Check', 'rep': 'Rep Check', 'partner': 'Partner Check', 'brief': 'Brief Check', 'pipeline': 'Pipeline Check',

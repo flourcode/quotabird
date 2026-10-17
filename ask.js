@@ -80,7 +80,7 @@
   /* ═════════════ Ask Mark: a conversation ═════════════ */
   function askPage() {
     const slug = String(CFG.page || 'ask').replace(/-/g, '_');
-    const WORKFLOW = ['meeting-prep', 'account-plan', 'update-upward'].includes(CFG.page);   // the pages with a job to do; home and ask-mark are the plain chat
+    const WORKFLOW = !!CFG.page && !['home', 'ask-mark'].includes(CFG.page);   // the pages with a job to do (Meeting Prep, Partner Check...); home and ask-mark are the plain chat
     const form = $('askForm'), text = $('askText'), btn = $('askBtn'), chat = $('chat'), fresh = $('askNew'), bar = $('chatBar'), examples = $('askExamples'), next = $('askNext');
     const PH_FIRST = text.getAttribute('placeholder') || 'Ask Mark anything about selling', PH_MORE = 'Ask a follow-up';
     const history = [];   // {role:'user'|'mark', text}
@@ -157,6 +157,10 @@
       next.hidden = false;
     }
     document.querySelectorAll('[data-example]').forEach(b => b.onclick = () => { text.value = b.dataset.example; fit(); track('ask_example'); form.requestSubmit(); });
+    // A starter (a [data-starter] button lower on the page, or /page/#draft=<words>): the words go in the box,
+    // ready to finish, and nothing is sent until the person sends it.
+    const draft = (t) => { text.value = t.slice(0, 2500); fit(); form.scrollIntoView({ behavior: 'smooth', block: 'center' }); text.focus({ preventScroll: true }); try { text.setSelectionRange(text.value.length, text.value.length); } catch (e) {} };
+    document.querySelectorAll('[data-starter]').forEach(b => b.onclick = () => { draft(b.dataset.starter); track('ask_starter'); });
     function startOver(why) {
       run++; archive(history.slice(), last);
       history.length = 0; last = { followups: [], tool: null }; forget();
@@ -180,8 +184,9 @@
     };
     // A tool handing over its result: /ask-mark/#ask=<the person's numbers as their first message>. The fragment
     // never reaches the server or analytics; it's dropped from the address bar as soon as it's read, and sent once.
-    let seed = '';
+    let seed = '', starter = '';
     { const m = /(?:^#|&)ask=([^&]*)/.exec(location.hash || ''); if (m) { try { seed = decodeURIComponent(m[1].replace(/\+/g, ' ')); } catch (e) {} try { window.history.replaceState(null, '', location.pathname); } catch (e) {} } }
+    { const m = /(?:^#|&)draft=([^&]*)/.exec(location.hash || ''); if (m) { try { starter = decodeURIComponent(m[1].replace(/\+/g, ' ')); } catch (e) {} try { window.history.replaceState(null, '', location.pathname); } catch (e) {} } }
     async function ask() {
       const id = ++run;
       btn.disabled = true; const wait = thinking(); reveal(wait);
@@ -240,6 +245,7 @@
     } catch (e) {}
     showPrev();
     if (seed.trim().length >= 3) { text.value = seed.slice(0, 2500); fit(); track('ask_from_tool'); form.requestSubmit(); }
+    else if (starter.trim()) { draft(starter); track('ask_from_starter'); }
   }
 
   /* ═════════════ The one-box pages ═════════════ */

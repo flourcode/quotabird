@@ -1,4 +1,4 @@
-# make-ask.py: Ask QuotaBird and the three workflow pages (Meeting Prep, Account Plan, Update Upward).
+# make-ask.py: Ask Mark and the workflow chat pages (Meeting Prep, Account Plan, Update Upward, Partner Check, Federal Readiness Check).
 # Run by make-tools.py (exec'd with its globals), never on its own.
 #
 # What it builds:
@@ -26,7 +26,7 @@ def _write_tool(slug, js):
     open(name, 'w').write(js)
     _TOOLFILES[slug] = '/' + name
 
-for _t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY):
+for _t in (REP,):
     _c = _t['config'].strip()
     assert _c.startswith('CheckTool({') and _c.endswith('});'), _t['slug']
     _write_tool(_t['slug'], "QBTools.add('check', " + _c[len('CheckTool('):])
@@ -76,7 +76,7 @@ _CAT.append(dict(slug='pipeline', name='Pipeline Check', kind='pipeline', questi
                          dict(id='closed', kind='money', label='Already closed this year', example='', optional=True),
                          dict(id='big', kind='money', label='Your biggest deal (to test a slip)', example='', optional=True),
                          dict(id='yearEnd', kind='choice', label='Your year ends', example='cy', options=[['cy', 'Dec 31'], ['fy', 'Sep 30']])]))
-for _t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY):
+for _t in (REP,):
     _CAT.append(dict(slug=_t['slug'], name=_t['name'], kind='check', question=_t['h1'], desc=_t['desc'],
                      questions=[dict(k=q['k'], n=q['n'], q=q['q']) for q in _t['questions']]))
 _dq = re.findall(r"\{ k:'(\w+)', n:'(\w+)', short:'(?:[^'\\]|\\.)*',\s*q:'((?:[^'\\]|\\.)*)', w:\d+ \}", _ds)
@@ -87,10 +87,10 @@ _CAT.append(dict(slug='deal', name='Deal Check', kind='deal', question='Is it re
 for _c in _CAT:
     _c['url'] = f'/{_c["slug"]}/'; _c['file'] = _TOOLFILES[_c['slug']]
 
-# The three workflows: no math of their own beyond what the page does in code, so no tool file.
+# The workflow pages: the chat with a job to do. No math of their own, so no tool file.
 WORKFLOWS = [
     dict(slug='meeting-prep', name='Meeting Prep', kind='workflow', question='Got a meeting that matters?',
-         desc='Prepare for one important customer meeting: the objective, what you know and do not, their likely priorities, questions to ask, objections, landmines and the next step to ask for.',
+         desc='Prepare for one important customer meeting, or an internal brief or QBR: the objective, what you know and do not, their likely priorities, questions to ask, objections, landmines and the next step to ask for.',
          fields=[dict(id='customer', label='Customer or account'), dict(id='objective', label='What you want out of the meeting'),
                  dict(id='attendees', label="Who's in the room"), dict(id='known', label='What you already know'),
                  dict(id='opportunity', label='The opportunity, if there is one'), dict(id='federal', label='Federal customer (yes or no)')]),
@@ -104,6 +104,12 @@ WORKFLOWS = [
          fields=[dict(id='type', label='Kind of update (weekly, forecast, miss, monthly)'), dict(id='target', label='Your number for the period'),
                  dict(id='closed', label='Closed so far'), dict(id='forecast', label='What you will forecast'),
                  dict(id='deals', label='Top deals'), dict(id='blockers', label="What's in the way"), dict(id='asks', label='What you need from your boss')]),
+    dict(slug='partner', name='Partner Check', kind='workflow', question='Is this partner doing anything?',
+         desc='Tell the AI version of Mark about a partner, prime, reseller or SI and get a straight read on whether it is real work or promises, tested against sourced deals, a named account, an owner who gets paid, a plan with dates and pull.',
+         fields=[dict(id='partner', label='The partner and what kind (SI, prime, reseller, cloud provider)'), dict(id='history', label="What they've actually done so far")]),
+    dict(slug='federal-readiness', name='Federal Readiness Check', kind='workflow', question='Is there a federal business here?',
+         desc='Tell the AI version of Mark what you sell and who in government wants it, and get a skeptical read on whether there is a federal business: customer, money, buying path, partners and team.',
+         fields=[dict(id='product', label='What you sell'), dict(id='customer', label='Who in government wants it, and how far you have gotten')]),
 ]
 for _w in WORKFLOWS: _w['url'] = f'/{_w["slug"]}/'
 
@@ -122,7 +128,7 @@ print('catalog', len(_CAT), 'tools +', len(WORKFLOWS), 'workflows')
 _AI_FAQ = ("Does anything I type leave my device?", "Yes. This page uses AI, unlike the tools. When you press the button, what you typed goes to Google's Gemini through QuotaBird's own server, and the answer comes back here. The server doesn't save it, and QuotaBird never sees it. Don't paste anything that isn't yours to share: nothing classified or controlled unclassified, nothing marked internal, nothing about a customer you wouldn't put in an email to a stranger.")
 _TRUST_FAQ = ("Can I trust it?", "Trust it like advice from an experienced coach who wasn't in the room. It knows how federal deals actually move, and it'll tell you what to do this week. It doesn't know your customer's org chart or this year's budget line, so check any name, vehicle or number before you repeat it to a customer.")
 _ARTI_FAQ = ("Who's answering?", "The AI version of Mark: set up to answer the way he would after twenty-plus years in federal sales. Start with the mission, follow the money and the path through primes and partners, arm your champion, deal with the blocker, do something in the next 72 hours. It's not the real Mark, and it says so. He's on the Ask Mark page, twenty minutes at a time.")
-def _ask_page(slug, name, title, desc, h1, dek, body, faq, scripts):
+def _ask_page(slug, name, title, desc, h1, dek, body, faq, scripts, bands=()):
     faq_html = ''.join(f'    <details class="exp"><summary>{q}</summary>\n      <div class="body">{a}</div></details>\n' for q, a in faq)
     faq_ld = ',\n'.join(json.dumps({"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r'<[^>]+>', '', a)}}) for q, a in faq)
     card = f'card-{slug}.jpg' if os.path.exists(f'card-{slug}.jpg') else 'card.jpg'   # its own share card when one has been made (make-card.py)
@@ -184,7 +190,7 @@ def _ask_page(slug, name, title, desc, h1, dek, body, faq, scripts):
   </div>
 </div>
 
-<section class="band" id="about"></section>
+{''.join(fold_html(b) for b in bands)}<section class="band" id="about"></section>
 
 <section class="band" id="faq" aria-labelledby="faq-h">
   <div class="band-inner">
@@ -221,7 +227,7 @@ def _box(label, ph, cta, note='Uses AI. <a href="#faq">What gets sent</a>', extr
 CAL_ASK = 'https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=ask-mark'
 def _chat(placeholder, examples, tryone='', note='AI can be wrong. <a href="/privacy/#ai">Nothing is stored on our servers.</a>', rows=2):
     """The chat: Mark's bubbles, the follow-up row, the composer, example chips, and the real-Mark card.
-    The three workflow pages use the same chat with their own placeholder and examples; the Lambda gets the page name."""
+    The workflow pages use the same chat with their own placeholder and examples; the Lambda gets the page name."""
     ex = ''.join(f'      <button class="ask-ex" type="button" data-example="{html_mod.escape(t, quote=True)}">{html_mod.escape(l)}</button>\n' for l, t in examples)
     return f'''    <div class="chat-bar" id="chatBar" hidden><span class="chat-bar-l">This conversation stays in this tab.</span><button class="btn-start" id="askNew" type="button"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Start over</button></div>
     <div class="chat" id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
@@ -245,7 +251,7 @@ def _chat(placeholder, examples, tryone='', note='AI can be wrong. <a href="/pri
 _ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minus the Wait',
     "Ask the AI version of Mark Flournoy a sales question: a stuck federal deal, a prime that won't move, a quota that landed, a comp plan, a boss who wants it in commit. Blunt, useful, and twenty minutes from the real Mark.",
     'Ask me anything about sales.',
-    "When a deal, your pipeline, or your boss goes sideways, ask the digital version of me. It'll help you figure out what to do next.",
+    "When a deal, your number, or your boss goes sideways, ask the digital version of me. It'll help you figure out what to do next.",
     _chat("What's going on?", [
       ('My boss hates me', "I think my boss hates me. Every forecast call turns into him picking apart my deals in front of everybody, and my one-on-ones are all about what I haven't done. I'm at 70% of plan. How do I turn this around?"),
       ('My customer went dark', "My customer went dark. The program manager was all in on a pilot, we sent the proposal three weeks ago, and now nothing. No reply to two emails. What do I do?"),
@@ -269,7 +275,8 @@ _ask_page('meeting-prep', 'Meeting Prep', 'Meeting Prep: Get Ready for the Meeti
       ('Prime who won\'t commit', "Meeting the capture lead at a big prime Tuesday. They keep saying meaningful workshare on an Air Force recompete but won't put a number on it. I want a number or I walk."),
       ('First meeting, cold', "First meeting with a branch chief at DHS, 30 minutes, came through a partner intro. I don't know what she cares about yet. What do I do with it?"),
       ('QBR with my VP', "QBR with my VP next week. I'm at 60% with one big deal carrying Q4. He's going to go after the forecast. How do I run this?")], rows=3),
-    [_ARTI_FAQ, _TRUST_FAQ, _AI_FAQ], _SCRIPTS)
+    [_ARTI_FAQ, ("Does it work for an internal brief or a QBR?", "Yes. Tell it what you're presenting, who's in the room and what you need them to decide, and it'll play the room: the point, the receipts, the alternative, the hole and the ask. The five questions are on this page, under <a href=\"#brief\">presenting a brief</a>. They used to be Brief Check."), _TRUST_FAQ, _AI_FAQ], _SCRIPTS,
+    bands=[FOLD_BRIEF])
 
 _ask_page('account-plan', 'Account Plan', 'Account Plan: A Plan You Can Walk Into Your Boss With',
     "Tell the AI version of Mark about the account and get a plan: the mission, the money on their fiscal year, how they buy, the people and the play for each, how you grow it, and the next 72 hours.",
@@ -297,7 +304,33 @@ _ask_page('update-upward', 'Update Upward', 'Update Upward: What Are You Telling
      _TRUST_FAQ, _AI_FAQ],
     _SCRIPTS)
 
-ASK_PAGES = ['ask-mark/index.html', 'meeting-prep/index.html', 'account-plan/index.html', 'update-upward/index.html']
+_ask_page('partner', 'Partner Check', 'Partner Check: Is This Partner Doing Anything?',
+    "Tell the AI version of Mark about a partner, prime, reseller or SI and get a straight read on whether it's real work or promises, and the one ask with a date that would prove it.",
+    'Is this partner doing anything?',
+    "Who the partner is, how long you've worked together, and what they've actually done. I'll tell you whether it's real and what I'd ask them for.",
+    _chat("The partner, how long, and what they've actually done", [
+      ('Eight months, nothing', "We've been partners with a big SI for eight months. Lots of meetings, a joint slide deck, no deals. They keep saying next quarter. Is this worth more of my time?"),
+      ("Prime won't commit", "A prime keeps promising us meaningful workshare on a recompete but won't put a number or a name on it. How do I find out if it's real?"),
+      ('Renew the reseller?', "Our reseller agreement renews next month. They registered three deals this year, but we found all three ourselves. Do I renew?"),
+      ('Cloud co-sell, nothing', "We're on the cloud marketplace and the cloud provider's partner team says they'll co-sell. Nothing has happened in six months. What do I actually ask for?")], rows=3),
+    [_ARTI_FAQ, ("Does it work for a distributor, an SI or a prime?", "Yes. The direction the paper flows doesn't matter. What matters is whether anyone on the other side is accountable for a deal with your name on it."),
+     ("What happened to the five questions?", "They're on this page, under <a href=\"#five\">what a real partner actually does</a>: sourced, accounts, owner, plan and pull. The page used to score them. Now you tell Mark what's going on, and he tests it against all five and asks the follow-up a questionnaire can't."),
+     _TRUST_FAQ, _AI_FAQ], _SCRIPTS, bands=[FOLD_PARTNER])
+
+_ask_page('federal-readiness', 'Federal Readiness Check', 'Federal Readiness Check: Is There a Federal Business Here?',
+    "Tell the AI version of Mark what you sell and who in government wants it, and get a skeptical read on whether there's a federal business: customer, money, buying path, partners and team.",
+    'Is there a federal business here?',
+    "What you sell, who in government you think wants it, and how far you've gotten. I'll ask what a federal buyer would and tell you what's missing.",
+    _chat("What you sell, who wants it, and how far you've gotten", [
+      ('Agency loved the demo', "We're a commercial SaaS company. A program office at DHS loved our demo and wants to find a way to buy it. We have no contract vehicle and no federal team. Is there a business here?"),
+      ('Board wants federal', "Our board wants a federal number next year. We have two small agency customers through a reseller and nobody who has sold to the government before. What do I tell them?"),
+      ('Do we need a prime?', "We sell a cybersecurity product. An Army unit wants it but says they can only buy through their existing contract. Do we need a prime, and how do we find one?"),
+      ('FedRAMP first?', "Should we spend the money on FedRAMP before we have a federal customer, or find the customer first?")], rows=3),
+    [_ARTI_FAQ, ("Is this legal or contracting advice?", "No. It asks what a federal buyer will ask. For contracts, compliance and authorization, talk to people who do that work for a living."),
+     ("What happened to the five questions?", "They're on this page, under <a href=\"#five\">what a federal business needs</a>: customer, money, path, partners and team. The page used to score them. Now you tell Mark where you are and he tests it against all five."),
+     _TRUST_FAQ, _AI_FAQ], _SCRIPTS, bands=[FOLD_FEDERAL])
+
+ASK_PAGES = ['ask-mark/index.html', 'meeting-prep/index.html', 'account-plan/index.html', 'update-upward/index.html', 'partner/index.html', 'federal-readiness/index.html']
 
 # ── 4. The home page: Ask Mark is the front door; the tools are behind the counter ──
 _ARROW = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
@@ -310,7 +343,7 @@ _home = _home.replace('__CHAT__', _chat("What's going on?", [
       ("My champion says it's closing. I don't believe them.", "My champion says it's closing this quarter. Procurement hasn't engaged and I don't believe them. What do I do?"),
       ('Is this quota ridiculous?', "My quota went up 30% and my territory didn't change. Is this quota ridiculous, and how do I push back without whining?"),
       ("My partner isn't doing anything.", "My partner keeps saying they'll introduce me to the account team and nothing happens. We've been partners for eight months.")]).replace('    <div class="card mark-card real-mark">', '    <div class="card mark-card real-mark" hidden>'))   # the home page's real-Mark card sits lower, by About
-_home = _home.replace('__TOOLS__', '\n'.join(_ck(x) for x in ('pipeline', 'quota', 'deal', 'pay', 'commission', 'territory')))
+_home = _home.replace('__TOOLS__', '\n'.join(_ck(x) for x in ('pipeline', 'quota', 'deal', 'pay', 'commission', 'offer')))
 _home = _home.replace('__WORK__', '\n'.join(_ck(x) for x in ('meeting-prep', 'account-plan', 'update-upward')))
 _home = re.sub(r"(window\.QB_BUILD = '[^']*';)", lambda m: m.group(1) + '\nwindow.QB_ASK = { endpoint: ' + json.dumps(ASK_ENDPOINT) + ', page: "home" };', _home, count=1)
 assert 'QB_ASK' in _home, 'home chat config'

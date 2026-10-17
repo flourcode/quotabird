@@ -6,7 +6,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from e2e import setup, BASE
 
 PAGES = ['/', '/ask-mark/', '/meeting-prep/', '/update-upward/', '/tools/', '/quota/', '/pipeline/', '/pay/',
-         '/deal/', '/rep/', '/notes/', '/notes/the-number-isnt-changing/', '/about/', '/work-with-mark/', '/kits/',
+         '/deal/', '/rep/', '/partner/', '/quota-case/', '/notes/', '/notes/the-number-isnt-changing/', '/about/', '/work-with-mark/', '/kits/',
          '/math/', '/privacy/', '/404.html']
 
 AUDIT = r"""
