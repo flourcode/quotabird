@@ -211,7 +211,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="site.23abf8d1.css">
+<link rel="stylesheet" href="site.22765c75.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -249,7 +249,7 @@
       </div>
       <p class="hc-note" id="hcNote">Example numbers. Type yours over them.</p>
       <a class="btn btn-primary btn-lg btn-full" id="hcGo" href="/quota/">See the whole plan</a>
-      <p class="hc-ask"><a href="/ask-mark/">Stuck on a deal? Ask Mark →</a></p>
+      <p class="hc-ask"><a href="/ask-mark/" id="hcAsk">Stuck on a deal? Ask Mark →</a></p>
     </div>
     <script>
     (function () {
@@ -260,7 +260,7 @@
       function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
       function render() {
         var q = money($('hcQuota').value), ote = money($('hcBase').value) + money($('hcVar').value), b = B[basis], c = b.cuts;
-        if (!(q > 0 && ote > 0)) { $('hcNum').textContent = '?'; $('hcLabel').textContent = 'Add your numbers'; $('hcLine').textContent = 'Quota, base and variable.'; $('hcOut').className = 'hc-out proof'; return; }
+        if (!(q > 0 && ote > 0)) { $('hcNum').textContent = '?'; $('hcLabel').textContent = 'Add your numbers'; $('hcLine').textContent = 'Quota, base and variable.'; $('hcOut').className = 'hc-out proof'; $('hcAsk').href = '/ask-mark/'; $('hcAsk').textContent = 'Stuck on a deal? Ask Mark →'; return; }
         var m = q / ote, X = (m >= 10 ? Math.round(m) : m.toFixed(1)) + '×', std = c[1] + ' to ' + c[2], t;
         if (m < c[0]) t = ["It's unusually low.", 'proof', 'Unusually low for ' + b.name + '. Read the plan twice.'];
         else if (m < c[1]) t = ["No. It's favorable.", 'ready', 'Below QuotaBird\'s working range of ' + std + ' for ' + b.name + '.'];
@@ -272,6 +272,12 @@
         var p = new URLSearchParams(); p.set('basis', basis);
         [['quota', 'hcQuota'], ['base', 'hcBase'], ['variable', 'hcVar']].forEach(function (f) { if (money($(f[1]).value) > 0) p.set(f[0], Math.round(money($(f[1]).value))); });   // all three, exactly as shown
         $('hcGo').href = '/quota/' + (Object.keys(touched).length || basis !== 'cloud' ? '#' + p.toString() : '');
+        // once the numbers are theirs, the Ask Mark line hands them to the chat (in the fragment, which never reaches a server)
+        var ask = $('hcAsk');
+        if (Object.keys(touched).length) {
+          var seed = 'I just ran your quota check on the home page. Quota ' + fmt(q) + ' on ' + fmt(ote) + ' OTE, measured in ' + b.name + '. That is ' + X + ' OTE. It says: ' + t[0] + ' ' + t[2] + '\n\nWhat would you do with this?';
+          ask.href = '/ask-mark/#ask=' + encodeURIComponent(seed); ask.textContent = 'Ask Mark what to do about this →';
+        } else { ask.href = '/ask-mark/'; ask.textContent = 'Stuck on a deal? Ask Mark →'; }
       }
       ['hcQuota', 'hcBase', 'hcVar'].forEach(function (id) {
         var el = $(id);
@@ -282,6 +288,7 @@
       document.querySelectorAll('[data-hb]').forEach(function (btn) { btn.addEventListener('click', function () {
         basis = btn.getAttribute('data-hb'); document.querySelectorAll('[data-hb]').forEach(function (x) { x.classList.toggle('on', x === btn); x.setAttribute('aria-pressed', x === btn ? 'true' : 'false'); }); render(); }); });
       $('hcGo').addEventListener('click', function () { if (window.qbTrack) qbTrack('hero_calc_go'); });
+      $('hcAsk').addEventListener('click', function () { if (window.qbTrack) qbTrack(Object.keys(touched).length ? 'hero_ask_mark' : 'ask_mark_click'); });
       // the same remembered numbers every other tool uses (this browser only), so the home page and Quota Check always agree
       var STORE = 'qb-numbers', MAP = { hcQuota: 'quota', hcBase: 'base', hcVar: 'variable' };
       function loadStore() { try { return JSON.parse(localStorage.getItem(STORE) || '{}') || {}; } catch (e) { return {}; } }
@@ -405,7 +412,7 @@
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-09.0900';
+window.QB_BUILD = '2026-11-09.1400';
 // the Tools menu closes on an outside tap or Escape (the tool pages get this from their engines)
 document.addEventListener('click', (e) => { document.querySelectorAll('details.menu[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; }); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.querySelectorAll('details.menu[open]').forEach(d => { d.open = false; d.querySelector('summary').focus(); }); });

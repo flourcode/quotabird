@@ -67,6 +67,10 @@
     const started = (on) => { bar.hidden = !on; examples.hidden = on; form.classList.toggle('is-sticky', on); };
     document.querySelectorAll('[data-example]').forEach(b => b.onclick = () => { text.value = b.dataset.example; fit(); track('ask_example'); form.requestSubmit(); });
     fresh.onclick = () => { run++; history.length = 0; chat.innerHTML = ''; started(false); text.value = ''; fit(); text.focus(); track('ask_new'); };
+    // A tool handing over its result: /ask-mark/#ask=<the person's numbers as their first message>. The fragment
+    // never reaches the server or analytics; it's dropped from the address bar as soon as it's read, and sent once.
+    let seed = '';
+    { const m = /(?:^#|&)ask=([^&]*)/.exec(location.hash || ''); if (m) { try { seed = decodeURIComponent(m[1].replace(/\+/g, ' ')); } catch (e) {} try { window.history.replaceState(null, '', location.pathname); } catch (e) {} } }
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const q = text.value.trim();
@@ -88,6 +92,7 @@
       reveal(el); text.focus({ preventScroll: true });
       track('ask_done');
     });
+    if (seed.trim().length >= 3) { text.value = seed.slice(0, 2500); fit(); track('ask_from_tool'); form.requestSubmit(); }
   }
 
   /* ═════════════ The one-box pages ═════════════ */

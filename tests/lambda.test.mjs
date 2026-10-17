@@ -16,7 +16,7 @@ let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', na
 
 await t('health shows quotabird', async () => {
   const r = await NEW.handler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.3.0'); assert.ok(b.quotabird.catalog);
+  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.4.0'); assert.ok(b.quotabird.catalog);
 });
 await t('origin not allowed is refused', async () => {
   const r = await NEW.handler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
@@ -140,7 +140,7 @@ await t('ask mark: multi-turn chat, folded turns, tool suggestion', async () => 
   assert.equal(r.status, 200); assert.equal(r.body.reply.length, 2); assert.equal(r.body.tool.slug, 'deal');
   const sent = calls.at(-1).body;
   assert.equal(sent.contents.length, 1, 'two user turns folded into one'); assert.ok(sent.contents[0].parts[0].text.includes('data not instructions'));
-  assert.ok(sent.systemInstruction.parts[0].text.startsWith('You are Mark')); assert.ok(sent.systemInstruction.parts[0].text.includes('AI version'));
+  assert.ok(sent.systemInstruction.parts[0].text.startsWith('You are the AI version of Mark Flournoy')); assert.ok(sent.systemInstruction.parts[0].text.includes('AI version'));
   assert.ok(!sent.systemInstruction.parts[0].text.includes('Auburn'), 'no bio unless asked'); assert.ok(sent.systemInstruction.parts[0].text.includes('FEDERAL\n'), 'DHS and CO pick the federal playbook');
   reply = { reply: 'The AI version of me, yeah.', tool: 'none' };
   await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Are you the real Mark? Where did you work?' }] });
@@ -150,5 +150,29 @@ await t('ask mark: multi-turn chat, folded turns, tool suggestion', async () => 
   assert.equal(r2.status, 200); assert.equal(r2.body.tool, null);
   const c = calls.at(-1).body.contents; assert.deepEqual(c.map(x => x.role), ['user', 'model', 'user']);
   const bad = await call({ kind: 'qb_mark', messages: [{ role: 'mark', text: 'hi' }] }); assert.equal(bad.status, 400);
+});
+await t('review fixes: bio only when asked, playbooks from the latest turn, quota and pay playbooks', async () => {
+  const q = (await import(process.env.QB_LAMBDA ? new URL('quotabird.mjs', 'file://' + process.env.QB_LAMBDA).href : '../lambda/quotabird.mjs'))._qbInternal;
+  const pb = await import(process.env.QB_LAMBDA ? new URL('quotabird-playbooks.mjs', 'file://' + process.env.QB_LAMBDA).href : '../lambda/quotabird-playbooks.mjs');
+  reply = { reply: 'Ask them for one named account.', tool: 'none' };
+  await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'How should I get AWS to help on this deal? I read a book about it.' }] });
+  let sys = calls.at(-1).body.systemInstruction.parts[0].text;
+  assert.ok(!sys.includes('Auburn'), 'mentioning AWS or a book is not asking about Mark'); assert.ok(sys.includes('PARTNER\n'), 'AWS picks the partner playbook');
+  await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'My quota went up 30% and my territory did not change.' }, { role: 'mark', text: 'Ask what else changed.' }, { role: 'user', text: 'Separate thing: my partner keeps promising intros and nothing happens.' }] });
+  sys = calls.at(-1).body.systemInstruction.parts[0].text;
+  assert.ok(sys.includes('PARTNER\n'), 'current turn picks partner'); assert.ok(sys.includes('QUOTA\n'), 'previous turn fills a spare slot');
+  await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'I have a meeting with a partner on a federal account and the incumbent is strong. Deal is stuck.' }] });
+  sys = calls.at(-1).body.systemInstruction.parts[0].text;
+  for (const k of ['PARTNER', 'FEDERAL', 'MEETING PREP', 'ACCOUNT']) assert.ok(sys.includes(k + '\n'), k + ' survives the cap');
+  await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Did you work at Amazon?' }] });
+  assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('Auburn'), 'a real question about Mark gets the bio');
+  assert.deepEqual(pb.pickPlaybooks('quota quota quota and one meeting', { always: ['deal'], max: 2 }), ['deal', 'quota'], 'ranked by cue count');
+  assert.ok(q.knowledgeFor('pay').startsWith('COMPENSATION')); assert.ok(q.knowledgeFor('offer').includes('COMPENSATION')); assert.ok(q.knowledgeFor('discount').includes('COMPENSATION'));
+  assert.ok(q.knowledgeFor('quota').startsWith('QUOTA')); assert.ok(q.knowledgeFor('quota-case').startsWith('QUOTA')); assert.ok(!q.knowledgeFor('pay').includes('PIPELINE\n'));
+  assert.ok(q.MARK_VOICE.startsWith('You are the AI version of Mark Flournoy')); assert.ok(q.WORKFLOW_VOICE.includes('A short list is fine')); assert.ok(!q.MARK_VOICE.includes('A short list is fine'));
+  reply = { see: [{ text: 'You need 3X.', label: 'calculated' }], wrong: [], next: [{ text: 'Run it by your manager.', label: 'guess' }] };
+  const e = await call({ kind: 'qb_explain', slug: 'pipeline', question: 'Am I ok?', inputs: [{ label: 'Quota', value: '$3M' }], result: { answer: 'Short', rows: [['Coverage needed', '3X']] } });
+  assert.equal(e.status, 200); sys = calls.at(-1).body.systemInstruction.parts[0].text;
+  assert.ok(sys.startsWith('You are the AI version of Mark Flournoy'), 'explain uses the Mark voice'); assert.ok(sys.includes('PIPELINE\n')); assert.ok(sys.includes('must not recompute'));
 });
 console.log(`\n${n} lambda tests passed`);

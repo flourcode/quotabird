@@ -46,7 +46,7 @@ for (const slug of ['rep', 'partner', 'territory', 'olr', 'brief', 'account', 'r
 let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
 const pickv = (f) => { const r = rnd(); if (f.kind === 'choice') return f.options[Math.floor(rnd() * f.options.length)][0];
   if (r < .08) return 0; if (f.kind === 'money') return Math.round(10 ** (3 + rnd() * 5)); if (f.kind === 'pct' || f.kind === 'pctx') return Math.round(rnd() * 100) / 100; return Math.floor(rnd() * 60); };
-const calcs = JSON.parse(fs.readFileSync(NEW + '/ask-quotabird/index.html', 'utf8').match(/<script type="application\/json" id="qbCatalog">(.*?)<\/script>/s)[1]);
+const calcs = (await import(NEW + '/lambda/quotabird-catalog.mjs')).CATALOG;   // the same catalog the Lambda ships
 for (const e of calcs.filter(c => c.kind === 'calc')) {
   const cNew = loadToolFile(e.slug), cOld = oldInline(e.slug, 'CalcTool');
   for (let n = 0; n < 400; n++) {

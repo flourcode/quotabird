@@ -171,6 +171,38 @@ Why you and not them is a question the customer answers, not the seller. If the 
 Being behind: find out what the decision is really about and whether it's already made. If the evaluation criteria were written for the incumbent, the deal is a reference, not an opportunity. Don't spend a quarter on it.
 
 Competing on price alone is a sign the customer never heard a reason to choose you. A discount is a purchase; the question is what you got for it.`,
+
+  quota: `QUOTA
+
+Start with what the number is actually measured on. Bookings, consumption growth and a whole book are different animals, and the right argument depends on which one it is.
+
+A quota is defensible when the territory, installed base, pipeline, headcount and growth assumptions can plausibly produce it. When they can't, somebody made it in a spreadsheet.
+
+When a seller wants to push back, don't argue fairness. Bring last year's clean number with the one-time deals taken out, the current run rate, qualified pipeline at the real win rate, what changed in the territory, and ramped headcount if there's a team. Then ask one question: what assumption am I missing?
+
+If management has a legitimate assumption you didn't have, fine. If not, you've made the case.
+
+Make the argument once, early and with numbers, in writing. Then either escalate it or build the plan. Spending six months being right about a bad quota doesn't help you make it.
+
+A quota that went up and a territory that didn't change: ask what else changed. New product, new partner help, a renewal nobody mentioned. If nothing, say so with the math.
+
+The arithmetic belongs to Quota Check and Quota Case, not to you. Point there.`,
+
+  pay: `COMPENSATION
+
+Start with what the plan actually pays at realistic attainment, not the OTE printed on the offer. OTE is a story about 100 percent; most sellers don't live there.
+
+Read the crediting rules first: who gets credit for a renewal, an expansion, a partner-sourced deal, a multi-year. Then thresholds, accelerators, caps, splits, clawbacks, payout timing, and whether the company can change the plan after the year starts.
+
+An accelerator only matters if you can realistically reach it. A cap tells you exactly how much upside the company is willing to share. Credit moved to somebody else is a pay cut with a new name.
+
+For two offers, compare year one including ramp, guarantees and draw, then compare a normal year at a realistic attainment for each territory. The bigger OTE loses more often than people expect.
+
+A discount isn't free. It usually costs company margin and seller commission. The question is what you got in return, and whether you'd have won without it.
+
+No tax or legal advice. Tell them what to verify with payroll, HR or a tax professional, and to get the plan document in writing before they sign anything.
+
+The arithmetic belongs to Pay Check, Offer Check, Comp Plan Check, Commission Check and Discount Check. Point there.`,
 };
 
 // Which playbooks a question probably needs, by words in it. Cheap on purpose; the chat gets the matches
@@ -179,21 +211,27 @@ const CUES = {
   deal: /\b(deal|commit|close|closing|champion|stalled|stuck|propos|poc|pilot|evaluation|decision|sign)/i,
   meeting: /\b(meeting|meet|call with|qbr|brief|deck|presentation|demo|room|agenda|exec)/i,
   account: /\b(account|customer|single.?thread|incumbent|whitespace|renewal|relationship)/i,
-  pipeline: /\b(pipeline|coverage|forecast|3x|win rate|quota|number|burn|consumption|commit|gap|quarter|target)/i,
+  pipeline: /\b(pipeline|coverage|forecast|3x|win rate|number|burn|consumption|commit|gap|quarter|target)/i,
   federal: /\b(federal|agency|government|gov\b|dod|army|navy|air force|marine|dha|va\b|dhs|hhs|faa|dot\b|treasury|irs|nasa|disa|contracting|co\b|cor\b|vehicle|sewp|gsa|idiq|bpa|fedramp|il[2456]\b|appropriat|continuing resolution|sept(ember)? 30|fiscal|prime|integrator|8\(a\)|set.?aside|sam\.gov|usaspending|rfp|rfi|recompete)/i,
   partner: /\b(partner|prime|reseller|distributor|carahsoft|var\b|isv|co.?sell|marketplace|teaming|sub\b|subcontract|workshare|channel|alliance|aws|amazon|azure|google cloud|gcp)/i,
   update: /\b(boss|manager wants|vp wants|my vp|update|forecast call|miss|missing the number|monthly review|mbr|tell my|report)/i,
-  manager: /\b(my rep|my team|reps?\b|manage|managing|coach|talent review|calibration|olr|performance|one.on.one|hand(ing)? down)/i,
+  manager: /\b(my reps?\b|my team|my sellers|i manage|as a (sales )?manager|new (sales )?manager|first.line|managing (a|my|the) team|my (direct|report)s?\b|coach(ing)? (my|a|the) (rep|team|seller)|talent review|calibration|olr|performance (review|plan|improvement)|pip\b|one.on.one|hand(ing)? (it |the number |quota )?down|underperform|low performer|top performer)/i,
   territory: /\b(territory|patch|accounts? list|installed base|new rep|ramp)/i,
   competition: /\b(compet|incumbent|rival|versus|vs\.?|instead of us|they prefer|evaluation criteria|price war|discount)/i,
+  quota: /\b(quota|my number|number went up|number is|attainment|plan is|assigned|unreasonable|fair number|make the number|against plan|% of plan|percent of plan)/i,
+  pay: /\b(comp\b|comp plan|compensation|commission|ote\b|on.target|accelerator|decelerator|clawback|payout|crediting|credit for|cap(ped)? at|base salary|salary|offer|offers|draw\b|guarantee|spiff|discount|margin|paid on|get paid|pay me|my pay)/i,
 };
 
-export function pickPlaybooks(text, { always = [], federal = null, max = 4 } = {}) {
+// Hits are ranked by how many cue words matched, so the subject the person said the most about
+// survives the cap. The cap is five; the playbooks are short enough that the extra one is cheap.
+export function pickPlaybooks(text, { always = [], federal = null, max = 5 } = {}) {
   const t = String(text || "");
-  const hits = Object.keys(PLAYBOOKS).filter((k) => CUES[k] && CUES[k].test(t));
-  const keys = [...new Set([...always, ...hits])];
-  if (federal === false) return keys.filter((k) => k !== "federal").slice(0, max);
-  if (federal === true && !keys.includes("federal")) keys.push("federal");
+  const count = (re) => (t.match(new RegExp(re.source, "gi")) || []).length;
+  const hits = Object.keys(PLAYBOOKS).map((k) => [k, CUES[k] ? count(CUES[k]) : 0]).filter(([, n]) => n > 0)
+    .sort((a, b) => b[1] - a[1]).map(([k]) => k);
+  let keys = [...new Set([...always, ...hits])];
+  if (federal === false) keys = keys.filter((k) => k !== "federal");
+  if (federal === true) keys = [...new Set([...always, "federal", ...keys])];
   return keys.slice(0, max);
 }
 

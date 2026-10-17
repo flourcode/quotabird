@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-09.0900'
+BUILD = '2026-11-09.1400'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -2934,7 +2934,7 @@ print('seller kit', len(_seller), '| kits index', len(_kits))
 
 # ────────────────────────────── /ask/ now redirects to Work with Mark (Nov 6) ───────────────────────
 os.makedirs('ask', exist_ok=True)
-open('ask/index.html', 'w').write('<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8"><title>Work with Mark | QuotaBird</title>\n<meta name="robots" content="noindex"><link rel="canonical" href="https://quotabird.com/work-with-mark/">\n<meta http-equiv="refresh" content="0; url=/work-with-mark/#ask"></head>\n<body><p><a href="/work-with-mark/#ask">Working with Mark, and the free twenty minutes, are here.</a></p></body></html>\n')
+open('ask/index.html', 'w').write('<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8"><title>Ask Mark | QuotaBird</title>\n<meta name="robots" content="noindex"><link rel="canonical" href="https://quotabird.com/ask-mark/">\n<meta http-equiv="refresh" content="0; url=/ask-mark/"></head>\n<body><p><a href="/ask-mark/">Ask Mark is here.</a></p></body></html>\n')
 
 # ────────────────────────────── HOW QUOTAS GET BUILT (/how-quotas-get-built/) ──────────────────────────────
 _how = note_head('How Quotas Usually Get Built', "Where your sales quota probably came from: last year plus a growth rate, the corporate plan, headcount, territory, overlays. And why your boss may not even be goaled on your number.", 'https://quotabird.com/how-quotas-get-built/') + '''</head>

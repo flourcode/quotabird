@@ -51,6 +51,7 @@
     if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
     return Promise.reject(new Error('no clipboard'));
   }
+  const askLink = (seed) => '/ask-mark/#ask=' + encodeURIComponent(String(seed || '').slice(0, 2400));
   function shareOut(btn, block, title) {
     const lines = block.split('\n'), url = lines[lines.length - 1], text = lines.slice(0, -1).join('\n').trim();
     const touch = window.matchMedia && matchMedia('(pointer: coarse)').matches;
@@ -84,6 +85,15 @@
     }
     const shareLink = () => (location.origin && location.origin !== 'null' ? location.origin + location.pathname : cfg.url) + '#' + encode();
     const shareBlock = (s) => `${cfg.name} · ${answerOf(s)}\n${s.attack}\n` + s.rows.map(r => `${r[0]}: ${r[1]}`).join('\n') + '\n' + shareLink();
+    // The hand-off to Ask Mark: the result as the person's own first message, in the page's words and numbers.
+    // It travels in the URL fragment, which never reaches the server or analytics, and the chat drops it on arrival.
+    const fieldLabel = (f) => { const tf = f.kind !== 'choice' && $(f.id) ? $(f.id).closest('.tf') : null; const l = f.kind === 'choice' ? $('lbl-' + f.id) : tf && tf.querySelector('.tf-label'); return ((l && l.textContent) || f.id).trim(); };
+    const fieldValue = (f) => { if (f.kind === 'choice') { const b = document.querySelector(`[data-choice="${f.id}"].on`); return b ? b.textContent.trim() : ''; } const el = $(f.id); return el ? el.value.trim() : ''; };
+    const sent = (t) => { t = String(t || '').trim(); return !t ? '' : /[.!?]$/.test(t) ? t : t + '.'; };
+    const askSeed = (s) => [`I just ran your ${cfg.name}. It says: ` + [answerOf(s), s.attack, s.sub].map(sent).filter(Boolean).join(' '),
+      'What I put in:\n' + F.map(f => [fieldLabel(f), fieldValue(f)]).filter(p => p[1]).map(p => `${p[0]}: ${p[1]}`).join('\n'),
+      s.rows.length ? 'What it worked out:\n' + s.rows.map(r => `${r[0]}: ${r[1]}`).join('\n') : '',
+      'What would you do with this?'].filter(Boolean).join('\n\n');
     function render() {
       const s = cfg.compute(read()); lastS = s; const out = $('out');
       const sameVerdict = !!(s && prevLabel && prevLabel === s.label); prevLabel = s ? s.label : null;
@@ -105,9 +115,11 @@
 <div class="card mark-card" style="margin-top:20px;">
       <h3>${esc(cfg.mark.title(s))}</h3>
       <p>${esc(cfg.mark.body)}</p>
-      <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_score&a1=${encodeURIComponent(cfg.bookNote(s))}" target="_blank" rel="noopener" style="margin-top:14px;">Grab 20 minutes</a>
+      <a class="btn btn-primary btn-lg btn-full" id="askMarkBtn" href="${askLink(askSeed(s))}" style="margin-top:14px;">Ask Mark what to do about this</a>
+      <p class="fine ask-fine">The AI version of me, with these numbers already in the chat. Nothing you type is stored.</p>
+      <a class="btn btn-tonal btn-full" id="bookBtn" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_score&a1=${encodeURIComponent(cfg.bookNote(s))}" target="_blank" rel="noopener">Grab 20 minutes with the real Mark</a>
       <p class="dm-alt"><button class="linkbtn" id="dmBtn" type="button">or message me on LinkedIn</button></p>
-      <p class="fine" style="text-align:center;margin:8px 0 0;">It's free, and if I can't help, I'll say so. The LinkedIn link copies a short note you can paste.</p>
+      <p class="fine" style="text-align:center;margin:8px 0 0;">Also free, and if I can't help, I'll say so. The LinkedIn link copies a short note you can paste.</p>
       ${(() => { const o = cfg.offer && cfg.offer(s); return o ? `<p class="offer-line">${esc(o.text)} <a href="${o.href}">${esc(o.label)} →</a></p>` : ''; })()}
     </div>
         ${h ? `<div class="card card-accent"><span class="overline">${esc(h.overline)}</span><p class="lede">${esc(h.text)}</p><a class="btn btn-tonal btn-full" href="${h.href}" style="margin-top:14px;">${esc(h.label)}</a></div>` : ''}
@@ -115,6 +127,7 @@
     `;
       $('copy').onclick = (e) => { track(cfg.slug + '_share'); try { history.replaceState(null, '', '#' + encode()); } catch {} shareOut(e.currentTarget, shareBlock(s), cfg.name); };
       { const bk = document.getElementById('bookBtn'); if (bk) bk.addEventListener('click', () => track(cfg.slug + '_book')); }
+      { const am = document.getElementById('askMarkBtn'); if (am) am.addEventListener('click', () => track(cfg.slug + '_ask_mark')); }
   $('dmBtn').onclick = (e) => { const btn = e.currentTarget; track(cfg.slug + '_dm_copy'); copyText(cfg.dm(s)).then(() => { btn.textContent = 'Copied ✓'; window.open('https://www.linkedin.com/in/markflournoy/', '_blank', 'noopener'); }).catch(() => { btn.textContent = "Couldn't copy"; }); };
       strip(s);
     }

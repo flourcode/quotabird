@@ -6,7 +6,8 @@ CALCS={'quota-case':'basis=saas&lastyear=8000000&runrate=9000000&pipeline=600000
  'commit':'commit=3000000&term=36&elapsed=14&used=900000&monthly=70000',
  'quota':None,'discount':None,'pay':None,'offer':None,'commission':None}
 async def text(page, sel):
-    return await page.evaluate(f"(()=>{{const e=document.querySelector('{sel}');return e?e.innerText:''}})()")
+    # the math and the verdict copy, not the Mark card (its copy changes on purpose, the numbers never do)
+    return await page.evaluate(f"(()=>{{const e=document.querySelector('{sel}');if(!e)return '';const c=e.cloneNode(true);c.querySelectorAll('.mark-card').forEach(x=>x.remove());document.body.appendChild(c);const t=c.innerText;c.remove();return t}})()")
 async def main():
     async with async_playwright() as p:
         b=await p.chromium.launch()

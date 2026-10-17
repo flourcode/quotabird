@@ -39,4 +39,4 @@ async def run(vw, vh, tag):
         await b.close()
 async def main():
     await run(390, 844, 'phone'); await run(1280, 900, 'desk'); print('ERRORS', errors)
-asyncio.run(main())
+if __name__ == "__main__": asyncio.run(main())

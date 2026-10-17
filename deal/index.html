@@ -117,7 +117,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.23abf8d1.css">
+<link rel="stylesheet" href="../site.22765c75.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -324,6 +324,16 @@ function bookLink(medium, note) {
 }
 const ANSWER = {"HEALTHY": "It's real.", "AT RISK": "Real, but at risk.", "HOPIUM": "Hopium.", "NOT A DEAL YET": "Not a deal yet."};   // the verdict, worded as an answer to "Is it real, or is it hopium?"
 function bookNote(s) { return `Deal Check: ${s.label.toLowerCase()}, ${s.provenText}, weakest ${s.weak.n.toLowerCase()}.`; }
+// The hand-off to Ask Mark: the verdict and the five answers as the person's own first message. It travels in the
+// URL fragment, which never reaches the server or analytics, and the chat drops it on arrival.
+const askLink = (seed) => '/ask-mark/#ask=' + encodeURIComponent(String(seed || '').slice(0, 2400));
+function askSeed(s) {
+  const word = { yes: 'Yes', sort: 'Sort of', no: 'No' };
+  return [`I just ran your Deal Check. It says: ${ANSWER[s.label] || s.label} ${s.provenText}, weakest is ${s.weak.n.toLowerCase()}. ${s.attack || ''}`.trim(),
+    'My answers:\n' + P.map(p => `${p.short} ${word[answers[p.k]] || ''}`).join('\n'),
+    s.moves && s.moves[0] ? `The page says to do this first: ${s.moves[0]}` : '',
+    'What would you do with this?'].filter(Boolean).join('\n\n');
+}
 function dmText(s) {
   const w = s.weak.n;
   const v = s.label[0] + s.label.slice(1).toLowerCase();
@@ -663,12 +673,15 @@ function mountMark(text) {
   w.innerHTML = `
     <h3>Stuck on ${esc(s.weak.n.toLowerCase())}?</h3>
     <p>I'm Mark. I've been the seller defending the deal, and later the manager poking holes in it. Tell me about yours.</p>
-    <a class="btn btn-primary btn-lg btn-full" id="bookBtn" href="${bookLink('result', bookNote(s))}" target="_blank" rel="noopener" style="margin-top:14px;">Grab 20 minutes</a>
+    <a class="btn btn-primary btn-lg btn-full" id="askMarkBtn" href="${askLink(askSeed(s))}" style="margin-top:14px;">Ask Mark what to do about this</a>
+    <p class="fine ask-fine">The AI version of me, with your answers already in the chat. Nothing you type is stored.</p>
+    <a class="btn btn-tonal btn-full" id="bookBtn" href="${bookLink('result', bookNote(s))}" target="_blank" rel="noopener">Grab 20 minutes with the real Mark</a>
     <p class="dm-alt"><button class="linkbtn" id="dmBtn" type="button">or message me on LinkedIn</button></p>
-    <p class="fine" style="text-align:center;margin:8px 0 0;">It\'s free, and if I can\'t help, I\'ll say so. The LinkedIn link copies a short note you can paste.</p>`;
+    <p class="fine" style="text-align:center;margin:8px 0 0;">Also free, and if I can\'t help, I\'ll say so. The LinkedIn link copies a short note you can paste.</p>`;
   const row = document.getElementById('shareRow');
   if (row) el().insertBefore(w, row); else el().appendChild(w);
   const bk = document.getElementById('bookBtn'); if (bk) bk.addEventListener('click', () => track('book'));
+  const am = document.getElementById('askMarkBtn'); if (am) am.addEventListener('click', () => track('ask_mark'));
   const btn = document.getElementById('dmBtn');
   if (btn) btn.onclick = () => copyDM(btn, dm);
 }
