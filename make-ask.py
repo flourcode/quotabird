@@ -238,8 +238,8 @@ def _chat(placeholder, examples, tryone='', note='AI, not the real Mark. Nothing
     </div>'''
 _ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minus the Wait',
     "Ask the AI version of Mark Flournoy a sales question: a stuck federal deal, a prime that won't move, a quota that landed, a comp plan, a boss who wants it in commit. Blunt, useful, and twenty minutes from the real Mark.",
-    'Ask me anything about selling.',
-    "I'm the AI version of Mark. Twenty years in the Marine Corps, fifteen in federal tech sales at Red Hat, F5 and Amazon, compressed into a chatbot. Deals, partners, quota, comp, forecasts, your boss. I won't sugarcoat it.",
+    'Ask anything about sales.',
+    "Need a second opinion on a deal, forecast, quota, comp plan, partner, or your boss? Ask my digital twin. I gave it 20 years of sales experience and told it not to sugarcoat it for you.",
     _chat("What's going on?", [
       ('My boss hates me', "I think my boss hates me. Every forecast call turns into him picking apart my deals in front of everybody, and my one-on-ones are all about what I haven't done. I'm at 70% of plan. How do I turn this around?"),
       ('My customer went dark', "My customer went dark. The program manager was all in on a pilot, we sent the proposal three weeks ago, and now nothing. No reply to two emails. What do I do?"),

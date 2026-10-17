@@ -172,6 +172,24 @@ Being behind: find out what the decision is really about and whether it's alread
 
 Competing on price alone is a sign the customer never heard a reason to choose you. A discount is a purchase; the question is what you got for it.`,
 
+  boss: `YOUR BOSS (managing up)
+
+Your boss usually isn't the enemy. Most of the time they're getting grilled by their own boss on a number they don't control either. Work out what they're being asked for, and hand them that before they ask.
+
+A boss who tears into your deals on the forecast call usually doesn't trust the forecast. Bring the ugly deals yourself, before the call, with what the customer has and hasn't done on each. Surprises are what make managers mean.
+
+One-on-ones that are all about what you haven't done: change the agenda. Walk in with your top deals, the customer's next action on each, and one ask. Ten minutes of that beats an hour of being inspected.
+
+A boss who wants a deal in commit you don't believe: don't fight about the label, fight about the evidence. Say what you'd need to see to call it commit and the date you'll know. Put that in writing.
+
+When your boss is wrong: say it once, privately, with numbers, and ask what you're missing. If they've got something you don't, fine. If not, you've made the case. Don't relitigate it in team meetings.
+
+When it's personal or political (favorites, taking credit, a territory moved out from under you): keep your numbers clean and in writing, and be honest about the options: talk it out, a skip-level, a different team, a different company. Say the trade-off of each plainly. No legal or HR advice; say who to talk to.
+
+Asking for help: one specific ask, tied to a deal, with a date. "Can you call their CIO before the 15th" gets done. "I need exec support" doesn't.
+
+Sometimes the boss is right. If the seller is describing a fair point delivered badly, say so.`,
+
   quota: `QUOTA
 
 Start with what the number is actually measured on. Bookings, consumption growth and a whole book are different animals, and the right argument depends on which one it is.
@@ -218,8 +236,9 @@ const CUES = {
   manager: /\b(my reps?\b|my team|my sellers|i manage|as a (sales )?manager|new (sales )?manager|first.line|managing (a|my|the) team|my (direct|report)s?\b|coach(ing)? (my|a|the) (rep|team|seller)|talent review|calibration|olr|performance (review|plan|improvement)|pip\b|one.on.one|hand(ing)? (it |the number |quota )?down|underperform|low performer|top performer)/i,
   territory: /\b(territory|patch|accounts? list|installed base|new rep|ramp)/i,
   competition: /\b(compet|incumbent|rival|versus|vs\.?|instead of us|they prefer|evaluation criteria|price war|discount)/i,
+  boss: /\b(boss|my manager|my vp|my director|my svp|skip.level|micromanag|hates me|one.on.ones?|in front of (everybody|everyone|the team)|takes? credit|favou?rites?|managing up|manage up|performance plan|fire me|let me go)/i,
   quota: /\b(quota|my number|number went up|number is|attainment|plan is|assigned|unreasonable|fair number|make the number|against plan|% of plan|percent of plan)/i,
-  pay: /\b(comp\b|comp plan|compensation|commission|ote\b|on.target|accelerator|decelerator|clawback|payout|crediting|credit for|cap(ped)? at|base salary|salary|offer|offers|draw\b|guarantee|spiff|discount|margin|paid on|get paid|pay me|my pay)/i,
+  pay: /\b(comp\b|comp plan|compensation|commission|ote\b|on.target|accelerator|decelerator|clawback|payout|crediting|credit (for|on) (the )?(renewals?|expansions?|partner|multi.?year)|cap(ped)? at|base salary|salary|offer|offers|draw\b|guarantee|spiff|discount|margin|paid on|get paid|pay me|my pay)/i,
 };
 
 // Hits are ranked by how many cue words matched, so the subject the person said the most about

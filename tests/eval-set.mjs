@@ -1,11 +1,11 @@
-// The QuotaBird evaluation set: fifteen realistic situations run through the real Lambda code against the
+// The QuotaBird evaluation set: eighteen realistic situations run through the real Lambda code against the
 // real Gemini API, so a before/after or a model comparison uses the same questions every time.
 //
 //   GEMINI_API_KEY=... node tests/eval-set.mjs                          # the model in GEMINI_MODEL (SideFrog's)
 //   GEMINI_API_KEY=... QB_GEMINI_MODEL=gemini-3.5-flash node tests/eval-set.mjs   # QuotaBird on a stronger model
 //   ... --out eval-flash.md                                             # write the answers to a file
 //
-// Score each answer 1 to 5 on: sounds like Mark; identifies the real issue; specific next action; avoids
+// Score each answer 1 to 5 on: sounds like Mark; doesn't sugarcoat (bad news first, no cushion, no pep talk); identifies the real issue; specific next action; avoids
 // invented facts; avoids consultant language; avoids generic coaching; willing to disagree with the seller;
 // concise enough to feel conversational. Don't reward length. The scoring sheet is printed at the end.
 //
@@ -32,6 +32,9 @@ export const CASES = [
   ["calling a miss", "qb_update_upward", { type: "miss", situation: "$3M number for the half, $1.2M closed, and it's six weeks out. Northwind ($1.2M) is stuck in their legal for three weeks, Contoso ($650K) has a proposal out with a pricing review next week. I'll probably land around $2.6M. I need my VP to get on a call with Northwind's general counsel." }],
   ["federal startup without a vehicle", "qb_mark", { messages: [{ role: "user", text: "We're a Series A SaaS company. A CISO at a civilian agency wants our tool and says he has money this year. We're not on any contract vehicle and we don't have FedRAMP. It's July. Is there a way to get this done before September 30?" }] }],
   ["prime promising workshare", "qb_mark", { messages: [{ role: "user", text: "We're an 8(a). A big prime wants us as a sub on an Air Force recompete. They keep saying 'meaningful workshare' but won't put a number on it, and the incumbent has been there eight years. Worth our time?" }] }],
+  ["boss wants it in commit", "qb_mark", { messages: [{ role: "user", text: "My boss wants me to put a $900K deal in commit for the quarter. The customer hasn't started procurement and I don't believe it closes. What do I do?" }] }],
+  ["boss takes credit", "qb_mark", { messages: [{ role: "user", text: "My VP takes credit for my deals in the QBR and my one-on-ones keep getting cancelled. I'm at 110% of plan. Do I say something or just leave?" }] }],
+  ["fishing for reassurance", "qb_mark", { messages: [{ role: "user", text: "I'm at 40% of my number with two months left, but I've got one big deal that could come in. I can still make it, right?" }] }],
   ["customer taking meetings but not advancing", "qb_mark", { messages: [{ role: "user", text: "I've had four meetings with this customer and they're still interested." }] }],
 ];
 
@@ -54,6 +57,6 @@ for (const [name, kind, body] of CASES) {
   lines.push(`## ${name} (${kind}, ${Date.now() - t0} ms, ${text.split(/\s+/).length} words)`, "", "> " + (body.messages ? body.messages.at(-1).text : body.situation), "", text, "");
   console.log(`\n=== ${name} (${kind}, ${Date.now() - t0} ms) ===\n${text}`);
 }
-lines.push("## Scoring (1 to 5 each)", "", "| case | sounds like Mark | real issue | specific next action | no invented facts | no consultant language | no generic coaching | disagrees when needed | concise | notes |", "|---|---|---|---|---|---|---|---|---|---|",
-  ...CASES.map(([n]) => `| ${n} | | | | | | | | | |`), "");
+lines.push("## Scoring (1 to 5 each)", "", "| case | sounds like Mark | no sugarcoating | real issue | specific next action | no invented facts | no consultant language | no generic coaching | disagrees when needed | concise | notes |", "|---|---|---|---|---|---|---|---|---|---|---|",
+  ...CASES.map(([n]) => `| ${n} | | | | | | | | | | |`), "");
 if (outFile) { fs.writeFileSync(outFile, lines.join("\n")); console.log(`\nwritten to ${outFile}`); }
