@@ -211,7 +211,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="site.f918d8d5.css">
+<link rel="stylesheet" href="site.d425f72d.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="analytics.a5a3ef9d.js" defer></script>
 <script src="ask.406a1dc3.js" defer></script>
@@ -229,9 +229,9 @@
     </nav>
   </header>
   <div class="front front-ask" id="front">
-    <span class="overline tool-name">Ask Mark</span>
+    <p class="tagline">Useful tools for people who carry a number.</p>
     <h1>Ask me anything about selling.</h1>
-    <div class="mark-intro"><img src="mark.jpg" alt="Mark Flournoy" width="44" height="44" loading="eager"><p class="dek">I'm the AI version of Mark. Twenty years in the Marine Corps, fifteen in federal tech sales at Red Hat, F5 and Amazon, compressed into a chatbot.<br>Deals, partners, quota, comp, forecasts, your boss. I won't sugarcoat it.</p></div>
+    <div class="mark-intro"><img src="mark.jpg" alt="Mark Flournoy" width="44" height="44" loading="eager"><p class="dek">I'm the AI version of Mark. Twenty years in the Marine Corps, fifteen in federal tech sales at Red Hat, F5 and Amazon, compressed into a chatbot. Deals, partners, quota, comp, forecasts, your boss. I won't sugarcoat it.</p></div>
     <div class="chat-bar" id="chatBar" hidden><span class="chat-bar-l">This conversation stays in this tab.</span><button class="btn btn-text" id="askNew" type="button">New chat</button></div>
     <div class="chat" id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
     <div class="ask-next" id="askNext" role="group" aria-label="Ask next" hidden></div>
@@ -240,15 +240,15 @@
         <textarea id="askText" rows="2" maxlength="3000" placeholder="What&#x27;s going on?" aria-label="Ask Mark"></textarea>
         <button class="send" id="askBtn" type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
-      <p class="startnote ask-note">AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a></p>
+      <p class="startnote ask-note"><span class="when-chatting">AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a></span></p>
     </form>
     <div class="ask-examples" id="askExamples" role="group" aria-label="Examples"><span class="ask-ex-h"></span>
       <button class="ask-ex" type="button" data-example="My pipeline looks thin. I&#x27;m at about 1.5X on what&#x27;s left of my number with five months to go. Am I screwed?">My pipeline looks thin. Am I screwed?</button>
       <button class="ask-ex" type="button" data-example="My champion says it&#x27;s closing this quarter. Procurement hasn&#x27;t engaged and I don&#x27;t believe them. What do I do?">My champion says it&#x27;s closing. I don&#x27;t believe them.</button>
       <button class="ask-ex" type="button" data-example="My quota went up 30% and my territory didn&#x27;t change. Is this quota ridiculous, and how do I push back without whining?">Is this quota ridiculous?</button>
       <button class="ask-ex" type="button" data-example="My partner keeps saying they&#x27;ll introduce me to the account team and nothing happens. We&#x27;ve been partners for eight months.">My partner isn&#x27;t doing anything.</button>
-      <button class="ask-ex" type="button" data-example="I&#x27;m going to miss the half. $3M number, $1.2M closed, six weeks out. How do I tell my boss?">How do I tell my boss I&#x27;m going to miss?</button>
     </div>
+    <p class="startnote ask-note ask-note-quiet">AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a></p>
     <div class="card mark-card real-mark" hidden>
       <h3>Prefer the version with a pulse?</h3>
       <p>Talk to the real Mark for twenty minutes. Free, and if I don't think you need my help I'll say so.</p>
@@ -257,7 +257,7 @@
     </div>
     <section class="home-sec" id="numbers" aria-labelledby="numbers-h">
       <span class="overline">Run the numbers</span>
-      <h2 class="home-h" id="numbers-h">Sometimes you don't need advice. You need the math.</h2>
+      <h2 class="home-h" id="numbers-h">Sometimes you already know the problem. Run the numbers.</h2>
       <div class="cg-grid home-grid">
         <a class="ck" href="/pipeline/"><span class="cq">You sure that&#x27;s enough pipeline?</span><span class="cb"><span>Pipeline Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
         <a class="ck" href="/quota/"><span class="cq">Is your quota crazy?</span><span class="cb"><span>Quota Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
@@ -355,7 +355,7 @@
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-10.0900';
+window.QB_BUILD = '2026-11-10.1130';
 window.QB_ASK = { endpoint: "https://4s7uc7iyyeh7p4sknfpo6agllq0ahdff.lambda-url.us-east-1.on.aws/", page: "home" };
 // the Tools menu closes on an outside tap or Escape (the tool pages get this from their engines)
 document.addEventListener('click', (e) => { document.querySelectorAll('details.menu[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; }); });

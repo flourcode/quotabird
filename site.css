@@ -1217,9 +1217,8 @@ input.needs::placeholder { color:var(--ink); opacity:.7; }
 .real-mark h3 { font-size:20px; letter-spacing:-.01em; }
 .real-mark .fine a { color:inherit; text-decoration:underline; text-underline-offset:3px; }
 /* the header: Ask Mark is the one filled control */
-a.chip-ask { background:var(--blue) !important; color:var(--on-blue) !important; text-decoration:none !important; font-weight:700; padding:0 14px; }
-a.chip-ask:hover { background:var(--blue-press) !important; }
-a.chip-ask.current { box-shadow:inset 0 0 0 2px var(--ink) !important; }
+a.chip-ask { background:transparent !important; color:var(--ink) !important; text-decoration:none !important; font-weight:700; padding:0 10px; }
+a.chip-ask:hover, a.chip-ask.current { text-decoration:underline !important; text-underline-offset:4px; text-decoration-thickness:2px; }
 @media (min-width:880px) { #screen.ask-screen .chat, #screen.ask-screen .composer, #screen.ask-screen .chat-bar, #screen.ask-screen .ask-examples, #screen.ask-screen .real-mark, #screen.ask-screen .mark-intro { max-width:680px; } }
 @media print { .ask-page .composer, .ask-page .real-mark, .ask-page .chat-bar, .ask-page .ask-examples, .msg-note { display:none !important; } .msg-user .msg-body { background:#eee !important; } }
 .chat-bar[hidden] { display:none; }
@@ -1233,9 +1232,23 @@ a.chip-ask.current { box-shadow:inset 0 0 0 2px var(--ink) !important; }
 .msg-copy:hover { color:var(--ink); text-decoration:underline; }
 .composer-box textarea[rows="3"] { min-height:80px; }
 
-/* The home page: Ask Mark is the front door */
-.front-ask h1 { margin-bottom: 10px; }
-.front-ask .mark-intro { margin-bottom: 18px; }
+/* The home page: Ask Mark is the front door. The input is the star, not the headline. */
+.front-ask .tagline { margin: 6px 0 2px; font-size: 15px; font-weight: 600; color: var(--mut); letter-spacing: -.005em; }
+.front-ask h1 { margin: 0 0 12px; font-size: 36px; }
+@media (min-width: 960px) { .front-ask h1 { font-size: 56px; } }
+.front-ask .mark-intro { margin-bottom: 18px; max-width: 640px; }
+.front-ask .mark-intro .dek { font-size: 16px; line-height: 1.45; }
+.front-ask .composer .ask-note { display: none; }
+body.is-chatting .front-ask .composer .ask-note { display: block; }
+.front-ask .ask-note-quiet { margin: 14px 0 0; font-size: 12px; color: var(--mut); opacity: .85; }
+body.is-chatting .front-ask .ask-note-quiet { display: none; }
+.front-ask .home-sec:first-of-type { margin-top: 34px; }
+/* the tool cards on the home page: the name first, the question under it */
+.home-grid .ck { flex-direction: column-reverse; min-height: 0; padding: 14px 16px 14px; }
+.home-grid .ck .cb { margin: 0 0 6px; padding: 0; font-size: 17px; font-weight: 800; color: var(--ink); letter-spacing: -.015em; }
+.home-grid .ck .cq { font-size: 15px; font-weight: 500; color: var(--ink-2); line-height: 1.35; }
+.home-grid .ck:hover .cb { text-decoration: underline; text-underline-offset: 3px; }
+.home-grid .ck:active .cb, .home-grid .ck:active .cq { color: var(--on-blue); }
 .front-ask .composer-box textarea[rows="2"] { min-height: 58px; }
 .front-ask .ask-examples { margin-top: 14px; }
 .front-ask .ask-examples .ask-ex-h:empty { display: none; }
