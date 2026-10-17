@@ -10,15 +10,15 @@ globalThis.fetch = async (url, opts) => {
 };
 const NEW = await import(process.env.QB_LAMBDA || '../lambda/index.mjs');
 const ev = (body, extra = {}) => ({ headers: { origin: 'https://quotabird.com' }, requestContext: { http: { method: 'POST', sourceIp: extra.ip || '1.2.3.' + Math.floor(Math.random() * 250) } }, body: JSON.stringify(body), ...extra.ev });
-const call = async (body, extra) => { const r = await NEW.handler(ev(body, extra)); return { status: r.statusCode, body: JSON.parse(r.body || '{}') }; };
+const call = async (body, extra) => { const r = await NEW.bufferedHandler(ev(body, extra)); return { status: r.statusCode, body: JSON.parse(r.body || '{}') }; };
 let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', name); };
 
 await t('health check', async () => {
-  const r = await NEW.handler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.service, 'quotabird'); assert.equal(b.version, '2.0.0'); assert.ok(b.catalog); assert.equal(b.stream, false); assert.equal(b.model, 'gemini-3.5-flash-lite');
+  const r = await NEW.bufferedHandler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
+  assert.equal(b.service, 'quotabird'); assert.equal(b.version, '2.0.1'); assert.ok(b.catalog); assert.equal(b.stream, false); assert.equal(b.model, 'gemini-3.5-flash-lite');
 });
 await t('origin not allowed is refused', async () => {
-  const r = await NEW.handler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
+  const r = await NEW.bufferedHandler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
   assert.equal(r.statusCode, 403);
 });
 await t('route: keeps quoted numbers, drops invented ones', async () => {

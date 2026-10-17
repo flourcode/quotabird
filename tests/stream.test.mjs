@@ -2,7 +2,9 @@
 // the plain route, the no-sugarcoating guard holds, errors before the first word are plain JSON, errors after
 // are an error line, and the buffered handler still answers plain JSON when the page asks for a stream.
 import assert from 'node:assert/strict';
-globalThis.awslambda = { streamifyResponse: (f) => f, HttpResponseStream: { from: (s, m) => { s.meta = m; return s; } } };
+// Like the real runtime (aws-lambda-nodejs-runtime-interface-client): the status and headers go out with the first
+// write(), even an empty one; a stream ended without a write loses them.
+globalThis.awslambda = { streamifyResponse: (f) => f, HttpResponseStream: { from: (s, m) => { const w = s.write.bind(s); let first = true; s.write = (t) => { if (first) { first = false; s.meta = m; } return w(t); }; return s; } } };
 process.env.GEMINI_API_KEY = 'k'; process.env.ALLOWED_ORIGINS = '*'; process.env.QB_RATE_LIMIT_PER_MINUTE = '1000'; process.env.QB_RATE_LIMIT_PER_HOUR = '10000';
 
 let mode = 'ok', answer = null, calls = [];
@@ -21,7 +23,7 @@ globalThis.fetch = async (url, opts) => {
 };
 const L = await import('../lambda/index.mjs');
 const ev = (body, method = 'POST') => ({ headers: { origin: 'https://quotabird.com' }, requestContext: { http: { method, sourceIp: '9.9.9.' + Math.random() } }, body: body == null ? '' : JSON.stringify(body) });
-const viaStream = async (body) => { const s = { chunks: [], write(t) { this.chunks.push(String(t)); }, end() { this.ended = true; } }; await L.streamingHandler(ev(body), s); return { status: s.meta.statusCode, headers: s.meta.headers, chunks: s.chunks, text: s.chunks.join(''), ended: s.ended }; };
+const viaStream = async (body) => { const s = { chunks: [], write(t) { this.chunks.push(String(t)); }, end() { this.ended = true; } }; await L.handler(ev(body), s); return { status: s.meta.statusCode, headers: s.meta.headers, chunks: s.chunks, text: s.chunks.join(''), ended: s.ended }; };
 const lines = (t) => t.trim().split('\n').filter(Boolean).map((l) => JSON.parse(l));
 let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', name); };
 
@@ -35,7 +37,7 @@ await t('streams sentence by sentence, and the done line is the plain answer', a
   assert.ok(deltas.length >= 4, 'several pieces, not one: ' + deltas.length); assert.equal(done.t, 'done');
   assert.ok(calls.at(-1).url.includes(':streamGenerateContent?alt=sse'));
   assert.equal(deltas.map((d) => d.x).join('').trim(), done.reply.join('\n\n'), 'what streamed is what the answer is');
-  const plain = await L.handler(ev({ ...ASK, stream: false })); const pb = JSON.parse(plain.body);
+  const plain = await L.bufferedHandler(ev({ ...ASK, stream: false })); const pb = JSON.parse(plain.body);
   assert.deepEqual(done.reply, pb.reply); assert.deepEqual(done.followups, pb.followups); assert.deepEqual(done.tool, pb.tool);
   assert.ok(!r.text.includes('I hear you') && !r.text.includes("got this"), 'cushion and pep talk never go out');
 });
@@ -61,8 +63,8 @@ await t('bad input is a plain 400, nothing streamed', async () => {
   const r = await viaStream({ kind: 'qb_mark', stream: true, messages: [{ role: 'mark', text: 'hi' }] });
   assert.equal(r.status, 400); assert.match(r.headers['Content-Type'], /json/);
 });
-await t('the buffered handler ignores stream:true and answers JSON (works before the switch)', async () => {
-  const r = await L.handler(ev(ASK)); assert.equal(r.statusCode, 200); assert.ok(JSON.parse(r.body).reply.length);
+await t('the plain-JSON handler ignores stream:true and answers JSON', async () => {
+  const r = await L.bufferedHandler(ev(ASK)); assert.equal(r.statusCode, 200); assert.ok(JSON.parse(r.body).reply.length);
 });
 await t('workflow pages stream too, with their frame', async () => {
   answer = { reply: "I'd want one thing out of Thursday: the pilot with a date on it. Walk in with the two things the demo didn't answer.", tool: 'none', followups: [] };
@@ -70,8 +72,16 @@ await t('workflow pages stream too, with their frame', async () => {
   assert.equal(lines(r.text).at(-1).t, 'done'); assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('Meeting Prep page'));
 });
 await t('health check says which handler is serving', async () => {
-  const s = { chunks: [], write(t) { this.chunks.push(t); }, end() {} }; await L.streamingHandler(ev(null, 'GET'), s);
+  const s = { chunks: [], write(t) { this.chunks.push(t); }, end() {} }; await L.handler(ev(null, 'GET'), s);
   assert.equal(JSON.parse(s.chunks.join('')).stream, true);
-  assert.equal(JSON.parse((await L.handler(ev(null, 'GET'))).body).stream, false);
+  assert.equal(JSON.parse((await L.bufferedHandler(ev(null, 'GET'))).body).stream, false);
+});
+await t('a response with no body (OPTIONS) keeps its status and headers', async () => {
+  const s = { chunks: [], write(t) { this.chunks.push(String(t)); }, end() { this.ended = true; } };
+  await L.handler(ev(null, 'OPTIONS'), s);
+  assert.equal(s.meta && s.meta.statusCode, 204, 'status went out'); assert.ok(s.ended);
+});
+await t('index.handler is the streaming entry point; streamingHandler is the same function', async () => {
+  assert.equal(L.streamingHandler, L.handler); assert.equal(typeof L.bufferedHandler, 'function');
 });
 console.log(`\n${n} stream tests passed`);

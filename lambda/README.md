@@ -6,8 +6,7 @@ SideFrog, at the same Function URL; SideFrog is gone and so is its code. No npm 
 
 Files (all four go in the zip, at the top level):
 - `index.mjs`: the entry point. Origin check, health check, per-visitor rate limit, 16 KB request limit, the
-  Gemini calls (`geminiJson`, and `geminiStream` for the chat), and two handlers: `handler` (plain JSON) and
-  `streamingHandler` (the chat streams).
+  Gemini calls (`geminiJson`, and `geminiStream` for the chat), and `handler`, which streams.
 - `quotabird.mjs`: the request kinds and Mark's persona (voice, background, bio, fact rules, the chat and its
   streaming, the no-sugarcoating guard).
 - `quotabird-playbooks.mjs`: how Mark thinks through a deal, a meeting, an account, pipeline, federal, partners,
@@ -17,41 +16,27 @@ Files (all four go in the zip, at the top level):
 
 ## Deploy
 
+The Function URL's invoke mode is **RESPONSE_STREAM** and the Handler is **`index.handler`**. That pair is what
+this code is built for: `index.handler` streams the chat and writes every other answer whole.
+
 1. Zip the four files (no folder inside the zip):
    `zip quotabird-lambda.zip index.mjs quotabird.mjs quotabird-catalog.mjs quotabird-playbooks.mjs`
 2. AWS console → Lambda → the function behind
    `https://4s7uc7iyyeh7p4sknfpo6agllq0ahdff.lambda-url.us-east-1.on.aws/` → Code → Upload from → .zip file.
-   Runtime Node.js 20 or later, timeout 30 seconds, memory 256 MB. Handler: leave it as it is
-   (`index.handler`, or `index.streamingHandler` if you've turned streaming on; both names still exist).
-3. Configuration → Environment variables:
-   - `GEMINI_API_KEY` (required) and `GEMINI_MODEL` (`gemini-3.5-flash-lite`): unchanged.
-   - `ALLOWED_ORIGINS`: `https://quotabird.com,https://www.quotabird.com` (plus an Amplify preview address
-     while you test). The sidefrog.com origins can come out.
-   - Optional: `QB_RATE_LIMIT_PER_MINUTE` (default 10), `QB_RATE_LIMIT_PER_HOUR` (default 60),
-     `QB_GEMINI_MODEL` (overrides `GEMINI_MODEL`), `GEMINI_TIMEOUT_MS`, `BOT_USER_AGENT`.
-   - No longer read, safe to delete: `AI_RATE_LIMIT_PER_MINUTE`, `AI_RATE_LIMIT_PER_HOUR`, `SITE_URL`,
-     `NAMERCHECK_GEMINI_MODEL`.
-4. Configuration → Function URL → Edit → CORS: allow origins `https://quotabird.com` and
-   `https://www.quotabird.com` (the sidefrog.com ones can come out); allow methods POST and GET; allow header
-   `content-type`. Leave `SEND_CORS_HEADERS` unset (AWS adds the CORS headers; doubles get rejected).
-5. Check it: open the Function URL in a browser. The health check should show
-   `{"ok":true,"service":"quotabird","version":"2.0.0", ... "ready":true, "stream":false}`
-   (`"stream":true` once streaming is on).
-6. Use a paid Gemini API key. On the free tier Google may use prompts to improve its products, and the
-   QuotaBird pages say the server keeps nothing and the text is handled under the API terms.
+   Runtime Node.js 20 or later, timeout 30 seconds, memory 256 MB.
+3. Open the Function URL in a browser. The health check shows
+   `{"ok":true,"service":"quotabird","version":"2.0.1", ... "ready":true,"stream":true}`.
 
-## Turn on streaming
+Environment variables: `GEMINI_API_KEY` (required), `GEMINI_MODEL` (`gemini-3.5-flash-lite`), `ALLOWED_ORIGINS`
+(`https://quotabird.com,https://www.quotabird.com`). Optional: `QB_RATE_LIMIT_PER_MINUTE` (default 10),
+`QB_RATE_LIMIT_PER_HOUR` (default 60), `QB_GEMINI_MODEL`, `GEMINI_TIMEOUT_MS`, `BOT_USER_AGENT`. No longer read:
+`AI_RATE_LIMIT_PER_MINUTE`, `AI_RATE_LIMIT_PER_HOUR`, `SITE_URL`, `NAMERCHECK_GEMINI_MODEL`.
+Function URL CORS: allow origins `https://quotabird.com` and `https://www.quotabird.com`, methods POST and GET,
+header `content-type`. Leave `SEND_CORS_HEADERS` unset (AWS adds the CORS headers; doubles get rejected).
+Use a paid Gemini API key; on the free tier Google may use prompts to improve its products.
 
-The chat can show the answer as it's written. Switch **both** of these, one right after the other:
-
-1. Code → Runtime settings → Edit → Handler: `index.streamingHandler` → Save.
-2. Configuration → Function URL → Edit → Invoke mode: **RESPONSE_STREAM** → Save. Leave CORS as it is.
-
-Open the Function URL: `"stream":true` means the streaming handler is serving. Only the chat streams (the pages
-ask for it with `stream: true`); everything else is written whole, the same as `index.handler` would send it.
-The site works either way: with plain JSON the answer arrives all at once.
-
-Undo: switch both back (Handler `index.handler`, Invoke mode BUFFERED). Never leave them split.
+The other handler names: `index.streamingHandler` is the same function as `index.handler` (an older name).
+`index.bufferedHandler` answers plain JSON, for a Function URL in BUFFERED mode.
 
 Rollback: upload the previous zip. The calculators and checks don't call the Lambda at all, so only the AI
 pages would show "Couldn't connect".
@@ -69,6 +54,6 @@ Nothing typed is logged or stored.
 
 ## Tests
 
-From the site repo: `node tests/lambda.test.mjs` (22 tests) and `node tests/stream.test.mjs` (9), both with
+From the site repo: `node tests/lambda.test.mjs` (22 tests) and `node tests/stream.test.mjs` (11), both with
 mocked Gemini. With a real key: `GEMINI_API_KEY=... node tests/eval-set.mjs --out eval.md` runs the eighteen-case
 eval set; add `QB_GEMINI_MODEL=<model>` to compare a stronger model on the same set.

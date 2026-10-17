@@ -32,12 +32,12 @@ let same = 0, diff = 0;
 const cmp = (name, x, y, note = '') => { const ok = x.statusCode === y.statusCode && x.body === y.body && JSON.stringify(x.headers) === JSON.stringify(y.headers); ok ? same++ : diff++; if (!ok) console.log('DIFF', name, note, x.statusCode, y.statusCode, String(x.body).slice(0, 120), '|', String(y.body).slice(0, 120)); };
 for (const [name, r, body] of cases) {
   if (r === '429' || r === 'garbled') mode = r; else { mode = 'ok'; reply = r; }
-  cmp(name, await A.handler(ev(body)), await B.handler(ev(body)), '(index.handler)');
-  cmp(name, await viaStream(A.streamingHandler, ev(body)), await viaStream(B.streamingHandler, ev(body)), '(streamingHandler)');
+  cmp(name, await A.handler(ev(body)), await B.bufferedHandler(ev(body)), '(plain JSON)');
+  cmp(name, await viaStream(A.streamingHandler, ev(body)), await viaStream(B.handler, ev(body)), '(streaming: index.handler now)');
 }
 mode = 'ok'; reply = MARK;
-cmp('refused origin', await A.handler(ev(cases[0][2], 'https://evil.example')), await B.handler(ev(cases[0][2], 'https://evil.example')));
-cmp('options', await A.handler(ev('', 'https://quotabird.com', '1.1.1.1', 'OPTIONS')), await B.handler(ev('', 'https://quotabird.com', '1.1.1.1', 'OPTIONS')));
-let la, lb; for (let i = 0; i < 11; i++) { la = await A.handler(ev(cases[7][2], undefined, '8.8.8.8')); lb = await B.handler(ev(cases[7][2], undefined, '8.8.8.8')); }
+cmp('refused origin', await A.handler(ev(cases[0][2], 'https://evil.example')), await B.bufferedHandler(ev(cases[0][2], 'https://evil.example')));
+cmp('options', await A.handler(ev('', 'https://quotabird.com', '1.1.1.1', 'OPTIONS')), await B.bufferedHandler(ev('', 'https://quotabird.com', '1.1.1.1', 'OPTIONS')));
+let la, lb; for (let i = 0; i < 11; i++) { la = await A.handler(ev(cases[7][2], undefined, '8.8.8.8')); lb = await B.bufferedHandler(ev(cases[7][2], undefined, '8.8.8.8')); }
 cmp('11th request from one visitor', la, lb);
 console.log(`QuotaBird, old shared entry point vs QuotaBird-only: ${same} same, ${diff} different`);

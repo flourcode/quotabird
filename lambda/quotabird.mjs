@@ -19,7 +19,7 @@ import { CATALOG, CATALOG_BUILD } from "./quotabird-catalog.mjs";
 import { PLAYBOOKS, pickPlaybooks, playbookText } from "./quotabird-playbooks.mjs";
 
 export const QB_KINDS = ["qb_mark", "qb_coach", "qb_route", "qb_explain", "qb_meeting_prep", "qb_account_plan", "qb_update_upward"];
-export const QB_VERSION = "2.0.0";
+export const QB_VERSION = "2.0.1";
 export { CATALOG_BUILD };
 
 const BY_SLUG = new Map(CATALOG.map((t) => [t.slug, t]));

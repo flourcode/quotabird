@@ -6,9 +6,10 @@
 //        | "qb_update_upward", ... }. See quotabird.mjs. The site sends text/plain bodies (no CORS preflight).
 // GET returns a small health check: { ok, service, version, catalog, model, ready, stream }.
 //
-// AWS settings: runtime Node.js 20 or later, timeout 30 seconds, memory 256 MB. Two handlers:
-//   index.handler            plain JSON (Function URL invoke mode BUFFERED)
-//   index.streamingHandler   the chat streams (Function URL invoke mode RESPONSE_STREAM); switch both together
+// AWS settings: runtime Node.js 20 or later, Handler index.handler, timeout 30 seconds, memory 256 MB.
+// The Function URL's invoke mode is RESPONSE_STREAM: index.handler streams the chat and writes every other
+// answer whole. (index.streamingHandler is the same function under its old name. If the URL ever goes back to
+// BUFFERED, set the Handler to index.bufferedHandler, which answers plain JSON.)
 // CORS is set on the Function URL in the AWS console, so this code adds no CORS headers by default.
 //
 // Environment variables:
@@ -158,9 +159,9 @@ function corsHeaders(origin) {
   return { "Access-Control-Allow-Origin": allow, "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "content-type", "Access-Control-Max-Age": "86400", Vary: "Origin" };
 }
 
-// The request handler. `sink` is passed only by the streaming handler: with it, the chat writes its answer as it
-// comes; without it (index.handler), every answer is plain JSON.
-export const handler = async (event = {}, _context, sink = null) => {
+// The request logic. `sink` is passed by the streaming entry point: with it, the chat writes its answer as it
+// comes; without it (index.bufferedHandler), every answer is plain JSON.
+export const bufferedHandler = async (event = {}, _context, sink = null) => {
   const headersIn = Object.fromEntries(Object.entries(event.headers || {}).map(([k, v]) => [k.toLowerCase(), v]));
   const origin = headersIn.origin || "";
   const method = event.requestContext?.http?.method || event.httpMethod || "POST";
@@ -193,16 +194,19 @@ export const handler = async (event = {}, _context, sink = null) => {
   return respond(status, payload);
 };
 
-// Response streaming (Function URL in RESPONSE_STREAM mode, Handler index.streamingHandler). Every request runs
-// through the handler above; anything that isn't a streamed chat is written whole, the same as index.handler.
+// The entry point Lambda calls (Function URL in RESPONSE_STREAM mode). Every request runs through the logic above;
+// the chat streams, and anything else is written whole: its status and headers, then its body.
+// The status and headers go out with the first write(), so there is always one, even for an empty body
+// (ending a stream that was never written to drops them; see aws-lambda-nodejs-runtime-interface-client #97).
 async function streamingBody(event, responseStream) {
   let out = null;
   const open = (statusCode, headers) => { if (!out) out = globalThis.awslambda.HttpResponseStream.from(responseStream, { statusCode, headers }); return out; };
   let r;
-  try { r = await handler(event, undefined, { start: open, write: (t) => out && out.write(t) }); }
+  try { r = await bufferedHandler(event, undefined, { start: open, write: (t) => out && out.write(t) }); }
   catch { if (out) { out.end(); return; } r = { statusCode: 500, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }, body: JSON.stringify({ error: "Something went wrong." }) }; }
-  if (!r || !r.streamed) { open(r.statusCode, r.headers); if (r.body) out.write(r.body); }
+  if (!r || !r.streamed) { open(r.statusCode, r.headers); out.write(r.body || ""); }
   out.end();
   if (typeof out.finished === "function") await out.finished();
 }
-export const streamingHandler = globalThis.awslambda?.streamifyResponse ? globalThis.awslambda.streamifyResponse(streamingBody) : streamingBody;
+export const handler = globalThis.awslambda?.streamifyResponse ? globalThis.awslambda.streamifyResponse(streamingBody) : streamingBody;
+export const streamingHandler = handler;
