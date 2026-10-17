@@ -63,15 +63,12 @@ async def main():
         await pg.screenshot(path=f'{SHOTS}/handoff-rep-card.png', full_page=True)
         await pg.click('#askMarkBtn'); await check_chat(pg, 'rep')
 
-        # Home hero: plain link until the numbers are theirs
+        # Home: the chat is the hero; an example chip sends and the intro collapses
         await pg.goto(BASE + '/'); await pg.wait_for_timeout(300)
-        t0 = await pg.inner_text('#hcAsk'); h0 = await pg.get_attribute('#hcAsk', 'href')
-        await pg.fill('#hcQuota', '$9,000,000'); await pg.wait_for_timeout(200)
-        t1 = await pg.inner_text('#hcAsk'); h1 = await pg.get_attribute('#hcAsk', 'href')
-        print('hero before:', t0, h0, '| after:', t1, urllib.parse.unquote(h1)[:120].replace('\n', ' '))
-        assert '#ask=' in h1 and '$9,000,000' in urllib.parse.unquote(h1)
-        await pg.click('#hcAsk'); await check_chat(pg, 'hero')
-
+        assert await pg.get_attribute('#askText', 'placeholder') == "What's going on?"
+        await pg.click('.ask-ex[data-example] >> nth=2'); await pg.wait_for_selector('.msg-mark:not(.is-thinking)', timeout=10000)
+        assert await pg.locator('.mark-intro').is_hidden() and await pg.locator('.ask-next .ask-ex-tool').count() == 1
+        print('home: chat in place, intro collapsed, tool chip', await pg.inner_text('.ask-next .ask-ex-tool'))
         # A plain visit still shows the empty chat with chips; a junk fragment is ignored
         await pg.goto(BASE + '/privacy/'); await pg.goto(BASE + '/ask-mark/#ask=x'); await pg.wait_for_timeout(400)
         assert await pg.locator('.msg').count() == 0 and not await pg.locator('#askExamples').is_hidden()

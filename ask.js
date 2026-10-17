@@ -45,6 +45,8 @@
 
   /* ═════════════ Ask Mark: a conversation ═════════════ */
   function askPage() {
+    const slug = String(CFG.page || 'ask').replace(/-/g, '_');
+    const WORKFLOW = ['meeting-prep', 'account-plan', 'update-upward'].includes(CFG.page);   // the pages with a job to do; home and ask-mark are the plain chat
     const form = $('askForm'), text = $('askText'), btn = $('askBtn'), chat = $('chat'), fresh = $('askNew'), bar = $('chatBar'), examples = $('askExamples'), next = $('askNext');
     const PH_FIRST = text.getAttribute('placeholder') || 'Ask Mark anything about selling', PH_MORE = 'Ask a follow-up';
     const history = [];   // {role:'user'|'mark', text}, this tab only, never stored
@@ -65,7 +67,9 @@
     }
     // keep the newest message in view without hiding it under the composer
     const reveal = (el) => { if (!el) return; const pad = form.offsetHeight + 24; const r = el.getBoundingClientRect(); if (r.bottom > window.innerHeight - pad || r.top < 0) window.scrollBy({ top: Math.min(r.top - 96, r.bottom - (window.innerHeight - pad)), behavior: reduced() ? 'auto' : 'smooth' }); };
-    const started = (on) => { bar.hidden = !on; examples.hidden = on; form.classList.toggle('is-sticky', on); text.placeholder = on ? PH_MORE : PH_FIRST; };
+    const ROWS = text.rows || 1;   // a workflow page opens with a taller box; once the conversation starts it's a one-line composer
+    // once the conversation starts the intro collapses (the answer gets the room) and the box becomes a one-line composer
+    const started = (on) => { bar.hidden = !on; examples.hidden = on; form.classList.toggle('is-sticky', on); document.body.classList.toggle('is-chatting', on); text.placeholder = on ? PH_MORE : PH_FIRST; text.rows = on ? 1 : ROWS; fit(); };
     // What to ask next: Mark's own follow-up suggestions as chips (tap to send), and the one tool that runs
     // their numbers as the outlined chip at the end. Sits between his reply and the box so the box reads as "reply".
     const send = (q, why) => { text.value = q; fit(); track(why); form.requestSubmit(); };
@@ -74,7 +78,8 @@
       const ups = (Array.isArray(followups) ? followups : []).map(f => String(f || '').trim()).filter(Boolean).slice(0, 3);
       if (!ups.length && !tool) return;
       ups.forEach(f => { const b = document.createElement('button'); b.type = 'button'; b.className = 'ask-ex'; b.textContent = f; b.onclick = () => send(f, 'ask_followup_chip'); next.appendChild(b); });
-      if (tool) { const a = document.createElement('a'); a.className = 'ask-ex ask-ex-tool'; a.href = tool.url; a.textContent = 'Run it through ' + tool.name + ' \u2192'; a.title = tool.question || ''; a.onclick = () => track('ask_tool_click'); next.appendChild(a); }
+      // the one calculator or check that runs their numbers: the advice came first, this is the optional next step
+      if (tool) { const a = document.createElement('a'); a.className = 'ask-ex ask-ex-tool'; a.href = tool.url; a.innerHTML = '<small>Run your numbers</small>' + esc(tool.name) + ' \u2192'; a.title = tool.question || ''; a.onclick = () => track('ask_tool_click'); next.appendChild(a); }
       next.hidden = false;
     }
     document.querySelectorAll('[data-example]').forEach(b => b.onclick = () => { text.value = b.dataset.example; fit(); track('ask_example'); form.requestSubmit(); });
@@ -92,14 +97,19 @@
       bubble('user', paras(q));
       text.value = ''; fit(); started(true); offer([], null);
       btn.disabled = true; const wait = thinking(); reveal(wait);
-      track(history.length === 1 ? 'ask_first' : 'ask_followup');
-      const { data, error } = await post({ kind: 'qb_mark', messages: history.slice(-16) });
+      track((CFG.page === 'ask-mark' ? 'ask' : slug) + (history.length === 1 ? '_first' : '_followup'));   // home_first, ask_first, meeting_prep_first...
+      const { data, error } = await post(WORKFLOW ? { kind: 'qb_mark', page: CFG.page, messages: history.slice(-16) } : { kind: 'qb_mark', messages: history.slice(-16) });
       if (id !== run) return;
       btn.disabled = false; wait.remove();
       if (error) { history.pop(); track('ask_error'); const el = bubble('mark', [error]); el.classList.add('is-error'); reveal(el); return; }
       const reply = Array.isArray(data.reply) ? data.reply : paras(data.reply);
       history.push({ role: 'mark', text: reply.join('\n\n') });
       const el = bubble('mark', reply);
+      if (WORKFLOW) {   // the workflow pages: what Mark wrote is something they'll paste or print
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-text msg-copy'; b.textContent = 'Copy';
+        b.onclick = () => { track(slug + '_copy'); copyText(reply.join('\n\n')).then(() => { b.textContent = 'Copied \u2713'; }, () => { b.textContent = "Couldn't copy"; }); };
+        el.querySelector('.msg-body').appendChild(b);
+      }
       offer(data.followups, data.tool);
       reveal(el); text.focus({ preventScroll: true });
       track('ask_done');
@@ -159,6 +169,6 @@
     }
   }
 
-  function init() { if (CFG.page === 'ask-mark') askPage(); else if (CFG.page) wfPage(); }
+  function init() { if ($('askForm')) askPage(); else if (CFG.page && $('wfForm')) wfPage(); }   // every page is the chat now; wfPage stays for an old build
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

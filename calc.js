@@ -115,8 +115,8 @@
 <div class="card mark-card" style="margin-top:20px;">
       <h3>${esc(cfg.mark.title(s))}</h3>
       <p>${esc(cfg.mark.body)}</p>
-      <a class="btn btn-primary btn-lg btn-full" id="askMarkBtn" href="${askLink(askSeed(s))}" style="margin-top:14px;">Ask Mark what to do about this</a>
-      <p class="fine ask-fine">The AI version of me, with these numbers already in the chat. Nothing you type is stored.</p>
+      <a class="btn btn-primary btn-lg btn-full" id="askMarkBtn" href="${askLink(askSeed(s))}" style="margin-top:14px;">Ask Mark about this</a>
+      <p class="fine ask-fine">Want the blunt version? The AI version of me, with these numbers already in the chat. Nothing you type is stored.</p>
       <a class="btn btn-tonal btn-full" id="bookBtn" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=${cfg.slug}&utm_content=after_score&a1=${encodeURIComponent(cfg.bookNote(s))}" target="_blank" rel="noopener">Grab 20 minutes with the real Mark</a>
       <p class="dm-alt"><button class="linkbtn" id="dmBtn" type="button">or message me on LinkedIn</button></p>
       <p class="fine" style="text-align:center;margin:8px 0 0;">Also free, and if I can't help, I'll say so. The LinkedIn link copies a short note you can paste.</p>

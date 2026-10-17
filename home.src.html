@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>QuotaBird: Is Your Quota Crazy?</title>
-<meta name="description" content="QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers. Is your quota crazy? Check it against last year, run rate, pipeline and win rate.">
+<title>QuotaBird: Tell Mark What's Going On</title>
+<meta name="description" content="Tell the AI version of Mark Flournoy, twenty years in federal tech sales, what's going on with your deal, pipeline, quota, comp plan or boss, and get a blunt answer. Then run the numbers: free quota, pipeline, deal, pay and commission calculators that show the math.">
 <link rel="canonical" href="https://quotabird.com/">
 <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -12,18 +12,18 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://quotabird.com/">
-<meta property="og:title" content="QuotaBird: Is your quota crazy?">
-<meta property="og:description" content="Maybe. Let&#39;s do the math: last year&#39;s sales, run rate, pipeline, win rate and headcount. Then push back with evidence, or build the plan to hit it.">
+<meta property="og:title" content="QuotaBird: Tell Mark what's going on">
+<meta property="og:description" content="The AI version of a twenty-year federal sales leader answers your deal, pipeline, quota and comp questions without sugarcoating. Then the calculators run the numbers.">
 <meta property="og:site_name" content="QuotaBird">
 <meta property="og:image" content="https://quotabird.com/card.jpg">
-<meta property="og:image:width" content="2400">
-<meta property="og:image:height" content="1260">
-<meta property="og:image:alt" content="Is your quota crazy? The QuotaBird shelf, with the quota book first.">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ask Mark: tell him what's going on. Then run the numbers.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="QuotaBird: Is your quota crazy?">
-<meta name="twitter:description" content="Maybe. Let&#39;s do the math: last year&#39;s sales, run rate, pipeline, win rate and headcount. Then push back with evidence, or build the plan to hit it.">
+<meta name="twitter:title" content="QuotaBird: Tell Mark what's going on">
+<meta name="twitter:description" content="The AI version of a twenty-year federal sales leader answers your deal, pipeline, quota and comp questions without sugarcoating. Then the calculators run the numbers.">
 <meta name="twitter:image" content="https://quotabird.com/card.jpg">
-<meta name="twitter:image:alt" content="Is your quota crazy? The QuotaBird shelf, with the quota book first.">
+<meta name="twitter:image:alt" content="Ask Mark: tell him what's going on. Then run the numbers.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FFFFFF">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B1215">
@@ -212,124 +212,26 @@
 
 <div class="wrap wide">
   <header class="appbar"></header>
-  <div class="front" id="front">
-    <span class="overline tool-name">The quota landed</span>
-    <h1>Is your quota crazy?</h1>
-    <p class="dek">Maybe. Let's do the math.</p>
-    <div class="hero-calc" id="heroCalc">
-      <div class="hc-out ready" id="hcOut" aria-live="polite">
-        <div class="hc-num" id="hcNum">21×</div>
-        <div class="hc-label" id="hcLabel">Standard</div>
-        <div class="hc-line" id="hcLine">Inside QuotaBird's working range of 15 to 30 for cloud consumption growth.</div>
+  <div class="front front-ask" id="front">
+    <span class="overline tool-name">Ask Mark</span>
+    <h1>Ask me anything about selling.</h1>
+    <div class="mark-intro"><img src="mark.jpg" alt="Mark Flournoy" width="44" height="44" loading="eager"><p class="dek">I'm the AI version of Mark. Twenty years in the Marine Corps, fifteen in federal tech sales at Red Hat, F5 and Amazon, compressed into a chatbot.<br>Deals, partners, quota, comp, forecasts, your boss. I won't sugarcoat it.</p></div>
+__CHAT__
+    <section class="home-sec" id="numbers" aria-labelledby="numbers-h">
+      <span class="overline">Run the numbers</span>
+      <h2 class="home-h" id="numbers-h">Sometimes you don't need advice. You need the math.</h2>
+      <div class="cg-grid home-grid">
+__TOOLS__
       </div>
-      <div class="hc-chips" role="group" aria-label="What the number is measured in">
-        <button class="chip" type="button" aria-pressed="false" data-hb="saas">Bookings</button>
-        <button class="chip on" type="button" aria-pressed="true" data-hb="cloud">Run rate</button>
-        <button class="chip" type="button" aria-pressed="false" data-hb="book">Whole book</button>
+      <p class="more"><a href="/tools/">All the tools</a></p>
+    </section>
+    <section class="home-sec" id="work" aria-labelledby="work-h">
+      <span class="overline">Work the problem</span>
+      <h2 class="home-h" id="work-h">Same Mark, with a job to do.</h2>
+      <div class="cg-grid home-grid home-grid-3">
+__WORK__
       </div>
-      <div class="hc-grid">
-        <label class="tf hc-q"><span class="tf-label">Your quota</span><input id="hcQuota" type="text" inputmode="decimal" value="$6,000,000" class="is-example"></label>
-        <label class="tf"><span class="tf-label">Base</span><input id="hcBase" type="text" inputmode="decimal" value="$150,000" class="is-example"></label>
-        <label class="tf"><span class="tf-label">Variable</span><input id="hcVar" type="text" inputmode="decimal" value="$130,000" class="is-example"></label>
-      </div>
-      <p class="hc-note" id="hcNote">Example numbers. Type yours over them.</p>
-      <a class="btn btn-primary btn-lg btn-full" id="hcGo" href="/quota/">See the whole plan</a>
-      <p class="hc-ask"><a href="/ask-mark/" id="hcAsk">Stuck on a deal? Ask Mark →</a></p>
-    </div>
-    <script>
-    (function () {
-      var $ = function (id) { return document.getElementById(id); };
-      var basis = 'cloud', touched = {}, tracked = false;
-      var B = { saas: { name: 'new bookings', cuts: [3, 4, 6, 8, 12] }, cloud: { name: 'cloud consumption growth', cuts: [8, 15, 30, 45, 60] }, book: { name: 'a whole book', cuts: [20, 40, 80, 120, 160] } };
-      function money(s) { s = String(s || '').toLowerCase().replace(/[$,\s]/g, ''); var m = /^([0-9]*\.?[0-9]+)([km]?)$/.exec(s); if (!m) return 0; var n = parseFloat(m[1]); return m[2] === 'm' ? n * 1e6 : m[2] === 'k' ? n * 1e3 : n; }
-      function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
-      function render() {
-        var q = money($('hcQuota').value), ote = money($('hcBase').value) + money($('hcVar').value), b = B[basis], c = b.cuts;
-        if (!(q > 0 && ote > 0)) { $('hcNum').textContent = '?'; $('hcLabel').textContent = 'Add your numbers'; $('hcLine').textContent = 'Quota, base and variable.'; $('hcOut').className = 'hc-out proof'; $('hcAsk').href = '/ask-mark/'; $('hcAsk').textContent = 'Stuck on a deal? Ask Mark →'; return; }
-        var m = q / ote, X = (m >= 10 ? Math.round(m) : m.toFixed(1)) + '×', std = c[1] + ' to ' + c[2], t;
-        if (m < c[0]) t = ["It's unusually low.", 'proof', 'Unusually low for ' + b.name + '. Read the plan twice.'];
-        else if (m < c[1]) t = ["No. It's favorable.", 'ready', 'Below QuotaBird\'s working range of ' + std + ' for ' + b.name + '.'];
-        else if (m <= c[2]) t = ["No. It's standard.", 'ready', 'Inside QuotaBird\'s working range of ' + std + ' for ' + b.name + '.'];
-        else if (m <= c[3]) t = ["Not crazy. A stretch.", 'proof', 'Above QuotaBird\'s working range of ' + std + ' for ' + b.name + '.'];
-        else if (m <= c[4]) t = ["Close. It's aggressive.", 'prove', 'Well above QuotaBird\'s working range of ' + std + ' for ' + b.name + '.'];
-        else t = ["Yes. It's crazy.", 'dont', 'The plan is asking for something the territory may not have.'];
-        $('hcNum').textContent = X; $('hcLabel').textContent = t[0]; $('hcLine').textContent = t[2]; $('hcOut').className = 'hc-out ' + t[1];
-        var p = new URLSearchParams(); p.set('basis', basis);
-        [['quota', 'hcQuota'], ['base', 'hcBase'], ['variable', 'hcVar']].forEach(function (f) { if (money($(f[1]).value) > 0) p.set(f[0], Math.round(money($(f[1]).value))); });   // all three, exactly as shown
-        $('hcGo').href = '/quota/' + (Object.keys(touched).length || basis !== 'cloud' ? '#' + p.toString() : '');
-        // once the numbers are theirs, the Ask Mark line hands them to the chat (in the fragment, which never reaches a server)
-        var ask = $('hcAsk');
-        if (Object.keys(touched).length) {
-          var seed = 'I just ran your quota check on the home page. Quota ' + fmt(q) + ' on ' + fmt(ote) + ' OTE, measured in ' + b.name + '. That is ' + X + ' OTE. It says: ' + t[0] + ' ' + t[2] + '\n\nWhat would you do with this?';
-          ask.href = '/ask-mark/#ask=' + encodeURIComponent(seed); ask.textContent = 'Ask Mark what to do about this →';
-        } else { ask.href = '/ask-mark/'; ask.textContent = 'Stuck on a deal? Ask Mark →'; }
-      }
-      ['hcQuota', 'hcBase', 'hcVar'].forEach(function (id) {
-        var el = $(id);
-        el.addEventListener('focus', function () { setTimeout(function () { el.select(); }, 0); });
-        el.addEventListener('input', function () { el.classList.remove('is-example'); touched[id] = 1; $('hcNote').textContent = ''; if (!tracked) { tracked = true; if (window.qbTrack) qbTrack('hero_calc_edit'); } render(); saveStore(); });
-        el.addEventListener('blur', function () { var n = money(el.value); if (n > 0 && touched[id]) el.value = fmt(n); });
-      });
-      document.querySelectorAll('[data-hb]').forEach(function (btn) { btn.addEventListener('click', function () {
-        basis = btn.getAttribute('data-hb'); document.querySelectorAll('[data-hb]').forEach(function (x) { x.classList.toggle('on', x === btn); x.setAttribute('aria-pressed', x === btn ? 'true' : 'false'); }); render(); }); });
-      $('hcGo').addEventListener('click', function () { if (window.qbTrack) qbTrack('hero_calc_go'); });
-      $('hcAsk').addEventListener('click', function () { if (window.qbTrack) qbTrack(Object.keys(touched).length ? 'hero_ask_mark' : 'ask_mark_click'); });
-      // the same remembered numbers every other tool uses (this browser only), so the home page and Quota Check always agree
-      var STORE = 'qb-numbers', MAP = { hcQuota: 'quota', hcBase: 'base', hcVar: 'variable' };
-      function loadStore() { try { return JSON.parse(localStorage.getItem(STORE) || '{}') || {}; } catch (e) { return {}; } }
-      function saveStore() { try { var st = loadStore(); Object.keys(MAP).forEach(function (id) { if (touched[id]) { var v = money($(id).value); if (v > 0) st[MAP[id]] = v; } }); localStorage.setItem(STORE, JSON.stringify(st)); } catch (e) {} }
-      var st = loadStore(), used = false;
-      Object.keys(MAP).forEach(function (id) { var v = st[MAP[id]]; if (v > 0) { $(id).value = fmt(v); $(id).classList.remove('is-example'); touched[id] = 1; used = true; } });
-      if (used) { $('hcNote').innerHTML = 'Your numbers from another QuotaBird tool, remembered in this browser only. <button type="button" class="linkbtn" id="hcForget">Clear them</button>'; $('hcForget').onclick = function () { try { localStorage.removeItem(STORE); } catch (e) {} location.reload(); }; }
-      render();
-    })();
-    </script>
-    <div class="shelf-grid jobs">
-      <div class="checks">
-        <div class="cg"><h2 class="paths-h">The number they gave you.</h2><div class="cg-grid">
-          <a class="ck" href="/how-quotas-get-built/"><span class="cq">Where did this number come from?</span><span class="cb"><span>The guide</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/quota-case/"><span class="cq">Is your quota actually possible?</span><span class="cb"><span>Quota Case</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/territory/"><span class="cq">Does this territory suck?</span><span class="cb"><span>Territory Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/pipeline/"><span class="cq">You sure that's enough pipeline?</span><span class="cb"><span>Pipeline Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/discount/"><span class="cq">They want a discount.</span><span class="cb"><span>Discount Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/notes/the-number-isnt-changing/"><span class="cq">The number isn't changing. Now what?</span><span class="cb"><span>Field Note</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-        </div></div>
-        <div class="cg"><h2 class="paths-h">What they'll pay you for it.</h2><div class="cg-grid">
-          <a class="ck" href="/pay/"><span class="cq">What does this plan actually pay?</span><span class="cb"><span>Pay Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/commission/"><span class="cq">It closed. What do you actually keep?</span><span class="cb"><span>Commission Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/comp-plan/"><span class="cq">Can you trust this comp plan?</span><span class="cb"><span>Comp Plan Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/offer/"><span class="cq">Which offer actually pays more?</span><span class="cb"><span>Offer Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-        </div></div>
-      </div>
-    </div>
-    <!--shorts-->
-    <h2 class="shelf-h">Also useful.</h2>
-    <div class="shelf-grid">
-      <div class="checks">
-        <div class="cg"><h3 class="cg-h">Your deal</h3><div class="cg-grid">
-          <a class="ck" href="/deal/"><span class="cq">Is it real, or is it hopium?</span><span class="cb"><span>Deal Check · Federal</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/account/"><span class="cq">Do you know your customer?</span><span class="cb"><span>Account Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/commit/"><span class="cq">Will they burn the commit?</span><span class="cb"><span>Commit Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/competition/"><span class="cq">Why you and not them?</span><span class="cb"><span>Competition Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-        </div></div>
-        <div class="cg"><h3 class="cg-h">Your team</h3><div class="cg-grid">
-          <a class="ck" href="/risk/"><span class="cq">Are two deals carrying your year?</span><span class="cb"><span>Risk Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/rep/"><span class="cq">Is it the rep, or the territory?</span><span class="cb"><span>Rep Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/partner/"><span class="cq">Is this partner doing anything?</span><span class="cb"><span>Partner Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/olr/"><span class="cq">Can you defend your people?</span><span class="cb"><span>Talent Review</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-        </div></div>
-        <div class="cg"><h3 class="cg-h">Before the meeting</h3><div class="cg-grid">
-          <a class="ck" href="/meeting-prep/"><span class="cq">Got a meeting that matters?</span><span class="cb"><span>Meeting Prep</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/update-upward/"><span class="cq">What are you telling your boss?</span><span class="cb"><span>Update Upward</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/account-plan/"><span class="cq">Do you have a plan for this account?</span><span class="cb"><span>Account Plan</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/ask-mark/"><span class="cq">Stuck on a deal? Just ask.</span><span class="cb"><span>Ask Mark</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-        </div></div>
-        <div class="cg"><h3 class="cg-h">Print and learn</h3><div class="cg-grid">
-          <a class="ck" href="/kits/"><span class="cq">Worth printing.</span><span class="cb"><span>Field Kits</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a class="ck" href="/math/"><span class="cq">Why 3X?</span><span class="cb"><span>Sales Math</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-        </div></div>
-      </div>
-    </div>
+    </section>
   </div>
 </div>
 <section class="band" id="notes" aria-labelledby="notes-h">
@@ -341,13 +243,24 @@
   </div>
 </section>
 
+<section class="band band-real" id="real" aria-labelledby="real-h">
+  <div class="band-inner">
+    <div class="card mark-card real-mark" style="margin-top:0;">
+      <h3 id="real-h">Prefer the version with a pulse?</h3>
+      <p>Talk to the real Mark for twenty minutes. Free, and if I don't think you need my help I'll say so.</p>
+      <a class="btn btn-primary btn-lg btn-full" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=home&utm_content=real_mark" target="_blank" rel="noopener" style="margin-top:14px;">Talk to Mark</a>
+      <p class="fine" style="text-align:center;margin:8px 0 0;"><a href="/work-with-mark/">What working with Mark looks like</a></p>
+    </div>
+  </div>
+</section>
+
 <section class="band" id="about"></section>
 
 <section class="band" id="faq" aria-labelledby="faq-h">
   <div class="band-inner">
     <h2 id="faq-h">Questions</h2>
-    <details class="exp"><summary>Who is this for?</summary>
-      <div class="body">QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, a former Amazon sales leader. Most of the tools work the same anywhere; the federal-specific ones, like Deal Check, say so.</div></details>
+    <details class="exp"><summary>What is this?</summary>
+      <div class="body">A practical sales site for people who carry a number, built by Mark Flournoy, who led federal partner sales teams at Amazon. Tell the AI version of Mark what's going on and he'll tell you what he thinks. When the question is really arithmetic, the calculators and checks run your actual numbers in your browser. Most of it works the same anywhere; the federal-specific tools, like Deal Check, say so.</div></details>
     <details class="exp"><summary>Does anything I enter leave my device?</summary>
       <div class="body">Not from the tools. They run in your browser, so there's no account, no CRM connection and nothing sent to a server. The four AI pages (Ask Mark, Meeting Prep, Account Plan, Update Upward) are the exception, and say so on the page. QuotaBird uses Google Analytics to count page views, but it never sees your answers or your numbers. Base, variable and quota can be remembered in your own browser so the next tool fills them in. Nothing leaves the page unless you share a result. The details are on the <a href="/privacy/">privacy page</a>.</div></details>
     <details class="exp"><summary>Is any of this AI?</summary>

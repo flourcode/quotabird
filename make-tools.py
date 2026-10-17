@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-09.1600'
+BUILD = '2026-11-10.0900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -44,7 +44,7 @@ def menu(current):
     for g in rest: (left if sum(len(groups[x]) for x in left) <= sum(len(groups[x]) for x in right) else right).append(g)
     col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(groups[g])}</div>' for g in gs) + '</div>'
     wide_html = ''
-    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a></div>'
+    foot = '<div class="menu-foot"><a href="/tools/">All tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a></div>'
     kit = '<a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a>'
     return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{kit}{col(left)}{col(right)}{foot}</div></details>'
 
@@ -1467,6 +1467,9 @@ def shorts_strip():
 # The home page source lives in home.src.html; this fills in the note list and build stamp.
 home = open('home.src.html').read().replace('__NOTES__', home_notes()).replace('__NOTECOUNT__', str(len(NOTES))).replace('__BUILD__', BUILD).replace('<!--shorts-->', shorts_strip())
 open('index.html', 'w').write(home)
+# /tools/: every calculator and check, the shelves that used to be the home page (Ask Mark is the front door now)
+os.makedirs('tools', exist_ok=True)
+open('tools/index.html', 'w').write(open('tools.src.html').read().replace('__BUILD__', BUILD).replace('<!--shorts-->', shorts_strip()))
 # Pipeline Check lives at /pipeline/ again (it was the home page until the shelf took over)
 os.makedirs('pipeline', exist_ok=True)
 open('pipeline/index.html', 'w').write(open('pipeline.src.html').read().replace('__BUILD__', BUILD))
@@ -3513,7 +3516,7 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
 ''' + NOTE_TAIL.replace('Field Notes are part of <a href="/">QuotaBird</a>, a shelf', 'QuotaBird is a shelf'))
 
 # ── the 404 page carries the same shelf as the home page (one copy of the covers, pulled at build time) ──
-_home_src = open('home.src.html', encoding='utf-8').read()
+_home_src = open('tools.src.html', encoding='utf-8').read()   # the shelves live on /tools/ now
 _shelf = re.search(r'    <div class="shelf-grid">.*?\n    </div>\n', _home_src, flags=re.S).group(0)
 _shelf = _shelf.replace('<h3 class="cg-h">Your number</h3><div class="cg-grid">\n', '<h3 class="cg-h">Your number</h3><div class="cg-grid">\n          <a class="ck" href="/quota/"><span class="cq">Is my quota crazy?</span><span class="cb"><span>Quota Check</span><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></span></a>\n', 1)
 _nf = open('404.html', encoding='utf-8').read()
@@ -3544,10 +3547,10 @@ def header(path):
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/', 'work-with-mark/', 'federal/', 'ask-mark/')) else '/' + path.split('/')[0] + '/')}
+      <a class="chip chip-ask{' current' if path.startswith('ask-mark/') else ''}" href="{ask}">Ask Mark</a>
+      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/', 'work-with-mark/', 'federal/', 'ask-mark/', 'tools/')) else '/' + path.split('/')[0] + '/')}
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
-      <a class="chip chip-ask{' current' if path.startswith('ask-mark/') else ''}" href="{ask}">Ask Mark</a>
     </nav>
   </header>'''
 def chrome(path):
@@ -3556,7 +3559,7 @@ def chrome(path):
     if 'rel="preload" href="/inter.woff2"' not in s:
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
-    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/ask-mark/">Ask Mark</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a><a href="/privacy/">Privacy</a></p>'
+    nav = f'<p class="foot-nav"><a href="/ask-mark/">Ask Mark</a><a href="/tools/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a><a href="/privacy/">Privacy</a></p>'
     s = re.sub(r'\s*<p class="foot-nav">.*?</p>', '', s, count=1, flags=re.S)          # the footer nav is regenerated every build, so every page matches
     s = s.replace('<footer class="sitefoot">', '<footer class="sitefoot">\n  ' + nav, 1)
     # one contact line in every footer, for questions and security issues
@@ -3573,7 +3576,7 @@ def chrome(path):
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
 exec(open('make-ask.py', encoding='utf-8').read())   # Ask Mark, the workflow pages, tools/*.js, lambda/quotabird-catalog.mjs
-PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY)] \
+PAGES = ['index.html', 'tools/index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY)] \
         + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html', 'work-with-mark/index.html', 'federal/index.html'] + ASK_PAGES + ['404.html']
 for _p in PAGES:
     chrome(_p)

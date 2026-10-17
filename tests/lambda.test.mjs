@@ -16,7 +16,7 @@ let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', na
 
 await t('health shows quotabird', async () => {
   const r = await NEW.handler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.4.1'); assert.ok(b.quotabird.catalog);
+  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.5.0'); assert.ok(b.quotabird.catalog);
 });
 await t('origin not allowed is refused', async () => {
   const r = await NEW.handler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
@@ -186,5 +186,18 @@ await t('ask mark: follow-ups come back clean, a wall of text is split into para
   assert.deepEqual(q.splitLong('No. Push back.'), ['No. Push back.']);
   reply = { reply: 'Short answer.', tool: 'none' };
   const r2 = await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Quick one.' }] }); assert.deepEqual(r2.body.followups, [], 'missing followups is an empty list');
+});
+await t('workflow pages ride the chat: page frame, page playbooks, same Mark voice', async () => {
+  reply = { reply: "I'd want one thing out of Thursday: the pilot with a date on it.\n\nWalk in with the two things the demo didn't answer.", tool: 'none', followups: ['What do I say when the incumbent comes up?'] };
+  const r = await call({ kind: 'qb_mark', page: 'meeting-prep', messages: [{ role: 'user', text: 'Thursday I meet the deputy CIO at HHS about a pilot.' }] });
+  assert.equal(r.status, 200); assert.equal(r.body.reply.length, 2); assert.equal(r.body.followups.length, 1);
+  const sys = calls.at(-1).body.systemInstruction.parts[0].text;
+  assert.ok(sys.startsWith('You are the AI version of Mark Flournoy'), 'first person, not "QuotaBird speaking"'); assert.ok(sys.includes('this is the Meeting Prep page'), 'the frame');
+  assert.ok(sys.includes('MEETING PREP\n') && sys.includes('FEDERAL\n'), 'meeting playbook always, federal from HHS'); assert.ok(!sys.includes('"heading"'), 'no sections schema');
+  assert.equal(calls.at(-1).body.generationConfig.maxOutputTokens, 2000);
+  await call({ kind: 'qb_mark', page: 'update-upward', messages: [{ role: 'user', text: '$3M number, $1.2M closed, calling a miss.' }] });
+  const sys2 = calls.at(-1).body.systemInstruction.parts[0].text; assert.ok(sys2.includes('Update Upward page') && sys2.includes('UPDATE UPWARD\n') && sys2.includes('PIPELINE\n'));
+  await call({ kind: 'qb_mark', page: 'nope', messages: [{ role: 'user', text: 'Hello there.' }] });
+  assert.ok(!calls.at(-1).body.systemInstruction.parts[0].text.includes("Why they're here"), 'unknown page is plain chat');
 });
 console.log(`\n${n} lambda tests passed`);

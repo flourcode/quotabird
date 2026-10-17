@@ -11,7 +11,7 @@
 # The AI never does arithmetic. The Lambda (lambda/quotabird.mjs) picks the tool and pulls the numbers
 # out of what the person typed; this page runs the tool's own compute(); the Lambda then explains the
 # result it was handed. See HANDOFF.md, "Ask QuotaBird".
-import hashlib as _ahl, glob as _ag
+import hashlib as _ahl, glob as _ag, html as html_mod
 
 ASK_ENDPOINT = 'https://4s7uc7iyyeh7p4sknfpo6agllq0ahdff.lambda-url.us-east-1.on.aws/'   # the shared Lambda (also serves SideFrog)
 
@@ -213,32 +213,37 @@ def _box(label, ph, cta, note='Uses AI. <a href="#faq">What gets sent</a>', extr
             f'      <p class="startnote">{note}</p>\n    </form>\n    <div id="wfOut" aria-live="polite"></div>')
 
 CAL_ASK = 'https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=ask-mark'
-_ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minus the Wait',
-    "Ask the AI version of Mark Flournoy a sales question: a stuck federal deal, a prime that won't move, a quota that landed, a comp plan, a boss who wants it in commit. Blunt, useful, and twenty minutes from the real Mark.",
-    'Ask me anything about selling.',
-    "I'm the AI version of Mark. Twenty years in the Marines, fifteen in federal sales at Red Hat, F5 and Amazon, uploaded into a chatbot.<br>Deals, partners, quota, comp, forecasts, your boss. Try me, I won't sugarcoat it.",
-    '''    <div class="chat-bar" id="chatBar" hidden><span class="chat-bar-l">This conversation stays in this tab.</span><button class="btn btn-text" id="askNew" type="button">New chat</button></div>
+def _chat(placeholder, examples, tryone='Try one:', note='AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a>', rows=1):
+    """The chat: Mark's bubbles, the follow-up row, the composer, example chips, and the real-Mark card.
+    The three workflow pages use the same chat with their own placeholder and examples; the Lambda gets the page name."""
+    ex = ''.join(f'      <button class="ask-ex" type="button" data-example="{html_mod.escape(t, quote=True)}">{html_mod.escape(l)}</button>\n' for l, t in examples)
+    return f'''    <div class="chat-bar" id="chatBar" hidden><span class="chat-bar-l">This conversation stays in this tab.</span><button class="btn btn-text" id="askNew" type="button">New chat</button></div>
     <div class="chat" id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
     <div class="ask-next" id="askNext" role="group" aria-label="Ask next" hidden></div>
     <form class="composer" id="askForm" autocomplete="off" novalidate>
       <div class="composer-box">
-        <textarea id="askText" rows="1" maxlength="3000" placeholder="Ask Mark anything about selling" aria-label="Ask Mark"></textarea>
+        <textarea id="askText" rows="{rows}" maxlength="3000" placeholder="{html_mod.escape(placeholder, quote=True)}" aria-label="Ask Mark"></textarea>
         <button class="send" id="askBtn" type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
-      <p class="startnote ask-note">AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a></p>
+      <p class="startnote ask-note">{note}</p>
     </form>
-    <div class="ask-examples" id="askExamples" role="group" aria-label="Examples"><span class="ask-ex-h">Try one:</span>
-      <button class="ask-ex" type="button" data-example="I think my boss hates me. Every forecast call turns into him picking apart my deals in front of everybody, and my one-on-ones are all about what I haven't done. I'm at 70% of plan. How do I turn this around?">My boss hates me</button>
-      <button class="ask-ex" type="button" data-example="My customer went dark. The program manager was all in on a pilot, we sent the proposal three weeks ago, and now nothing. No reply to two emails. What do I do?">My customer went dark</button>
-      <button class="ask-ex" type="button" data-example="My quota went up 30% and my territory didn't change. How do I push back without sounding like I'm whining?">My quota went up 30%</button>
-      <button class="ask-ex" type="button" data-example="I need more pipeline. I'm at 1.5X on what's left of my number with five months to go, and most of what I have is early stage. Where does the rest come from?">I need more pipeline</button>
-    </div>
+    <div class="ask-examples" id="askExamples" role="group" aria-label="Examples"><span class="ask-ex-h">{tryone}</span>
+{ex}    </div>
     <div class="card mark-card real-mark">
-      <h3>Want the real one?</h3>
-      <p>That's me above, roughly. The actual Mark reads slower and charges for the long version, but the first twenty minutes are free, and if I don't think you need my help I'll say so.</p>
-      <a class="btn btn-primary btn-lg btn-full" href="''' + CAL_ASK + '''" target="_blank" rel="noopener" style="margin-top:14px;">Grab 20 minutes with Mark</a>
+      <h3>Prefer the version with a pulse?</h3>
+      <p>Talk to the real Mark for twenty minutes. Free, and if I don't think you need my help I'll say so.</p>
+      <a class="btn btn-primary btn-lg btn-full" href="''' + CAL_ASK + '''" target="_blank" rel="noopener" style="margin-top:14px;">Talk to Mark</a>
       <p class="fine" style="text-align:center;margin:8px 0 0;"><a href="/work-with-mark/">What working with Mark looks like</a></p>
-    </div>''',
+    </div>'''
+_ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minus the Wait',
+    "Ask the AI version of Mark Flournoy a sales question: a stuck federal deal, a prime that won't move, a quota that landed, a comp plan, a boss who wants it in commit. Blunt, useful, and twenty minutes from the real Mark.",
+    'Ask me anything about selling.',
+    "I'm the AI version of Mark. Twenty years in the Marine Corps, fifteen in federal tech sales at Red Hat, F5 and Amazon, compressed into a chatbot.<br>Deals, partners, quota, comp, forecasts, your boss. I won't sugarcoat it.",
+    _chat('Ask Mark anything about selling', [
+      ('My boss hates me', "I think my boss hates me. Every forecast call turns into him picking apart my deals in front of everybody, and my one-on-ones are all about what I haven't done. I'm at 70% of plan. How do I turn this around?"),
+      ('My customer went dark', "My customer went dark. The program manager was all in on a pilot, we sent the proposal three weeks ago, and now nothing. No reply to two emails. What do I do?"),
+      ('My quota went up 30%', "My quota went up 30% and my territory didn't change. How do I push back without sounding like I'm whining?"),
+      ('I need more pipeline', "I need more pipeline. I'm at 1.5X on what's left of my number with five months to go, and most of what I have is early stage. Where does the rest come from?")]),
     [("Is this really Mark?", "No, it's an AI set up to answer the way Mark would, built from what he's written and how he thinks about deals, partners, quota and comp. It's blunt because he is. It's not him, it doesn't know you, and it doesn't remember this conversation after you close the page. The real Mark is on the button at the bottom."),
      ("What can I ask?", "Anything about selling, especially federal cloud and SaaS: a stuck deal, a prime that won't commit, a vehicle you're not on, a champion who can't sign, co-sell that goes nowhere, a commit that isn't burning, a quota that just landed, a comp plan with footnotes, a boss who wants it in commit. Commercial deals too. When the question is really arithmetic, it hands you to the QuotaBird tool that runs your numbers."),
      ("Can I trust it?", "Like advice from someone experienced who wasn't in the room. It knows how federal deals actually move and it'll tell you what to do this week. It doesn't know your customer's org chart or this year's budget line, so check any name, vehicle or number before you repeat it to a customer. When it doesn't know, it should say so."),
@@ -251,28 +256,60 @@ open('ask-quotabird/index.html', 'w').write('<!DOCTYPE html>\n<html lang="en"><h
 _ask_page('meeting-prep', 'Meeting Prep', 'Meeting Prep: Get Ready for the Meeting That Matters',
     "Tell the AI version of Mark about the meeting and get what a win looks like, the agenda, the questions to ask, the objections and what to say, the landmines, the next step to ask for and the 72 hours after.",
     'Got a meeting that matters?',
-    "Tell Mark who you're meeting, what it's about and what you want out of it, however it comes out. No forms.",
-    _box('The meeting', "e.g. Thursday I meet the deputy CIO at HHS and her program manager about our analytics platform. They liked the demo. I want them to agree to a pilot, and I think the incumbent is whispering in their ear.", 'Get ready'),
+    "Who you're meeting, what it's about, what you want out of it, however it comes out. I'll tell you what I'd walk in with and what I'd ask for.",
+    _chat("Who, what about, and what you want out of it", [
+      ('Deputy CIO, pilot', "Thursday I meet the deputy CIO at HHS and her program manager about our analytics platform. They liked the demo last month. I want them to agree to a pilot with the claims team, and I think the incumbent's rep is friends with the PM."),
+      ('Prime who won\'t commit', "Meeting the capture lead at a big prime Tuesday. They keep saying meaningful workshare on an Air Force recompete but won't put a number on it. I want a number or I walk."),
+      ('First meeting, cold', "First meeting with a branch chief at DHS, 30 minutes, came through a partner intro. I don't know what she cares about yet. What do I do with it?"),
+      ('QBR with my VP', "QBR with my VP next week. I'm at 60% with one big deal carrying Q4. He's going to go after the forecast. How do I run this?")], rows=3),
     [_ARTI_FAQ, _TRUST_FAQ, _AI_FAQ], _SCRIPTS)
 
 _ask_page('account-plan', 'Account Plan', 'Account Plan: A Plan You Can Walk Into Your Boss With',
     "Tell the AI version of Mark about the account and get a plan: the mission, the money on their fiscal year, how they buy, the people and the play for each, how you grow it, and the next 72 hours.",
     'Do you have a plan for this account?',
-    "Tell Mark about the account: who it is, what you sell them, your number, who you know. Whatever you've got. No forms.",
-    _box('The account', "e.g. VA is my biggest account, $2M number this year. We sell a data platform to the claims office through Carahsoft. I know the program manager well and nobody above her. Renewal is in August.", 'Build the plan'),
+    "Who it is, what you sell them, your number, who you know. Whatever you've got. I'll tell you where it really stands and what I'd go after.",
+    _chat("The account: who, what you sell them, your number, who you know", [
+      ('One thread at VA', "VA is my biggest account, $2M number this year. We sell a data platform to the claims office through Carahsoft. I know the program manager really well and nobody above her. Renewal is in August and there's a $750K modernization deal I think closes in March."),
+      ('New account, no base', "Just got handed the Army account, no installed base, $1.5M number. The prime who owns the big program there has never heard of us. Where do I start?"),
+      ('Renewal at risk', "Our $900K renewal at the IRS is in June. The champion who bought it retired in January. The new director came from the incumbent's biggest customer."),
+      ('Grow a happy customer', "DISA is happy, $600K a year, same two workloads for three years. I know the program office cold and nobody in the CIO's shop. My number says this has to be $1.2M.")], rows=3),
     [_ARTI_FAQ, ("Why their fiscal year?", "Because that's when their money moves. A federal customer's year starts October 1, and a lot of buying lands July through September. A plan on your calendar instead of theirs puts the work in the wrong months."), _TRUST_FAQ, _AI_FAQ],
     _SCRIPTS)
 
-_TYPES = ''.join(f'<button class="chip{" on" if v == "weekly" else ""}" type="button" data-choice="type" data-v="{v}" aria-pressed="{"true" if v == "weekly" else "false"}">{lab}</button>' for v, lab in (('weekly', 'Weekly'), ('forecast', 'Forecast call'), ('miss', 'Calling a miss'), ('monthly', 'Monthly review')))
 _ask_page('update-upward', 'Update Upward', 'Update Upward: What Are You Telling Your Boss?',
     'Tell a federal sales coach where things stand and get the update you send your boss: the number and your call first, the deals, the blockers with exact asks, and the questions your boss will ask.',
     'What are you telling your boss?',
-    "Tell Mark where things stand: your number, your deals, what's in the way. You get the update, ready to paste, and the questions your boss will ask.",
-    _box("Where things stand", "e.g. $3M number, $1.2M closed. Northwind ($1.2M) is stuck in legal, Contoso ($650K) has a proposal out. I'll probably land around $2.6M. I need my VP to call Northwind's GC.", 'Write the update',
-         extra=f'      <div class="tf"><span class="tf-label" id="lbl-type">What kind of update</span><div class="chips" role="group" aria-labelledby="lbl-type">{_TYPES}</div></div>\n'),
+    "Your number, your deals, what's in the way, what kind of update. I'll write it, ready to paste, and tell you what your boss is going to ask.",
+    _chat("Your number, your deals, what's in the way, and what kind of update", [
+      ('Weekly, on track', "Weekly update. $3M number for the half, $2.1M closed, six weeks out. Contoso ($650K) has a proposal out with a pricing review next week. Northwind ($400K) verbal, paper in contracts. I'll land $3.1M."),
+      ('Calling a miss', "I need to call a miss. $3M number for the half, $1.2M closed, six weeks out. Northwind ($1.2M) is stuck in their legal for three weeks, Contoso ($650K) has a proposal out. I'll probably land around $2.6M. I need my VP on a call with Northwind's general counsel."),
+      ('Forecast call', "Forecast call tomorrow. Q4 commit is $1.8M, I'm at $900K closed. The $1.8M Army migration through the prime is 70% of the rest and the money is supposedly FY27. Do I keep it in commit?"),
+      ('Monthly review', "Monthly review Friday. $4M number, $2.4M closed in October, 12 deals in pipe, three in commit. Pipeline is 2.1X on what's left and I win about one in four. Boss wants to know where the rest comes from.")], rows=3),
     [("Will it make my numbers look better?", "No. It works from the numbers you give it. If you're going to miss, the update says so early and in dollars. That's the version your boss can actually use."),
      ("Calling a miss: why so early?", "Because your boss has a forecast call too. A miss you call in week six is a problem you solve together. A miss they find out about in week twelve is a problem with you."),
      _TRUST_FAQ, _AI_FAQ],
     _SCRIPTS)
 
 ASK_PAGES = ['ask-mark/index.html', 'meeting-prep/index.html', 'account-plan/index.html', 'update-upward/index.html']
+
+# ── 4. The home page: Ask Mark is the front door; the tools are behind the counter ──
+_ARROW = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+_BY = {c['slug']: c for c in _CAT + WORKFLOWS}
+def _ck(slug):
+    c = _BY[slug]; return f'        <a class="ck" href="/{slug}/"><span class="cq">{html_mod.escape(c["question"])}</span><span class="cb"><span>{html_mod.escape(c["name"])}</span>{_ARROW}</span></a>'
+_home = open('index.html', encoding='utf-8').read()
+_home = _home.replace('__CHAT__', _chat("What's going on?", [
+      ('My pipeline looks thin. Am I screwed?', "My pipeline looks thin. I'm at about 1.5X on what's left of my number with five months to go. Am I screwed?"),
+      ("My champion says it's closing. I don't believe them.", "My champion says it's closing this quarter. Procurement hasn't engaged and I don't believe them. What do I do?"),
+      ('Is this quota ridiculous?', "My quota went up 30% and my territory didn't change. Is this quota ridiculous, and how do I push back without whining?"),
+      ("My partner isn't doing anything.", "My partner keeps saying they'll introduce me to the account team and nothing happens. We've been partners for eight months."),
+      ("How do I tell my boss I'm going to miss?", "I'm going to miss the half. $3M number, $1.2M closed, six weeks out. How do I tell my boss?")],
+    tryone='', rows=2).replace('    <div class="card mark-card real-mark">', '    <div class="card mark-card real-mark" hidden>'))   # the home page's real-Mark card sits lower, by About
+_home = _home.replace('__TOOLS__', '\n'.join(_ck(x) for x in ('pipeline', 'quota', 'deal', 'pay', 'commission', 'territory')))
+_home = _home.replace('__WORK__', '\n'.join(_ck(x) for x in ('meeting-prep', 'account-plan', 'update-upward')))
+_home = re.sub(r"(window\.QB_BUILD = '[^']*';)", lambda m: m.group(1) + '\nwindow.QB_ASK = { endpoint: ' + json.dumps(ASK_ENDPOINT) + ', page: "home" };', _home, count=1)
+assert 'QB_ASK' in _home, 'home chat config'
+_home = _home.replace('<script src="analytics.js" defer></script>', '<script src="analytics.js" defer></script>\n<script src="ask.js" defer></script>')
+assert '__' not in _home.replace('__BUILD__', ''), 'home placeholder left'
+open('index.html', 'w', encoding='utf-8').write(_home)
+print('home: Ask Mark front door')

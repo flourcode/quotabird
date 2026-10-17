@@ -149,9 +149,21 @@ arg = sys.argv[1] if len(sys.argv) > 1 else 'home'
 # Ask Mark: the same white page and chunky headline, but the right-hand card is a two-turn chat, the way the
 # page looks after the first answer. The exchange is real Mark voice, picked for the person who's had the week.
 ASKCARDS = {
+  'home': dict(out='card.jpg', wordmark='USEFUL TOOLS FOR PEOPLE WHO CARRY A NUMBER',
+    headline='Got a sales\nproblem?\nAsk Mark.',
+    dek="Twenty years of federal sales in a chatbot. He'll tell you what he thinks. Free.",
+    url='quotabird.com',
+    you='My pipeline looks thin. Am I screwed?',
+    mark="Depends on your real win rate, not on somebody's 3X rule. Run it through Pipeline Check and bring me the ugly number."),
+  'home-b': dict(out='card-home-b.jpg', wordmark='USEFUL TOOLS FOR PEOPLE WHO CARRY A NUMBER',
+    headline='Got a sales\nproblem?\nAsk Mark.',
+    dek="Twenty years of federal sales in a chatbot. He'll tell you what he thinks. Free.",
+    url='quotabird.com',
+    you='My boss hates me. Every forecast call is a public execution.',
+    mark="He doesn't hate you. He's getting grilled by his own VP. Bring him the ugly deals before he finds them."),
   'ask-mark': dict(out='card-ask-mark.jpg', wordmark='ASK MARK',
-    headline="Stuck on a deal? Ask a guy who's been stuck on worse.",
-    dek='The AI version of Mark. Twenty years of federal sales, no sugarcoating, free.',
+    headline='Got a sales\nproblem?\nAsk Mark.',
+    dek="The AI version of Mark. Twenty years of federal sales, no sugarcoating, free.",
     url='quotabird.com/ask-mark',
     you='My boss hates me. Every forecast call is a public execution.',
     mark="He doesn't hate you. He's getting grilled by his own VP. Bring him the ugly deals before he finds them."),
@@ -189,8 +201,12 @@ if arg in ASKCARDS:
     im = Image.new('RGB', (W, H), WHITE); d = ImageDraw.Draw(im); brand(im, d, M, M - 6)
     LW = 560; y = 150
     d.text((M, y), A['wordmark'], font=font(700, 22), fill=MUT); y += 44
-    f, lines, s = fit(d, A['headline'], 900, 76, LW, 3, 44)
-    for l in lines: d.text((M - 3, y), l, font=f, fill=INK); y += int(s * 1.02)
+    if '\n' in A['headline']:   # an explicit break: size the type so the widest line fits
+        lines = A['headline'].split('\n'); s = 84 if len(lines) < 3 else 78
+        while s > 44 and max(d.textlength(l, font=font(900, s)) for l in lines) > LW: s -= 2
+        f = font(900, s)
+    else: f, lines, s = fit(d, A['headline'], 900, 76, LW, 3, 44)
+    for l in lines: d.text((M - 3, y), l, font=f, fill=INK); y += int(s * (0.98 if len(lines) > 2 else 1.02))
     df = font(500, 26); ty = y + 18; dek = wrap(d, A['dek'], df, LW)[:3]
     while ty + len(dek) * 34 > H - M - 44 and len(dek) > 1: dek = dek[:-1]   # never over the URL
     for tl in dek: d.text((M, ty), tl, font=df, fill=MUT); ty += 34

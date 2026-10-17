@@ -31,10 +31,9 @@ async def run(vw, vh, tag):
         await pg.screenshot(path=f'{SHOTS}/{tag}-askmark.png', full_page=True)
         await pg.click('#askNew'); print(tag, 'after new', await pg.locator('.msg').count())
         for slug, txt in [('meeting-prep', 'Thursday I meet the HHS deputy CIO about a pilot.'), ('account-plan', 'VA claims office, $2M number, through Carahsoft.'), ('update-upward', '$3M number, $1.2M closed, Northwind stuck in legal.')]:
-            await pg.goto(BASE + f'/{slug}/'); await pg.fill('#situation', txt)
-            if slug == 'update-upward': await pg.click('[data-choice="type"][data-v="miss"]')
-            await pg.click('#wfBtn'); await pg.wait_for_selector('.wf-out', timeout=10000); await pg.wait_for_timeout(300)
-            print(tag, slug, (await pg.inner_text('.wf-out'))[:120].replace('\n', ' | '))
+            await pg.goto(BASE + f'/{slug}/'); await pg.fill('#askText', txt); await pg.click('#askBtn')
+            await pg.wait_for_selector('.msg-mark:not(.is-thinking)', timeout=10000); await pg.wait_for_timeout(300)
+            print(tag, slug, (await pg.inner_text('.msg-mark .msg-body'))[:70].replace('\n', ' | '), '| copy', await pg.locator('.msg-copy').count(), '| chips', await pg.locator('.ask-next .ask-ex').count(), '| examples', await pg.locator('.ask-ex[data-example]').count())
             await pg.screenshot(path=f'{SHOTS}/{tag}-{slug}.png', full_page=True)
         await b.close()
 async def main():
