@@ -27,8 +27,8 @@
         "quota to OTE ratio for cloud sales",
         "is my sales quota fair"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -57,8 +57,8 @@
         "find the gap between last year and this year's quota",
         "my quota went up and my territory did not"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -86,8 +86,8 @@
         "is my sales territory viable",
         "new territory sizing check"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -115,8 +115,8 @@
         "should I give a 15 percent discount",
         "discount impact on margin and commission"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -145,8 +145,8 @@
         "what to say on a forecast call",
         "monthly business review for sales"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -176,8 +176,8 @@
         "what does OTE really pay",
         "comp plan payout curve"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -205,8 +205,8 @@
         "commission take home after taxes",
         "commission check calculator"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -236,8 +236,8 @@
         "commission clawback rules",
         "who gets credit on a split deal"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -250,7 +250,7 @@
       "displayName": "Offer Check",
       "type": "text/html",
       "url": "https://quotabird.com/offer/",
-      "description": "Offer Check: Two sales job offers side by side: base, variable, ramp and guarantee in, year-one cash and a normal year at a realistic attainment out.",
+      "description": "Offer Check: Your current sales job against a new offer, each at a realistic attainment: what the offer really pays, what year one costs you with the ramp and what you leave behind, and when you come out ahead. Or check one offer on its own.",
       "tags": [
         "your-pay",
         "sales",
@@ -261,14 +261,14 @@
         "OfferCheck"
       ],
       "representativeQueries": [
-        "compare two sales job offers",
-        "which sales offer pays more",
-        "OTE vs realistic earnings calculator",
-        "sales job offer ramp guarantee",
-        "year one sales compensation with ramp"
+        "is this sales job offer worth it",
+        "should I take the sales job offer",
+        "current job vs new offer calculator",
+        "sales offer OTE vs realistic earnings",
+        "sales job offer ramp guarantee"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -296,8 +296,8 @@
         "pipeline coverage calculator with my win rate",
         "is 3X pipeline coverage enough"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -325,8 +325,8 @@
         "pipeline concentration and aging risk",
         "4X coverage but still at risk"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -354,8 +354,8 @@
         "why is my sales rep underperforming",
         "rep problem or territory problem"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -383,8 +383,8 @@
         "is my channel partner actually selling",
         "partner check for co-sell"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -412,8 +412,8 @@
         "will my case for a rep survive talent review",
         "Amazon OLR prep for managers"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -441,8 +441,8 @@
         "qualify a federal sales deal before commit",
         "what will my manager ask about this deal"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -470,8 +470,8 @@
         "am I single-threaded in this account",
         "federal account check"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -500,8 +500,8 @@
         "federal account plan by fiscal quarter",
         "strategic account plan for a quota carrier"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -531,8 +531,8 @@
         "customer is behind on their committed spend",
         "how much monthly spend to use a cloud commitment"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -562,8 +562,8 @@
         "how do federal agencies buy software",
         "federal sales readiness checklist"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -591,8 +591,8 @@
         "am I beating the incumbent",
         "competitive position check for a deal"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -620,8 +620,8 @@
         "pressure test my brief before the meeting",
         "what question am I hoping nobody asks"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -651,8 +651,8 @@
         "how to brief a general officer or SES",
         "meeting prep for enterprise sales"
       ],
-      "version": "2026.11.10",
-      "updatedAt": "2026-11-10T00:00:00Z",
+      "version": "2026.11.11",
+      "updatedAt": "2026-11-11T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,

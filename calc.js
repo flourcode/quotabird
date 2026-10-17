@@ -88,14 +88,17 @@
     // The hand-off to Ask Mark: the result as the person's own first message, in the page's words and numbers.
     // It travels in the URL fragment, which never reaches the server or analytics, and the chat drops it on arrival.
     const fieldLabel = (f) => { const tf = f.kind !== 'choice' && $(f.id) ? $(f.id).closest('.tf') : null; const l = f.kind === 'choice' ? $('lbl-' + f.id) : tf && tf.querySelector('.tf-label'); return ((l && l.textContent) || f.id).trim(); };
-    const fieldValue = (f) => { if (f.kind === 'choice') { const b = document.querySelector(`[data-choice="${f.id}"].on`); return b ? b.textContent.trim() : ''; } const el = $(f.id); return el ? el.value.trim() : ''; };
+    const fieldValue = (f) => { if (f.kind === 'choice') { const b = document.querySelector(`[data-choice="${f.id}"].on`); return b ? b.textContent.trim() : ''; } const el = $(f.id); return el && !el.closest('[hidden]') ? el.value.trim() : ''; };   // a hidden field doesn't count
     const sent = (t) => { t = String(t || '').trim(); return !t ? '' : /[.!?]$/.test(t) ? t : t + '.'; };
     const askSeed = (s) => [`I just ran your ${cfg.name}. It says: ` + [answerOf(s), s.attack, s.sub].map(sent).filter(Boolean).join(' '),
       'What I put in:\n' + F.map(f => [fieldLabel(f), fieldValue(f)]).filter(p => p[1]).map(p => `${p[0]}: ${p[1]}`).join('\n'),
       s.rows.length ? 'What it worked out:\n' + s.rows.map(r => `${r[0]}: ${r[1]}`).join('\n') : '',
       'What would you do with this?'].filter(Boolean).join('\n\n');
+    // fields that belong to one choice (data-when="mode=jump") show only while that choice is on
+    const applyWhen = (v) => document.querySelectorAll('[data-when]').forEach(el => { const [k, val] = el.dataset.when.split('='); el.hidden = String(v[k]) !== val; });
     function render() {
-      const s = cfg.compute(read()); lastS = s; const out = $('out');
+      const v0 = read(); applyWhen(v0);
+      const s = cfg.compute(v0); lastS = s; const out = $('out');
       const sameVerdict = !!(s && prevLabel && prevLabel === s.label); prevLabel = s ? s.label : null;
       if (s && s.msg) { lastS = null; prevLabel = null; }
       if (!s || s.msg) { out.innerHTML = `<div class="empty">${esc((s && s.msg) || cfg.emptyText || 'Fill in the numbers below.')}</div>`; const o2 = $('out2'); if (o2) o2.innerHTML = ''; strip(null); return; }

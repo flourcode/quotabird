@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-10.2300** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-11.0900** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -62,7 +62,7 @@ Mark's own lines stay, even when they're punchy ("3X is a 33% win rate wearing a
 | Talent Review | Yes. You're ready. / Not yet. / Not really. It's a story. / No. No receipts. |
 | Pay | Yes, it pays for beating the number. / A little extra above 100%. / It pays in a straight line. / Not much above 100%. / The cap takes the upside. |
 | Comp Plan | Yes. It's clear. / Mostly. Get a few answers in writing. / Not yet. Too much is unwritten. / No. Get answers before you count on it. |
-| Offer | About the same money. / Offer A pays more in a normal year. / Offer B pays more in a normal year. |
+| Offer | Against your job: Yes. It's a real raise. / Yes, after a dip. / Barely a raise. / No. It's a pay cut. Offer on its own: A solid offer, if the quota is. / Fair, if the quota is. / Maybe. Read the fine print. |
 | Commit | Yes, and then some. / Yes. They're on pace. / Not at this pace. / No. They'll fall short. / No. Not even close. |
 | Brief | Yes. It's room-ready. / Maybe. It'll be a fight. / No. Shark food. / No. There's no point yet. |
 
@@ -151,9 +151,9 @@ QuotaBird is not becoming a consulting-company site. The free tools stay the cen
 ## Website design skill v2.1 pass (Nov 3)
 
 - **Home page, one route to each tool.** The two jobs are lists of rows, side by side: "The number they gave you." (the guide, Quota Case, Territory, Pipeline, Discount, and "The number isn't changing" note) and "What they'll pay you for it." (Pay, Commission, Comp Plan, Offer). Below the Shorts, "Also useful." holds Your deal, Your team, and Print and learn. Brief Check is off the home page and the menu; its page and the plugin skill stay. The home block uses class `jobs` (not `pillars`, which is the uppercase label strip on tool pages).
-- **Offer Check, year one is always stated (Nov 7):** ramp and guarantee only affect year one, so the headline sentence now always adds a year-one comparison ("In year one, Offer B pays $74K more", plus "because of its ramp or guarantee" when year one flips). A guarantee over 100% returns a message instead of a result; a ramp over 12 months adds "runs past the first year, so all of year one is ramp pay." The plugin's offer-check reference still only mentions year one when it flips: update it in the next plugin release.
+- **Offer Check, year one is always stated (Nov 7; superseded by the Nov 11 redesign below):** ramp and guarantee only affect year one, so the headline sentence now always adds a year-one comparison ("In year one, Offer B pays $74K more", plus "because of its ramp or guarantee" when year one flips). A guarantee over 100% returns a message instead of a result; a ramp over 12 months adds "runs past the first year, so all of year one is ramp pay." The plugin's offer-check reference still only mentions year one when it flips: update it in the next plugin release.
 - **The home calculator shares the remembered numbers too (fixed Nov 6):** it reads `qb-numbers` on load, shows the same "remembered in this browser only. Clear them" note, saves what's typed there, and passes the shown values to Quota Check, so the home page and Quota Check always show the same multiple. Before this, a visitor who had used another tool saw 21× on the home page and 24× after "See the whole plan".
-- **Numbers carry between tools.** Base, variable and quota are remembered in the visitor's browser (localStorage key `qb-numbers`) and prefill Quota Check, Quota Case, Pay Check and Offer Check (Offer A). The page says so and offers "Clear them". Nothing is sent anywhere. Fields map through `share` in a tool's config.
+- **Numbers carry between tools.** Base, variable and quota are remembered in the visitor's browser (localStorage key `qb-numbers`) and prefill Quota Check, Quota Case, Pay Check and Offer Check (your current job). The page says so and offers "Clear them". Nothing is sent anywhere. Fields map through `share` in a tool's config.
 - **Optional fields fold away** under "More details" (`more=True` on a field; `head='…'` adds a small section heading). The panel opens itself when a shared link or remembered number fills one of its fields.
 - **Shape scale:** small 12px (buttons, fields, answers), medium 16px (cards, panels), large 24px (the verdict card), full (pills and chips).
 - **One state system:** hover is a 5% ink layer and press 10% on rows, notes, answers and menu links; solid blue only on real buttons.
@@ -182,7 +182,7 @@ QuotaBird's core is two jobs: **the number they gave you** (Quota Check, Quota C
 - Field Notes: **"How to review an offer, and push back on it"** and **"You think the company is shorting you"**.
 - **Equity and advice:** stock, RSUs and ESPPs are mentioned, never valued. Every comp page steers clear of financial and legal advice and says so: talk to HR, an employment attorney or a financial professional where it matters.
 - Big result numbers stay on one line and shrink to fit their card (`fitBig` in calc.js).
-- **Second pass (built Nov 2):** **Offer Check** (/offer/): two offers side by side, year one with the ramp (guarantee if any, otherwise half your normal attainment, an assumption the page states) and a normal year at a realistic attainment; neutral verdicts ("About the same money." / "Offer A pays more in a normal year."); guarantee and attainment fields use `pctx` so 100% works. Field Notes: "How to explain a bad comp plan without losing the room", "How to fight a comp plan before it ships", "OTE is what you make if everything goes right", "Your accelerator only matters if somebody reaches it", "A cap tells you how much upside they're willing to share", "How a $1M deal turns into a small paycheck", "The plan says uncapped. Read the footnotes." The home page now shows both pillars under the hero: "The number they gave you." and "What they'll pay you for it.", three steps each.
+- **Second pass (built Nov 2):** **Offer Check** (/offer/, redesigned Nov 11, see below): originally two offers side by side, year one with the ramp (guarantee if any, otherwise half your normal attainment, an assumption the page states) and a normal year at a realistic attainment; neutral verdicts ("About the same money." / "Offer A pays more in a normal year."); guarantee and attainment fields use `pctx` so 100% works. Field Notes: "How to explain a bad comp plan without losing the room", "How to fight a comp plan before it ships", "OTE is what you make if everything goes right", "Your accelerator only matters if somebody reaches it", "A cap tells you how much upside they're willing to share", "How a $1M deal turns into a small paycheck", "The plan says uncapped. Read the footnotes." The home page now shows both pillars under the hero: "The number they gave you." and "What they'll pay you for it.", three steps each.
 
 ## Methodology (/methodology/, Nov 1)
 
@@ -305,6 +305,15 @@ Every result: verdict → what to fix → (Pressure test, tonal) → Mark's card
 GA4 `G-BG9NR9GXQZ` via `analytics.js` (`window.qbTrack`). Events: `hero_calc_edit`, `hero_calc_go`, `front_pick`, `<slug>_start`, `verdict`, `<slug>_book` (Deal: `book`), `<slug>_book_after_grill`, `<slug>_dm_copy`, `<slug>_share`, `<slug>_edit`, `ask_book`, `kit_download` / `seller_download` / `leader_download`, `<slug>_fedhoo`, `related_tool_click`.
 
 Calendly: calendly.com/markflournoy/chat-with-mark (utm_source=quotabird, utm_medium=<page>). Email mark@quotabird.com. LinkedIn linkedin.com/in/markflournoy/.
+
+## Offer Check redesign (Nov 11)
+
+Two offers side by side isn't how people job-hunt now. Most people have one offer and a job. So /offer/ asks "Is this offer worth the jump?" and has two modes, a chip at the top (`mode`):
+
+- **My current job** (default). The offer (base, target variable, realistic attainment there, ramp months) against your job now (base, target variable, what you hit there). More details: ramp guarantee (% of the offer's variable), sign-on bonus, what you'd leave behind (unpaid commission, forfeited bonus, stock vesting this year). Shows the normal-year difference as the big number, year one with the ramp, sign-on and walk-away, and the month the offer's running total passes staying put (up to 48). Verdicts: raise under −2% "No. It's a pay cut." (dont); up to +5% "Barely a raise." (proof); year one even or ahead, or catch-up within 12 months, "Yes. It's a real raise." (ready); otherwise "Yes, after a dip." (proof), with a sub-line asking them to close the gap with a guarantee or sign-on.
+- **Just check the offer.** No comparison. Big number is a normal year at a realistic attainment (default 80%), with year one, the share of pay riding on quota, the ramp and the Bridge Group 2026 median AE OTE ($200K) for context. "Maybe. Read the fine print." when more than 55% rides on quota or the ramp is 6+ months with nothing guaranteed; "A solid offer, if the quota is." when 50% or less rides on quota and the ramp is protected (3 months or less, or 50%+ guaranteed); otherwise "Fair, if the quota is." Both point to Quota Check for whether the quota itself is sane.
+
+Mechanics: a field with `when='mode=jump'` renders `data-when` on its label (and its group heading); calc.js `applyWhen` hides those while the other choice is on, and hidden fields are left out of the Ask Mark handoff. CSS: `.calc-in label.tf[hidden]` needs the extra specificity to beat the grid's `display:flex !important`. Shared numbers map into your current job (`share: {curBase:'base', curVar:'variable'}`). The Lambda catalog labels now carry the group heading ("Your job now: Base (only when mode=jump)") so the AI doesn't confuse the two Base fields; the pay playbook talks about current job vs. offer. OG card: "+$17K / Yes, after a dip." tests/parity.mjs fuzzes Offer Check for sanity (no NaN, every verdict worded) instead of matching the original; render_parity skips it.
 
 ## Navigation
 

@@ -17,7 +17,7 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 - [Pay Check](https://quotabird.com/pay/): Base, variable, accelerator, cap and threshold in. What the plan pays at 50% to 200% of quota out, and where the upside goes. (when you want to know what the plan really pays.)
 - [Commission Check](https://quotabird.com/commission/): Deal size, commission rate and your share of the credit in, what you actually take home out, after the share you set aside for taxes. (when it closes.)
 - [Comp Plan Check](https://quotabird.com/comp-plan/): Five questions that find the red flags in a sales comp plan: crediting, payout timing, upside, clawbacks and mid-year changes. (before you count on the plan.)
-- [Offer Check](https://quotabird.com/offer/): Two sales job offers side by side: base, variable, ramp and guarantee in, year-one cash and a normal year at a realistic attainment out. (when you have two offers.)
+- [Offer Check](https://quotabird.com/offer/): Your current sales job against a new offer, each at a realistic attainment: what the offer really pays, what year one costs you with the ramp and what you leave behind, and when you come out ahead. Or check one offer on its own. (is the offer worth the jump?.)
 
 ## Your team
 

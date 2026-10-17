@@ -214,7 +214,7 @@ Read the crediting rules first: who gets credit for a renewal, an expansion, a p
 
 An accelerator only matters if you can realistically reach it. A cap tells you exactly how much upside the company is willing to share. Credit moved to somebody else is a pay cut with a new name.
 
-For two offers, compare year one including ramp, guarantees and draw, then compare a normal year at a realistic attainment for each territory. The bigger OTE loses more often than people expect.
+An offer against the job they have: compare a normal year at a realistic attainment for each (they know what they hit now; the new number is a guess, so guess low), then year one with the ramp, any guarantee or sign-on, and what they'd leave behind (unpaid commission, a bonus, stock vesting soon). Then the month they'd catch up. The bigger OTE loses more often than people expect, and the money rarely decides a good move alone: the territory, the manager and the quota do. Offer Check runs it.
 
 A discount isn't free. It usually costs company margin and seller commission. The question is what you got in return, and whether you'd have won without it.
 

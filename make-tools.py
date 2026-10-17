@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-10.2300'
+BUILD = '2026-11-11.0900'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -13,7 +13,7 @@ TOOLS = [
     ('Your pay', '/pay/', 'Pay Check', 'When you want to know what the plan really pays'),
     ('Your pay', '/commission/', 'Commission Check', 'When it closes'),
     ('Your pay', '/comp-plan/', 'Comp Plan Check', 'Before you count on the plan'),
-    ('Your pay', '/offer/', 'Offer Check', 'When you have two offers'),
+    ('Your pay', '/offer/', 'Offer Check', 'Is the offer worth the jump?'),
     ('Your team', '/pipeline/', 'Pipeline Check', 'Quarterly, before the review'),
     ('Your team', '/risk/', 'Risk Check', 'When coverage looks fine and you don\'t trust it'),
     ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you'),
@@ -1102,9 +1102,9 @@ NOTES = [
     <p>Bridge Group's 2026 study found 48% of AEs hit quota. So for about half of sellers, OTE is more than they'll make that year.</p>
     <h3>Budget on the lower rows</h3>
     <p>When you plan your spending, use what the plan pays at 75% to 100% of quota. <a href="/pay/">Pay Check</a> shows those rows. Anything above that is a good year, and you'll know when you're having one.</p>
-    <h3>When you compare jobs</h3>
-    <p>Compare what each offer pays at the same realistic attainment, not the two OTEs. A higher OTE on a quota nobody hits can pay less than a lower one you'll actually make. <a href="/offer/">Offer Check</a> puts them side by side.</p>''',
-         tool=('/offer/', 'Offer Check', 'compares two offers at a realistic attainment, not at OTE.')),
+    <h3>When you think about jumping</h3>
+    <p>Compare what the offer pays at an attainment you can realistically expect there with what your job pays now at the attainment you actually hit, not the two OTEs. A higher OTE on a quota nobody hits can pay less than the job you have. And count year one: the ramp, and what you leave behind. <a href="/offer/">Offer Check</a> does both.</p>''',
+         tool=('/offer/', 'Offer Check', 'puts your job now next to the offer, each at a realistic attainment, not at OTE.')),
  dict(slug='accelerators-need-someone-to-reach-them', title='Your accelerator only matters if somebody reaches it',
          dek='A 2× accelerator sounds great in the offer. It pays nothing in a year you finish at 90%.',
          body='''    <p class="lede">A 2× accelerator sounds great in the offer. It pays nothing in a year you finish at 90%.</p>
@@ -1748,60 +1748,84 @@ CALCS = [
   bookNote: (s) => `Pay Check: ${s.extram} extra at 150%, OTE ${s.ote}.`,
 });"""),
  dict(slug='offer', name='Offer Check',
-  title='Offer Check: Which Offer Actually Pays More?',
-  desc='Two sales job offers side by side: base, variable, ramp and guarantee in, year-one cash and a normal year at a realistic attainment out.',
-  ogdesc='Two offers, side by side. Year-one cash with the ramp, and a normal year at a realistic attainment.',
-  h1='Which offer actually pays more?', dek='Put in both offers and a realistic attainment. See year one with the ramp, and a normal year after it.',
-  fields=[dict(id='baseA',head='Offer A',kind='money',label='Base',example='$150,000'),
-          dict(id='varA',kind='money',label='Target variable',example='$130,000'),
-          dict(id='rampA',kind='count',label='Ramp, in months',example='6'),
-          dict(id='guarA',more=True,kind='pctx',label='Offer A: variable guaranteed during ramp',example='',placeholder='none'),
-          dict(id='baseB',head='Offer B',kind='money',label='Base',example='$170,000'),
-          dict(id='varB',kind='money',label='Target variable',example='$150,000'),
-          dict(id='rampB',kind='count',label='Ramp, in months',example='6'),
-          dict(id='guarB',more=True,kind='pctx',label='Offer B: variable guaranteed during ramp',example='',placeholder='none'),
-          dict(id='attain',head='Both offers',kind='pctx',label='Realistic attainment',example='85%')],
-  card=dict(headline=['Which offer', 'actually pays more?'],dek='Base. Variable. Ramp. Guarantee.',pillars=['BASE','VARIABLE','RAMP','ATTAINMENT']),
-  bands=[('how','How the comparison works','''    <p class="lede">An offer letter shows OTE, which is what you make at exactly 100% of quota. This compares the two offers at the attainment you think is realistic, which is usually closer to what you'll make.</p>
-    <p>A normal year is base plus variable at that attainment. Year one also counts the ramp: during the ramp months you earn your guarantee if there is one, and otherwise about half your normal attainment, since new reps rarely sell at full speed. That half is an assumption, and it's shown so you can argue with it.</p>
-    <p>If one offer has a much bigger quota for the same pay, put in a lower attainment for that job and run it again. <a href="/quota/">Quota Check</a> tells you whether each quota is in the normal range for how it's measured.</p>
-    <p>This covers cash only, at a straight-line rate. It doesn't include accelerators (<a href="/pay/">Pay Check</a> does), or stock, RSUs and ESPPs, which QuotaBird doesn't value. It isn't financial advice.</p>''')],
+  title='Offer Check: Is This Offer Worth the Jump?',
+  desc='Your current sales job against a new offer, each at a realistic attainment: what the offer really pays, what year one costs you with the ramp and what you leave behind, and when you come out ahead. Or check one offer on its own.',
+  ogdesc='Your job now against the offer. What it really pays, what year one costs you, and when you come out ahead.',
+  ogh1='Is this offer worth the jump?',
+  h1='Is this offer worth the jump?', dek="Put in the offer and what you make now. See what it really pays, what year one costs you, and when you come out ahead. No job to compare it to? Check the offer on its own.",
+  fields=[dict(id='mode',kind='choice',label='Compare the offer to',example='jump',options=[('jump','My current job'),('offer','Just check the offer')]),
+          dict(id='base',head='The offer',kind='money',label='Base',example='$170,000'),
+          dict(id='variable',kind='money',label='Target variable',example='$150,000'),
+          dict(id='atNew',kind='pctx',label='Realistic attainment there',example='80%'),
+          dict(id='ramp',kind='count',label='Ramp, in months',example='6'),
+          dict(id='curBase',head='Your job now',when='mode=jump',kind='money',label='Base',example='$150,000'),
+          dict(id='curVar',when='mode=jump',kind='money',label='Target variable',example='$130,000'),
+          dict(id='atCur',when='mode=jump',kind='pctx',label='What you hit there',example='95%'),
+          dict(id='guar',more=True,kind='pctx',label='Offer: variable guaranteed during the ramp',example='',placeholder='none'),
+          dict(id='signon',more=True,kind='money',label='Offer: sign-on bonus',example='',placeholder='none'),
+          dict(id='walk',more=True,when='mode=jump',kind='money',label="What you'd leave behind (unpaid commission, a bonus, stock vesting this year)",example='',placeholder='none')],
+  card=dict(headline=['Is this offer', 'worth the jump?'],dek='Your job now. The offer. The ramp. What you leave behind.',pillars=['NOW','OFFER','RAMP','CATCH-UP']),
+  bands=[('how','How the comparison works','''    <p class="lede">An offer letter shows OTE, which is what you make at exactly 100% of quota. Nobody should change jobs on that number. This compares what the offer pays at the attainment you can realistically expect there with what your job pays now at the attainment you actually hit.</p>
+    <p>Use two different attainments on purpose. You know your track record where you are. At a new company you're guessing, the territory is new, and the quota may be harder; Bridge Group's 2026 study found 48% of AEs hit quota. If you're not sure, use something lower for the offer.</p>
+    <p>A normal year is base plus variable at that attainment. Year one also counts the ramp: during the ramp months you earn your guarantee if there is one, and otherwise about half your normal attainment, since new reps rarely sell at full speed. That half is an assumption, and it's shown so you can argue with it. Year one adds any sign-on bonus and subtracts what you'd leave behind: commission on deals that haven't paid yet, a bonus you'd forfeit, stock vesting in the next twelve months. The catch-up month is when the offer's running total passes what you'd have made by staying.</p>
+    <p>No job to compare it to? Choose <strong>Just check the offer</strong>. You'll see what it really pays, what year one looks like, how much of the pay rides on quota, and whether the ramp is protected. Whether the quota itself is sane is a separate question: <a href="/quota/">Quota Check</a> answers it.</p>
+    <p>This covers cash only, at a straight-line rate. It doesn't include accelerators (<a href="/pay/">Pay Check</a> does), or the value of stock, RSUs and ESPPs, which QuotaBird doesn't estimate. It isn't financial advice.</p>''')],
   faq=[('Does anything I enter leave my device?','No. The math runs right here in your browser. There\'s no account, and nothing goes to a server or your CRM. QuotaBird counts page views with Google Analytics, but it never sees your numbers, and nothing leaves the page unless you share a result.'),
-       ('What attainment should I use?','Whatever you honestly expect. Bridge Group\'s 2026 study found 48% of AEs hit quota, so 100% is optimistic for most people. Ask each company what share of its team hit quota last year and adjust.'),
-       ('What if the guarantee is a draw I have to pay back?','Then leave the guarantee blank. A recoverable draw is an advance against future commission, not extra money.')],
+       ('Why two different attainments?','Because you know one and you\'re guessing the other. Use what you actually hit where you are. For the offer, ask what share of the team hit quota last year and how the territory was built; Bridge Group\'s 2026 study found 48% of AEs hit quota, so 100% is optimistic for most people.'),
+       ('What counts as what I\'d leave behind?','Money you\'d have been paid by staying and won\'t be if you leave: commission on closed deals that pays out after your last day, an annual bonus you\'d forfeit, stock that vests in the next twelve months. Ask the new company to buy some of it out with a sign-on bonus.'),
+       ('What if the guarantee is a draw I have to pay back?','Then leave the guarantee blank. A recoverable draw is an advance against future commission, not extra money.'),
+       ('How do I know if an offer is good on its own?','Three things decide it: what it pays at a realistic attainment, how much of the pay rides on the quota, and whether the quota is achievable. This page shows the first two; <a href="/quota/">Quota Check</a> shows the third.')],
   config="""CalcTool({
-  slug: 'offer', share: { baseA: 'base', varA: 'variable' }, answers: {"Close": "About the same money.", "A pays more": "Offer A pays more in a normal year.", "B pays more": "Offer B pays more in a normal year."}, name: 'Offer Check', url: 'https://quotabird.com/offer/',
-  fields: [{ id: 'baseA', kind: 'money' }, { id: 'varA', kind: 'money' }, { id: 'rampA', kind: 'count' }, { id: 'guarA', kind: 'pctx' }, { id: 'baseB', kind: 'money' }, { id: 'varB', kind: 'money' }, { id: 'rampB', kind: 'count' }, { id: 'guarB', kind: 'pctx' }, { id: 'attain', kind: 'pctx' }],
+  slug: 'offer', share: { curBase: 'base', curVar: 'variable' }, answers: {"Real raise": "Yes. It's a real raise.", "After a dip": "Yes, after a dip.", "Barely": "Barely a raise.", "Pay cut": "No. It's a pay cut.", "Solid": "A solid offer, if the quota is.", "Fair": "Fair, if the quota is.", "Fine print": "Maybe. Read the fine print."}, name: 'Offer Check', url: 'https://quotabird.com/offer/',
+  fields: [{ id: 'mode', kind: 'choice', example: 'jump' }, { id: 'base', kind: 'money' }, { id: 'variable', kind: 'money' }, { id: 'atNew', kind: 'pctx' }, { id: 'ramp', kind: 'count' }, { id: 'curBase', kind: 'money' }, { id: 'curVar', kind: 'money' }, { id: 'atCur', kind: 'pctx' }, { id: 'guar', kind: 'pctx' }, { id: 'signon', kind: 'money' }, { id: 'walk', kind: 'money' }],
   compute(v) {
-    if (!(v.baseA > 0 && v.baseB > 0)) return { msg: v.baseA > 0 ? "Add Offer B's base." : v.baseB > 0 ? "Add Offer A's base." : "Add both offers' base and variable." };
-    if (v.guarA > 1 || v.guarB > 1) return { msg: `Offer ${v.guarA > 1 ? 'A' : 'B'}'s ramp guarantee is a share of its target variable, from 0 to 100%. Check that number.` };
-    const money = (n) => n >= 1e6 ? '$' + parseFloat((n / 1e6).toFixed(2)) + 'M' : '$' + Math.round(n / 1e3) + 'K';
-    const at = v.attain > 0 ? v.attain : .85;
-    const year1 = (base, vari, ramp, guar) => { const r = Math.min(12, ramp || 0); return base + vari / 12 * (r * (guar > 0 ? guar : at * .5) + (12 - r) * at); };
-    const normA = v.baseA + v.varA * at, normB = v.baseB + v.varB * at;
-    const y1A = year1(v.baseA, v.varA, v.rampA, v.guarA), y1B = year1(v.baseB, v.varB, v.rampB, v.guarB);
-    const diff = normB - normA, d1 = y1B - y1A, rel = Math.abs(diff) / Math.max(normA, normB);
-    const lead = diff > 0 ? 'B' : 'A', other = diff > 0 ? 'A' : 'B';
+    const jump = v.mode !== 'offer';
+    if (!(v.base > 0)) return { msg: "Add the offer's base and target variable." };
+    if (jump && !(v.curBase > 0)) return { msg: 'Add your current base and target variable, or choose Just check the offer.' };
+    if (v.guar > 1) return { msg: "The ramp guarantee is a share of the offer's target variable, from 0 to 100%. Check that number." };
+    const money = (n) => { const a = Math.abs(n); return (n < 0 ? '-' : '') + (a >= 1e6 ? '$' + parseFloat((a / 1e6).toFixed(2)) + 'M' : '$' + Math.round(a / 1e3) + 'K'); };
+    const pct = (r) => Math.round(r * 100) + '%';
+    const at = v.atNew > 0 ? v.atNew : .8, ramp = Math.min(36, v.ramp || 0), guar = v.guar > 0 ? v.guar : 0, rampAt = guar > 0 ? guar : at * .5;
+    const vari = v.variable || 0, ote = v.base + vari, normal = v.base + vari * at;
+    const month = (m) => (v.base + vari * (m <= ramp ? rampAt : at)) / 12;   // what the offer pays in month m
+    let y1 = 0; for (let m = 1; m <= 12; m++) y1 += month(m); y1 += v.signon || 0;
+    const rampNote = ramp ? (guar > 0 ? `a ${ramp}-month ramp, ${pct(guar)} of variable guaranteed` : `a ${ramp}-month ramp at about half speed`) : 'no ramp';
+    if (!jump) {
+      const share = ote > 0 ? vari / ote : 0, protectedRamp = ramp <= 3 || guar >= .5;
+      const issues = [];
+      if (share > .55) issues.push(`More than half the pay (${pct(share)}) rides on the quota`);
+      if (ramp >= 6 && !(guar > 0)) issues.push(`A ${ramp}-month ramp with nothing guaranteed`);
+      let t;
+      if (issues.length) t = ['Fine print', 'prove', issues.join('. ') + '. Ask for a guarantee through the ramp, or a lower quota while it lasts.'];
+      else if (share <= .5 && protectedRamp) t = ['Solid', 'ready', 'Whether it pays like this depends on the quota. Run it through Quota Check before you sign.'];
+      else t = ['Fair', 'proof', 'Whether it pays like this depends on the quota. Run it through Quota Check before you sign.'];
+      const attack = `At ${pct(at)} attainment this offer pays about ${money(normal)} a year${at < 1 ? `, not the ${money(ote)} OTE on the letter` : ''}. Year one, with ${rampNote}${v.signon > 0 ? ' and the sign-on bonus' : ''}, is about ${money(y1)}.`;
+      const rows = [['On-target earnings (100%)', money(ote)], [`A normal year at ${pct(at)}`, money(normal)], ['Year one, with the ramp' + (v.signon > 0 ? ' and sign-on' : ''), money(y1)],
+        ['Pay that rides on quota', pct(share), share > .55 ? 'v-no' : ''], ['Ramp', ramp ? `${ramp} months` + (guar > 0 ? `, ${pct(guar)} guaranteed` : ', no guarantee') : 'None', ramp >= 6 && !(guar > 0) ? 'v-no' : ''], ['Median AE OTE, Bridge Group 2026', '$200K']];
+      return { label: t[0], cls: t[1], attack, sub: t[2], big: money(normal), bar: 'a year at ' + pct(at), rows, diffm: money(normal), stripText: '' };
+    }
+    const atC = v.atCur > 0 ? v.atCur : 1, cur = v.curBase + (v.curVar || 0) * atC;
+    const walk = v.walk || 0, y1net = y1 - walk;
+    const dN = normal - cur, d1 = y1net - cur, raise = dN / cur;
+    // catch-up: the first month the offer's running total (sign-on in, what you leave behind out) passes staying put
+    let ahead = 0, catchUp = 0; for (let m = 1; m <= 48; m++) { ahead += month(m) - cur / 12 + (m === 1 ? (v.signon || 0) - walk : 0); if (ahead >= 0) { catchUp = m; break; } }
+    const y1line = Math.abs(d1) < 1000 ? 'Year one comes out about even.' : d1 > 0 ? `Year one pays ${money(d1)} more, ramp and all.` : `Year one pays ${money(-d1)} less, with the ramp${walk ? ' and what you leave behind' : ''}.`;
+    const catchLine = d1 >= 0 || dN <= 0 ? '' : catchUp ? ` You catch up around month ${catchUp}.` : ' It takes more than four years to make that back.';
     let t;
-    if (rel < .03) t = ['Close', 'proof', 'Close enough that the rest of the job should decide it: the territory, the manager, and how many people actually hit quota.'];
-    else t = [lead + ' pays more', 'proof', 'That assumes the same attainment at both jobs. If one quota is much harder, lower its attainment and run it again.'];
-    let attack = rel < .03 ? `At ${Math.round(at * 100)}% attainment, the two offers are within ${money(Math.abs(diff))} of each other in a normal year.` : `At ${Math.round(at * 100)}% attainment, Offer ${lead} pays ${money(Math.abs(diff))} more in a normal year.`;
-    // year one always gets its own sentence, so changing a ramp or a guarantee visibly changes the answer
-    const y1lead = d1 > 0 ? 'B' : 'A';
-    if (Math.abs(d1) < 1000) attack += ' Year one comes out about even.';
-    else if (rel >= .03 && y1lead !== lead) attack += ` In year one, Offer ${y1lead} pays ${money(Math.abs(d1))} more, because of its ramp or guarantee.`;
-    else attack += ` In year one, Offer ${y1lead} pays ${money(Math.abs(d1))} more.`;
-    const long = ['A', 'B'].filter(k => v['ramp' + k] > 12);
-    if (long.length) attack += long.length === 2 ? " Both ramps run past the first year, so all of year one is ramp pay." : ` Offer ${long[0]}'s ramp runs past the first year, so all of year one is ramp pay.`;
-    const rows = [['Offer A at 100% (OTE)', money(v.baseA + v.varA)], ['Offer B at 100% (OTE)', money(v.baseB + v.varB)],
-      ['Offer A, year one', money(y1A)], ['Offer B, year one', money(y1B)],
-      [`Offer A, normal year at ${Math.round(at * 100)}%`, money(normA)], [`Offer B, normal year at ${Math.round(at * 100)}%`, money(normB)]];
-    return { label: t[0], cls: t[1], attack, sub: t[2], big: rel < .03 ? money(Math.abs(diff)) : '+' + money(Math.abs(diff)), rows, diffm: money(Math.abs(diff)), lead, stripText: '' };
+    if (raise < -.02) t = ['Pay cut', 'dont', "Unless the job, the territory or the stock makes up for it, that's a step back. Ask for more, or ask why the number is lower."];
+    else if (raise <= .05) t = ['Barely', 'proof', 'Not worth moving for the money alone. Move for the job, the manager or the territory, or ask for more.'];
+    else if (d1 >= 0 || (catchUp && catchUp <= 12)) t = ['Real raise', 'ready', "That assumes the attainments you put in. If the new quota is harder, lower the offer's attainment and run it again."];
+    else t = ['After a dip', 'proof', `Ask them to close the gap: a guarantee through the ramp, or a sign-on bonus that covers the ${money(-d1)}.`];
+    const attack = (raise < -.02 ? `In a normal year the offer pays ${money(-dN)} less than your job does now.` : raise <= .05 ? `In a normal year the offer is within ${money(Math.abs(dN))} of what you make now.` : `In a normal year the offer pays ${money(dN)} more, ${pct(raise)} over what you make now.`) + ' ' + y1line + catchLine;
+    const rows = [[`Your job now, at ${pct(atC)}`, money(cur)], ['The offer at 100% (OTE)', money(ote)], [`The offer, a normal year at ${pct(at)}`, money(normal)],
+      ['The offer, year one' + (walk ? ', less what you leave' : ''), money(y1net)], ['Difference, a normal year', (dN >= 0 ? '+' : '') + money(dN), dN < 0 ? 'v-no' : ''], ['Difference, year one', (d1 >= 0 ? '+' : '') + money(d1), d1 < 0 ? 'v-no' : ''],
+      ...(d1 < 0 && dN > 0 ? [['You catch up', catchUp ? `around month ${catchUp}` : 'not in four years']] : [])];
+    return { label: t[0], cls: t[1], attack, sub: t[2], big: (dN >= 0 ? '+' : '') + money(dN), bar: dN >= 0 ? 'more a year' : 'less a year', rows, diffm: money(Math.abs(dN)), stripText: '' };
   },
   handoff: { overline: 'Before you sign', text: 'How to review an offer, what to ask, and how to push back on the parts that matter.', href: '/notes/review-an-offer/', label: 'Read: Review an offer' },
-  mark: { title: () => 'Weighing two offers?', body: "I'm Mark. I've looked at a lot of offers, and the one with the bigger OTE isn't always the one that pays more. Send me the shape of both, no company names." },
-  dm: (s) => `Mark, ran two offers through Offer Check. At a realistic attainment one pays ${s.diffm} more in a normal year. Worth 20 minutes before I decide?`,
-  bookNote: (s) => `Offer Check: ${s.diffm} difference in a normal year.`,
+  mark: { title: () => 'Thinking about jumping?', body: "I'm Mark. I've watched good reps take a bigger OTE into a territory nobody could make, and I've watched others stay too long for a bonus. Tell me the shape of it, no company names." },
+  dm: (s) => `Mark, ran an offer through Offer Check. ${s.label === 'Pay cut' ? 'It comes out ' + s.diffm + ' less a year than my job now.' : ['Solid', 'Fair', 'Fine print'].includes(s.label) ? 'At a realistic attainment it pays about ' + s.diffm + ' a year.' : 'It comes out ' + s.diffm + ' more a year than my job now.'} Worth 20 minutes before I decide?`,
+  bookNote: (s) => `Offer Check: ${s.label.toLowerCase()}, ${s.diffm}.`,
 });"""),
  dict(slug='commission', name='Commission Check',
   title='Commission Check: Your Take-Home on a Deal',
@@ -1846,11 +1870,12 @@ def calc_page(t):
         mode = 'numeric' if f['kind'] == 'count' else 'decimal'
         val = f' value="{f["example"]}"' if f.get('example') else ''
         ph = f' placeholder="{f["placeholder"]}"' if f.get('placeholder') else ''
-        out = f'        <label class="tf"><span class="tf-label">{f["label"]}</span><input id="{f["id"]}" type="text" inputmode="{mode}" autocomplete="off"{val}{ph}></label>\n'
+        when = f' data-when="{f["when"]}"' if f.get('when') else ''   # shown only while a choice has this value (calc.js)
+        out = f'        <label class="tf"{when}><span class="tf-label">{f["label"]}</span><input id="{f["id"]}" type="text" inputmode="{mode}" autocomplete="off"{val}{ph}></label>\n'
         if f.get('presets'):
             out += '        <div class="chips" style="margin:-6px 0 14px;">' + ''.join(f'<button class="chip" data-preset-for="{f["id"]}" data-v="{v}" type="button">{lab}</button>' for lab, v in f['presets']) + '</div>\n'
         return out
-    def head(f): return f'        <div class="tf-head">{f["head"]}</div>\n' if f.get('head') else ''
+    def head(f): return (f'        <div class="tf-head"' + (f' data-when="{f["when"]}"' if f.get('when') else '') + f'>{f["head"]}</div>\n') if f.get('head') else ''
     main = ''.join(head(f) + field(f) for f in t['fields'] if not f.get('more'))
     extra = ''.join(head(f) + field(f) for f in t['fields'] if f.get('more'))
     fields = main + (f'        <details class="more-fields"><summary>More details <span>optional</span></summary>\n{extra}        </details>\n' if extra else '')
@@ -3203,7 +3228,7 @@ _method = note_head("How QuotaBird's Numbers Work", "Where every range and bench
     <li><strong>Pipeline Check:</strong> coverage needed = 1 ÷ win rate, on unweighted pipeline (full deal values). A 20% win rate needs 5× coverage; 3× assumes a win rate of about 33%. Weighted pipeline (each deal times its CRM stage probability) is compared straight to the remaining target, so 1.0× is enough; weighted ÷ unweighted is the win rate the CRM's weights assume, shown next to the real one. If the biggest deal slips, the same math runs without it.</li>
     <li><strong>Discount Check:</strong> commission lost = list price × discount × your rate. Margin after the discount = 1 minus cost ÷ discounted price, because cost doesn't fall with the price.</li>
     <li><strong>Pay Check:</strong> variable paid = variable × attainment up to where the accelerator starts, plus variable × each point past it × the accelerator rate, limited by any cap, and zero below any threshold. Total pay = base + variable paid.</li>
-    <li><strong>Offer Check:</strong> a normal year = base + variable × the attainment you enter. Year one also counts the ramp: during ramp months you earn the guarantee if there is one, and otherwise half your normal attainment, an assumption the page states.</li>
+    <li><strong>Offer Check:</strong> a normal year = base + variable × the attainment you enter, for the offer and for your job now (each at its own attainment). Year one also counts the ramp: during ramp months you earn the guarantee if there is one, and otherwise half your normal attainment, an assumption the page states; it adds any sign-on bonus and subtracts what you'd leave behind. The catch-up month is the first month the offer's running total passes staying put. With no current job, the page reports what the offer pays at that attainment, the share of pay that rides on quota, and whether the ramp is protected.</li>
     <li><strong>Commission Check:</strong> your credit = deal × your share of the credit × any product multiplier. Commission = credit × your rate, minus the withholding percentage you enter. A planning estimate, not tax advice.</li>
     <li><strong>Commit Check:</strong> projected spend = spent so far + current monthly spend × months left. The monthly spend needed = (commit minus spent so far) ÷ months left.</li>
     <li><strong>The question checks</strong> (Deal, Rep, Territory, Account, Competition, Risk, Partner, Talent Review, Brief, Comp Plan and Federal Readiness) weight five yes, sort of or no answers into a score. They are structured judgment, not statistics.</li>
@@ -3617,7 +3642,7 @@ for c in CALCS: DESC['/' + c['slug'] + '/'] = c['name'] + ': ' + c['desc']
 for w in WORKFLOWS: DESC[w['url']] = w['name'] + ': ' + w['desc']
 DESC['/ask-mark/'] = 'Ask Mark: the AI version of Mark Flournoy answers sales questions, mostly federal cloud and SaaS: deals, partners, vehicles, quota, comp, your boss. Blunt and useful, and it says it is AI.'
 QUERIES = {'/federal-readiness/': ['is my company ready to sell to the federal government', 'federal go-to-market readiness', 'do I need a prime contractor', 'how do federal agencies buy software', 'federal sales readiness checklist'],
-           '/offer/': ['compare two sales job offers', 'which sales offer pays more', 'OTE vs realistic earnings calculator', 'sales job offer ramp guarantee', 'year one sales compensation with ramp'],
+           '/offer/': ['is this sales job offer worth it', 'should I take the sales job offer', 'current job vs new offer calculator', 'sales offer OTE vs realistic earnings', 'sales job offer ramp guarantee', 'year one pay cut changing sales jobs'],
            '/pay/': ['how much will my sales comp plan pay at 150% of quota', 'sales accelerator calculator', 'does my commission cap limit my upside', 'what does OTE really pay', 'comp plan payout curve'],
            '/comp-plan/': ['comp plan red flags', 'is my sales commission plan fair', 'questions to ask about a sales comp plan', 'commission clawback rules', 'who gets credit on a split deal'],
            '/commit/': ['will my customer burn their cloud commit', 'committed spend vs actual consumption', 'EDP commit burn down calculator', 'customer is behind on their committed spend', 'how much monthly spend to use a cloud commitment'],

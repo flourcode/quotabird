@@ -47,7 +47,18 @@ let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 214748364
 const pickv = (f) => { const r = rnd(); if (f.kind === 'choice') return f.options[Math.floor(rnd() * f.options.length)][0];
   if (r < .08) return 0; if (f.kind === 'money') return Math.round(10 ** (3 + rnd() * 5)); if (f.kind === 'pct' || f.kind === 'pctx') return Math.round(rnd() * 100) / 100; return Math.floor(rnd() * 60); };
 const calcs = (await import(NEW + '/lambda/quotabird-catalog.mjs')).CATALOG;   // the same catalog the Lambda ships
-for (const e of calcs.filter(c => c.kind === 'calc')) {
+const REDESIGNED = new Set(['offer']);   // rebuilt on purpose (current job vs. offer); fuzzed for sanity below instead of matched to the original
+for (const e of calcs.filter(c => c.kind === 'calc' && REDESIGNED.has(c.slug))) {
+  const c = loadToolFile(e.slug);
+  for (let n = 0; n < 2000; n++) {
+    const v = {}; e.fields.forEach(f => v[f.id] = pickv(f)); cases++;
+    let x; try { x = c.compute({ ...v }); } catch (err) { x = { err: err.message }; }
+    const txt = JSON.stringify(x);
+    const bad = !x || x.err || /NaN|undefined|Infinity/.test(txt) || (!x.msg && !(x.label in c.answers));
+    if (bad) { fails++; if (fails < 8) console.log('REDESIGN BAD', e.slug, v, txt.slice(0, 200)); }
+  }
+}
+for (const e of calcs.filter(c => c.kind === 'calc' && !REDESIGNED.has(c.slug))) {
   const cNew = loadToolFile(e.slug), cOld = oldInline(e.slug, 'CalcTool');
   for (let n = 0; n < 400; n++) {
     const v = {}; e.fields.forEach(f => v[f.id] = pickv(f)); cases++;

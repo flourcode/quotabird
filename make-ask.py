@@ -55,11 +55,17 @@ def _h1(slug):
     m = re.search(r'<h1[^>]*>(.*?)</h1>', open(f'{slug}/index.html', encoding='utf-8').read(), flags=re.S)
     return re.sub(r'<[^>]+>', '', m.group(1)).strip()
 _CAT = []
+def _grouped(fields):   # a field under a heading ("Your job now") carries it, so two fields called "Base" aren't confused
+    head, more = '', False
+    for f in fields:
+        if f.get('more') and not more: head, more = '', True   # "More details" starts fresh
+        head = f.get('head') or head
+        yield f, (f"{head}: {f['label']}" if head else f['label']) + (f" (only when {f['when']})" if f.get('when') else '')
 for _t in CALCS:
     _CAT.append(dict(slug=_t['slug'], name=_t['name'], kind='calc', question=_t['h1'], desc=_t['desc'],
-                     fields=[dict(id=f['id'], kind=f['kind'], label=f['label'], example=f.get('example', ''),
+                     fields=[dict(id=f['id'], kind=f['kind'], label=lab, example=f.get('example', ''),
                                   optional=bool(f.get('more')) or 'optional' in f.get('placeholder', ''),
-                                  **({'options': [list(o) for o in f['options']]} if f['kind'] == 'choice' else {})) for f in _t['fields']]))
+                                  **({'options': [list(o) for o in f['options']]} if f['kind'] == 'choice' else {})) for f, lab in _grouped(_t['fields'])]))
 _CAT.append(dict(slug='pipeline', name='Pipeline Check', kind='pipeline', question="You sure that's enough pipeline?",
                  desc='Pipeline coverage against what is left of the target, at your real win rate instead of a flat 3X.',
                  fields=[dict(id='goal', kind='money', label='Target for the year', example='$10M'),
