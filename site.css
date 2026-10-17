@@ -1204,6 +1204,15 @@ input.needs::placeholder { color:var(--ink); opacity:.7; }
 .send:disabled { background:var(--seg); color:var(--mut); cursor:default; }
 .composer .ask-note { margin-top:8px; }
 .ask-examples[hidden] { display:none; }
+/* what to ask next: Mark's follow-ups as chips, the tool as the outlined one; between his reply and the box */
+.ask-next { display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 14px 48px; }
+.ask-next[hidden] { display:none; }
+.ask-next .ask-ex { height:auto; min-height:36px; padding:7px 14px; line-height:1.25; text-align:left; white-space:normal; }
+.ask-next .ask-ex-tool { background:transparent; box-shadow:inset 0 0 0 1.5px var(--ink-2, var(--mut)); color:var(--ink); text-decoration:none; display:inline-flex; align-items:center; }
+.ask-next .ask-ex-tool:hover { background:var(--card); box-shadow:inset 0 0 0 1.5px var(--ink); }
+@media (max-width:480px) { .ask-next { margin-left:0; } }
+.chat-bar .btn-text { font-weight:500 !important; font-size:15px; color:var(--mut); }
+.chat-bar .btn-text:hover { color:var(--ink); }
 .real-mark { margin-top:32px; }
 .real-mark h3 { font-size:20px; letter-spacing:-.01em; }
 .real-mark .fine a { color:inherit; text-decoration:underline; text-underline-offset:3px; }

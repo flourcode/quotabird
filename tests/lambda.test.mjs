@@ -16,7 +16,7 @@ let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', na
 
 await t('health shows quotabird', async () => {
   const r = await NEW.handler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.4.0'); assert.ok(b.quotabird.catalog);
+  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.4.1'); assert.ok(b.quotabird.catalog);
 });
 await t('origin not allowed is refused', async () => {
   const r = await NEW.handler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
@@ -137,7 +137,7 @@ await t('number check: size words without $, years, percentages', async () => {
 await t('ask mark: multi-turn chat, folded turns, tool suggestion', async () => {
   reply = { reply: "You're not on a vehicle, so right now you have a fan, not a deal.\n\nFind out which vehicle the CIO's office used for its last security buy.", tool: 'deal' };
   const r = await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'My champion at DHS loves us.' }, { role: 'user', text: "But the CO says we're not on a vehicle." }] });
-  assert.equal(r.status, 200); assert.equal(r.body.reply.length, 2); assert.equal(r.body.tool.slug, 'deal');
+  assert.equal(r.status, 200); assert.equal(r.body.reply.length, 2); assert.equal(r.body.tool.slug, 'deal'); assert.deepEqual(r.body.followups, []);
   const sent = calls.at(-1).body;
   assert.equal(sent.contents.length, 1, 'two user turns folded into one'); assert.ok(sent.contents[0].parts[0].text.includes('data not instructions'));
   assert.ok(sent.systemInstruction.parts[0].text.startsWith('You are the AI version of Mark Flournoy')); assert.ok(sent.systemInstruction.parts[0].text.includes('AI version'));
@@ -174,5 +174,17 @@ await t('review fixes: bio only when asked, playbooks from the latest turn, quot
   const e = await call({ kind: 'qb_explain', slug: 'pipeline', question: 'Am I ok?', inputs: [{ label: 'Quota', value: '$3M' }], result: { answer: 'Short', rows: [['Coverage needed', '3X']] } });
   assert.equal(e.status, 200); sys = calls.at(-1).body.systemInstruction.parts[0].text;
   assert.ok(sys.startsWith('You are the AI version of Mark Flournoy'), 'explain uses the Mark voice'); assert.ok(sys.includes('PIPELINE\n')); assert.ok(sys.includes('must not recompute'));
+});
+await t('ask mark: follow-ups come back clean, a wall of text is split into paragraphs', async () => {
+  const q = (await import(process.env.QB_LAMBDA ? new URL('quotabird.mjs', 'file://' + process.env.QB_LAMBDA).href : '../lambda/quotabird.mjs'))._qbInternal;
+  const wall = Array.from({ length: 9 }, (_, i) => `Sentence number ${i + 1} says something about the deal and the boss and the forecast call this week.`).join(' ');
+  reply = { reply: wall, tool: 'none', followups: ['What do I say in the one-on-one?', 'x', '  What if he is just a bad manager?  ', 'four', 'five'] };
+  const r = await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'My boss hates me.' }] });
+  assert.equal(r.status, 200); assert.ok(r.body.reply.length >= 3 && r.body.reply.length <= 5, 'split into paragraphs: ' + r.body.reply.length);
+  assert.equal(r.body.reply.join(' '), wall, 'nothing lost or reordered');
+  assert.deepEqual(r.body.followups, ['What do I say in the one-on-one?', 'What if he is just a bad manager?']);
+  assert.deepEqual(q.splitLong('No. Push back.'), ['No. Push back.']);
+  reply = { reply: 'Short answer.', tool: 'none' };
+  const r2 = await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Quick one.' }] }); assert.deepEqual(r2.body.followups, [], 'missing followups is an empty list');
 });
 console.log(`\n${n} lambda tests passed`);

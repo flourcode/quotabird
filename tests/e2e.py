@@ -25,7 +25,7 @@ async def run(vw, vh, tag):
         await pg.goto(BASE + '/ask-mark/'); await pg.wait_for_timeout(300)
         await pg.screenshot(path=f'{SHOTS}/{tag}-askmark-empty.png')
         await pg.click('.ask-ex >> nth=0'); await pg.wait_for_selector('.msg-mark:not(.is-thinking)', timeout=10000); await pg.wait_for_timeout(300)
-        print(tag, 'reply', (await pg.inner_text('.msg-mark .msg-body'))[:90].replace('\n', ' '), '| tool', await pg.locator('.msg-tool').count())
+        print(tag, 'reply', (await pg.inner_text('.msg-mark .msg-body'))[:90].replace('\n', ' '), '| chips', await pg.locator('.ask-next .ask-ex').count(), '| tool', await pg.locator('.ask-next .ask-ex-tool').count(), '| placeholder', await pg.get_attribute('#askText', 'placeholder'))
         await pg.fill('#askText', 'So what do I do this week?'); await pg.click('#askBtn'); await pg.wait_for_function("document.querySelectorAll('.msg-mark:not(.is-thinking)').length === 2", timeout=10000)
         print(tag, 'turns', await pg.locator('.msg').count())
         await pg.screenshot(path=f'{SHOTS}/{tag}-askmark.png', full_page=True)

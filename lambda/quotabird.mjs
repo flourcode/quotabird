@@ -19,7 +19,7 @@ import { CATALOG, CATALOG_BUILD } from "./quotabird-catalog.mjs";
 import { PLAYBOOKS, pickPlaybooks, playbookText } from "./quotabird-playbooks.mjs";
 
 export const QB_KINDS = ["qb_mark", "qb_coach", "qb_route", "qb_explain", "qb_meeting_prep", "qb_account_plan", "qb_update_upward"];
-export const QB_VERSION = "1.4.0";
+export const QB_VERSION = "1.4.1";
 export { CATALOG_BUILD };
 
 const BY_SLUG = new Map(CATALOG.map((t) => [t.slug, t]));
@@ -510,11 +510,28 @@ async function coach(body, gemini) {
 const CHAT_SCHEMA = () => ({
   type: "object",
   properties: {
-    reply: { type: "string", description: "Mark's reply, plain text, paragraphs separated by blank lines. Match their length: a few sentences for a short question, a few short paragraphs for a long one, 40 to 180 words typical." },
+    reply: { type: "string", description: "Mark's reply, plain text. Two to four short paragraphs separated by a blank line, never one block: a paragraph is one to three sentences. A one-line question can get a single short paragraph. 40 to 180 words typical." },
     tool: { type: "string", enum: TOOL_ENUM(), description: "The one QuotaBird calculator or check that would run this person's own numbers, if the question is really about arithmetic. Otherwise none." },
+    followups: { type: "array", minItems: 0, maxItems: 3, items: { type: "string" }, description: "Two or three things this salesperson would naturally ask you next, written as they would say them, first person, under twelve words each, e.g. \"What do I actually say in the one-on-one?\" or \"What if he's just a bad manager?\". Questions you can answer from what you know, not questions back to them. Empty if the conversation is really over." },
   },
-  required: ["reply", "tool"],
+  required: ["reply", "tool", "followups"],
 });
+// A wall of text reads as a ruling. If the model returns one long block, break it at sentence ends into
+// paragraphs of two or three sentences so it reads like someone talking.
+export function splitLong(p, maxWords = 70) {
+  const wc = (t) => t.split(/\s+/).filter(Boolean).length;
+  if (wc(p) <= maxWords) return [p];
+  const sentences = (p.match(/[^.!?]+[.!?]+["')\]]*(?=\s|$)|[^.!?]+$/g) || [p]).map((x) => x.trim()).filter(Boolean);
+  const out = []; let cur = [];
+  for (const sen of sentences) {
+    if (cur.length && (cur.length >= 3 || wc(cur.join(" ")) + wc(sen) > 55)) { out.push(cur.join(" ")); cur = []; }
+    cur.push(sen);
+  }
+  if (cur.length) out.push(cur.join(" "));
+  // never leave a one-sentence orphan at the end
+  if (out.length > 1 && wc(out[out.length - 1]) < 12) { const last = out.pop(); out[out.length - 1] += " " + last; }
+  return out;
+}
 const MAX_TURNS = 16;
 
 async function markChat(body, gemini) {
@@ -543,10 +560,11 @@ async function markChat(body, gemini) {
   const g = await gemini(systemFor(keys, { chat: true, bio }), contents, CHAT_SCHEMA(), 1500, { timeout: 25000 });
   if (g.fail) return g.fail;
   const j = g.json || {};
-  const reply = String(j.reply || "").replace(/\r/g, "").split(/\n{2,}/).map((p) => clean(p, 1200)).filter(Boolean).slice(0, 10);
+  const reply = String(j.reply || "").replace(/\r/g, "").split(/\n{2,}/).map((p) => clean(p, 1200)).filter(Boolean).flatMap((p) => splitLong(p)).slice(0, 10);
   if (!reply.length) return [502, { error: "The answer came back empty. Try again." }];
   const tool = BY_SLUG.get(j.tool);
-  return [200, { reply, tool: tool && tool.kind !== "workflow" ? { slug: tool.slug, name: tool.name, question: tool.question, url: tool.url } : null }];
+  const followups = (Array.isArray(j.followups) ? j.followups : []).map((t) => clean(t, 120)).filter((t) => t.length >= 6).slice(0, 3);
+  return [200, { reply, tool: tool && tool.kind !== "workflow" ? { slug: tool.slug, name: tool.name, question: tool.question, url: tool.url } : null, followups }];
 }
 
 // The three workflow pages. A caller may send structured fields (the catalog lists them), one free-text
@@ -663,4 +681,4 @@ export async function handleQuotaBird(body, { gemini, ready }) {
   }
 }
 
-export const _qbInternal = { validateRoute, numbersIn, allowedSet, numbersOk, clean, keepItems, ROUTE_SYSTEM, knowledgeFor, MARK, ARTI, MARK_VOICE, WORKFLOW_VOICE, ABOUT_MARK, MARK_BACKGROUND, MARK_BIO, FACT_RULES, COACH_SCHEMA, systemFor, workflowContext, isFederal };
+export const _qbInternal = { splitLong, validateRoute, numbersIn, allowedSet, numbersOk, clean, keepItems, ROUTE_SYSTEM, knowledgeFor, MARK, ARTI, MARK_VOICE, WORKFLOW_VOICE, ABOUT_MARK, MARK_BACKGROUND, MARK_BIO, FACT_RULES, COACH_SCHEMA, systemFor, workflowContext, isFederal };

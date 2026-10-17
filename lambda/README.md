@@ -28,7 +28,7 @@ Files (all four go in the zip, at the top level):
    Allow methods POST (and GET for the health check); allow header `content-type`.
    Leave `SEND_CORS_HEADERS` unset (AWS adds the CORS headers; doubles get rejected).
 5. Check it: open the Function URL in a browser. The health check should show
-   `"version":"3.8.0"` and `"quotabird":{"version":"1.4.0", ...}`.
+   `"version":"3.8.0"` and `"quotabird":{"version":"1.4.1", ...}`.
 6. Use a paid Gemini API key. On the free tier Google may use prompts to improve its products,
    and the QuotaBird pages say the server keeps nothing and the text is handled under the API terms.
 
@@ -37,7 +37,7 @@ so only the four AI pages would show "Couldn't connect".
 
 ## What the QuotaBird routes do
 
-- `qb_mark` `{ messages: [{ role: 'user' | 'mark', text }] }` → `{ reply: [paragraphs], tool }`. The Ask Mark chat; the page sends the
+- `qb_mark` `{ messages: [{ role: 'user' | 'mark', text }] }` → `{ reply: [paragraphs], tool, followups }`. The Ask Mark chat; the page sends the
   whole thread each turn (last 16), nothing is kept here.
 - `qb_coach` `{ situation, scenario? }` → `{ coach: { read, hole, move, people: [0..4], next_72_hours, what_would_change_my_mind, tool } }`. For the plugin or a future page; no site page calls it now.
 - The three workflow kinds accept `{ situation }`, `{ fields: {...} }` (the catalog's field ids) or both, plus optional `math: { lines: [[label, value]], quarters: [] }` that the model explains and never recomputes. They return `{ sections, known, missing, federal }`.

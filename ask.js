@@ -45,7 +45,8 @@
 
   /* ═════════════ Ask Mark: a conversation ═════════════ */
   function askPage() {
-    const form = $('askForm'), text = $('askText'), btn = $('askBtn'), chat = $('chat'), fresh = $('askNew'), bar = $('chatBar'), examples = $('askExamples');
+    const form = $('askForm'), text = $('askText'), btn = $('askBtn'), chat = $('chat'), fresh = $('askNew'), bar = $('chatBar'), examples = $('askExamples'), next = $('askNext');
+    const PH_FIRST = text.getAttribute('placeholder') || 'Ask Mark anything about selling', PH_MORE = 'Ask a follow-up';
     const history = [];   // {role:'user'|'mark', text}, this tab only, never stored
     let run = 0;
     const fit = () => { text.style.height = 'auto'; text.style.height = Math.min(200, text.scrollHeight) + 'px'; };
@@ -64,9 +65,20 @@
     }
     // keep the newest message in view without hiding it under the composer
     const reveal = (el) => { if (!el) return; const pad = form.offsetHeight + 24; const r = el.getBoundingClientRect(); if (r.bottom > window.innerHeight - pad || r.top < 0) window.scrollBy({ top: Math.min(r.top - 96, r.bottom - (window.innerHeight - pad)), behavior: reduced() ? 'auto' : 'smooth' }); };
-    const started = (on) => { bar.hidden = !on; examples.hidden = on; form.classList.toggle('is-sticky', on); };
+    const started = (on) => { bar.hidden = !on; examples.hidden = on; form.classList.toggle('is-sticky', on); text.placeholder = on ? PH_MORE : PH_FIRST; };
+    // What to ask next: Mark's own follow-up suggestions as chips (tap to send), and the one tool that runs
+    // their numbers as the outlined chip at the end. Sits between his reply and the box so the box reads as "reply".
+    const send = (q, why) => { text.value = q; fit(); track(why); form.requestSubmit(); };
+    function offer(followups, tool) {
+      next.innerHTML = ''; next.hidden = true;
+      const ups = (Array.isArray(followups) ? followups : []).map(f => String(f || '').trim()).filter(Boolean).slice(0, 3);
+      if (!ups.length && !tool) return;
+      ups.forEach(f => { const b = document.createElement('button'); b.type = 'button'; b.className = 'ask-ex'; b.textContent = f; b.onclick = () => send(f, 'ask_followup_chip'); next.appendChild(b); });
+      if (tool) { const a = document.createElement('a'); a.className = 'ask-ex ask-ex-tool'; a.href = tool.url; a.textContent = 'Run it through ' + tool.name + ' \u2192'; a.title = tool.question || ''; a.onclick = () => track('ask_tool_click'); next.appendChild(a); }
+      next.hidden = false;
+    }
     document.querySelectorAll('[data-example]').forEach(b => b.onclick = () => { text.value = b.dataset.example; fit(); track('ask_example'); form.requestSubmit(); });
-    fresh.onclick = () => { run++; history.length = 0; chat.innerHTML = ''; started(false); text.value = ''; fit(); text.focus(); track('ask_new'); };
+    fresh.onclick = () => { run++; history.length = 0; chat.innerHTML = ''; offer([], null); started(false); text.value = ''; fit(); text.focus(); track('ask_new'); };
     // A tool handing over its result: /ask-mark/#ask=<the person's numbers as their first message>. The fragment
     // never reaches the server or analytics; it's dropped from the address bar as soon as it's read, and sent once.
     let seed = '';
@@ -78,7 +90,7 @@
       const id = ++run;
       history.push({ role: 'user', text: q });
       bubble('user', paras(q));
-      text.value = ''; fit(); started(true);
+      text.value = ''; fit(); started(true); offer([], null);
       btn.disabled = true; const wait = thinking(); reveal(wait);
       track(history.length === 1 ? 'ask_first' : 'ask_followup');
       const { data, error } = await post({ kind: 'qb_mark', messages: history.slice(-16) });
@@ -87,8 +99,8 @@
       if (error) { history.pop(); track('ask_error'); const el = bubble('mark', [error]); el.classList.add('is-error'); reveal(el); return; }
       const reply = Array.isArray(data.reply) ? data.reply : paras(data.reply);
       history.push({ role: 'mark', text: reply.join('\n\n') });
-      const tool = data.tool ? `<a class="msg-tool" href="${esc(data.tool.url)}"><span>${esc(data.tool.question)}</span><b>${esc(data.tool.name)} →</b></a>` : '';
-      const el = bubble('mark', reply, tool + '<p class="msg-note">AI, not the real Mark.</p>');
+      const el = bubble('mark', reply);
+      offer(data.followups, data.tool);
       reveal(el); text.focus({ preventScroll: true });
       track('ask_done');
     });

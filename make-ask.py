@@ -217,6 +217,7 @@ _ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minu
     "I'm the AI version of Mark. Twenty years in the Marines, fifteen in federal sales at Red Hat, F5 and Amazon, uploaded into a chatbot.<br>Deals, partners, quota, comp, forecasts, your boss. Try me, I won't sugarcoat it.",
     '''    <div class="chat-bar" id="chatBar" hidden><span class="chat-bar-l">This conversation stays in this tab.</span><button class="btn btn-text" id="askNew" type="button">New chat</button></div>
     <div class="chat" id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
+    <div class="ask-next" id="askNext" role="group" aria-label="Ask next" hidden></div>
     <form class="composer" id="askForm" autocomplete="off" novalidate>
       <div class="composer-box">
         <textarea id="askText" rows="1" maxlength="3000" placeholder="Ask Mark anything about selling" aria-label="Ask Mark"></textarea>
