@@ -1313,3 +1313,4 @@ body.is-chatting .ask-note-quiet { display: none; }
 /* the secondary action on a next-step card is an underlined link, the same as on the booking card */
 .card-accent .btn:not(.btn-primary) { text-decoration: underline !important; text-underline-offset: 3px; min-height: 44px !important; height: auto !important; }
 body.is-chatting .composer .ask-note { text-align: left; }
+.mark-intro .dek, .dek, .lede { text-wrap: pretty; }

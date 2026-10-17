@@ -28,7 +28,7 @@ Files (all four go in the zip, at the top level):
    Allow methods POST (and GET for the health check); allow header `content-type`.
    Leave `SEND_CORS_HEADERS` unset (AWS adds the CORS headers; doubles get rejected).
 5. Check it: open the Function URL in a browser. The health check should show
-   `"version":"3.8.0"` and `"quotabird":{"version":"1.5.2", ...}`.
+   `"version":"3.8.0"` and `"quotabird":{"version":"1.5.3", ...}`.
 6. Use a paid Gemini API key. On the free tier Google may use prompts to improve its products,
    and the QuotaBird pages say the server keeps nothing and the text is handled under the API terms.
 

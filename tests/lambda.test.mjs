@@ -16,7 +16,7 @@ let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', na
 
 await t('health shows quotabird', async () => {
   const r = await NEW.handler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.5.2'); assert.ok(b.quotabird.catalog);
+  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.5.3'); assert.ok(b.quotabird.catalog);
 });
 await t('origin not allowed is refused', async () => {
   const r = await NEW.handler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
@@ -211,14 +211,14 @@ await t('the promise on the page: a second opinion on deal, forecast, quota, com
   assert.ok(has("My partner isn't doing anything.", 'partner'));
   assert.ok(has('My boss hates me and picks apart my deals in front of everybody.', 'boss'));
   assert.ok(has('My VP takes credit for my deals.', 'boss') && !has('My VP takes credit for my deals.', 'pay'), 'credit-taking is a boss problem, not a comp one');
-  assert.ok(q.MARK_VOICE.includes('second opinion')); assert.ok(q.FACT_RULES.includes('digital twin')); assert.ok(q.FACT_RULES.includes("don't round that up"));
+  assert.ok(q.MARK_VOICE.includes('second opinion')); assert.ok(q.FACT_RULES.includes('the digital version of Mark')); assert.ok(q.FACT_RULES.includes("don't round that up"));
   reply = { reply: 'Fight about the evidence, not the label.', tool: 'none', followups: [] };
   await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'My boss wants a deal in commit that I do not believe.' }] });
   assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('YOUR BOSS (managing up)'));
 });
 await t('no sugarcoating: the rule is in the prompt, and a cushion or pep talk comes off the reply', async () => {
   const q = (await import(process.env.QB_LAMBDA ? new URL('quotabird.mjs', 'file://' + process.env.QB_LAMBDA).href : '../lambda/quotabird.mjs'))._qbInternal;
-  assert.ok(q.MARK_VOICE.includes('No sugarcoating. The page promises it')); assert.ok(q.MARK_VOICE.includes('"the good news is" in front of bad news'));
+  assert.ok(q.MARK_VOICE.includes('No sugarcoating.')); assert.ok(q.MARK_VOICE.includes('"the good news is" in front of bad news'));
   assert.deepEqual(q.unCushion(["I understand how this feels, but you are not going to make it. Call the miss now."]), ['You are not going to make it. Call the miss now.']);
   assert.deepEqual(q.unCushion(["Don't worry about the label. Fight about the evidence."]), ["Don't worry about the label. Fight about the evidence."], 'advice that starts with "don\'t worry" stays');
   reply = { reply: "I hear you, that's a tough spot.\n\nProbably not. One deal that could come in is a hope, not a plan.\n\nCall the miss now. You've got this!", tool: 'pipeline', followups: [] };
