@@ -34,7 +34,7 @@
 
 import { domainToASCII } from "node:url";
 // QuotaBird loads on its first request, so a deploy missing its files can't take SideFrog down with it.
-const QB_KINDS = ["qb_coach", "qb_route", "qb_explain", "qb_meeting_prep", "qb_account_plan", "qb_update_upward"];
+const QB_KINDS = ["qb_mark", "qb_coach", "qb_route", "qb_explain", "qb_meeting_prep", "qb_account_plan", "qb_update_upward"];
 let qbModule = null;
 async function quotabird() {
   if (!qbModule) qbModule = import("./quotabird.mjs").catch((e) => { qbModule = null; throw e; });
@@ -677,7 +677,8 @@ export async function geminiJson(system, userText, schema, maxOutputTokens, opts
   const call = (withSchema) => httpGet(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(QB_MODEL)}:generateContent`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY, "User-Agent": BOT_UA },
-    body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: "user", parts: [{ text: userText }] }],
+    // userText is one user turn, or a ready-made contents array for a multi-turn chat
+    body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: Array.isArray(userText) ? userText : [{ role: "user", parts: [{ text: userText }] }],
       generationConfig: { responseMimeType: "application/json", ...(withSchema ? { responseJsonSchema: schema } : {}), maxOutputTokens } }),
     timeout: Math.min(opts.timeout || GEMINI_TIMEOUT_MS, 27000),
   });

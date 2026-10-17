@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-08.0900'
+BUILD = '2026-11-08.1700'
 TOOLS = [
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back'),
@@ -44,7 +44,7 @@ def menu(current):
     for g in rest: (left if sum(len(groups[x]) for x in left) <= sum(len(groups[x]) for x in right) else right).append(g)
     col = lambda gs: '<div class="menu-col">' + ''.join(f'<div class="menu-g"><div class="menu-group">{g}</div>{"".join(groups[g])}</div>' for g in gs) + '</div>'
     wide_html = ''
-    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a></div>'
+    foot = '<div class="menu-foot"><a href="/">Home</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a></div>'
     kit = '<a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a>'
     return f'<details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list">{kit}{col(left)}{col(right)}{foot}</div></details>'
 
@@ -3240,7 +3240,7 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
   <p class="fine">Last updated {PRIVACY_UPDATED}. Questions: <a href="mailto:mark@quotabird.com">mark@quotabird.com</a>.</p>
 
   <h2>The short version</h2>
-  <p>QuotaBird has no accounts, no ads and no sign-up. The numbers and answers you type into the tools are worked out in your browser and never sent to QuotaBird or anyone else. Four pages are different, because they use AI: Ask QuotaBird, Meeting Prep, Account Plan and Update Upward. What you type on those goes to Google's Gemini through QuotaBird's server, which doesn't keep it. QuotaBird counts page views and which tools get used, so it knows what's worth improving.</p>
+  <p>QuotaBird has no accounts, no ads and no sign-up. The numbers and answers you type into the tools are worked out in your browser and never sent to QuotaBird or anyone else. Four pages are different, because they use AI: Ask Mark, Meeting Prep, Account Plan and Update Upward. What you type on those goes to Google's Gemini through QuotaBird's server, which doesn't keep it. QuotaBird counts page views and which tools get used, so it knows what's worth improving.</p>
 
   <h2>What QuotaBird counts</h2>
   <p>QuotaBird uses Google Analytics 4 to count visits. Google Analytics records the pages you visit and the usual technical details that come with any visit, such as your browser, device type, approximate location and the site that sent you. It sets cookies in your browser to tell visits apart.</p>
@@ -3255,8 +3255,8 @@ _privacy = note_head('Privacy', 'What QuotaBird counts, what stays in your brows
   </ul>
 
   <h2>The four pages that use AI</h2>
-  <p>Ask QuotaBird, Meeting Prep, Account Plan and Update Upward send what you type, when you press the button, to a small QuotaBird server, which passes it to Google's Gemini API and sends the answer back to your browser. The server doesn't log or store what you typed or what came back, and QuotaBird never reads it. Google processes it under the <a href="https://ai.google.dev/gemini-api/terms" rel="noopener">Gemini API terms</a>.</p>
-  <p>On those pages the AI is a sales coach: it reads what you wrote and writes advice. It doesn't run the calculators. When a question is really about the math, it points you to the tool, which runs in your browser like always.</p>
+  <p>Ask Mark, Meeting Prep, Account Plan and Update Upward send what you type, when you press the button, to a small QuotaBird server, which passes it to Google's Gemini API and sends the answer back to your browser. The server doesn't log or store what you typed or what came back, and QuotaBird never reads it. Google processes it under the <a href="https://ai.google.dev/gemini-api/terms" rel="noopener">Gemini API terms</a>.</p>
+  <p>On those pages the AI answers as a version of Mark: it reads what you wrote and writes advice the way he would. It's labelled as AI on every page, and it isn't him. It doesn't run the calculators. When a question is really about the math, it points you to the tool, which runs in your browser like always.</p>
   <p>Don't paste anything that isn't yours to share: nothing classified, controlled unclassified, export-controlled, or marked internal, and no customer information you wouldn't put in an email to a stranger. The analytics events on these pages say which page was used and which tool was picked, never what you typed.</p>
 
   <h2>Shared links</h2>
@@ -3540,15 +3540,14 @@ def current_of(path):
     return '/' if path == 'index.html' else '/' + path.rsplit('/', 1)[0] + '/'
 def header(path):
     b = root_of(path)
-    ask = '/work-with-mark/'
+    ask = '/ask-mark/'
     return f'''<header class="appbar">
     <a class="logo" href="/" aria-label="QuotaBird, home"><picture><source srcset="{b}logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="{b}logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
-      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/', 'work-with-mark/', 'federal/')) else '/' + path.split('/')[0] + '/')}
-      <a class="toplink" href="/kits/">Field Kits</a>
+      {menu(current_of(path) if not path.startswith(('notes/', 'math/', 'kit/', 'leader/', 'seller/', 'kits/', 'stuff/', 'how-quotas-get-built/', 'shorts/', 'quota-by-the-numbers/', 'methodology/', 'privacy/', 'work-with-mark/', 'federal/', 'ask-mark/')) else '/' + path.split('/')[0] + '/')}
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
-      <a class="chip chip-ask" href="{ask}"><span class="ask-long">Work with Mark</span><span class="ask-short">Ask Mark</span></a>
+      <a class="chip chip-ask{' current' if path.startswith('ask-mark/') else ''}" href="{ask}">Ask Mark</a>
     </nav>
   </header>'''
 def chrome(path):
@@ -3557,8 +3556,7 @@ def chrome(path):
     if 'rel="preload" href="/inter.woff2"' not in s:
         s = s.replace('<meta name="viewport"', '<link rel="preload" href="/inter.woff2" as="font" type="font/woff2" crossorigin>\n<meta name="viewport"', 1)
     s = re.sub(r'<header class="appbar">.*?</header>', lambda m: header(path), s, count=1, flags=re.S)
-    ask = '/ask/'
-    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a><a href="/privacy/">Privacy</a></p>'
+    nav = f'<p class="foot-nav"><a href="/">Tools</a><a href="/ask-mark/">Ask Mark</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/stuff/">Stuff I Like</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a><a href="/privacy/">Privacy</a></p>'
     s = re.sub(r'\s*<p class="foot-nav">.*?</p>', '', s, count=1, flags=re.S)          # the footer nav is regenerated every build, so every page matches
     s = s.replace('<footer class="sitefoot">', '<footer class="sitefoot">\n  ' + nav, 1)
     # one contact line in every footer, for questions and security issues
@@ -3574,7 +3572,7 @@ def chrome(path):
         elif path in SELLERCARD_PAGES and 'kit-band' not in mark: mark = SELLERCARD_SRC + mark
         s = re.sub(r'<section class="band" id="(?:about|mark)"[^>]*>.*?</section>\n*', lambda m: mark, s, count=1, flags=re.S)
     open(path, 'w').write(s)
-exec(open('make-ask.py', encoding='utf-8').read())   # Ask QuotaBird, the workflow pages, tools/*.js, lambda/quotabird-catalog.mjs
+exec(open('make-ask.py', encoding='utf-8').read())   # Ask Mark, the workflow pages, tools/*.js, lambda/quotabird-catalog.mjs
 PAGES = ['index.html', 'pipeline/index.html', 'deal/index.html', 'about/index.html'] + [f'{t["slug"]}/index.html' for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY)] \
         + [f'{c["slug"]}/index.html' for c in CALCS] + ['notes/index.html'] + [f'notes/{n["slug"]}/index.html' for n in NOTES] + ['math/index.html'] + [f'math/{p["slug"]}/index.html' for p in MATH] + ['kits/index.html', 'seller/index.html', 'kit/index.html', 'leader/index.html', 'stuff/index.html', 'how-quotas-get-built/index.html', 'shorts/index.html', 'quota-by-the-numbers/index.html', 'methodology/index.html', 'privacy/index.html', 'work-with-mark/index.html', 'federal/index.html'] + ASK_PAGES + ['404.html']
 for _p in PAGES:
@@ -3612,6 +3610,7 @@ DESC = {'/pipeline/': 'Pipeline Check: target, pipeline and win rate in, the gap
 for t in (REP, PARTNER, TERRITORY, OLR, BRIEF, ACCOUNT, RISK, COMPETITION, COMPPLAN, FEDREADY): DESC['/' + t['slug'] + '/'] = t['name'] + ': ' + t['desc']
 for c in CALCS: DESC['/' + c['slug'] + '/'] = c['name'] + ': ' + c['desc']
 for w in WORKFLOWS: DESC[w['url']] = w['name'] + ': ' + w['desc']
+DESC['/ask-mark/'] = 'Ask Mark: the AI version of Mark Flournoy answers sales questions, mostly federal cloud and SaaS: deals, partners, vehicles, quota, comp, your boss. Blunt and useful, and it says it is AI.'
 QUERIES = {'/federal-readiness/': ['is my company ready to sell to the federal government', 'federal go-to-market readiness', 'do I need a prime contractor', 'how do federal agencies buy software', 'federal sales readiness checklist'],
            '/offer/': ['compare two sales job offers', 'which sales offer pays more', 'OTE vs realistic earnings calculator', 'sales job offer ramp guarantee', 'year one sales compensation with ramp'],
            '/pay/': ['how much will my sales comp plan pay at 150% of quota', 'sales accelerator calculator', 'does my commission cap limit my upside', 'what does OTE really pay', 'comp plan payout curve'],
@@ -3640,7 +3639,7 @@ for g, h, n, d in TOOLS:
     groups[-1][1].append((h, n, d))
 site = 'https://quotabird.com'
 lines = ['# QuotaBird', '', '> QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. ' + f'{len([1 for g, h, n, d in TOOLS])} one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.', '',
-         'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor\'s own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Four pages are the exception: Ask QuotaBird (' + site + '/ask-quotabird/), Meeting Prep, Account Plan and Update Upward send what the visitor types to Google Gemini through QuotaBird\'s own server, which stores nothing; the AI writes coaching advice and points to the calculators, which still run in the browser. Privacy: https://quotabird.com/privacy/', '']
+         'The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor\'s own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Four pages are the exception: Ask Mark (' + site + '/ask-mark/), Meeting Prep, Account Plan and Update Upward send what the visitor types to Google Gemini through QuotaBird\'s own server, which stores nothing; the AI writes coaching advice and points to the calculators, which still run in the browser. Privacy: https://quotabird.com/privacy/', '']
 for g, items in groups:
     lines.append(f'## {g}'); lines.append('')
     for h, n, d in items:
@@ -3648,7 +3647,7 @@ for g, items in groups:
     lines.append('')
 lines += ['## Methodology and benchmarks', '', f"- [How QuotaBird's numbers work]({site}/methodology/): where every range and benchmark on QuotaBird comes from, labelled as published data, a common rule of thumb, or a QuotaBird working range. Quota-to-OTE working ranges: bookings 4 to 6x (built on Bridge Group 2026 median 4.6x, 158 B2B companies), run rate or consumption growth 15 to 30x, whole book 40 to 80x (QuotaBird working ranges, derived from quota / OTE = variable share / commission rate). Includes each tool's formula and a last-reviewed date.", f"- [Quota by the numbers]({site}/quota-by-the-numbers/): sourced quota and compensation benchmarks: attainment, median quota and OTE, pay mix, ramp, over-assignment, accelerators.", '']
 lines += ['## Working with Mark', '', '- [Work with Mark](https://quotabird.com/work-with-mark/): start with a free 20-minute call about a deal, quota, territory, pipeline, comp plan or anything else that doesn\'t add up. If more help makes sense (a working session, Manager Wingman for sales managers, or a session with a team), that gets discussed on the call.', '- [Federal GTM](https://quotabird.com/federal/): for companies deciding whether federal is real for them, and investors checking a federal pipeline; also starts with a free 20-minute call.', '']
-lines += ['## Talking to Mark', '', f'- [The free twenty minutes]({site}/work-with-mark/#ask): a free first conversation about one sales problem; if Mark doesn\'t think you need help, he says so.', '']
+lines += ['## Talking to Mark', '', f'- [Ask Mark]({site}/ask-mark/): an AI version of Mark answers sales questions in a chat; labelled as AI, nothing stored.', f'- [The free twenty minutes]({site}/work-with-mark/#ask): a free first conversation with the real Mark about one sales problem; if he doesn\'t think you need help, he says so.', '']
 lines += ['## Free printable', '', f"- [The Manager's Field Kit]({site}/kit/): a free, printable field kit for sales managers: how your team's number got built, fighting the plan without losing, handing down a tough quota and still crushing it, inheriting a team, one-on-ones, the forecast call, pipeline, managing up, a struggling rep, review season, managing high performers, and nine worksheets.", f"- [The Seller's Field Kit]({site}/seller/): a free, printable field kit for sellers: where your quota came from, checking it and pushing back, crushing a tough number anyway, is it a real deal, pipeline math, one deal carrying the quarter, single-threaded accounts, discounts, quiet deals, falling behind, and keeping your manager informed.", f"- [The Leadership Field Kit]({site}/leader/): a free, printable field kit for managers who want their influence to travel beyond their team: shaping the number before it shapes your team, what to be known for, a point of view, receipts, templates others can borrow, the right rooms, and developing the people behind you.", '', '## Sales Math Library', ''] + [f'- [{p["title"]}]({site}/math/{p["slug"]}/): {p["answer"]}' for p in MATH] + ['', '## Field Notes', ''] + [f'- [{n["title"]}]({site}/notes/{n["slug"]}/): {n["dek"]}' for n in NOTES] + ['', '## About', '', f'- [About Mark]({site}/about/): who is behind the tools, the situations he sees most, and how to book a free twenty-minute call.', '', '## Optional', '', f'- [Sitemap]({site}/sitemap.xml)', f'- [ai-catalog.json]({site}/.well-known/ai-catalog.json): ARD capability manifest listing the same tools.', '']
 open('llms.txt', 'w').write('\n'.join(lines))
 entries = []

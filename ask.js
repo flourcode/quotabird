@@ -1,5 +1,5 @@
-/* ask.js: Ask QuotaBird (Arti, the federal sales coach) and the three one-box pages
-   (Meeting Prep, Account Plan, Update Upward). One plain-language box in, real coaching out.
+/* ask.js: Ask Mark (a conversation with the AI version of Mark) and the three one-box pages
+   (Meeting Prep, Account Plan, Update Upward). Plain language in, Mark's answer out.
    The AI runs on the shared Lambda (quotabird.mjs). Nothing typed is stored. */
 'use strict';
 (function () {
@@ -41,51 +41,53 @@
   const ul = (items, f = (x) => esc(x), tag = 'ul') => items && items.length ? `<${tag} class="ask-list">${items.map(i => `<li>${f(i)}</li>`).join('')}</${tag}>` : '';
   const T = (h, items, f = (x) => x) => items && items.length ? `\n${h.toUpperCase()}\n` + items.map(i => '- ' + f(i)).join('\n') + '\n' : '';
   const P = (h, text) => text ? `\n${h.toUpperCase()}\n${text}\n` : '';
-  const foot = '<p class="fine ask-foot">Coaching written by AI. Check names, vehicles and numbers before you repeat them to a customer.</p>';
+  const foot = '<p class="fine ask-foot">Written by the AI version of Mark, not the real one. Check names, vehicles and numbers before you repeat them to a customer.</p>';
 
-  /* ═════════════ Ask QuotaBird: ask Arti anything ═════════════ */
+  /* ═════════════ Ask Mark: a conversation ═════════════ */
   function askPage() {
-    const form = $('askForm'), text = $('askText'), btn = $('askBtn'), out = $('askOut');
-    let run = 0, situation = '';
-    autosize(text, 110); enterSubmits(text, form);
-    document.querySelectorAll('[data-example]').forEach(b => b.onclick = () => { text.value = b.dataset.example; text.dispatchEvent(new Event('input')); track('ask_example'); form.requestSubmit(); });
-    form.addEventListener('submit', (e) => {
+    const form = $('askForm'), text = $('askText'), btn = $('askBtn'), chat = $('chat'), fresh = $('askNew'), bar = $('chatBar'), examples = $('askExamples');
+    const history = [];   // {role:'user'|'mark', text}, this tab only, never stored
+    let run = 0;
+    const fit = () => { text.style.height = 'auto'; text.style.height = Math.min(200, text.scrollHeight) + 'px'; };
+    text.addEventListener('input', fit); fit();
+    enterSubmits(text, form);
+    const paras = (t) => String(t || '').split(/\n{2,}/).map(p => p.trim()).filter(Boolean);
+    function bubble(role, parts, extraHtml) {
+      const el = document.createElement('div'); el.className = 'msg msg-' + role;
+      el.innerHTML = (role === 'mark' ? '<img class="msg-face" src="../mark.jpg" alt="" width="36" height="36">' : '')
+        + `<div class="msg-body">${parts.map(p => `<p>${esc(p)}</p>`).join('')}${extraHtml || ''}</div>`;
+      chat.appendChild(el); return el;
+    }
+    function thinking() {
+      const el = bubble('mark', []); el.classList.add('is-thinking');
+      el.querySelector('.msg-body').innerHTML = '<span class="dots" role="status" aria-label="Mark is thinking"><i></i><i></i><i></i></span>'; return el;
+    }
+    // keep the newest message in view without hiding it under the composer
+    const reveal = (el) => { if (!el) return; const pad = form.offsetHeight + 24; const r = el.getBoundingClientRect(); if (r.bottom > window.innerHeight - pad || r.top < 0) window.scrollBy({ top: Math.min(r.top - 96, r.bottom - (window.innerHeight - pad)), behavior: reduced() ? 'auto' : 'smooth' }); };
+    const started = (on) => { bar.hidden = !on; examples.hidden = on; form.classList.toggle('is-sticky', on); };
+    document.querySelectorAll('[data-example]').forEach(b => b.onclick = () => { text.value = b.dataset.example; fit(); track('ask_example'); form.requestSubmit(); });
+    fresh.onclick = () => { run++; history.length = 0; chat.innerHTML = ''; started(false); text.value = ''; fit(); text.focus(); track('ask_new'); };
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const q = text.value.replace(/\s+/g, ' ').trim();
-      if (q.length < 8) { errorBox(out, "Tell Arti what's going on. A sentence or two is plenty."); text.focus(); return; }
-      situation = q; ask('', btn);
-    });
-    async function ask(scenario, button) {
+      const q = text.value.trim();
+      if (q.length < 3) { text.focus(); return; }
       const id = ++run;
-      busy(button, true, 'Thinking…');
-      if (!scenario) wait(out, 'Arti is thinking it through. About fifteen seconds.'); else wait($('askWhatIfOut'), 'Rethinking it with that in mind…');
-      track(scenario ? 'ask_whatif' : 'ask_coach');
-      const { data, error } = await post({ kind: 'qb_coach', situation, scenario });
+      history.push({ role: 'user', text: q });
+      bubble('user', paras(q));
+      text.value = ''; fit(); started(true);
+      btn.disabled = true; const wait = thinking(); reveal(wait);
+      track(history.length === 1 ? 'ask_first' : 'ask_followup');
+      const { data, error } = await post({ kind: 'qb_mark', messages: history.slice(-16) });
       if (id !== run) return;
-      busy(button, false);
-      if (error) { track('ask_error'); return errorBox(scenario ? $('askWhatIfOut') : out, error); }
-      render(data.coach || {}, scenario);
-    }
-    function render(c, scenario) {
-      const tool = c.tool ? `<a class="card ask-tool" href="${esc(c.tool.url)}"><span class="overline">Run your own numbers</span><span class="ask-tool-q">${esc(c.tool.question)}</span><span class="ask-tool-n">${esc(c.tool.name)} →</span></a>` : '';
-      out.innerHTML = `<div class="wf-out coach" tabindex="-1">
-        ${scenario ? `<p class="fine ask-scn">With: ${esc(scenario)}</p>` : ''}
-        <div class="card wf-lead"><span class="overline">Arti's take</span><p class="lede">${esc(c.high_level_recommendation)}</p></div>
-        ${(c.coaching_plan || []).map(p => `<div class="card persona"><h3>${esc(p.persona)}</h3><p class="pg">${esc(p.smart_goal)}</p>${p.talking_points && p.talking_points.length ? `<div class="tps">${p.talking_points.map(t => `<span class="tp">${esc(t)}</span>`).join('')}</div>` : ''}</div>`).join('')}
-        ${tool}
-        <form class="ask-form whatif" id="askWhatIf" autocomplete="off" novalidate>
-          <label class="tf"><span class="tf-label">What if…</span><textarea id="askScenario" rows="2" maxlength="800" placeholder="e.g. The CO just told us the RFP slips to Q3, or our champion is leaving"></textarea></label>
-          <button class="btn btn-lg btn-full" id="askWhatIfBtn" type="submit">Rethink it</button>
-        </form>
-        <div id="askWhatIfOut"></div>
-        ${foot}
-      </div>`;
-      actions(out.querySelector('.wf-out'), () => `ARTI'S TAKE\n${c.high_level_recommendation || ''}\n` + (c.coaching_plan || []).map(p => `\n${p.persona.toUpperCase()}\n${p.smart_goal}\n${(p.talking_points || []).map(t => '- ' + t).join('\n')}`).join('\n'), 'ask');
-      const wf = $('askWhatIf'), st = $('askScenario'); autosize(st, 60); enterSubmits(st, wf);
-      wf.addEventListener('submit', (e) => { e.preventDefault(); const s = st.value.replace(/\s+/g, ' ').trim(); if (s.length < 4) { st.focus(); return; } ask(s, $('askWhatIfBtn')); });
-      const card = out.querySelector('.wf-out'); scrollTo(card); try { card.focus({ preventScroll: true }); } catch {}
+      btn.disabled = false; wait.remove();
+      if (error) { history.pop(); track('ask_error'); const el = bubble('mark', [error]); el.classList.add('is-error'); reveal(el); return; }
+      const reply = Array.isArray(data.reply) ? data.reply : paras(data.reply);
+      history.push({ role: 'mark', text: reply.join('\n\n') });
+      const tool = data.tool ? `<a class="msg-tool" href="${esc(data.tool.url)}"><span>${esc(data.tool.question)}</span><b>${esc(data.tool.name)} →</b></a>` : '';
+      const el = bubble('mark', reply, tool + '<p class="msg-note">AI, not the real Mark.</p>');
+      reveal(el); text.focus({ preventScroll: true });
       track('ask_done');
-    }
+    });
   }
 
   /* ═════════════ The one-box pages ═════════════ */
@@ -140,6 +142,6 @@
     }
   }
 
-  function init() { if (CFG.page === 'ask-quotabird') askPage(); else if (CFG.page) wfPage(); }
+  function init() { if (CFG.page === 'ask-mark') askPage(); else if (CFG.page) wfPage(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();

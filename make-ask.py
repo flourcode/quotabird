@@ -115,7 +115,7 @@ print('catalog', len(_CAT), 'tools +', len(WORKFLOWS), 'workflows')
 # ── 3. The pages ──
 _AI_FAQ = ("Does anything I type leave my device?", "Yes. This page uses AI, unlike the tools. When you press the button, what you typed goes to Google's Gemini through QuotaBird's own server, and the answer comes back here. The server doesn't save it, and QuotaBird never sees it. Don't paste anything that isn't yours to share: nothing classified or controlled unclassified, nothing marked internal, nothing about a customer you wouldn't put in an email to a stranger.")
 _TRUST_FAQ = ("Can I trust it?", "Trust it like advice from an experienced coach who wasn't in the room. It knows how federal deals actually move, and it'll tell you what to do this week. It doesn't know your customer's org chart or this year's budget line, so check any name, vehicle or number before you repeat it to a customer.")
-_ARTI_FAQ = ("Who is Arti?", "The coach behind these pages: an AI set up to coach the way an experienced federal sales leader would. Start with the mission, follow the money and the path through primes and partners, arm your champion, deal with the blocker, and do something in the next 72 hours. Mark built it from years of doing exactly that.")
+_ARTI_FAQ = ("Who's answering?", "The AI version of Mark: set up to answer the way he would after twenty-plus years in federal sales. Start with the mission, follow the money and the path through primes and partners, arm your champion, deal with the blocker, do something in the next 72 hours. It's not the real Mark, and it says so. He's on the Ask Mark page, twenty minutes at a time.")
 def _ask_page(slug, name, title, desc, h1, dek, body, faq, scripts):
     faq_html = ''.join(f'    <details class="exp"><summary>{q}</summary>\n      <div class="body">{a}</div></details>\n' for q, a in faq)
     faq_ld = ',\n'.join(json.dumps({"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r'<[^>]+>', '', a)}}) for q, a in faq)
@@ -171,7 +171,7 @@ def _ask_page(slug, name, title, desc, h1, dek, body, faq, scripts):
   <div id="screen" class="ask-screen">
     <span class="overline tool-name">{name}</span>
     <h1>{h1}</h1>
-    <p class="dek">{dek}</p>
+    {('<div class="mark-intro"><img src="../mark.jpg" alt="Mark Flournoy" width="56" height="56" decoding="async"><p class="dek">' + dek + '</p></div>') if slug == 'ask-mark' else '<p class="dek">' + dek + '</p>'}
 {body}
   </div>
 </div>
@@ -210,37 +210,52 @@ def _box(label, ph, cta, note='Uses AI. <a href="#faq">What gets sent</a>', extr
             f'      <button class="btn btn-primary btn-lg btn-full" id="wfBtn" type="submit">{cta}</button>\n'
             f'      <p class="startnote">{note}</p>\n    </form>\n    <div id="wfOut" aria-live="polite"></div>')
 
-_ask_page('ask-quotabird', 'Ask QuotaBird', 'Ask QuotaBird: A Federal Sales Coach for Your Actual Deal',
-    'Ask a federal sales coach about your actual deal: the decision maker, the money, the blocker, your champion, your boss. A plan for every player and what to do in the next 72 hours.',
-    "What's going on with the deal?",
-    "Ask it like you'd ask a coach who's seen a thousand federal deals. No forms. You get a plan for every person who matters, and what to do in the next 72 hours.",
-    '''    <form class="ask-form" id="askForm" autocomplete="off" novalidate>
-      <label class="tf ask-tf"><span class="tf-label">Your situation</span>
-        <textarea id="askText" rows="4" maxlength="3000" placeholder="e.g. We're selling a data platform to an Army program office through a prime. The program manager loves us, but the prime's VP keeps stalling and the money is supposedly in the FY27 budget."></textarea></label>
-      <button class="btn btn-primary btn-lg btn-full" id="askBtn" type="submit">Ask Arti</button>
-      <p class="startnote ask-note">Uses AI. <a href="#faq">What gets sent</a></p>
-      <div class="ask-examples" role="group" aria-label="Examples"><span class="ask-ex-h">Or try one:</span>
-        <button class="ask-ex" type="button" data-example="My champion at DHS says the CIO wants our zero trust tool, but the contracting officer says there's no vehicle we're on and the end of the fiscal year is coming fast.">No vehicle</button>
-        <button class="ask-ex" type="button" data-example="We're a small 8(a) firm. A big prime wants us as a sub on an Air Force recompete, but they're vague about our workshare and the incumbent has been there eight years.">Teaming with a prime</button>
-        <button class="ask-ex" type="button" data-example="My manager wants my FAA deal in commit this quarter. The program office likes us but nobody can tell me where the money comes from.">Is it commit?</button>
+CAL_ASK = 'https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=ask-mark'
+_ask_page('ask-mark', 'Ask Mark', 'Ask Mark: Twenty Years of Federal Sales, Minus the Wait',
+    "Ask the AI version of Mark Flournoy a sales question: a stuck federal deal, a prime that won't move, a quota that landed, a comp plan, a boss who wants it in commit. Blunt, useful, and twenty minutes from the real Mark.",
+    'Ask me anything about selling.',
+    "I'm the AI version of Mark. Twenty years in the Marine Corps, fifteen selling and leading federal sales at Red Hat, F5 and Amazon, boiled down into a chat box. Deals, partners, quota, comp, your boss. I'll be blunt. If you want the real one, he's twenty minutes away, link's at the bottom.",
+    '''    <div class="chat-bar" id="chatBar" hidden><span class="chat-bar-l">This conversation stays in this tab.</span><button class="btn btn-text" id="askNew" type="button">New chat</button></div>
+    <div class="chat" id="chat" role="log" aria-live="polite" aria-relevant="additions"></div>
+    <form class="composer" id="askForm" autocomplete="off" novalidate>
+      <div class="composer-box">
+        <textarea id="askText" rows="1" maxlength="3000" placeholder="Ask Mark anything about selling" aria-label="Ask Mark"></textarea>
+        <button class="send" id="askBtn" type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
       </div>
+      <p class="startnote ask-note">AI, not the real Mark. Nothing you type is stored. <a href="#faq">What gets sent</a></p>
     </form>
-    <div id="askOut" aria-live="polite"></div>''',
-    [_ARTI_FAQ, ("What can I ask?", "Anything about a deal or an account: a stalled opportunity, a blocker, a prime who won't commit, a vehicle you're not on, a champion who's going quiet, a boss who wants it in commit. It works for commercial deals too. When your question is really about the math (a quota, pipeline coverage, a comp plan), it points you to the QuotaBird tool that runs your numbers."),
-     _TRUST_FAQ, _AI_FAQ],
+    <div class="ask-examples" id="askExamples" role="group" aria-label="Examples"><span class="ask-ex-h">Or start with:</span>
+      <button class="ask-ex" type="button" data-example="My champion at DHS says the CIO wants our zero trust tool, but the contracting officer says there's no vehicle we're on and the end of the fiscal year is coming fast.">No vehicle, it's August</button>
+      <button class="ask-ex" type="button" data-example="I sell cloud. My biggest customer signed a $3M three-year commit and is burning about half of pace. My manager wants me to forecast the full number. What do I do?">The commit isn't burning</button>
+      <button class="ask-ex" type="button" data-example="We're an ISV. A big prime wants us as a sub on an Air Force recompete but won't say what our workshare is, and the incumbent has been there eight years. Worth it?">Teaming with a prime</button>
+      <button class="ask-ex" type="button" data-example="My quota went up 30% and my territory didn't change. How do I push back without sounding like I'm whining?">Quota went up 30%</button>
+    </div>
+    <div class="card mark-card real-mark">
+      <h3>Want the real one?</h3>
+      <p>That's me above, roughly. The actual Mark reads slower and charges for the long version, but the first twenty minutes are free, and if I don't think you need my help I'll say so.</p>
+      <a class="btn btn-primary btn-lg btn-full" href="''' + CAL_ASK + '''" target="_blank" rel="noopener" style="margin-top:14px;">Grab 20 minutes with Mark</a>
+      <p class="fine" style="text-align:center;margin:8px 0 0;"><a href="/work-with-mark/">What working with Mark looks like</a></p>
+    </div>''',
+    [("Is this really Mark?", "No, it's an AI set up to answer the way Mark would, built from what he's written and how he thinks about deals, partners, quota and comp. It's blunt because he is. It's not him, it doesn't know you, and it doesn't remember this conversation after you close the page. The real Mark is on the button at the bottom."),
+     ("What can I ask?", "Anything about selling, especially federal cloud and SaaS: a stuck deal, a prime that won't commit, a vehicle you're not on, a champion who can't sign, co-sell that goes nowhere, a commit that isn't burning, a quota that just landed, a comp plan with footnotes, a boss who wants it in commit. Commercial deals too. When the question is really arithmetic, it hands you to the QuotaBird tool that runs your numbers."),
+     ("Can I trust it?", "Like advice from someone experienced who wasn't in the room. It knows how federal deals actually move and it'll tell you what to do this week. It doesn't know your customer's org chart or this year's budget line, so check any name, vehicle or number before you repeat it to a customer. When it doesn't know, it should say so."),
+     ("Does anything I type leave my device?", "Yes. This page uses AI. When you press Ask, your messages go to Google's Gemini through QuotaBird's own server, and the answer comes back here. The server doesn't save them, and the real Mark never sees them. The conversation lives in this tab and is gone when you close it. Don't paste anything that isn't yours to share: nothing classified or controlled unclassified, nothing marked internal, nothing about a customer you wouldn't put in an email to a stranger.")],
     _SCRIPTS)
+# /ask-quotabird/ now points at Ask Mark
+os.makedirs('ask-quotabird', exist_ok=True)
+open('ask-quotabird/index.html', 'w').write('<!DOCTYPE html>\n<html lang="en"><head><meta charset="utf-8"><title>Ask Mark | QuotaBird</title>\n<meta name="robots" content="noindex"><link rel="canonical" href="https://quotabird.com/ask-mark/">\n<meta http-equiv="refresh" content="0; url=/ask-mark/"></head>\n<body><p><a href="/ask-mark/">Ask Mark is here.</a></p></body></html>\n')
 
 _ask_page('meeting-prep', 'Meeting Prep', 'Meeting Prep: Get Ready for the Meeting That Matters',
-    "Tell a federal sales coach about the meeting and get what a win looks like, the agenda, the questions to ask, the objections and what to say, the landmines, the next step to ask for and the 72 hours after.",
+    "Tell the AI version of Mark about the meeting and get what a win looks like, the agenda, the questions to ask, the objections and what to say, the landmines, the next step to ask for and the 72 hours after.",
     'Got a meeting that matters?',
-    "Tell Arti who you're meeting, what it's about and what you want out of it, however it comes out. No forms.",
+    "Tell Mark who you're meeting, what it's about and what you want out of it, however it comes out. No forms.",
     _box('The meeting', "e.g. Thursday I meet the deputy CIO at HHS and her program manager about our analytics platform. They liked the demo. I want them to agree to a pilot, and I think the incumbent is whispering in their ear.", 'Get ready'),
     [_ARTI_FAQ, _TRUST_FAQ, _AI_FAQ], _SCRIPTS)
 
 _ask_page('account-plan', 'Account Plan', 'Account Plan: A Plan You Can Walk Into Your Boss With',
-    "Tell a federal sales coach about the account and get a plan: the mission, the money on their fiscal year, how they buy, the people and the play for each, how you grow it, and the next 72 hours.",
+    "Tell the AI version of Mark about the account and get a plan: the mission, the money on their fiscal year, how they buy, the people and the play for each, how you grow it, and the next 72 hours.",
     'Do you have a plan for this account?',
-    "Tell Arti about the account: who it is, what you sell them, your number, who you know. Whatever you've got. No forms.",
+    "Tell Mark about the account: who it is, what you sell them, your number, who you know. Whatever you've got. No forms.",
     _box('The account', "e.g. VA is my biggest account, $2M number this year. We sell a data platform to the claims office through Carahsoft. I know the program manager well and nobody above her. Renewal is in August.", 'Build the plan'),
     [_ARTI_FAQ, ("Why their fiscal year?", "Because that's when their money moves. A federal customer's year starts October 1, and a lot of buying lands July through September. A plan on your calendar instead of theirs puts the work in the wrong months."), _TRUST_FAQ, _AI_FAQ],
     _SCRIPTS)
@@ -249,7 +264,7 @@ _TYPES = ''.join(f'<button class="chip{" on" if v == "weekly" else ""}" type="bu
 _ask_page('update-upward', 'Update Upward', 'Update Upward: What Are You Telling Your Boss?',
     'Tell a federal sales coach where things stand and get the update you send your boss: the number and your call first, the deals, the blockers with exact asks, and the questions your boss will ask.',
     'What are you telling your boss?',
-    "Tell Arti where things stand: your number, your deals, what's in the way. You get the update, ready to paste, and the questions your boss will ask.",
+    "Tell Mark where things stand: your number, your deals, what's in the way. You get the update, ready to paste, and the questions your boss will ask.",
     _box("Where things stand", "e.g. $3M number, $1.2M closed. Northwind ($1.2M) is stuck in legal, Contoso ($650K) has a proposal out. I'll probably land around $2.6M. I need my VP to call Northwind's GC.", 'Write the update',
          extra=f'      <div class="tf"><span class="tf-label" id="lbl-type">What kind of update</span><div class="chips" role="group" aria-labelledby="lbl-type">{_TYPES}</div></div>\n'),
     [("Will it make my numbers look better?", "No. It works from the numbers you give it. If you're going to miss, the update says so early and in dollars. That's the version your boss can actually use."),
@@ -257,4 +272,4 @@ _ask_page('update-upward', 'Update Upward', 'Update Upward: What Are You Telling
      _TRUST_FAQ, _AI_FAQ],
     _SCRIPTS)
 
-ASK_PAGES = ['ask-quotabird/index.html', 'meeting-prep/index.html', 'account-plan/index.html', 'update-upward/index.html']
+ASK_PAGES = ['ask-mark/index.html', 'meeting-prep/index.html', 'account-plan/index.html', 'update-upward/index.html']

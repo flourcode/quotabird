@@ -1161,3 +1161,56 @@ input.needs::placeholder { color:var(--ink); opacity:.7; }
 .whatif .btn { margin-top:0; }
 #askWhatIfOut:empty { display:none; }
 .coach .wf-lead .lede, .wf-out .wf-lead .lede { font-weight:500; font-size:19px; line-height:1.5; }
+
+/* Ask Mark: the conversation. Follows the site's own system (flat surfaces, 16px corners, blue = act,
+   44px targets) and the conversation patterns people know from Google's apps: the other side's messages
+   sit plain on the page with an avatar, yours in a tinted bubble with one square corner, a pill composer
+   with a round send button that stays at the bottom while you read, messages that ease in. */
+.mark-intro { display:flex; gap:14px; align-items:flex-start; margin:0 0 24px; }
+.mark-intro img { flex:none; width:56px; height:56px; border-radius:50%; object-fit:cover; margin-top:4px; }
+.mark-intro .dek { margin:0; font-size:19px; }
+.chat-bar { display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:44px; margin:0 0 4px; font-size:13px; color:var(--mut); }
+.chat-bar .btn-text { height:40px; padding:0 8px; }
+.chat { display:flex; flex-direction:column; gap:16px; margin:0 0 20px; }
+.chat:empty { display:none; }
+.msg { display:flex; gap:10px; align-items:flex-start; animation:msgin .32s var(--ease-out) both; }
+@keyframes msgin { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion: reduce) { .msg { animation:none; } }
+.msg-user { justify-content:flex-end; }
+.msg-user .msg-body { background:var(--card); border-radius:20px 20px 4px 20px; padding:12px 16px; max-width:85%; }
+.msg-mark .msg-body { flex:1 1 auto; min-width:0; padding-top:5px; }
+.msg-face { flex:none; width:36px; height:36px; border-radius:50%; object-fit:cover; }
+.msg-body p { margin:0 0 10px; font-size:17px; line-height:1.5; color:var(--ink); }
+.msg-body p:last-child { margin-bottom:0; }
+.msg-note { font-size:12px !important; color:var(--mut) !important; margin-top:8px !important; letter-spacing:.02em; }
+.msg.is-error .msg-body p { color:var(--mut); }
+.msg-tool { display:flex; flex-direction:column; gap:2px; margin:12px 0 4px; padding:12px 16px; background:var(--card); border-radius:16px; text-decoration:none !important; color:var(--ink) !important; transition:background-color .15s; }
+.msg-tool:hover { background:var(--seg); }
+.msg-tool span { font-size:16px; font-weight:700; } .msg-tool b { font-size:13px; font-weight:600; color:var(--mut); }
+.dots { display:inline-flex; gap:5px; padding:10px 0; } .dots i { width:8px; height:8px; border-radius:50%; background:var(--mut); animation:askpulse 1s ease-in-out infinite; }
+.dots i:nth-child(2) { animation-delay:.15s; } .dots i:nth-child(3) { animation-delay:.3s; }
+@media (prefers-reduced-motion: reduce) { .dots i { animation:none; } }
+/* the composer: a pill that grows with the text, send button inside */
+.composer { margin:0; }
+.composer.is-sticky { position:sticky; bottom:0; z-index:5; padding:10px 0 calc(8px + env(safe-area-inset-bottom)); background:linear-gradient(to top, var(--page) 78%, transparent); }
+.composer-box { display:flex; align-items:flex-end; gap:8px; padding:6px 6px 6px 18px; background:var(--card); border-radius:28px; transition:box-shadow .15s; }
+.composer-box:focus-within { box-shadow:inset 0 0 0 2px var(--ink); }
+.composer-box textarea { flex:1 1 auto; min-width:0; min-height:36px; max-height:200px; padding:7px 0; margin:0; border:0 !important; border-radius:0 !important; background:transparent !important; box-shadow:none !important;
+  font:400 18px/1.4 var(--font); letter-spacing:-.005em; color:var(--ink); resize:none; outline:none; }
+.composer-box textarea::placeholder { color:var(--mut); opacity:.85; }
+.send { flex:none; width:44px; height:44px; border:0; border-radius:50%; background:var(--blue); color:var(--on-blue); display:inline-flex; align-items:center; justify-content:center; cursor:pointer; transition:background-color .15s, transform .1s; }
+.send:hover { background:var(--blue-press); } .send:active { transform:scale(.94); }
+.send:disabled { background:var(--seg); color:var(--mut); cursor:default; }
+.composer .ask-note { margin-top:8px; }
+.ask-examples[hidden] { display:none; }
+.real-mark { margin-top:32px; }
+.real-mark h3 { font-size:20px; letter-spacing:-.01em; }
+.real-mark .fine a { color:inherit; text-decoration:underline; text-underline-offset:3px; }
+/* the header: Ask Mark is the one filled control */
+a.chip-ask { background:var(--blue) !important; color:var(--on-blue) !important; text-decoration:none !important; font-weight:700; padding:0 14px; }
+a.chip-ask:hover { background:var(--blue-press) !important; }
+a.chip-ask.current { box-shadow:inset 0 0 0 2px var(--ink) !important; }
+@media (min-width:880px) { #screen.ask-screen .chat, #screen.ask-screen .composer, #screen.ask-screen .chat-bar, #screen.ask-screen .ask-examples, #screen.ask-screen .real-mark, #screen.ask-screen .mark-intro { max-width:680px; } }
+@media print { .ask-page .composer, .ask-page .real-mark, .ask-page .chat-bar, .ask-page .ask-examples, .msg-note { display:none !important; } .msg-user .msg-body { background:#eee !important; } }
+.chat-bar[hidden] { display:none; }
+.composer-box textarea:focus-visible, .ask-form textarea:focus-visible, .wf-form textarea:focus-visible, .wf-form .tf input:focus-visible { outline:none !important; }   /* the container shows focus, not the field inside it */

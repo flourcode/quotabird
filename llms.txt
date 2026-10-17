@@ -2,7 +2,7 @@
 
 > QuotaBird is a free set of quota, pipeline and comp-plan calculators for B2B sellers and sales managers at cloud providers and SaaS companies, built by Mark Flournoy, who spent six years leading federal partner sales teams at Amazon. 22 one-minute tools for the number they gave you and what they will pay you for it, plus short Field Notes, printable Field Kits and a methodology page that labels every benchmark as published data, a rule of thumb, or a QuotaBird working range.
 
-The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor's own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Four pages are the exception: Ask QuotaBird (https://quotabird.com/ask-quotabird/), Meeting Prep, Account Plan and Update Upward send what the visitor types to Google Gemini through QuotaBird's own server, which stores nothing; the AI writes coaching advice and points to the calculators, which still run in the browser. Privacy: https://quotabird.com/privacy/
+The tools are plain web pages. Each asks five questions (yes / sort of / no) or takes a few numbers, then gives a verdict, the question a manager will ask, and one thing to do first. The math runs in the browser and nothing typed is sent anywhere; base, variable and quota can be remembered in the visitor's own browser so other tools can prefill them. Shared results are encoded in the URL fragment; no accounts, no uploads, no AI. Four pages are the exception: Ask Mark (https://quotabird.com/ask-mark/), Meeting Prep, Account Plan and Update Upward send what the visitor types to Google Gemini through QuotaBird's own server, which stores nothing; the AI writes coaching advice and points to the calculators, which still run in the browser. Privacy: https://quotabird.com/privacy/
 
 ## Your number
 
@@ -53,7 +53,8 @@ The tools are plain web pages. Each asks five questions (yes / sort of / no) or 
 
 ## Talking to Mark
 
-- [The free twenty minutes](https://quotabird.com/work-with-mark/#ask): a free first conversation about one sales problem; if Mark doesn't think you need help, he says so.
+- [Ask Mark](https://quotabird.com/ask-mark/): an AI version of Mark answers sales questions in a chat; labelled as AI, nothing stored.
+- [The free twenty minutes](https://quotabird.com/work-with-mark/#ask): a free first conversation with the real Mark about one sales problem; if he doesn't think you need help, he says so.
 
 ## Free printable
 
