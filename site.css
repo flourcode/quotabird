@@ -1146,3 +1146,18 @@ input.needs::placeholder { color:var(--ink); opacity:.7; }
 .hc-ask { text-align:center; margin:12px 0 0; font-size:15px; }
 .hc-ask a { color:var(--ink); text-decoration:underline; text-underline-offset:3px; }
 @media (min-width:960px) { .hero-calc .hc-ask { grid-column:1; } }
+/* Arti's answers */
+.wf-out .pg { font-size:17px; line-height:1.5; color:var(--ink) !important; margin:0 0 10px; }
+.wf-out .pg:last-child { margin-bottom:0; }
+.persona h3 { font-size:15px; letter-spacing:.04em; text-transform:uppercase; color:var(--mut); font-weight:800; }
+.tps { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.tp { display:inline-block; padding:6px 12px; border-radius:14px; background:var(--page); font-size:14px; line-height:1.3; font-weight:600; color:var(--ink); }
+.ask-tool { display:flex; flex-direction:column; gap:4px; padding:16px 20px; text-decoration:none !important; color:var(--ink) !important; }
+.ask-tool:hover { background:var(--seg) !important; }
+.ask-tool-q { font-size:18px; font-weight:800; letter-spacing:-.01em; }
+.ask-tool-n { font-size:14px; font-weight:600; color:var(--mut); }
+.ask-scn { margin:0; }
+.whatif { margin-top:8px; }
+.whatif .btn { margin-top:0; }
+#askWhatIfOut:empty { display:none; }
+.coach .wf-lead .lede, .wf-out .wf-lead .lede { font-weight:500; font-size:19px; line-height:1.5; }

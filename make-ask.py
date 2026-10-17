@@ -113,10 +113,9 @@ open('lambda/quotabird-catalog.mjs', 'w').write(
 print('catalog', len(_CAT), 'tools +', len(WORKFLOWS), 'workflows')
 
 # ── 3. The pages ──
-_ASK_FAQ_PRIVACY = ("Does this use AI?", "Yes, this page does, and it's the only kind of page on QuotaBird that does. What you type goes to Google's Gemini, through QuotaBird's own server, to work out which check you need and to explain the result. The math itself still runs here in your browser, with the same code the tool pages use. The server doesn't save what you type, and QuotaBird never sees it. Leave out names you wouldn't put in an email to a stranger.")
-_WF_FAQ_PRIVACY = ("Does anything I type leave my device?", "Yes. Unlike the tools, this page uses AI. When you press the button, what you typed goes to Google's Gemini, through QuotaBird's own server, and the answer comes back here. The server doesn't save it, and QuotaBird never sees it. The arithmetic runs here in your browser, not in the AI. Don't paste anything that isn't yours to share: no controlled unclassified information, nothing marked internal, nothing from a customer you wouldn't put in an email to a stranger.")
-_WF_FAQ_FACTS = ("Can I trust what it says about the customer?", "Only the parts marked as yours. Everything in the answer carries a label: what you said, what came from a document you pasted, what QuotaBird calculated, and what is a guess. A guess is a starting point for a question, never a fact about the customer. It won't name people, budgets, contracts or deadlines you didn't give it, and if it does by mistake, the server drops that line before you see it.")
-
+_AI_FAQ = ("Does anything I type leave my device?", "Yes. This page uses AI, unlike the tools. When you press the button, what you typed goes to Google's Gemini through QuotaBird's own server, and the answer comes back here. The server doesn't save it, and QuotaBird never sees it. Don't paste anything that isn't yours to share: nothing classified or controlled unclassified, nothing marked internal, nothing about a customer you wouldn't put in an email to a stranger.")
+_TRUST_FAQ = ("Can I trust it?", "Trust it like advice from an experienced coach who wasn't in the room. It knows how federal deals actually move, and it'll tell you what to do this week. It doesn't know your customer's org chart or this year's budget line, so check any name, vehicle or number before you repeat it to a customer.")
+_ARTI_FAQ = ("Who is Arti?", "The coach behind these pages: an AI set up to coach the way an experienced federal sales leader would. Start with the mission, follow the money and the path through primes and partners, arm your champion, deal with the blocker, and do something in the next 72 hours. Mark built it from years of doing exactly that.")
 def _ask_page(slug, name, title, desc, h1, dek, body, faq, scripts):
     faq_html = ''.join(f'    <details class="exp"><summary>{q}</summary>\n      <div class="body">{a}</div></details>\n' for q, a in faq)
     faq_ld = ',\n'.join(json.dumps({"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": re.sub(r'<[^>]+>', '', a)}}) for q, a in faq)
@@ -204,102 +203,58 @@ window.QB_ASK = {{ endpoint: {json.dumps(ASK_ENDPOINT)}, page: {json.dumps(slug)
     print('ask page', slug, len(html))
 
 _cat_js = json.dumps([{k: v for k, v in c.items() if k != 'desc'} for c in _CAT] + [{k: v for k, v in w.items() if k not in ('desc', 'fields')} for w in WORKFLOWS], ensure_ascii=False)
-_SCRIPTS = '<script src="../calc.js"></script>\n<script src="../check.js"></script>\n<script src="../ask.js"></script>'
+_SCRIPTS = '<script src="../ask.js"></script>'
+def _box(label, ph, cta, note='Uses AI. <a href="#faq">What gets sent</a>', extra=''):
+    return (f'    <form class="wf-form" id="wfForm" autocomplete="off" novalidate>\n{extra}'
+            f'      <label class="tf"><span class="tf-label">{label}</span><textarea id="situation" rows="5" maxlength="3000" placeholder="{ph}"></textarea></label>\n'
+            f'      <button class="btn btn-primary btn-lg btn-full" id="wfBtn" type="submit">{cta}</button>\n'
+            f'      <p class="startnote">{note}</p>\n    </form>\n    <div id="wfOut" aria-live="polite"></div>')
 
-_ask_page('ask-quotabird', 'Ask QuotaBird', 'Ask QuotaBird: Describe the Problem, Get the Right Check',
-    'Describe a quota, pipeline, pay or deal problem in plain words. Ask QuotaBird picks the check, fills in your numbers, runs the same math as the tool, and explains the result.',
-    "What's the problem?",
-    "Describe it the way you'd tell a friend over coffee. It picks the right check and fills in your numbers, and the math runs right here, same as on the tool pages.",
-    f'''    <form class="ask-form" id="askForm" autocomplete="off" novalidate>
-      <label class="tf ask-tf"><span class="tf-label">Your situation, in your words</span>
-        <textarea id="askText" rows="3" maxlength="1000" placeholder="e.g. My quota is $5M and I've got $8M in pipeline. Am I screwed?"></textarea></label>
-      <button class="btn btn-primary btn-lg btn-full" id="askBtn" type="submit">Ask</button>
-      <p class="startnote ask-note">This page uses AI to pick the check and explain the answer. The math doesn't. <a href="#faq">What gets sent</a></p>
+_ask_page('ask-quotabird', 'Ask QuotaBird', 'Ask QuotaBird: A Federal Sales Coach for Your Actual Deal',
+    'Ask a federal sales coach about your actual deal: the decision maker, the money, the blocker, your champion, your boss. A plan for every player and what to do in the next 72 hours.',
+    "What's going on with the deal?",
+    "Ask it like you'd ask a coach who's seen a thousand federal deals. No forms. You get a plan for every person who matters, and what to do in the next 72 hours.",
+    '''    <form class="ask-form" id="askForm" autocomplete="off" novalidate>
+      <label class="tf ask-tf"><span class="tf-label">Your situation</span>
+        <textarea id="askText" rows="4" maxlength="3000" placeholder="e.g. We're selling a data platform to an Army program office through a prime. The program manager loves us, but the prime's VP keeps stalling and the money is supposedly in the FY27 budget."></textarea></label>
+      <button class="btn btn-primary btn-lg btn-full" id="askBtn" type="submit">Ask Arti</button>
+      <p class="startnote ask-note">Uses AI. <a href="#faq">What gets sent</a></p>
       <div class="ask-examples" role="group" aria-label="Examples"><span class="ask-ex-h">Or try one:</span>
-        <button class="ask-ex" type="button" data-example="My quota is $5M and I've got $8M of qualified pipeline. I win about 25% of what I qualify. Am I screwed?">Enough pipeline?</button>
-        <button class="ask-ex" type="button" data-example="They gave me a $1.2M quota on $180K OTE, measured on bookings. Is that crazy?">Crazy quota?</button>
-        <button class="ask-ex" type="button" data-example="My best deal is at a federal agency and my manager wants it in commit this quarter. Is it real?">Real deal?</button>
+        <button class="ask-ex" type="button" data-example="My champion at DHS says the CIO wants our zero trust tool, but the contracting officer says there's no vehicle we're on and the end of the fiscal year is coming fast.">No vehicle</button>
+        <button class="ask-ex" type="button" data-example="We're a small 8(a) firm. A big prime wants us as a sub on an Air Force recompete, but they're vague about our workshare and the incumbent has been there eight years.">Teaming with a prime</button>
+        <button class="ask-ex" type="button" data-example="My manager wants my FAA deal in commit this quarter. The program office likes us but nobody can tell me where the money comes from.">Is it commit?</button>
       </div>
     </form>
-    <div id="askOut" aria-live="polite"></div>
-    <script type="application/json" id="qbCatalog">{_cat_js}</script>''',
-    [("What can I ask?", "Anything a QuotaBird tool can answer: whether a quota is crazy, whether your pipeline covers the number, what a comp plan pays, whether a deal is real, whether a rep or a territory is the problem, and the rest of the tools. It can also start you on Meeting Prep, Account Plan or Update Upward. It isn't a general chatbot. Ask it about the weather and it'll tell you so."),
-     _ASK_FAQ_PRIVACY,
-     ("Does the AI do the math?", "No. The AI reads what you wrote and pulls out the numbers it finds there, quoting your own words for each one, and you can see and change every number before anything runs. Then the tool's own code runs on this page, the same code as the tool page. The AI only explains the result it was handed, and the server deletes any figure in the explanation that didn't come from you or from the math."),
-     ("Why not just use the tool?", "If you know which one you need, use it. It's faster, and nothing leaves your device. This page is for when you don't know where to start, or you want the result explained in plain words.")],
+    <div id="askOut" aria-live="polite"></div>''',
+    [_ARTI_FAQ, ("What can I ask?", "Anything about a deal or an account: a stalled opportunity, a blocker, a prime who won't commit, a vehicle you're not on, a champion who's going quiet, a boss who wants it in commit. It works for commercial deals too. When your question is really about the math (a quota, pipeline coverage, a comp plan), it points you to the QuotaBird tool that runs your numbers."),
+     _TRUST_FAQ, _AI_FAQ],
     _SCRIPTS)
-
-_FED_CHIPS = '<div class="chips" role="group" aria-label="Federal customer"><button class="chip" type="button" data-choice="federal" data-v="no" aria-pressed="true">Commercial</button><button class="chip" type="button" data-choice="federal" data-v="yes" aria-pressed="false">Federal</button></div>'
-def _tf(id, label, ph='', area=False, mode='text', opt=False, rows=3, maxlen=600):
-    lab = label + (' <small>optional</small>' if opt else '')
-    if area: return f'      <label class="tf"><span class="tf-label">{lab}</span><textarea id="{id}" rows="{rows}" maxlength="{maxlen}" placeholder="{ph}"></textarea></label>\n'
-    return f'      <label class="tf"><span class="tf-label">{lab}</span><input id="{id}" type="text" inputmode="{mode}" autocomplete="off" maxlength="{maxlen}" placeholder="{ph}"></label>\n'
 
 _ask_page('meeting-prep', 'Meeting Prep', 'Meeting Prep: Get Ready for the Meeting That Matters',
-    "Prepare for one important customer meeting: the objective, what you know and what you don't, their likely priorities, the questions to ask, the objections to expect and the next step to ask for.",
+    "Tell a federal sales coach about the meeting and get what a win looks like, the agenda, the questions to ask, the objections and what to say, the landmines, the next step to ask for and the 72 hours after.",
     'Got a meeting that matters?',
-    "Tell it who's in the room and what you want out of it. You'll get the questions to ask, the objections to expect, and the one next step to ask for.",
-    '    <form class="wf-form" id="wfForm" autocomplete="off" novalidate>\n'
-    + _tf('customer', 'Customer or account', 'e.g. a state agency CIO office, or a regional bank')
-    + _tf('objective', 'What you want out of the meeting', 'e.g. agree to a two-week pilot with their data team')
-    + _tf('attendees', "Who's in the room", 'Roles are enough. e.g. the CIO, her deputy, the program manager, my SE', area=True)
-    + _tf('known', 'What you already know', "What they've told you, what's happened so far, what you're sure of", area=True, rows=4, maxlen=1200)
-    + _tf('opportunity', 'The opportunity, if there is one', 'e.g. a data platform renewal, about $400K', opt=True)
-    + f'      <div class="tf"><span class="tf-label">The customer</span>{_FED_CHIPS}</div>\n'
-    + _tf('docs', 'Anything they\'ve published that you want used', 'Paste public text only: a strategy page, a press release, a budget justification', area=True, opt=True, rows=4, maxlen=3000)
-    + '      <button class="btn btn-primary btn-lg btn-full" id="wfBtn" type="submit">Get ready</button>\n'
-    + '      <p class="startnote">Uses AI. <a href="#faq">What gets sent</a></p>\n    </form>\n    <div id="wfOut" aria-live="polite"></div>',
-    [_WF_FAQ_FACTS, _WF_FAQ_PRIVACY,
-     ("Why does it ask what I already know?", "Because the worst meeting prep is the kind that makes things up. It builds from what you tell it and marks everything else as a guess or a question to ask. The more you give it, the fewer guesses."),
-     ("What changes for a federal customer?", "It thinks about the mission instead of revenue, the money (which appropriation, which year, whether a continuing resolution is holding it up), who can actually obligate funds, and how the buy would happen. It also keeps the senior-leader version short: a general officer or an SES gives you minutes, not an hour.")],
-    _SCRIPTS)
+    "Tell Arti who you're meeting, what it's about and what you want out of it, however it comes out. No forms.",
+    _box('The meeting', "e.g. Thursday I meet the deputy CIO at HHS and her program manager about our analytics platform. They liked the demo. I want them to agree to a pilot, and I think the incumbent is whispering in their ear.", 'Get ready'),
+    [_ARTI_FAQ, _TRUST_FAQ, _AI_FAQ], _SCRIPTS)
 
-_ask_page('account-plan', 'Account Plan', 'Account Plan: A Plan With a Number on It',
-    "Turn what you know about one account into a plan with a number on it: coverage at your real win rate, the money by the customer's own fiscal quarters, the gaps, who to meet next and the milestones.",
+_ask_page('account-plan', 'Account Plan', 'Account Plan: A Plan You Can Walk Into Your Boss With',
+    "Tell a federal sales coach about the account and get a plan: the mission, the money on their fiscal year, how they buy, the people and the play for each, how you grow it, and the next 72 hours.",
     'Do you have a plan for this account?',
-    "Your number, your open deals and what you know. The math runs on this page. The plan shows what you know, what you don't, and who to go meet.",
-    '    <form class="wf-form" id="wfForm" autocomplete="off" novalidate>\n'
-    + _tf('account', 'Account', 'e.g. Department of Veterans Affairs, or Acme Insurance')
-    + _tf('target', 'Your number for this account this year', '$2,000,000', mode='decimal')
-    + _tf('product', 'What you sell them', 'e.g. data platform and migration services')
-    + _tf('win', 'Your win rate', '25%', mode='decimal', opt=True)
-    + '      <div class="tf"><span class="tf-label" id="lbl-fy">Their fiscal year starts</span><div class="chips" role="group" aria-labelledby="lbl-fy">'
-    + ''.join(f'<button class="chip" type="button" data-choice="fy" data-v="{v}" aria-pressed="false">{lab}</button>' for v, lab in (('1', 'Jan'), ('4', 'Apr'), ('7', 'Jul'), ('10', 'Oct (federal)')))
-    + '</div></div>\n'
-    + _tf('opps', 'Open opportunities, one per line', 'Name, value, close month\ne.g. Claims modernization, $750K, March\nData platform renewal, $400K, August', area=True, rows=5, maxlen=2000)
-    + _tf('priorities', 'What you know about their priorities', "In their words, if you have them: what they're trying to get done this year", area=True, rows=4, maxlen=1500)
-    + _tf('people', 'Who you know there', 'Roles and how well you know them. e.g. program manager (good), CIO (met once)', area=True, opt=True)
-    + f'      <div class="tf"><span class="tf-label">The customer</span>{_FED_CHIPS}</div>\n'
-    + '      <div id="wfMath" aria-live="polite"></div>\n'
-    + '      <button class="btn btn-primary btn-lg btn-full" id="wfBtn" type="submit">Build the plan</button>\n'
-    + '      <p class="startnote">The math runs here. The plan uses AI. <a href="#faq">What gets sent</a></p>\n    </form>\n    <div id="wfOut" aria-live="polite"></div>',
-    [("Where does the math come from?", "It runs on this page, in plain arithmetic: your open pipeline against the number, the coverage your win rate needs (1 divided by the win rate, the same as Pipeline Check), the gap, and each deal placed in the customer's fiscal quarter by its close month. The AI gets those numbers and isn't allowed to change them."),
-     _WF_FAQ_FACTS, _WF_FAQ_PRIVACY,
-     ("Why the customer's fiscal year?", "Because that's when their money moves. A federal customer's year starts October 1, and a lot of the year's buying lands in July through September. A plan on your calendar instead of theirs puts the work in the wrong months.")],
+    "Tell Arti about the account: who it is, what you sell them, your number, who you know. Whatever you've got. No forms.",
+    _box('The account', "e.g. VA is my biggest account, $2M number this year. We sell a data platform to the claims office through Carahsoft. I know the program manager well and nobody above her. Renewal is in August.", 'Build the plan'),
+    [_ARTI_FAQ, ("Why their fiscal year?", "Because that's when their money moves. A federal customer's year starts October 1, and a lot of buying lands July through September. A plan on your calendar instead of theirs puts the work in the wrong months."), _TRUST_FAQ, _AI_FAQ],
     _SCRIPTS)
 
+_TYPES = ''.join(f'<button class="chip{" on" if v == "weekly" else ""}" type="button" data-choice="type" data-v="{v}" aria-pressed="{"true" if v == "weekly" else "false"}">{lab}</button>' for v, lab in (('weekly', 'Weekly'), ('forecast', 'Forecast call'), ('miss', 'Calling a miss'), ('monthly', 'Monthly review')))
 _ask_page('update-upward', 'Update Upward', 'Update Upward: What Are You Telling Your Boss?',
-    'Write the update you send your boss: a weekly note, a forecast call, calling a miss early, or a monthly business review. Your numbers, your top deals, the blockers and the exact asks.',
+    'Tell a federal sales coach where things stand and get the update you send your boss: the number and your call first, the deals, the blockers with exact asks, and the questions your boss will ask.',
     'What are you telling your boss?',
-    'Your numbers, your top deals and what you need. You get a one-page update that leads with the number and ends with the asks, plus the questions your boss will ask.',
-    '    <form class="wf-form" id="wfForm" autocomplete="off" novalidate>\n'
-    + '      <div class="tf"><span class="tf-label" id="lbl-type">What kind of update</span><div class="chips" role="group" aria-labelledby="lbl-type">'
-    + ''.join(f'<button class="chip{" on" if v == "weekly" else ""}" type="button" data-choice="type" data-v="{v}" aria-pressed="{"true" if v == "weekly" else "false"}">{lab}</button>' for v, lab in (('weekly', 'Weekly'), ('forecast', 'Forecast call'), ('miss', 'Calling a miss'), ('monthly', 'Monthly review')))
-    + '</div></div>\n'
-    + _tf('period', 'The period', 'e.g. Q4, or this year', opt=True, maxlen=60)
-    + _tf('target', 'Your number for the period', '$3,000,000', mode='decimal')
-    + _tf('closed', 'Closed so far', '$1,200,000', mode='decimal')
-    + _tf('forecast', 'What you\'ll call (forecast)', '$2,600,000', mode='decimal', opt=True)
-    + _tf('deals', 'Top deals, one per line', 'Name, value, where it stands\ne.g. Northwind, $1.2M, waiting on legal', area=True, rows=4, maxlen=1500)
-    + _tf('blockers', "What's in the way", '', area=True, rows=3, maxlen=1000)
-    + _tf('asks', 'What you need from your boss', 'e.g. an exec sponsor call with their CFO next week', area=True, rows=2, maxlen=600)
-    + _tf('tried', "What you've already tried", 'Mostly for calling a miss', area=True, opt=True, rows=2, maxlen=600)
-    + '      <div id="wfMath" aria-live="polite"></div>\n'
-    + '      <button class="btn btn-primary btn-lg btn-full" id="wfBtn" type="submit">Write the update</button>\n'
-    + '      <p class="startnote">The math runs here. The writing uses AI. <a href="#faq">What gets sent</a></p>\n    </form>\n    <div id="wfOut" aria-live="polite"></div>',
-    [("Will it make my numbers look better?", "No. The number line is plain arithmetic on what you typed, worked out on this page, and the AI can't change it. If you're going to miss, the update says so early and in dollars. That's the version your boss can actually use."),
+    "Tell Arti where things stand: your number, your deals, what's in the way. You get the update, ready to paste, and the questions your boss will ask.",
+    _box("Where things stand", "e.g. $3M number, $1.2M closed. Northwind ($1.2M) is stuck in legal, Contoso ($650K) has a proposal out. I'll probably land around $2.6M. I need my VP to call Northwind's GC.", 'Write the update',
+         extra=f'      <div class="tf"><span class="tf-label" id="lbl-type">What kind of update</span><div class="chips" role="group" aria-labelledby="lbl-type">{_TYPES}</div></div>\n'),
+    [("Will it make my numbers look better?", "No. It works from the numbers you give it. If you're going to miss, the update says so early and in dollars. That's the version your boss can actually use."),
      ("Calling a miss: why so early?", "Because your boss has a forecast call too. A miss you call in week six is a problem you solve together. A miss they find out about in week twelve is a problem with you."),
-     _WF_FAQ_FACTS, _WF_FAQ_PRIVACY],
+     _TRUST_FAQ, _AI_FAQ],
     _SCRIPTS)
 
 ASK_PAGES = ['ask-quotabird/index.html', 'meeting-prep/index.html', 'account-plan/index.html', 'update-upward/index.html']

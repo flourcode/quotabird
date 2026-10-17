@@ -16,7 +16,7 @@ let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', na
 
 await t('health shows quotabird', async () => {
   const r = await NEW.handler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.0.0'); assert.ok(b.quotabird.catalog);
+  assert.equal(b.version, '3.8.0'); assert.equal(b.quotabird.version, '1.1.0'); assert.ok(b.quotabird.catalog);
 });
 await t('origin not allowed is refused', async () => {
   const r = await NEW.handler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
@@ -61,39 +61,40 @@ await t('explain: drops lines with numbers nobody gave, cleans dashes', async ()
 await t('explain: needs a result', async () => {
   const r = await call({ kind: 'qb_explain', question: 'x', slug: 'quota', result: {} }); assert.equal(r.status, 400);
 });
-await t('meeting prep', async () => {
-  reply = { objective: 'They agree to a two-week pilot.', known: ['They want a pilot', 'Budget is $2M this year'], unknown: ['Who signs'],
-    priorities: [{ text: 'Zero trust is probably on their list.', label: 'guess' }, { text: 'Their FY26 budget is $40M.', label: 'document' }],
-    questions: ['Who else has to agree?', 'What happens if you do nothing?', 'How did you buy the last tool like this?'],
-    objections: [{ objection: 'No money this year', answer: 'Ask which line it would come from.' }], landmines: ['The old failed project'], next_step: 'A pilot kickoff with the program manager by next month.' };
-  const r = await call({ kind: 'qb_meeting_prep', fields: { customer: 'a state agency', objective: 'agree to a pilot', known: 'They told us they want a pilot.', federal: 'no' } });
-  assert.equal(r.status, 200); const m = r.body.meeting;
-  assert.deepEqual(m.known, ['They want a pilot'], 'invented $2M budget dropped'); assert.equal(m.priorities.length, 1); assert.equal(m.questions.length, 3); assert.equal(m.trimmed, 2);
-  const sys = calls.at(-1).body.systemInstruction.parts[0].text; assert.ok(!sys.includes('Federal buying, the basics'));
-  await call({ kind: 'qb_meeting_prep', fields: { customer: 'VA', objective: 'pilot', federal: 'yes' } });
-  assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('Federal buying, the basics'));
+const ARTI_REPLY = { high_level_recommendation: "Ok, let's think about this. Your champion is real but the money isn't — so in the next 72 hours get the program manager to name the funding line.",
+  coaching_plan: ['Decision Maker', 'Economic Buyer', 'Technical Buyer', 'Blocker', 'Champion', 'Your Boss (Sales Director/VP)', 'Your Internal Stakeholders'].map((p, i) => ({ persona: p, smart_goal: `Goal for ${p}, by Friday.`, talking_points: ['Mission first', 'Time to value', 'Extra', 'Too many'] })),
+  tool: 'deal' };
+await t('coach: Arti answers a plain question, all seven personas, tool suggestion', async () => {
+  reply = ARTI_REPLY;
+  const r = await call({ kind: 'qb_coach', situation: 'My DHS champion loves us but the CO says we are not on a vehicle.' });
+  assert.equal(r.status, 200); const c = r.body.coach;
+  assert.ok(c.high_level_recommendation.startsWith("Ok, let's think")); assert.ok(!c.high_level_recommendation.includes('—'));
+  assert.equal(c.coaching_plan.length, 7); assert.equal(c.coaching_plan[0].persona, 'Decision Maker'); assert.equal(c.coaching_plan[0].talking_points.length, 3);
+  assert.equal(c.tool.slug, 'deal');
+  const sent = calls.at(-1).body;
+  assert.ok(sent.systemInstruction.parts[0].text.startsWith('You are Arti')); assert.ok(sent.contents[0].parts[0].text.includes("SALESPERSON'S SITUATION"));
+  assert.ok(!sent.contents[0].parts[0].text.includes('NEW SCENARIO'));
+  await call({ kind: 'qb_coach', situation: 'My DHS champion loves us but the CO says we are not on a vehicle.', scenario: 'The RFP slips to Q3' });
+  assert.ok(calls.at(-1).body.contents[0].parts[0].text.includes('NEW SCENARIO TO CONSIDER: "The RFP slips to Q3"'));
+  assert.equal(calls.at(-1).body.generationConfig.maxOutputTokens, 4096);
 });
-await t('meeting prep needs customer and objective', async () => {
-  const r = await call({ kind: 'qb_meeting_prep', fields: { customer: 'x' } }); assert.equal(r.status, 400);
+await t('coach: too short', async () => { const r = await call({ kind: 'qb_coach', situation: 'hi' }); assert.equal(r.status, 400); });
+await t('meeting prep: one box', async () => {
+  reply = { objective: 'They agree to a pilot.', read: 'The deputy owns it.', agenda: ['Open, 5 min'], questions: ['a?', 'b?', 'c?', 'd?'], objections: [{ objection: 'No money', answer: 'Ask which line.' }], landmines: ['The old pilot'], next_step: 'Kickoff by the 30th.', within_72_hours: ['Send the recap'] };
+  const r = await call({ kind: 'qb_meeting_prep', situation: 'Thursday with the HHS deputy CIO about a pilot.' });
+  assert.equal(r.status, 200); assert.equal(r.body.meeting.questions.length, 4); assert.equal(r.body.meeting.next_step, 'Kickoff by the 30th.');
+  assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.startsWith('You are Arti'));
 });
-await t('account plan: math numbers allowed, quarters enforced', async () => {
-  reply = { summary: 'You have $1.15M against a $2M number.', priorities: [{ text: 'Claims backlog is their priority.', label: 'you_said' }], gaps: ['Where the money comes from'],
-    who_to_meet: [{ who: 'The program manager', why: 'Owns the requirement.' }, { who: 'Jane Smith', why: 'Budget owner with $9M.' }],
-    plays: [{ text: 'Grow the renewal into the claims work.', label: 'guess' }], milestones: [{ quarter: 'Q1 (Oct to Dec)', text: 'Meet the program manager.' }, { quarter: 'Q9', text: 'x' }],
-    next_actions: ['Ask for the budget justification.'] };
-  const r = await call({ kind: 'qb_account_plan', fields: { account: 'VA', target: '$2,000,000', product: 'data', fy: '10', opps: 'Claims, $750K, March\nRenewal, $400K, August' },
-    math: { lines: [['Your number', '$2M'], ['Open pipeline', '$1.15M · 2 deals']], quarters: ['Q1 (Oct to Dec)', 'Q2 (Jan to Mar)', 'Q3 (Apr to Jun)', 'Q4 (Jul to Sep)'] } });
-  assert.equal(r.status, 200); const p = r.body.plan;
-  assert.ok(p.summary.includes('$1.15M')); assert.equal(p.who_to_meet.length, 1); assert.equal(p.milestones.length, 1);
-  const schema = calls.at(-1).body.generationConfig.responseJsonSchema; assert.deepEqual(schema.properties.milestones.items.properties.quarter.enum.length, 4);
+await t('account plan: one box', async () => {
+  reply = { summary: 'VA is single-threaded.', mission: 'Claims backlog.', money: 'Renewal in August, Q4 of their year.', path: 'Through Carahsoft.', people: [{ role: 'Program manager', play: 'Ask for an intro up.' }], plays: ['Expand to appeals'], quarters: [{ quarter: 'Q1 (Oct to Dec)', focus: 'Meet the CIO' }], risks: ['One contact'], within_72_hours: ['Ask for the intro'] };
+  const r = await call({ kind: 'qb_account_plan', situation: 'VA claims office, $2M number, through Carahsoft.' });
+  assert.equal(r.status, 200); assert.equal(r.body.plan.people[0].role, 'Program manager'); assert.equal(r.body.plan.quarters.length, 1);
 });
-await t('update upward', async () => {
-  reply = { headline: 'I will land $2.6M of $3M, $400K short.', deals: [{ name: 'Northwind', status: 'Waiting on legal.', next: 'Legal call Tuesday.' }, { name: 'Contoso', status: 'Worth $5M.', next: '' }],
-    blockers: [{ blocker: 'Legal is slow.', ask: 'Call their GC.' }], recovery: ['Pulled Fabrikam forward.'], questions: [{ q: 'What changed?', a: 'Legal.' }] };
-  const r = await call({ kind: 'qb_update_upward', fields: { type: 'miss', target: '$3,000,000', closed: '$1,200,000', forecast: '$2,600,000', deals: 'Northwind, $1.2M, legal\nContoso, $650K' },
-    math: { lines: [['Short at your call', '$400K']] } });
-  assert.equal(r.status, 200); const u = r.body.update;
-  assert.ok(u.headline.includes('$2.6M')); assert.equal(u.deals.length, 1, 'Contoso $5M invented'); assert.equal(u.recovery.length, 1);
+await t('update upward: one box, type honored', async () => {
+  reply = { headline: 'I will land $2.6M of $3M.', update: 'First paragraph.\n\nSecond paragraph.', asks: ['Call their GC'], questions: [{ q: 'Worst case?', a: '$1.4M.' }] };
+  const r = await call({ kind: 'qb_update_upward', type: 'miss', situation: '$3M number, $1.2M closed, Northwind in legal.' });
+  assert.equal(r.status, 200); assert.equal(r.body.update.type, 'miss'); assert.equal(r.body.update.update.length, 2);
+  assert.ok(calls.at(-1).body.contents[0].parts[0].text.includes('calling a miss early'));
 });
 await t('rate limit is per visitor and separate from SideFrog', async () => {
   reply = { slug: 'none', why: '', inputs: [], reply: 'No.' };
@@ -103,7 +104,7 @@ await t('rate limit is per visitor and separate from SideFrog', async () => {
 await t('size limits: QuotaBird 16 KB, SideFrog still 8 KB', async () => {
   const big = 'x'.repeat(9000);
   reply = { slug: 'none', why: '', inputs: [], reply: 'No.' };
-  let r = await call({ kind: 'qb_meeting_prep', fields: { customer: 'a', objective: 'b', docs: big } }); assert.notEqual(r.status, 413);
+  let r = await call({ kind: 'qb_meeting_prep', situation: big }); assert.notEqual(r.status, 413);
   r = await call({ kind: 'idea', idea: big }); assert.equal(r.status, 413);
   r = await call({ kind: 'qb_route', text: 'y'.repeat(17000) }); assert.equal(r.status, 413);
 });

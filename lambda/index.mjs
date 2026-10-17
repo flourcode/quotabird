@@ -26,6 +26,7 @@
 //                              in the Function URL's CORS settings, or the QuotaBird pages get blocked.
 //   QB_RATE_LIMIT_PER_MINUTE   QuotaBird requests per visitor (IP), default 10 (one question is 2 requests)
 //   QB_RATE_LIMIT_PER_HOUR     QuotaBird requests per visitor (IP), default 60
+//   QB_GEMINI_MODEL            optional: a different model for QuotaBird only (default: GEMINI_MODEL)
 //   GEMINI_TIMEOUT_MS, SITE_URL, BOT_USER_AGENT, SEND_CORS_HEADERS   optional
 //
 // Privacy: nothing here logs or stores the idea, or anything typed on QuotaBird. Keep it that way, or change
@@ -33,7 +34,7 @@
 
 import { domainToASCII } from "node:url";
 // QuotaBird loads on its first request, so a deploy missing its files can't take SideFrog down with it.
-const QB_KINDS = ["qb_route", "qb_explain", "qb_meeting_prep", "qb_account_plan", "qb_update_upward"];
+const QB_KINDS = ["qb_coach", "qb_route", "qb_explain", "qb_meeting_prep", "qb_account_plan", "qb_update_upward"];
 let qbModule = null;
 async function quotabird() {
   if (!qbModule) qbModule = import("./quotabird.mjs").catch((e) => { qbModule = null; throw e; });
@@ -670,13 +671,15 @@ export async function handleJumpstart(body) {
 // Returns { json } or { fail: [status, payload] }.
 // ---------------------------------------------------------------------------
 
-export async function geminiJson(system, userText, schema, maxOutputTokens) {
-  const call = (withSchema) => httpGet(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(GEMINI_MODEL)}:generateContent`, {
+// QB_GEMINI_MODEL lets QuotaBird use a bigger model (e.g. gemini-3.5-flash) without touching SideFrog.
+const QB_MODEL = env.QB_GEMINI_MODEL || GEMINI_MODEL;
+export async function geminiJson(system, userText, schema, maxOutputTokens, opts = {}) {
+  const call = (withSchema) => httpGet(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(QB_MODEL)}:generateContent`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY, "User-Agent": BOT_UA },
     body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents: [{ role: "user", parts: [{ text: userText }] }],
       generationConfig: { responseMimeType: "application/json", ...(withSchema ? { responseJsonSchema: schema } : {}), maxOutputTokens } }),
-    timeout: GEMINI_TIMEOUT_MS,
+    timeout: Math.min(opts.timeout || GEMINI_TIMEOUT_MS, 27000),
   });
   let r = await call(true);
   if (r.status === 400 && /schema/i.test(r.text)) r = await call(false);
@@ -744,7 +747,7 @@ export const handler = async (event = {}) => {
   if (origin && !allowed.includes("*") && !allowed.includes(origin)) return respond(403, { error: "Origin not allowed." });
   if (method === "GET") {
     let qb = null;
-    try { const m = await quotabird(); qb = { version: m.QB_VERSION, catalog: m.CATALOG_BUILD }; } catch { qb = { error: "quotabird.mjs or quotabird-catalog.mjs is missing" }; }
+    try { const m = await quotabird(); qb = { version: m.QB_VERSION, catalog: m.CATALOG_BUILD, model: QB_MODEL }; } catch { qb = { error: "quotabird.mjs or quotabird-catalog.mjs is missing" }; }
     return respond(200, { ok: true, service: "sidefrog", version: VERSION, model: GEMINI_MODEL, ready: Boolean(env.GEMINI_API_KEY), quotabird: qb });
   }
   if (method !== "POST") return respond(405, { error: "Use POST." });
