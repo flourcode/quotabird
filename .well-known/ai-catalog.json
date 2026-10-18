@@ -27,8 +27,8 @@
         "quota to OTE ratio for cloud sales",
         "is my sales quota fair"
       ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -58,8 +58,39 @@
         "my quota went up and my territory did not",
         "can my territory make the number"
       ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your number"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:pipeline-check",
+      "displayName": "Pipeline Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/pipeline/",
+      "description": "Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. Then five questions on the shape: spread, motion, next steps, timing, creation.",
+      "tags": [
+        "your-number",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "PipelineCheck"
+      ],
+      "representativeQueries": [
+        "do I have enough pipeline to make my number",
+        "pipeline coverage calculator with my win rate",
+        "is 3X pipeline coverage enough",
+        "how fragile is my pipeline",
+        "pipeline concentration and aging risk"
+      ],
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -87,42 +118,12 @@
         "should I give a 15 percent discount",
         "discount impact on margin and commission"
       ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
         "usesAI": false,
-        "audience": "Your number"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:update-upward-check",
-      "displayName": "Update Upward",
-      "type": "text/html",
-      "url": "https://quotabird.com/update-upward/",
-      "description": "Update Upward: Write the update a seller or manager sends upward: a weekly note, a forecast call, calling a miss, or a monthly business review.",
-      "tags": [
-        "your-number",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "UpdateUpward"
-      ],
-      "representativeQueries": [
-        "how to tell my boss I will miss my number",
-        "weekly sales update template for my manager",
-        "what to say on a forecast call",
-        "monthly business review for sales"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": true,
         "audience": "Your number"
       }
     },
@@ -148,8 +149,8 @@
         "what does OTE really pay",
         "comp plan payout curve"
       ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -177,8 +178,8 @@
         "commission take home after taxes",
         "commission check calculator"
       ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -208,104 +209,13 @@
         "sales offer OTE vs realistic earnings",
         "sales job offer ramp guarantee"
       ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
         "usesAI": false,
         "audience": "Your pay"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:pipeline-check",
-      "displayName": "Pipeline Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/pipeline/",
-      "description": "Pipeline Check: target, pipeline and win rate in, the gap out. 3X is a rule of thumb; your win rate says what you actually need. Then five questions on the shape: spread, motion, next steps, timing, creation.",
-      "tags": [
-        "your-team",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "PipelineCheck"
-      ],
-      "representativeQueries": [
-        "do I have enough pipeline to make my number",
-        "pipeline coverage calculator with my win rate",
-        "is 3X pipeline coverage enough",
-        "how fragile is my pipeline",
-        "pipeline concentration and aging risk"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your team"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:rep-check",
-      "displayName": "Rep Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/rep/",
-      "description": "Rep Check: Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers, and how to defend your people in a talent review.",
-      "tags": [
-        "your-team",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "RepCheck"
-      ],
-      "representativeQueries": [
-        "is it the rep or the territory",
-        "why is my sales rep underperforming",
-        "rep problem or territory problem",
-        "prepare for OLR calibration",
-        "will my case for a rep survive talent review"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your team"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:partner-check",
-      "displayName": "Partner Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/partner/",
-      "description": "Partner Check: Tell the AI version of Mark about a partner, prime, reseller or SI and get a straight read on whether it is real work or promises, tested against sourced deals, a named account, an owner who gets paid, a plan with dates and pull.",
-      "tags": [
-        "your-team",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "PartnerCheck"
-      ],
-      "representativeQueries": [
-        "is this partner real or a logo",
-        "is my channel partner actually selling",
-        "partner check for co-sell"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": true,
-        "audience": "Your team"
       }
     },
     {
@@ -330,69 +240,8 @@
         "do I know the account or just my contact",
         "am I single-threaded in this account"
       ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": false,
-        "audience": "Your deal"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:account-plan-check",
-      "displayName": "Account Plan",
-      "type": "text/html",
-      "url": "https://quotabird.com/account-plan/",
-      "description": "Account Plan: Turn what a seller knows about one account into a plan with a number on it: coverage at the win rate, the money by the customer's own quarters, the gaps, who to meet, milestones.",
-      "tags": [
-        "your-deal",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "AccountPlan"
-      ],
-      "representativeQueries": [
-        "how to write a sales account plan",
-        "account plan template with pipeline coverage",
-        "federal account plan by fiscal quarter",
-        "strategic account plan for a quota carrier"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
-      "metadata": {
-        "runsInBrowser": true,
-        "storesData": false,
-        "usesAI": true,
-        "audience": "Your deal"
-      }
-    },
-    {
-      "identifier": "urn:air:quotabird.com:tools:commit-check",
-      "displayName": "Commit Check",
-      "type": "text/html",
-      "url": "https://quotabird.com/commit/",
-      "description": "Commit Check: For cloud and consumption sellers: will the customer use their committed spend? See the pace, the monthly spend it takes from here, and the shortfall or overage.",
-      "tags": [
-        "your-deal",
-        "sales",
-        "free",
-        "no-login"
-      ],
-      "capabilities": [
-        "CommitCheck"
-      ],
-      "representativeQueries": [
-        "will my customer burn their cloud commit",
-        "committed spend vs actual consumption",
-        "EDP commit burn down calculator",
-        "customer is behind on their committed spend",
-        "how much monthly spend to use a cloud commitment"
-      ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
@@ -422,12 +271,73 @@
         "how to brief a general officer or SES",
         "meeting prep for enterprise sales"
       ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
         "usesAI": true,
+        "audience": "Your deal"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:account-plan-check",
+      "displayName": "Account Plan",
+      "type": "text/html",
+      "url": "https://quotabird.com/account-plan/",
+      "description": "Account Plan: Turn what a seller knows about one account into a plan with a number on it: coverage at the win rate, the money by the customer's own quarters, the gaps, who to meet, milestones.",
+      "tags": [
+        "your-deal",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "AccountPlan"
+      ],
+      "representativeQueries": [
+        "how to write a sales account plan",
+        "account plan template with pipeline coverage",
+        "federal account plan by fiscal quarter",
+        "strategic account plan for a quota carrier"
+      ],
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": true,
+        "audience": "Your deal"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:commit-check",
+      "displayName": "Commit Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/commit/",
+      "description": "Commit Check: For cloud and consumption sellers: will the customer use their committed spend? See the pace, the monthly spend it takes from here, and the shortfall or overage.",
+      "tags": [
+        "your-deal",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "CommitCheck"
+      ],
+      "representativeQueries": [
+        "will my customer burn their cloud commit",
+        "committed spend vs actual consumption",
+        "EDP commit burn down calculator",
+        "customer is behind on their committed spend",
+        "how much monthly spend to use a cloud commitment"
+      ],
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
         "audience": "Your deal"
       }
     },
@@ -453,13 +363,103 @@
         "how do federal agencies buy software",
         "federal sales readiness checklist"
       ],
-      "version": "2026.11.11",
-      "updatedAt": "2026-11-11T00:00:00Z",
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
       "metadata": {
         "runsInBrowser": true,
         "storesData": false,
         "usesAI": true,
         "audience": "Your deal"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:rep-check",
+      "displayName": "Rep Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/rep/",
+      "description": "Rep Check: Is it the rep, the territory, a skill gap or an effort gap? Five questions for sales managers, and how to defend your people in a talent review.",
+      "tags": [
+        "your-team",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "RepCheck"
+      ],
+      "representativeQueries": [
+        "is it the rep or the territory",
+        "why is my sales rep underperforming",
+        "rep problem or territory problem",
+        "prepare for OLR calibration",
+        "will my case for a rep survive talent review"
+      ],
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": false,
+        "audience": "Your team"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:update-upward-check",
+      "displayName": "Update Upward",
+      "type": "text/html",
+      "url": "https://quotabird.com/update-upward/",
+      "description": "Update Upward: Write the update a seller or manager sends upward: a weekly note, a forecast call, calling a miss, or a monthly business review.",
+      "tags": [
+        "your-team",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "UpdateUpward"
+      ],
+      "representativeQueries": [
+        "how to tell my boss I will miss my number",
+        "weekly sales update template for my manager",
+        "what to say on a forecast call",
+        "monthly business review for sales"
+      ],
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": true,
+        "audience": "Your team"
+      }
+    },
+    {
+      "identifier": "urn:air:quotabird.com:tools:partner-check",
+      "displayName": "Partner Check",
+      "type": "text/html",
+      "url": "https://quotabird.com/partner/",
+      "description": "Partner Check: Tell the AI version of Mark about a partner, prime, reseller or SI and get a straight read on whether it is real work or promises, tested against sourced deals, a named account, an owner who gets paid, a plan with dates and pull.",
+      "tags": [
+        "your-team",
+        "sales",
+        "free",
+        "no-login"
+      ],
+      "capabilities": [
+        "PartnerCheck"
+      ],
+      "representativeQueries": [
+        "is this partner real or a logo",
+        "is my channel partner actually selling",
+        "partner check for co-sell"
+      ],
+      "version": "2026.11.18",
+      "updatedAt": "2026-11-18T00:00:00Z",
+      "metadata": {
+        "runsInBrowser": true,
+        "storesData": false,
+        "usesAI": true,
+        "audience": "Your team"
       }
     }
   ]

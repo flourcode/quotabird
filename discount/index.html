@@ -86,7 +86,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="../site.cb48376d.css">
+<link rel="stylesheet" href="../site.0e34ec12.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="../analytics.a5a3ef9d.js" defer></script>
 </head>
@@ -97,7 +97,7 @@
     <a class="logo" href="/#start" aria-label="QuotaBird, home"><picture><source srcset="../logo-dark.svg" media="(prefers-color-scheme: dark)"><img class="brandmark" src="../logo.svg" alt="" width="39" height="34"></picture> QuotaBird</a>
     <nav class="topnav" aria-label="Site">
       <a class="chip chip-ask" href="/ask-mark/">Ask Mark</a>
-      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/quota-case/">Quota Case</a><a href="/discount/" class="current">Discount Check</a><a href="/update-upward/">Update Upward</a></div><div class="menu-g"><div class="menu-group">Your pay</div><a href="/pay/">Pay Check</a><a href="/commission/">Commission Check</a><a href="/offer/">Offer Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/account-plan/">Account Plan</a><a href="/commit/">Commit Check</a><a href="/meeting-prep/">Meeting Prep</a></div><div class="menu-g"><div class="menu-group">Your team</div><a href="/pipeline/">Pipeline Check</a><a href="/rep/">Rep Check</a><a href="/partner/">Partner Check</a></div></div><div class="menu-foot"><a href="/tools/">All tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a></div></div></details>
+      <details class="menu"><summary><span class="chip">Tools ▾</span></summary><div class="menu-list"><a class="menu-kit" href="/kits/"><span class="pill">Free</span>The Field Kits (PDF)</a><div class="menu-col"><div class="menu-g"><div class="menu-group">Your number</div><a href="/quota/">Quota Check</a><a href="/quota-case/">Quota Case</a><a href="/pipeline/">Pipeline Check</a><a href="/discount/" class="current">Discount Check</a></div><div class="menu-g"><div class="menu-group">Your pay</div><a href="/pay/">Pay Check</a><a href="/commission/">Commission Check</a><a href="/offer/">Offer Check</a></div></div><div class="menu-col"><div class="menu-g"><div class="menu-group">Your deal</div><a href="/deal/">Deal Check</a><a href="/meeting-prep/">Meeting Prep</a><a href="/account-plan/">Account Plan</a><a href="/commit/">Commit Check</a></div><div class="menu-g"><div class="menu-group">Your team</div><a href="/rep/">Rep Check</a><a href="/update-upward/">Update Upward</a><a href="/partner/">Partner Check</a></div></div><div class="menu-foot"><a href="/tools/">All tools</a><a href="/kits/">Field Kits</a><a href="/math/">Sales Math</a><a href="/notes/">Field Notes</a><a href="/about/">About</a><a href="/work-with-mark/">Work with Mark</a></div></div></details>
       <a class="toplink" href="/notes/">Field Notes</a>
       <a class="toplink" href="/about/">About</a>
     </nav>
@@ -122,14 +122,17 @@
 
 <div class="sumbar" id="sumbar" hidden aria-hidden="true"></div>
 
-<section class="band" id="how">
+<section class="band band-more" aria-labelledby="more-h">
   <div class="band-inner">
-    <h2>A discount is a purchase</h2>
-    <p class="lede">Every point off the price is supposed to buy you something. Check whether it did.</p>
+    <span class="overline more-over" id="more-h">More on this</span>
+    <details class="fold-row" id="how"><summary><h2 class="more-h">A discount is a purchase</h2></summary>
+      <div class="more-body">
+<p class="lede">Every point off the price is supposed to buy you something. Check whether it did.</p>
     <p>These are rough ranges from real deals; yours may differ. Up to about 5% is normal negotiation. Nobody remembers it. Between 5 and 15% is meaningful, and it should buy something specific: a signature date, a larger scope, a reference, a multi-year term. Above 15% you're paying for a decision, so the decision had better come with it, this quarter, in writing. Above 25%, you're usually paying to be liked, and the customer will remember the number.</p>
     <p>Two things sellers forget. The discount comes out of your commission at exactly the same rate it comes out of revenue, so a 15% discount is a 15% pay cut on that deal. And it comes out of the company's margin much faster than 15%: cost of goods doesn't move, so every dollar off the price is a dollar off the margin.</p>
     Before you discount at all, figure out whether the objection is really the price or the deal. A discount only helps with the price. <a href="/notes/fifteen-percent-off/">They asked for 15% off</a> walks through what to ask for in return.
     <p><a href="/math/discount-math/">The full math, with tables and sources →</a></p>
+      </div></details>
   </div>
 </section>
 
@@ -187,7 +190,7 @@
 <script src="../calc.bcc15d84.js"></script>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-11.1300';
+window.QB_BUILD = '2026-11-18.1000';
 CalcTool({
   slug: 'discount', answers: {"Normal": "This much is normal.", "Meaningful": "This much needs a trade.", "Expensive": "This much is expensive.", "Giveaway": "This much is too much."}, name: 'Discount Check', url: 'https://quotabird.com/discount/',
   fields: [{ id: 'list', kind: 'money' }, { id: 'disc', kind: 'pct' }, { id: 'margin', kind: 'pct' }, { id: 'rate', kind: 'pct' }],
@@ -217,5 +220,6 @@ CalcTool({
   bookNote: (s) => `Discount Check: ${Math.round(s.disc * 100)}% off${s.newMargin != null ? ', margin ' + Math.round(s.margin * 100) + '% to ' + Math.round(s.newMargin * 100) + '%' : ''}, ${s.label.toLowerCase()}.`,
 });
 </script>
+<script src="/ux.e8451ef9.js" defer></script>
 </body>
 </html>

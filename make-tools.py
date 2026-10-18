@@ -3,28 +3,48 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-11.1300'
-TOOLS = [   # Nov 11: nine five-question checks folded into these (see FOLDED CHECKS and REDIRECTS)
+BUILD = '2026-11-18.1000'
+TOOLS = [   # the one map: the menu, /tools/, the home page and the 404 shelf all come from this list, in these four groups
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back, or a new territory'),
+    ('Your number', '/pipeline/', 'Pipeline Check', 'Before the review: the size and the shape'),
     ('Your number', '/discount/', 'Discount Check', 'When they ask you to sharpen the pencil'),
-    ('Your number', '/update-upward/', 'Update Upward', 'Before you tell your boss'),
     ('Your pay', '/pay/', 'Pay Check', 'What the plan really pays, and the fine print'),
     ('Your pay', '/commission/', 'Commission Check', 'When it closes'),
     ('Your pay', '/offer/', 'Offer Check', 'Is the offer worth the jump?'),
-    ('Your team', '/pipeline/', 'Pipeline Check', 'Before the review: the size and the shape'),
-    ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you, or review season'),
-    ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
     ('Your deal', '/deal/', 'Deal Check', 'Before you put it in commit'),
+    ('Your deal', '/meeting-prep/', 'Meeting Prep', 'Before the meeting, the brief or the QBR'),
     ('Your deal', '/account-plan/', 'Account Plan', 'When the account needs a plan with a number on it'),
     ('Your deal', '/commit/', 'Commit Check', 'When a commit might not burn'),
-    ('Your deal', '/meeting-prep/', 'Meeting Prep', 'Before the meeting, the brief or the QBR'),
     ('Your deal', '/federal-readiness/', 'Federal Readiness Check', 'Before you bet on federal'),
+    ('Your team', '/rep/', 'Rep Check', 'When a rep is worrying you, or review season'),
+    ('Your team', '/update-upward/', 'Update Upward', 'Before you tell your boss'),
+    ('Your team', '/partner/', 'Partner Check', 'Before you renew the partnership'),
 ]
+TOOL_Q = {   # the question each tool answers, as the cards show it
+    '/quota/': 'Is your quota crazy?', '/quota-case/': 'Is your quota actually possible?', '/pipeline/': "You sure that's enough pipeline?",
+    '/discount/': 'They want a discount.', '/pay/': 'What does this plan actually pay?', '/commission/': 'It closed. What do you actually keep?',
+    '/offer/': 'Is this offer worth the jump?', '/deal/': 'Is it real, or is it hopium?', '/meeting-prep/': 'Got a meeting that matters?',
+    '/account-plan/': 'Do you have a plan for this account?', '/commit/': 'Will they burn the commit?', '/federal-readiness/': 'Is there a federal business here?',
+    '/rep/': 'Is it the rep, or the territory?', '/update-upward/': 'What are you telling your boss?', '/partner/': 'Is this partner doing anything?'}
+HOME_PICKS = ['/quota/', '/pipeline/', '/pay/', '/offer/', '/deal/', '/meeting-prep/', '/rep/', '/update-upward/']   # two per group on the home page
+GROUP_ORDER = ['Your number', 'Your pay', 'Your deal', 'Your team']
+_ARR = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+def ck(href, name, q): return f'          <a class="ck" href="{href}"><span class="cq">{q}</span><span class="cb"><span>{name}</span>{_ARR}</span></a>'
+def tool_groups(picks=None):
+    """[(group, [(href, name, question)])] in GROUP_ORDER; picks limits it to those tools (in TOOLS order)."""
+    out = []
+    for g in GROUP_ORDER:
+        items = [(h, n, TOOL_Q[h]) for gg, h, n, d in TOOLS if gg == g and (picks is None or h in picks)]
+        if items: out.append((g, items))
+    return out
+def tool_shelf():   # /tools/ and the 404 page: every tool, in the four groups
+    body = ''.join(f'        <div class="cg"><h2 class="paths-h">{g}</h2><div class="cg-grid">\n' + '\n'.join(ck(*i) for i in items) + '\n        </div></div>\n' for g, items in tool_groups())
+    return f'    <div class="shelf-grid jobs jobs-4">\n      <div class="checks">\n{body}      </div>\n    </div>\n'
 
 def menu(current):
     # Four groups in a two-by-two grid: Your number over Your pay on the left, Your deal over Your team on the right.
-    MENU_SKIP = {'/federal-readiness/'}   # Federal Readiness lives on /federal/ and the tools page
+    MENU_SKIP = {'/federal-readiness/'}   # Federal Readiness lives on /federal/, /tools/ and the 404 shelf
     groups, last = {}, []
     for g, h, n, d in TOOLS:
         if h in MENU_SKIP: continue
@@ -990,10 +1010,11 @@ home = open('home.src.html').read().replace('__NOTES__', home_notes()).replace('
 open('index.html', 'w').write(home)
 # /tools/: every calculator and check, the shelves that used to be the home page (Ask Mark is the front door now)
 os.makedirs('tools', exist_ok=True)
-open('tools/index.html', 'w').write(open('tools.src.html').read().replace('__BUILD__', BUILD).replace('<!--shorts-->', shorts_strip()))
+open('tools/index.html', 'w').write(open('tools.src.html').read().replace('__BUILD__', BUILD).replace('<!--shelves-->', tool_shelf()).replace('<!--shorts-->', shorts_strip()))
 # Pipeline Check lives at /pipeline/ again (it was the home page until the shelf took over)
 os.makedirs('pipeline', exist_ok=True)
 open('pipeline/index.html', 'w').write(open('pipeline.src.html').read().replace('__BUILD__', BUILD))
+open('deal/index.html', 'w').write(open('deal.src.html', encoding='utf-8').read())   # Deal Check's page is hand-written in deal.src.html (Nov 18)
 inject_folds('pipeline/index.html', [FOLD_RISK])                   # the shape of the pipeline, after the size
 inject_folds('deal/index.html', [FOLD_ACCOUNT, FOLD_COMPETITION])   # the account and the competition, after the deal
 
@@ -3063,9 +3084,7 @@ open('about/index.html', 'w').write(note_head('About Mark', "Who's behind QuotaB
 ''' + NOTE_TAIL.replace('Field Notes are part of <a href="/">QuotaBird</a>, a shelf', 'QuotaBird is a shelf'))
 
 # ── the 404 page carries the same shelf as the home page (one copy of the covers, pulled at build time) ──
-_home_src = open('tools.src.html', encoding='utf-8').read()   # the shelves live on /tools/ now
-_shelf = re.search(r'    <div class="shelf-grid jobs">.*?\n    </div>\n', _home_src, flags=re.S).group(0)   # the main shelf: the number and the pay
-_shelf = _shelf.replace('<h3 class="cg-h">Your number</h3><div class="cg-grid">\n', '<h3 class="cg-h">Your number</h3><div class="cg-grid">\n          <a class="ck" href="/quota/"><span class="cq">Is my quota crazy?</span><span class="cb"><span>Quota Check</span><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></span></a>\n', 1)
+_shelf = tool_shelf()   # the same four groups as /tools/ and the menu
 _nf = open('404.html', encoding='utf-8').read()
 _nf = re.sub(r'<!--shelf-->.*?<!--/shelf-->', lambda m_: '<!--shelf-->\n' + _shelf + '<!--/shelf-->', _nf, count=1, flags=re.S)
 _nf = re.sub(r'<details class="menu">.*?</details>', lambda _m: menu(None), _nf, count=1, flags=re.S)   # the same Tools menu as every page
@@ -3080,7 +3099,7 @@ LEADERCARD_SRC = open('partials/leader-card.html').read()
 LEADERCARD_PAGES = {'notes/index.html'}
 SELLERCARD_SRC = open('partials/seller-card.html').read()
 SELLERCARD_PAGES = {'deal/index.html', 'quota/index.html', 'quota-case/index.html', 'discount/index.html', 'commission/index.html'}
-KITCARD_PAGES = {'index.html', 'rep/index.html', 'partner/index.html', 'notes/index.html', 'math/index.html'}
+KITCARD_PAGES = {'rep/index.html', 'partner/index.html', 'notes/index.html', 'math/index.html'}   # not the home page (Nov 18: the kit is a link there)
 def root_of(path):
     if path == '404.html': return '/'
     return '../' * path.count('/')
@@ -3131,6 +3150,37 @@ PAGES = ['index.html', 'tools/index.html', 'pipeline/index.html', 'deal/index.ht
 for _p in PAGES:
     chrome(_p)
 print('chrome', len(PAGES))
+
+# ── Answer-first tool pages (Nov 18): the explanations under a tool fold into rows you tap to open ──
+# Every content section under the tool (how it works, the folded five-question checks) becomes a <details> row in
+# one "band-more" section, keeping its id so links like /pipeline/#risk still land on it (ux.js opens it). The
+# text stays in the page for search engines and find-in-page. The About card, the promos and the FAQ don't fold.
+FOLD_PAGES = ['pipeline/index.html', 'deal/index.html', 'rep/index.html'] + [f'{c["slug"]}/index.html' for c in CALCS] \
+           + ['meeting-prep/index.html', 'partner/index.html', 'federal-readiness/index.html']
+_SEC = re.compile(r'(?:<!--fold:[\w-]+-->\n)?<section class="band(?: fold)?" id="([\w-]+)"[^>]*>\s*<div class="band-inner">\s*<h2([^>]*)>(.*?)</h2>(.*?)</div>\s*</section>\n*(?:<!--/fold:[\w-]+-->\n*)?', re.S)
+def fold_sections(path):
+    s = open(path, encoding='utf-8').read()
+    if 'band-more' in s: return 0
+    rows, first = [], None
+    def take(m):
+        nonlocal first
+        if m.group(1) in ('about', 'faq', 'mark', 'real'): return m.group(0)
+        if first is None: first = m.start()
+        h2_attrs = re.sub(r'\s*class="[^"]*"', '', m.group(2))
+        rows.append(f'    <details class="fold-row" id="{m.group(1)}"><summary><h2 class="more-h"{h2_attrs}>{m.group(3)}</h2></summary>\n      <div class="more-body">\n{m.group(4).strip()}\n      </div></details>\n')
+        return '\x00' if len(rows) == 1 else ''
+    s = _SEC.sub(take, s)
+    if not rows: return 0
+    block = '<section class="band band-more" aria-labelledby="more-h">\n  <div class="band-inner">\n    <span class="overline more-over" id="more-h">More on this</span>\n' + ''.join(rows) + '  </div>\n</section>\n\n'
+    s = s.replace('\x00', block, 1)
+    open(path, 'w', encoding='utf-8').write(s)
+    return len(rows)
+for _p in FOLD_PAGES:
+    _n = fold_sections(_p); assert _n, _p
+    s_ = open(_p, encoding='utf-8').read()
+    if 'ux.js' not in s_:   # opens the row a link points at, and the phone's Ask Mark bar
+        s_ = s_.replace('</body>', '<script src="/ux.js" defer></script>\n</body>', 1); open(_p, 'w', encoding='utf-8').write(s_)
+print('folded', len(FOLD_PAGES), 'pages')
 
 
 # ── Structured data follows the page. The FAQPage JSON-LD on every page is rebuilt
@@ -3222,7 +3272,7 @@ print('sitemap', len(_urls), 'urls')
 # The plain files stay for editing; only the current hashed copies are kept.
 import hashlib as _hl, glob as _g
 _ASSETS = {}
-for _f in ('site.css', 'check.js', 'calc.js', 'analytics.js', 'ask.js'):
+for _f in ('site.css', 'check.js', 'calc.js', 'analytics.js', 'ask.js', 'ux.js'):
     _h = _hl.sha1(open(_f, 'rb').read()).hexdigest()[:8]; _base, _ext = _f.rsplit('.', 1)
     _name = f'{_base}.{_h}.{_ext}'
     for _old in _g.glob(f'{_base}.*.{_ext}'):

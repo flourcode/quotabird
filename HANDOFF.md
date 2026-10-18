@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-11.1300** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-18.1000** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -314,6 +314,20 @@ Two offers side by side isn't how people job-hunt now. Most people have one offe
 - **Just check the offer.** No comparison. Big number is a normal year at a realistic attainment (default 80%), with year one, the share of pay riding on quota, the ramp and the Bridge Group 2026 median AE OTE ($200K) for context. "Maybe. Read the fine print." when more than 55% rides on quota or the ramp is 6+ months with nothing guaranteed; "A solid offer, if the quota is." when 50% or less rides on quota and the ramp is protected (3 months or less, or 50%+ guaranteed); otherwise "Fair, if the quota is." Both point to Quota Check for whether the quota itself is sane.
 
 Mechanics: a field with `when='mode=jump'` renders `data-when` on its label (and its group heading); calc.js `applyWhen` hides those while the other choice is on, and hidden fields are left out of the Ask Mark handoff. CSS: `.calc-in label.tf[hidden]` needs the extra specificity to beat the grid's `display:flex !important`. Shared numbers map into your current job (`share: {curBase:'base', curVar:'variable'}`). The Lambda catalog labels now carry the group heading ("Your job now: Base (only when mode=jump)") so the AI doesn't confuse the two Base fields; the pay playbook talks about current job vs. offer. OG card: "+$17K / Yes, after a dip." tests/parity.mjs fuzzes Offer Check for sanity (no NaN, every verdict worded) instead of matching the original; render_parity skips it.
+
+## UX pass: shorter home, answer-first tool pages, one map (Nov 18)
+
+**Rollback.** Two ways, both tested:
+1. **The live site:** upload the previous site zip, `quotabird-site-2026-11-11.1300.zip`. Nothing else changed in the pass (no Lambda change, nothing new stored), so that's the whole rollback.
+2. **The source:** the site folder is a git repository now. Tag `before-ux-pass` is the site as deployed before this pass; the commit after it is this pass and nothing else. `git revert <that commit>` (or `git checkout before-ux-pass -- .`) then `python3 make-tools.py` rebuilds the old site. `.git` is never in the deploy zip.
+
+**Home page.** Chat, then "Go straight to it: Already know what's wrong?" with two tools from each of the four groups (`HOME_PICKS` in make-tools.py), then one line of links (All the tools, Field Notes, Field Kits, Sales Math), then the real-Mark card, Made by Mark and the FAQ. The Field Notes band, the "Work the problem" section and the Manager's Kit card left the home page (all still in the menu, footer and /tools/). Phone height went from about 5,200px to 3,250px; one filled button.
+
+**One map.** `TOOLS` (make-tools.py) is the single list. Four groups: Your number (Quota Check, Quota Case, Pipeline Check, Discount Check), Your pay (Pay, Commission, Offer), Your deal (Deal Check, Meeting Prep, Account Plan, Commit Check, Federal Readiness), Your team (Rep Check, Update Upward, Partner Check). The menu, /tools/ (`tool_shelf()`, which replaces `<!--shelves-->` in tools.src.html), the home cards and the 404 shelf are all generated from it, with each card's question in `TOOL_Q`. Pipeline Check moved from Your team to Your number; Update Upward from Your number to Your team. /tools/ ends with "Read and print." (How quotas get built, When the number won't move, Field Notes, Field Kits, Sales Math).
+
+**Answer-first tool pages.** After the chrome pass, `fold_sections()` turns every content section under a tool (how it works, the folded five-question checks) into a `<details class="fold-row">` row inside one "More on this" section. Each row keeps its section's id, so /pipeline/#risk, the old /risk/ link and buttons like Pay Check's "See the fine print" open the right row (ux.js). The text stays in the page for search and find-in-page. The FAQ, the About card and the kit promos don't fold. Pages: Pipeline, Deal, Rep, every calculator, Meeting Prep, Partner Check, Federal Readiness. Phone heights: Deal Check about 9,200px to 2,900px, Pipeline Check 7,300px to 3,850px. Deal Check's page is now hand-edited in **deal.src.html** (copied to deal/index.html each build), because the fold pass rewrites the built page.
+
+**Phone Ask Mark bar.** ux.js adds a slim blue "Ask Mark about this" bar at the bottom of tool pages on phones, only after you've scrolled past the tool and not at the footer, and never at the same time as the result strip (sumbar). It carries the result's own hand-off (`#askMarkBtn`) when there is one. Analytics: `askbar`, and `more_open_<id>` when a row is opened, so you can see which explanations people actually read.
 
 ## Consolidation: 21 menu entries down to 14 (Nov 11)
 

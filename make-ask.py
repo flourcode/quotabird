@@ -343,8 +343,8 @@ _home = _home.replace('__CHAT__', _chat("What's going on?", [
       ("My champion says it's closing. I don't believe them.", "My champion says it's closing this quarter. Procurement hasn't engaged and I don't believe them. What do I do?"),
       ('Is this quota ridiculous?', "My quota went up 30% and my territory didn't change. Is this quota ridiculous, and how do I push back without whining?"),
       ("My partner isn't doing anything.", "My partner keeps saying they'll introduce me to the account team and nothing happens. We've been partners for eight months.")]).replace('    <div class="card mark-card real-mark">', '    <div class="card mark-card real-mark" hidden>'))   # the home page's real-Mark card sits lower, by About
-_home = _home.replace('__TOOLS__', '\n'.join(_ck(x) for x in ('pipeline', 'quota', 'deal', 'pay', 'commission', 'offer')))
-_home = _home.replace('__WORK__', '\n'.join(_ck(x) for x in ('meeting-prep', 'account-plan', 'update-upward')))
+# the same four groups as the menu and /tools/, two tools each (HOME_PICKS in make-tools.py)
+_home = _home.replace('__TOOLS__', '      <div class="home-jobs">\n' + ''.join(f'        <div class="home-job"><h3 class="cg-h">{g}</h3><div class="cg-grid home-grid">\n' + '\n'.join(ck(*i) for i in items) + '\n        </div></div>\n' for g, items in tool_groups(HOME_PICKS)) + '      </div>')
 _home = re.sub(r"(window\.QB_BUILD = '[^']*';)", lambda m: m.group(1) + '\nwindow.QB_ASK = { endpoint: ' + json.dumps(ASK_ENDPOINT) + ', page: "home" };', _home, count=1)
 assert 'QB_ASK' in _home, 'home chat config'
 _home = _home.replace('<script src="analytics.js" defer></script>', '<script src="analytics.js" defer></script>\n<script src="ask.js" defer></script>')
