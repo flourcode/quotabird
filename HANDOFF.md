@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-18.1200** (Lambda 3.1.2) This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-18.1300** (Lambda 3.1.2) This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -315,6 +315,16 @@ Two offers side by side isn't how people job-hunt now. Most people have one offe
 
 Mechanics: a field with `when='mode=jump'` renders `data-when` on its label (and its group heading); calc.js `applyWhen` hides those while the other choice is on, and hidden fields are left out of the Ask Mark handoff. CSS: `.calc-in label.tf[hidden]` needs the extra specificity to beat the grid's `display:flex !important`. Shared numbers map into your current job (`share: {curBase:'base', curVar:'variable'}`). The Lambda catalog labels now carry the group heading ("Your job now: Base (only when mode=jump)") so the AI doesn't confuse the two Base fields; the pay playbook talks about current job vs. offer. OG card: "+$17K / Yes, after a dip." tests/parity.mjs fuzzes Offer Check for sanity (no NaN, every verdict worded) instead of matching the original; render_parity skips it.
 
+## Mobile pass (build 2026-11-18.1300)
+
+No Lambda change. Rollback: tag `before-mobile-pass`, or upload `quotabird-site-2026-11-18.1200.zip`.
+- **Tools menu on phones.** The bottom row had six links on one line and ran off the panel, so About and Work with Mark were off screen. It's now four links in two columns: All tools, Field Notes, About, Work with Mark. Field Kits is already the menu's top row and Sales Math is on /tools/ and in the footer. The open menu is capped at the screen height and scrolls inside itself on a short phone or a phone on its side.
+- **Ask Mark stays in the header on every phone.** Below 380px it used to disappear, which hid the front door on an iPhone SE, mini and most Androids. Now the wordmark gets smaller instead, and under 340px only the bird shows (the link keeps its "QuotaBird, home" label).
+- **44px tap targets everywhere** (Apple and WCAG 2.5.5): the Tools button, Ask Mark, the chat example chips (were 36px), the follow-up chips, the home page's link row, the footer links, "All of them" on /tools/, "or message me on LinkedIn", the logo, and the overline links on Sales Math pages (bigger hit area, same layout). Links inside a sentence are exempt and left alone.
+- The Tools button is one shape at 320px (the inner chip used to show as a second, lighter shape).
+- **Checked and already fine:** no page scrolls sideways at 320, 375 or 390px; every text input is 16px or more (no zoom on focus) with a numeric keypad where it takes a number; no text under 12px; contrast passes in light and dark; every image has a width and height; the fixed bars clear the iPhone home indicator; the menu animation stops under reduced motion; the viewport allows pinch zoom.
+- The audit scripts are in the session scratchpad, not the repo; the checks are listed above so they can be rerun.
+
 ## Home page tightened after an outside review (build 2026-11-18.1200)
 
 No Lambda change. Rollback: tag `before-home-trim`, or upload `quotabird-site-2026-11-18.1100.zip`.
@@ -424,7 +434,7 @@ Kept short on purpose, so they don't read like a bank's liability waiver. Once, 
 
 Ask Mark first (filled chip), then Tools ▾, Field Notes, About. /tools/ lists everything.
 
-Header: Tools ▾ · Field Notes · About · Ask Mark (blue, the AI chat at /ask-mark/). Don't add to it. Field Kits moved to the Tools menu foot and the footer (Nov 8). In the Tools menu, four groups sit two by two: Your number over Your pay on the left, Your deal over Your team on the right (about 590px open on a phone, 44px tap targets). Brief Check is deliberately left out of the menu (Mark's call, Nov 3: not important enough for the menu); it stays on the home page tool list, at /brief/, and in the plugin. To leave another tool out of the menu, add its path to `MENU_SKIP` in `menu()`. The Tools menu leads with Your number (Quota Check, Quota Case, Territory, Commission, Discount), then Your team, Your deal, Any meeting. Footer: "QuotaBird is a pile of free sales tools. I built them because they helped me, and maybe they'll help you." and "Not affiliated with the U.S. government or Amazon."
+Header: Tools ▾ · Field Notes · About · Ask Mark (blue, the AI chat at /ask-mark/). Don't add to it. Field Kits moved to the Tools menu (top row) and the footer (Nov 8). On phones the menu foot is All tools, Field Notes, About, Work with Mark (Oct 18 mobile pass). In the Tools menu, four groups sit two by two: Your number over Your pay on the left, Your deal over Your team on the right (about 590px open on a phone, 44px tap targets). Brief Check is deliberately left out of the menu (Mark's call, Nov 3: not important enough for the menu); it stays on the home page tool list, at /brief/, and in the plugin. To leave another tool out of the menu, add its path to `MENU_SKIP` in `menu()`. The Tools menu leads with Your number (Quota Check, Quota Case, Territory, Commission, Discount), then Your team, Your deal, Any meeting. Footer: "QuotaBird is a pile of free sales tools. I built them because they helped me, and maybe they'll help you." and "Not affiliated with the U.S. government or Amazon."
 
 ## Ask Mark and the AI pages (Nov 8)
 

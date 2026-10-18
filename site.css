@@ -1377,3 +1377,18 @@ details.fold-row > summary:hover .more-h { text-decoration:underline; text-under
 @media (min-width:880px) { .askbar { display:none !important; } }
 @media print { .askbar { display:none !important; } }
 .more-over { display:block; margin:0 2px 10px; }
+
+/* ═══ Mobile pass (Oct 18): every tap target at least 44px, the menu fits the screen, Ask Mark never leaves the bar ═══ */
+.menu summary .chip, a.chip-ask { min-height:44px; display:inline-flex; align-items:center; box-sizing:border-box; }
+@media (max-width:379px) { .appbar a.chip-ask { display:inline-flex !important; } .appbar .logo { font-size:19px; gap:7px; } .topnav { gap:2px; } }
+@media (max-width:339px) { .logo-word { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; } }
+.menu-foot { display:grid !important; grid-template-columns:1fr 1fr; gap:0 12px; }
+.menu-foot a { padding:12px; font-size:14px; white-space:normal; }
+@media (max-width:699px) { .menu-list { max-height:calc(100vh - 76px); max-height:calc(100dvh - 76px); overflow-y:auto; overscroll-behavior:contain; } }
+.ask-ex, .ask-examples .ask-ex, .ask-next .ask-ex { min-height:44px; }
+.home-more { gap:0 18px; margin-top:8px; }
+.home-more a, .shorts-all, .dm-alt .linkbtn, #dmBtn { display:inline-flex; align-items:center; min-height:44px; }
+.overline a { display:inline-block; padding:14px 0; margin:-14px 0; }   /* a bigger tap area without moving the layout */
+.appbar .menu summary .chip { background:transparent !important; }   /* the summary is the button; at 320px the inner chip showed as a second shape */
+@media (max-height:600px) { .menu-list { max-height:calc(100vh - 76px); max-height:calc(100dvh - 76px); overflow-y:auto; overscroll-behavior:contain; } }   /* a phone on its side */
+.sitefoot .foot-nav a { min-height:44px; box-sizing:border-box; display:inline-flex; align-items:center; } .appbar .logo { min-height:44px; min-width:44px; }
