@@ -25,7 +25,7 @@ this code is built for: `index.handler` streams the chat and writes every other 
    `https://4s7uc7iyyeh7p4sknfpo6agllq0ahdff.lambda-url.us-east-1.on.aws/` → Code → Upload from → .zip file.
    Runtime Node.js 20 or later, timeout 30 seconds, memory 256 MB.
 3. Open the Function URL in a browser. The health check shows
-   `{"ok":true,"service":"quotabird","version":"2.1.0", ... "ready":true,"stream":true}`.
+   `{"ok":true,"service":"quotabird","version":"2.1.1", ... "ready":true,"stream":true}`.
 
 Environment variables: `GEMINI_API_KEY` (required), `GEMINI_MODEL` (`gemini-3.5-flash-lite`), `ALLOWED_ORIGINS`
 (`https://quotabird.com,https://www.quotabird.com`). Optional: `QB_RATE_LIMIT_PER_MINUTE` (default 10),

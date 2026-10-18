@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-18.1000** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-18.1100** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -314,6 +314,10 @@ Two offers side by side isn't how people job-hunt now. Most people have one offe
 - **Just check the offer.** No comparison. Big number is a normal year at a realistic attainment (default 80%), with year one, the share of pay riding on quota, the ramp and the Bridge Group 2026 median AE OTE ($200K) for context. "Maybe. Read the fine print." when more than 55% rides on quota or the ramp is 6+ months with nothing guaranteed; "A solid offer, if the quota is." when 50% or less rides on quota and the ramp is protected (3 months or less, or 50%+ guaranteed); otherwise "Fair, if the quota is." Both point to Quota Check for whether the quota itself is sane.
 
 Mechanics: a field with `when='mode=jump'` renders `data-when` on its label (and its group heading); calc.js `applyWhen` hides those while the other choice is on, and hidden fields are left out of the Ask Mark handoff. CSS: `.calc-in label.tf[hidden]` needs the extra specificity to beat the grid's `display:flex !important`. Shared numbers map into your current job (`share: {curBase:'base', curVar:'variable'}`). The Lambda catalog labels now carry the group heading ("Your job now: Base (only when mode=jump)") so the AI doesn't confuse the two Base fields; the pay playbook talks about current job vs. offer. OG card: "+$17K / Yes, after a dip." tests/parity.mjs fuzzes Offer Check for sanity (no NaN, every verdict worded) instead of matching the original; render_parity skips it.
+
+## "Is 3X pipeline really a thing?" (Nov 18, Lambda 2.1.1)
+
+The first home chip is now "Is 3X pipeline really a thing?". It sends a scenario with numbers the Pipeline Check hand-off can prefill: $4M number, $1M closed, $9M qualified pipeline (3X on what's left), 20% win rate. The answer it should get: 3X is a 33% win rate in disguise; at 20% you need 5X, so they're short, and Pipeline Check shows by how much (5X of $3M is $15M, so about $6M). The home share card's exchange matches. The pipeline playbook now says: the ratio doesn't depend on the size of the quota; 3X is usually a floor because few sellers win more than one in three qualified deals; and a run-rate or consumption number is different (coverage applies only to the gap left after the existing base's growth and optimization, and a new workload counts only for the months it's live, so annual-run-rate pipeline usually has to be well above 3X).
 
 ## UX pass: shorter home, answer-first tool pages, one map (Nov 18)
 

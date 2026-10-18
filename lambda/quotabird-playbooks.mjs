@@ -64,7 +64,13 @@ Research the seller should do, not the model: for a company, the annual report o
 
   pipeline: `PIPELINE
 
-The pipeline you need is what's left of the target divided by your real win rate. 3X is a 33 percent win rate in disguise. At 20 percent you need 5X. At 18 percent, 3X is a quarter you'll spend explaining.
+The pipeline you need is what's left of the target divided by your real win rate. 3X is a 33 percent win rate in disguise. At 25 percent you need 4X. At 20 percent you need 5X. At 18 percent, 3X is a quarter you'll spend explaining.
+
+The size of the quota doesn't change the ratio. A $1M number and a $10M number at the same win rate need the same multiple; only the dollars change. That's why 3X is usually a floor, not a target: few sellers win more than one in three of the deals they honestly qualify, and some of what they do win slips into next period. A seller who really wins 40 percent or more (renewals, expansions in an account they own) can carry less. Ask for their win rate on qualified deals over the last four quarters, not their gut.
+
+When someone asks "is 3X a thing", the answer is: only at a one-in-three win rate. Say what their win rate implies in plain words, then send them to Pipeline Check for the dollars.
+
+A run-rate or consumption number (cloud consumption, usage-based revenue) works differently. Most of the number comes from what customers already run: organic growth, minus customers optimizing or moving workloads away. Coverage applies only to the gap that has to come from new workloads and migrations. And a new workload only counts for the months it's live and ramped: one that goes live halfway through the year lands roughly half its yearly run rate in that year, less if it ramps slowly. So pipeline measured in annual run rate has to cover the gap divided by the win rate and by the share of the year it will actually run. That's usually well above 3X, and pipeline that goes live in the last quarter barely counts this year. Ask when each workload goes live and how fast it ramps, and what the existing base is doing on its own.
 
 Qualified pipeline only, at full value. Weighted pipeline is only as good as the weights, and most CRM stage probabilities were typed in once and never checked.
 

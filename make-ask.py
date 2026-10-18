@@ -339,7 +339,7 @@ def _ck(slug):
     c = _BY[slug]; return f'        <a class="ck" href="/{slug}/"><span class="cq">{html_mod.escape(c["question"])}</span><span class="cb"><span>{html_mod.escape(c["name"])}</span>{_ARROW}</span></a>'
 _home = open('index.html', encoding='utf-8').read()
 _home = _home.replace('__CHAT__', _chat("What's going on?", [
-      ('My pipeline looks thin. Am I screwed?', "My pipeline looks thin. I'm at about 1.5X on what's left of my number with five months to go. Am I screwed?"),
+      ('Is 3X pipeline really a thing?', "Is 3X pipeline really a thing? My manager says I'm fine because I'm at 3X. My number is $4M, I've closed $1M, and I have $9M of qualified pipeline for the rest of the year. My win rate on qualified deals is about 20%."),
       ("My champion says it's closing. I don't believe them.", "My champion says it's closing this quarter. Procurement hasn't engaged and I don't believe them. What do I do?"),
       ('Is this quota ridiculous?', "My quota went up 30% and my territory didn't change. Is this quota ridiculous, and how do I push back without whining?"),
       ("My partner isn't doing anything.", "My partner keeps saying they'll introduce me to the account team and nothing happens. We've been partners for eight months.")]).replace('    <div class="card mark-card real-mark">', '    <div class="card mark-card real-mark" hidden>'))   # the home page's real-Mark card sits lower, by About
