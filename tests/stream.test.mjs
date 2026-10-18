@@ -41,6 +41,11 @@ await t('streams sentence by sentence, and the done line is the plain answer', a
   assert.deepEqual(done.reply, pb.reply); assert.deepEqual(done.followups, pb.followups); assert.deepEqual(done.tool, pb.tool);
   assert.ok(!r.text.includes('I hear you') && !r.text.includes("got this"), 'cushion and pep talk never go out');
 });
+await t("streamed and plain answers get the same plain voice", async () => {
+  answer = { reply: "No. At a 20% win rate, 3X is not enough pipeline.\n\nLet us look at the arithmetic. You need 5X, and I would take that to your manager now.", tool: 'pipeline', followups: [] };
+  const ls = lines((await viaStream(ASK)).text); const streamed = ls.filter((l) => l.t === 'd').map((l) => l.x).join('').trim();
+  assert.equal(streamed, ls.at(-1).reply.join('\n\n')); assert.ok(!/Let us|is not|I would/.test(streamed), streamed);
+});
 await t('a closer mid-answer still goes out once something follows it', async () => {
   answer = { reply: 'No. Good luck. Then call the CO before Friday.', tool: 'none', followups: [] };
   const d = lines((await viaStream(ASK)).text);

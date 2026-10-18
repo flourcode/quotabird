@@ -167,15 +167,7 @@
           "name": "What is this?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "A practical sales site for people who carry a number, built by Mark Flournoy, who led federal partner sales teams at Amazon. Tell the AI version of Mark what's going on and he'll tell you what he thinks. When the question is really arithmetic, the calculators and checks run your actual numbers in your browser. Most of it works the same anywhere; the federal-specific tools, like Deal Check, say so."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does anything I enter leave my device?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Not from the tools. They run in your browser, so there's no account, no CRM connection and nothing sent to a server. The AI pages (this chat, Ask Mark, Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check) are the exception, and say so on the page. QuotaBird uses Google Analytics to count page views, but it never sees your answers or your numbers. Base, variable and quota can be remembered in your own browser so the next tool fills them in. Nothing leaves the page unless you share a result. The details are on the privacy page."
+            "text": "Free sales tools from Mark Flournoy, who led federal partner sales teams at Amazon. Tell the AI version of Mark what's going on and it'll tell you what he'd do. When the question is really arithmetic, the calculators run your numbers in your browser. The federal-specific ones say so."
           }
         },
         {
@@ -183,7 +175,15 @@
           "name": "Is any of this AI?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The tools aren't. They're questions and arithmetic, so the same inputs always give the same answer, and they show the math. Your forecast has enough imagination in it already. The chat on this page and a few others do use AI: Ask Mark, Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check, where an AI version of Mark answers questions about your deal. It says it's AI, and the real Mark is a click away. The calculators stay plain math."
+            "text": "The calculators aren't. They're questions and arithmetic, so the same inputs always give the same answer, and they show the math. Your forecast has enough imagination in it already. The chat on this page is AI, and so are Ask Mark, Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check. Each one says so, and the real Mark is a click away."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does anything I enter leave my device?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not from the calculators. They run in your browser: no account, no CRM connection, nothing sent to a server. What you type into an AI page goes to Google's Gemini through QuotaBird's server to get an answer, and isn't stored. Google Analytics counts page views but never sees your numbers. The details are on the privacy page."
           }
         },
         {
@@ -191,7 +191,15 @@
           "name": "Is there a Claude plugin?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Search for QuotaBird in Claude's plugin directory. It runs thirteen of these checks inside Claude, from quota and pipeline to comp plans and offers, and it works alongside Anthropic's Sales plugin: that one runs the sales day from your CRM, and QuotaBird checks the number. What does it cost? The tools are free. If you want to talk something through, the first conversation is free too."
+            "text": "Yes. Search for QuotaBird in Claude's plugin directory. It runs thirteen of these checks inside Claude and works alongside Anthropic's Sales plugin."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does it cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nothing. The first conversation with the real Mark is free too."
           }
         }
       ]
@@ -199,7 +207,7 @@
   ]
 }
 </script>
-<link rel="stylesheet" href="site.0e34ec12.css">
+<link rel="stylesheet" href="site.cbc84112.css">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BG9NR9GXQZ"></script>
 <script src="analytics.a5a3ef9d.js" defer></script>
 <script src="ask.e6bc1a44.js" defer></script>
@@ -231,21 +239,14 @@
       <p class="startnote ask-note">AI can be wrong. <a href="/privacy/#ai">Nothing is stored on our servers.</a></p>
     </form>
     <div class="ask-examples" id="askExamples" role="group" aria-label="Examples"><span class="ask-ex-h"></span>
-      <button class="ask-ex" type="button" data-example="Is 3X pipeline really a thing? My manager says I&#x27;m fine because I&#x27;m at 3X. My number is $4M, I&#x27;ve closed $1M, and I have $9M of qualified pipeline for the rest of the year. My win rate on qualified deals is about 20%.">Is 3X pipeline really a thing?</button>
+      <button class="ask-ex" type="button" data-example="I&#x27;m at 3X pipeline. Am I safe? My manager says I&#x27;m fine because I&#x27;m at 3X. My number is $4M, I&#x27;ve closed $1M, and I have $9M of qualified pipeline for the rest of the year. My win rate on qualified deals is about 20%.">I&#x27;m at 3X pipeline. Am I safe?</button>
       <button class="ask-ex" type="button" data-example="My champion says it&#x27;s closing this quarter. Procurement hasn&#x27;t engaged and I don&#x27;t believe them. What do I do?">My champion says it&#x27;s closing. I don&#x27;t believe them.</button>
-      <button class="ask-ex" type="button" data-example="My quota went up 30% and my territory didn&#x27;t change. Is this quota ridiculous, and how do I push back without whining?">Is this quota ridiculous?</button>
+      <button class="ask-ex" type="button" data-example="My quota went up 30% and my territory didn&#x27;t change. Is that crazy, and how do I push back without whining?">My quota went up 30%. Is that crazy?</button>
       <button class="ask-ex" type="button" data-example="My partner keeps saying they&#x27;ll introduce me to the account team and nothing happens. We&#x27;ve been partners for eight months.">My partner isn&#x27;t doing anything.</button>
     </div>
-    <p class="startnote ask-note-quiet">AI can be wrong. <a href="/privacy/#ai">Nothing is stored on our servers.</a></p>
-    <div class="card mark-card real-mark" hidden>
-      <h3>Prefer the version with a pulse?</h3>
-      <p>Talk to the real Mark for twenty minutes. Free, and if I don't think you need my help I'll say so.</p>
-      <a class="btn btn-full" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=ask-mark" target="_blank" rel="noopener" style="margin-top:6px;">Talk to the real Mark</a>
-      <p class="fine" style="text-align:center;margin:8px 0 0;"><a href="/work-with-mark/">What working with Mark looks like</a></p>
-    </div>
     <section class="home-sec" id="numbers" aria-labelledby="numbers-h">
-      <span class="overline">Go straight to it</span>
-      <h2 class="home-h" id="numbers-h">Already know what's wrong?</h2>
+      <span class="overline">Already know the problem?</span>
+      <h2 class="home-h" id="numbers-h">Run the numbers.</h2>
       <div class="home-jobs">
         <div class="home-job"><h3 class="cg-h">Your number</h3><div class="cg-grid home-grid">
           <a class="ck" href="/quota/"><span class="cq">Is your quota crazy?</span><span class="cb"><span>Quota Check</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
@@ -268,24 +269,14 @@
     </section>
   </div>
 </div>
-<section class="band band-real" id="real" aria-labelledby="real-h">
-  <div class="band-inner">
-    <div class="card mark-card real-mark" style="margin-top:0;">
-      <h3 id="real-h">Prefer the version with a pulse?</h3>
-      <p>Talk to the real Mark for twenty minutes. Free, and if I don't think you need my help I'll say so.</p>
-      <a class="btn btn-primary btn-lg btn-full" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&utm_medium=home&utm_content=real_mark" target="_blank" rel="noopener" style="margin-top:14px;">Talk to Mark</a>
-      <p class="fine" style="text-align:center;margin:8px 0 0;"><a href="/work-with-mark/">What working with Mark looks like</a></p>
-    </div>
-  </div>
-</section>
-
 <section class="band" id="about" aria-labelledby="madeby-h">
   <div class="band-inner madeby">
     <img src="mark.jpg" alt="Mark Flournoy" width="64" height="64" loading="lazy" decoding="async">
     <div>
       <h2 id="madeby-h">Made by Mark.</h2>
-      <p>I spent six years leading federal partner sales teams at Amazon, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then. Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>
-      <p class="madeby-links"><a href="/work-with-mark/">Work with Mark</a><a href="/about/">About Mark</a></p>
+      <p>I spent six years leading federal partner sales teams at Amazon, after plenty of years carrying a number myself. QuotaBird is mostly stuff I wish we'd had back then.</p>
+      <p>Prefer the version with a pulse? Talk to me for twenty minutes. It's free, and if I don't think you need my help I'll say so.</p>
+      <p class="madeby-links"><a class="btn btn-primary" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=home&amp;utm_content=real_mark" target="_blank" rel="noopener">Talk to Mark</a><a href="/about/">About Mark</a></p>
     </div>
   </div>
 </section>
@@ -294,16 +285,15 @@
   <div class="band-inner">
     <h2 id="faq-h">Questions</h2>
     <details class="exp"><summary>What is this?</summary>
-      <div class="body">A practical sales site for people who carry a number, built by Mark Flournoy, who led federal partner sales teams at Amazon. Tell the AI version of Mark what's going on and he'll tell you what he thinks. When the question is really arithmetic, the calculators and checks run your actual numbers in your browser. Most of it works the same anywhere; the federal-specific tools, like Deal Check, say so.</div></details>
-    <details class="exp"><summary>Does anything I enter leave my device?</summary>
-      <div class="body">Not from the tools. They run in your browser, so there's no account, no CRM connection and nothing sent to a server. The AI pages (this chat, Ask Mark, Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check) are the exception, and say so on the page. QuotaBird uses Google Analytics to count page views, but it never sees your answers or your numbers. Base, variable and quota can be remembered in your own browser so the next tool fills them in. Nothing leaves the page unless you share a result. The details are on the <a href="/privacy/">privacy page</a>.</div></details>
+      <div class="body">Free sales tools from Mark Flournoy, who led federal partner sales teams at Amazon. Tell the AI version of Mark what's going on and it'll tell you what he'd do. When the question is really arithmetic, the calculators run your numbers in your browser. The federal-specific ones say so.</div></details>
     <details class="exp"><summary>Is any of this AI?</summary>
-      <div class="body">The tools aren't. They're questions and arithmetic, so the same inputs always give the same answer, and they show the math. Your forecast has enough imagination in it already. The chat on this page and a few others do use AI: Ask Mark, Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check, where an AI version of Mark answers questions about your deal. It says it's AI, and the real Mark is a click away. The calculators stay plain math.</div></details>
+      <div class="body">The calculators aren't. They're questions and arithmetic, so the same inputs always give the same answer, and they show the math. Your forecast has enough imagination in it already. The chat on this page is AI, and so are Ask Mark, Meeting Prep, Account Plan, Update Upward, Partner Check and Federal Readiness Check. Each one says so, and the real Mark is a click away.</div></details>
+    <details class="exp"><summary>Does anything I enter leave my device?</summary>
+      <div class="body">Not from the calculators. They run in your browser: no account, no CRM connection, nothing sent to a server. What you type into an AI page goes to Google's Gemini through QuotaBird's server to get an answer, and isn't stored. Google Analytics counts page views but never sees your numbers. The details are on the <a href="/privacy/">privacy page</a>.</div></details>
     <details class="exp"><summary>Is there a Claude plugin?</summary>
-      <div class="body">Yes. Search for QuotaBird in Claude's plugin directory. It runs thirteen of these checks inside Claude, from quota and pipeline to comp plans and offers, and it works alongside Anthropic's Sales plugin: that one runs the sales day from your CRM, and QuotaBird checks the number.</div>
-    </details>
+      <div class="body">Yes. Search for QuotaBird in Claude's plugin directory. It runs thirteen of these checks inside Claude and works alongside Anthropic's Sales plugin.</div></details>
     <details class="exp"><summary>What does it cost?</summary>
-      <div class="body">The tools are free. If you want to talk something through, the first conversation is free too.</div></details>
+      <div class="body">Nothing. The first conversation with the real Mark is free too.</div></details>
   </div>
 </section>
 
@@ -316,7 +306,7 @@
 </footer>
 <script>
 'use strict';
-window.QB_BUILD = '2026-11-18.1100';
+window.QB_BUILD = '2026-11-18.1200';
 window.QB_ASK = { endpoint: "https://4s7uc7iyyeh7p4sknfpo6agllq0ahdff.lambda-url.us-east-1.on.aws/", page: "home" };
 // the Tools menu closes on an outside tap or Escape (the tool pages get this from their engines)
 document.addEventListener('click', (e) => { document.querySelectorAll('details.menu[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; }); });

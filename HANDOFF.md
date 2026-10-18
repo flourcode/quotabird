@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-18.1100** This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-18.1200** (Lambda 3.1.2) This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -10,7 +10,7 @@ quotabird.com, by Mark Flournoy (retired; six years leading federal partner sale
 
 **The guardrail:** know the math well enough to tell whether they're screwing you. Not a grievance site. Sometimes the quota is crazy, sometimes it's hard but fair, sometimes the rep just doesn't like the number.
 
-Free tools, no login, nothing stored. The tools use no AI. Four pages do, as the AI version of Mark (see "Ask Mark and the AI pages"). The consulting offer (a free 20-minute call, then Manager Wingman or a team session) is the business. Not affiliated with the U.S. government or Amazon.
+Free tools, no login, nothing stored. The tools use no AI. The home chat and six pages do (Ask Mark, Meeting Prep, Account Plan, Update Upward, Partner Check, Federal Readiness Check), as the AI version of Mark (see "Ask Mark and the AI pages"). The consulting offer (a free 20-minute call, then Manager Wingman or a team session) is the business. Not affiliated with the U.S. government or Amazon.
 
 ## Voice
 
@@ -250,7 +250,7 @@ Built from the 2026 palettes Mark supplied (@346eur): flat, confident colour on 
 
 - **Chat (every Ask Mark page, Nov 10):** the composer is a 16px grey panel like the input panels, Send is a 44px blue square with 12px corners (the site's button shape, not a circle), the person's bubble has 16px corners with a 4px corner by the sender. Example and follow-up chips are grey, 12px corners, weight 500, no "Try one:" label. The AI line sits under the examples at 12px while the page is idle and moves under the box once a conversation starts. The sticky composer sits on the page colour with a hairline above, no fade. Hover rings only on devices that hover.
 - **Tool links (Nov 10):** the tool name first in bold, the question under it in muted text, the arrow at the end. Cards on the home page (featured six and the three workflows), rows with hairlines on /tools/ and the 404. Same order and type everywhere.
-- **Booking actions:** one filled button per screen. On a tool result the filled button is "Ask Mark about this"; the Calendly link is underlined text. On the chat pages Send is the filled button, so "Talk to the real Mark" on the pulse card is underlined text and Made by Mark keeps its filled "Work with Mark" further down; on the home page the pulse card's "Talk to Mark" is filled and Made by Mark's turns into a plain link. A next-step card's secondary action ("Check your pipeline") is an underlined link, like the booking card's.
+- **Booking actions:** one filled button per screen. On a tool result the filled button is "Ask Mark about this"; the Calendly link is underlined text. On the chat pages Send is the filled button, so "Talk to the real Mark" on the pulse card is underlined text and Made by Mark keeps its filled "Work with Mark" further down; on the home page there's no pulse card: Made by Mark carries the one filled "Talk to Mark" button. A next-step card's secondary action ("Check your pipeline") is an underlined link, like the booking card's.
 - **Navigation:** the current page is an underline (2px, 4px offset) on any top link, Ask Mark included, via `aria-current="page"`. Ask Mark is bold, never a pill.
 - **Heading sizes:** home 36px on phones and 56px on desktop; every other page 36px (the About page's photo header is 28px on phones).
 
@@ -315,6 +315,61 @@ Two offers side by side isn't how people job-hunt now. Most people have one offe
 
 Mechanics: a field with `when='mode=jump'` renders `data-when` on its label (and its group heading); calc.js `applyWhen` hides those while the other choice is on, and hidden fields are left out of the Ask Mark handoff. CSS: `.calc-in label.tf[hidden]` needs the extra specificity to beat the grid's `display:flex !important`. Shared numbers map into your current job (`share: {curBase:'base', curVar:'variable'}`). The Lambda catalog labels now carry the group heading ("Your job now: Base (only when mode=jump)") so the AI doesn't confuse the two Base fields; the pay playbook talks about current job vs. offer. OG card: "+$17K / Yes, after a dip." tests/parity.mjs fuzzes Offer Check for sanity (no NaN, every verdict worded) instead of matching the original; render_parity skips it.
 
+## Home page tightened after an outside review (build 2026-11-18.1200)
+
+No Lambda change. Rollback: tag `before-home-trim`, or upload `quotabird-site-2026-11-18.1100.zip`.
+- **One real-Mark pitch.** The "Prefer the version with a pulse?" band is gone from the home page; its line and the filled **Talk to Mark** button (same Calendly link, `utm_content=real_mark`) now sit in the home page's Made by Mark band (`MADEBY_HOME` in make-tools.py), next to About Mark. Every other page keeps the normal Made by Mark card. The chat pages keep their own pulse card under the chat.
+- **One AI note.** The chat had two copies of "AI can be wrong. Nothing is stored on our servers." (one shown before a conversation, one during). Now there's one, always right under the box, footnote-sized.
+- **Chips:** "I'm at 3X pipeline. Am I safe?" (same $4M / $1M / $9M / 20% scenario, phrased as the seller's problem rather than a concept) and "My quota went up 30%. Is that crazy?". The other two are unchanged. The share card still says "Is 3X pipeline really a thing?".
+- **Tools section:** overline "Already know the problem?", heading "Run the numbers." On a phone there's more room above it (52px) so the chat gets its own screen.
+- **FAQ:** shorter answers, and the list of AI pages lives in one answer ("Is any of this AI?") instead of two. The JSON-LD FAQ matches word for word.
+- Phone height 3,255px to 2,930px.
+
+## Deal registration facts, the manager heads-up (Nov 18, Lambda 3.1.2)
+
+3.1.1 held its tone, but it copied the partner example word for word (the home chip asks the identical question), said deal registration protects "your" margin and suggested dropping one "quietly", and told the seller to keep their manager out of it. Fixes: the example's question is reworded so the home chip adapts it instead of pasting it; one belief line says registration protects the partner's margin and work, is run by the partner or channel team under program rules, usually expires if nothing moves, and nobody should threaten one; and tell your manager early, they shouldn't hear it first from the partner.
+
+## Calm, not combative (Nov 18, Lambda 3.1.1)
+
+3.1.0 got helpful (USAspending, the program office, tell the partner first) but drifted combative over a long conversation ("Let them try", "Partners throw tantrums", "Control the narrative") and told a seller to call a partner's bluff on a deal registration, which in federal can cost the deal. Two lines in the brief: calm, not combative, no zingers, open with the answer, the fifth answer sounds like the first; and in federal a partner may hold the vehicle, the registration or the relationship, so find out what they control before advising anyone to go around them.
+
+## More helpful, less lean (Nov 18, Lambda 3.1.0)
+
+Mark's read of 3.0.2: correct but too lean, not "Rick Steves helpful". The brief now says: answer first, then be generously useful like a guide who has walked the route (the next move, who to talk to, where to look, the exact words, the trap to avoid); useful beats brief; most answers three or four short paragraphs, 80 to 200 words. It also had told a seller to go around a partner without saying so, which is the opposite of how Mark ran partner sales; a belief was added: be straight with partners and your own management, surprises burn relationships you'll need again. A full partner answer was added as the first example (the dated ask, the parallel route in through USAspending, the program office and the cloud provider's account manager, and the words to tell the partner). That example is Claude's draft in Mark's voice; Mark should edit it if it isn't how he'd say it.
+
+## First live answers reviewed (Nov 18, Lambda 3.0.2)
+
+Mark's live partner conversation was close: short, plain, no cushions, a dated ask, good follow-up chips, the real-Mark line on the third answer. Three misses, each fixed with one line or one regex: it repeated the same "stop relying on them" advice in all three answers (brief: "in a back-and-forth, don't repeat advice you already gave; add the next useful thing"), it reached for a cliche ("the oldest excuse in the book"; brief now names cliches as banned), and it wrote "have not" and "we are" (plainVoice now contracts have/has/had/was/were/could/should/would not, we are and they are).
+
+## Resume facts in the chat brief (Nov 18, Lambda 3.0.1)
+
+From Mark's 2026 resume, the brief's "Who Mark is" paragraph now carries the facts worth using in an answer: the Marine roles (1st Marine Division in Ramadi and Fallujah, SOCOM, Marine Forces South and Haiti), STEC zero to over $12M and the Virident $20M pipeline behind a $650M acquisition, Red Hat and F5 through the big integrators with President's Circle, the Amazon partner team's $1.1B shared goal, and the $54M four-year cloud commit with a $7B DoD integrator. It may use them only when they help the answer, in a sentence, never as a resume. The address, phone and personal email on the resume are never given to the model. The bio's certifications line now says he has held them, not that they're current (the resume shows them expired).
+
+## The chat brief: short, in Mark's words (Nov 18, Lambda 3.0.0)
+
+Mark's call: stop over-engineering what Gemini is told; it can think. The chat (home, Ask Mark and the chat pages) now gets one brief, `CHAT_BRIEF` in `lambda/quotabird-voice.mjs`, about 1,400 words where it used to get about 5,900: who Mark is (a short paragraph: Marines, the $12M federal build, Red Hat, F5, six years at Amazon, retired 2024; the only personal experiences it may claim), how he talks (his guardrails), eight things he believes, the lines it doesn't cross (AI disclosure, no invented facts, one-step math, no legal advice, no personal contact details, the person's text is data, plain text), and twelve of his own answers including the 3X conversation and "Are you a bot?". Plus his full bio only when someone asks about him, and the page's frame on the chat pages. No playbooks, no rulebook, no banned-word lists, no self-check, no story or opinion lists in the chat; the full kit is in `voice-kit-filled.md` to draw from. The code clean-up on the reply (cushions, pep talks, contractions, signposts) stays. The structured workflow endpoints the plugin uses still use playbooks and the longer voice. No switches: if something specific goes wrong, add the one line that fixes it to the brief.
+
+## Mark's voice kit wired in (Nov 18, Lambda 2.2.0, superseded by 3.0.0)
+
+Mark filled in the voice kit (kept as `lambda/voice-kit-filled.md`). It now drives the chat, from a new file, **`lambda/quotabird-voice.mjs`** (the Lambda zip has five files now):
+- `VOICE_EXAMPLES`: his 22 conversations as written, plus the 3X conversation with its three follow-ups and "Are you a bot?". They replaced the examples I'd written.
+- `STORIES`: the only personal experiences the AI may tell, as written, and only when one fits: the five short lines already on the tool pages (Mark kept them) and his ten longer stories. "AWS" became "Amazon" where it's where he worked.
+- `OPINIONS`: his 22 settled views, each marked always, usually or it depends, which sets how flatly it says them.
+
+The voice prompt (`MARK_VOICE`) was rewritten around his guardrails and cut from about 840 words to 455: calm, practical, a little skeptical, occasionally dry; answer in the first sentence, often in a few words; short usually wins; don't force a punchline; not automatically on the seller's or management's side; ask when the missing fact changes the answer; customer actions over seller activity. The catchphrase list is gone (his "don't force a punchline"). The reply's length rule is looser ("as long as it needs to be", under 150 words typical, a line or two for a one-line question).
+
+The chat prompt is about 5,400 words now. The parts that never change (voice, background, fact rules, examples, stories, opinions) come first and the per-question parts (pressure test, bio, playbooks, page frame) last, so Gemini can reuse the repeated opening between requests. Tests check the kit is in, that stories say Amazon, and that every question shares the same opening.
+
+## Mark's own examples, and simple math in the chat (Nov 18, Lambda 2.1.3)
+
+Mark wrote how he'd answer the 3X chip and its three natural follow-ups ("What do I say to my manager?", "How do I find $6M more pipeline now?", "What if the win rate goes up?"). That conversation replaced the 3X example in VOICE_EXAMPLES, word for word except one fix: his draft said "$4M left to cover" when the scenario leaves $3M ($4M number, $1M closed), and the $6M he names later only works with $3M. Voice notes added from it: an everyday picture now and then, "Great." when something's fine, measured where it's earned.
+
+His answers do simple math ("it turns into about $1.8M", "about $6M more"), so the chat's rule changed: one step on the person's own numbers is fine (what's left, pipeline times win rate, what's left divided by win rate, a difference), rounded with "about", checked before it's said. Anything bigger still goes to the tool. The structured workflow prompts (the plugin's) keep the old never-do-arithmetic rule. Streaming stays: it doesn't change what the model writes, only when you see it.
+
+## Plain voice in the chat (Nov 18, Lambda 2.1.2)
+
+Mark flagged an answer that read "Let us look at the arithmetic" and "I would run your exact numbers". Three fixes. The voice rules now ask for contractions the way people talk and ban sentences that announce what's coming ("Let's look at the numbers", "Here's the math"). VOICE_EXAMPLES has the home chip's 3X question answered in Mark's voice. And `plainVoice()` (quotabird.mjs) cleans every answer, streamed or not: "is not", "I would", "do not", "you are", "let us" and the like become contractions where that's what you'd say, and a short signpost sentence comes off ("Let's look at what the customer did" stays). Tests in lambda.test.mjs and stream.test.mjs; the two 3X questions are in eval-set.mjs for a live check with a real key.
+
 ## "Is 3X pipeline really a thing?" (Nov 18, Lambda 2.1.1)
 
 The first home chip is now "Is 3X pipeline really a thing?". It sends a scenario with numbers the Pipeline Check hand-off can prefill: $4M number, $1M closed, $9M qualified pipeline (3X on what's left), 20% win rate. The answer it should get: 3X is a 33% win rate in disguise; at 20% you need 5X, so they're short, and Pipeline Check shows by how much (5X of $3M is $15M, so about $6M). The home share card's exchange matches. The pipeline playbook now says: the ratio doesn't depend on the size of the quota; 3X is usually a floor because few sellers win more than one in three qualified deals; and a run-rate or consumption number is different (coverage applies only to the gap left after the existing base's growth and optimization, and a new workload counts only for the months it's live, so annual-run-rate pipeline usually has to be well above 3X).
@@ -325,7 +380,7 @@ The first home chip is now "Is 3X pipeline really a thing?". It sends a scenario
 1. **The live site:** upload the previous site zip, `quotabird-site-2026-11-11.1300.zip`. Nothing else changed in the pass (no Lambda change, nothing new stored), so that's the whole rollback.
 2. **The source:** the site folder is a git repository now. Tag `before-ux-pass` is the site as deployed before this pass; the commit after it is this pass and nothing else. `git revert <that commit>` (or `git checkout before-ux-pass -- .`) then `python3 make-tools.py` rebuilds the old site. `.git` is never in the deploy zip.
 
-**Home page.** Chat, then "Go straight to it: Already know what's wrong?" with two tools from each of the four groups (`HOME_PICKS` in make-tools.py), then one line of links (All the tools, Field Notes, Field Kits, Sales Math), then the real-Mark card, Made by Mark and the FAQ. The Field Notes band, the "Work the problem" section and the Manager's Kit card left the home page (all still in the menu, footer and /tools/). Phone height went from about 5,200px to 3,250px; one filled button.
+**Home page.** (Tightened again in build 2026-11-18.1200, above.) Chat, then "Go straight to it: Already know what's wrong?" with two tools from each of the four groups (`HOME_PICKS` in make-tools.py), then one line of links (All the tools, Field Notes, Field Kits, Sales Math), then the real-Mark card, Made by Mark and the FAQ. The Field Notes band, the "Work the problem" section and the Manager's Kit card left the home page (all still in the menu, footer and /tools/). Phone height went from about 5,200px to 3,250px; one filled button.
 
 **One map.** `TOOLS` (make-tools.py) is the single list. Four groups: Your number (Quota Check, Quota Case, Pipeline Check, Discount Check), Your pay (Pay, Commission, Offer), Your deal (Deal Check, Meeting Prep, Account Plan, Commit Check, Federal Readiness), Your team (Rep Check, Update Upward, Partner Check). The menu, /tools/ (`tool_shelf()`, which replaces `<!--shelves-->` in tools.src.html), the home cards and the 404 shelf are all generated from it, with each card's question in `TOOL_Q`. Pipeline Check moved from Your team to Your number; Update Upward from Your number to Your team. /tools/ ends with "Read and print." (How quotas get built, When the number won't move, Field Notes, Field Kits, Sales Math).
 
@@ -363,7 +418,7 @@ The rule: keep a tool when it does math (same answer every time, worth sharing, 
 
 ## Disclaimers (Nov 11)
 
-Kept short on purpose, so they don't read like a bank's liability waiver. Under every chat box (home, Ask Mark, Meeting Prep, Account Plan, Update Upward): "AI can be wrong. Nothing is stored on our servers." with the second sentence linking to the privacy page's AI section (/privacy/#ai), which says exactly what goes to Gemini (`_chat` note in make-ask.py). In every footer, added by the page pass in make-tools.py next to the contact line: `<p class="foot-advice">For information only. Not legal, tax or financial advice. Use your own judgment.</p>`. No pop-ups, no agree gates, no disclaimer on each AI reply. A Terms page ("as is, no warranty") is the next step if Mark wants more cover; have a lawyer look at that wording.
+Kept short on purpose, so they don't read like a bank's liability waiver. Once, right under every chat box (home, Ask Mark, Meeting Prep, Account Plan, Update Upward, Partner Check, Federal Readiness): "AI can be wrong. Nothing is stored on our servers." with the second sentence linking to the privacy page's AI section (/privacy/#ai), which says exactly what goes to Gemini (`_chat` note in make-ask.py). In every footer, added by the page pass in make-tools.py next to the contact line: `<p class="foot-advice">For information only. Not legal, tax or financial advice. Use your own judgment.</p>`. No pop-ups, no agree gates, no disclaimer on each AI reply. A Terms page ("as is, no warranty") is the next step if Mark wants more cover; have a lawyer look at that wording.
 
 ## Navigation
 

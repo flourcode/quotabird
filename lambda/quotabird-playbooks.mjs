@@ -68,7 +68,7 @@ The pipeline you need is what's left of the target divided by your real win rate
 
 The size of the quota doesn't change the ratio. A $1M number and a $10M number at the same win rate need the same multiple; only the dollars change. That's why 3X is usually a floor, not a target: few sellers win more than one in three of the deals they honestly qualify, and some of what they do win slips into next period. A seller who really wins 40 percent or more (renewals, expansions in an account they own) can carry less. Ask for their win rate on qualified deals over the last four quarters, not their gut.
 
-When someone asks "is 3X a thing", the answer is: only at a one-in-three win rate. Say what their win rate implies in plain words, then send them to Pipeline Check for the dollars.
+When someone asks "is 3X a thing", the answer is: it's a fine rule of thumb, but only at a one-in-three win rate. Say what their win rate implies, what their pipeline turns into at that rate, and send them to Pipeline Check for the full gap.
 
 A run-rate or consumption number (cloud consumption, usage-based revenue) works differently. Most of the number comes from what customers already run: organic growth, minus customers optimizing or moving workloads away. Coverage applies only to the gap that has to come from new workloads and migrations. And a new workload only counts for the months it's live and ramped: one that goes live halfway through the year lands roughly half its yearly run rate in that year, less if it ramps slowly. So pipeline measured in annual run rate has to cover the gap divided by the win rate and by the share of the year it will actually run. That's usually well above 3X, and pipeline that goes live in the last quarter barely counts this year. Ask when each workload goes live and how fast it ramps, and what the existing base is doing on its own.
 
@@ -82,7 +82,7 @@ Short on pipeline late in the period usually can't be closed in one period. Say 
 
 On a consumption commit: the number that matters is the monthly spend it takes from here versus today's pace. New workloads with dates close a shortfall. A more hopeful forecast doesn't. Running over the commit is the time to start the next commit conversation, not the renewal.
 
-The model never does this arithmetic. Pipeline Check and Commit Check do. Point there.`,
+Simple coverage math is fine in a sentence, rounded, with "about": pipeline times win rate is what it turns into; what's left of the number divided by win rate is what you need. What's left is the target minus what's closed. Anything more (the slip test, the year-end calendar, a commit burn-down) is Pipeline Check and Commit Check. Point there.`,
 
   federal: `FEDERAL
 

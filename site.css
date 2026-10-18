@@ -409,7 +409,7 @@ h3 { font-size:22px; line-height:1.3; font-weight:600; letter-spacing:-.01em; ma
 .madeby img { width:64px; height:64px; border-radius:var(--r-full); object-fit:cover; flex:0 0 64px; margin-top:4px; }
 .madeby h2 { font-size:22px; margin:0 0 6px; }
 .madeby p { margin:0 0 12px; }
-.madeby-links { display:flex; align-items:center; gap:14px; }
+.madeby-links { display:flex; flex-wrap:wrap; align-items:center; gap:4px 14px; }
 .madeby-links a:not(.btn) { display:inline-block; padding:12px 4px; }
 @media (max-width:420px) { .madeby { flex-direction:column; gap:10px; } }
 .useful { display:flex; align-items:center; justify-content:center; gap:2px; margin:6px 0 10px; font-size:15px; color:var(--ink-2); }
@@ -1253,7 +1253,7 @@ a.chip-ask:hover, a.chip-ask.current { text-decoration:underline !important; tex
 .home-sec .overline { display: block; margin-bottom: 6px; }
 .home-h { font-size: 24px; letter-spacing: -.015em; margin: 0 0 16px; }
 .home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media (max-width: 600px) { .home-grid { grid-template-columns: 1fr; } .home-h { font-size: 21px; } .home-sec { margin-top: 36px; } }
+@media (max-width: 600px) { .home-grid { grid-template-columns: 1fr; } .home-h { font-size: 20px; } .home-sec { margin-top: 48px; } .front-ask .home-sec:first-of-type { margin-top: 52px; } }
 .home-sec .more { margin: 12px 0 0; }
 .home-sec .more a { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 /* once a conversation starts, the intro collapses so the answer has the room */
@@ -1269,12 +1269,8 @@ body.is-chatting .front > .tool-name { margin-bottom: 2px; }
 @media (min-width: 880px) { .home-grid-3 { grid-template-columns: 1fr 1fr 1fr; } }
 
 /* ═══ Brand pass (Nov 10): one pattern for every chat page, the site's own shapes, nothing that isn't doing work ═══ */
-/* the AI note: footnote-quiet under the examples until a conversation starts, then under the box */
-.composer .ask-note { display: none; }
-body.is-chatting .composer .ask-note { display: block; }
-.ask-note-quiet { margin: 14px 0 0; font-size: 12px !important; color: var(--mut); text-align: left; }
-.ask-note-quiet a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
-body.is-chatting .ask-note-quiet { display: none; }
+/* the AI note: one line, footnote-quiet, right under the box (Oct 18: was two copies, one shown at a time) */
+.composer .ask-note { margin: 8px 0 0; font-size: 12px !important; color: var(--mut); text-align: left; }
 .ask-ex-h:empty { display: none; }
 /* chat shapes follow the site: 16px panels, 12px buttons, no pill or circle */
 .composer-box { border-radius: 16px; padding: 6px 6px 6px 16px; }
@@ -1312,7 +1308,6 @@ body.is-chatting .ask-note-quiet { display: none; }
 
 /* the secondary action on a next-step card is an underlined link, the same as on the booking card */
 .card-accent .btn:not(.btn-primary) { text-decoration: underline !important; text-underline-offset: 3px; min-height: 44px !important; height: auto !important; }
-body.is-chatting .composer .ask-note { text-align: left; }
 .mark-intro .dek, .dek, .lede { text-wrap: pretty; }
 
 /* the chat, after stepping back (Nov 10) */

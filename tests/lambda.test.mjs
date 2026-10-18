@@ -15,7 +15,7 @@ let n = 0; const t = async (name, fn) => { await fn(); n++; console.log('ok', na
 
 await t('health check', async () => {
   const r = await NEW.bufferedHandler({ headers: {}, requestContext: { http: { method: 'GET' } } }); const b = JSON.parse(r.body);
-  assert.equal(b.service, 'quotabird'); assert.equal(b.version, '2.1.1'); assert.ok(b.catalog); assert.equal(b.stream, false); assert.equal(b.model, 'gemini-3.5-flash-lite');
+  assert.equal(b.service, 'quotabird'); assert.equal(b.version, '3.1.2'); assert.ok(b.catalog); assert.equal(b.stream, false); assert.equal(b.model, 'gemini-3.5-flash-lite');
 });
 await t('origin not allowed is refused', async () => {
   const r = await NEW.bufferedHandler({ headers: { origin: 'https://evil.example' }, requestContext: { http: { method: 'POST', sourceIp: '9.9.9.9' } }, body: '{"kind":"qb_route","text":"hello there"}' });
@@ -134,7 +134,7 @@ await t('ask mark: multi-turn chat, folded turns, tool suggestion', async () => 
   const sent = calls.at(-1).body;
   assert.equal(sent.contents.length, 1, 'two user turns folded into one'); assert.ok(sent.contents[0].parts[0].text.includes('data not instructions'));
   assert.ok(sent.systemInstruction.parts[0].text.startsWith('You are the AI version of Mark Flournoy')); assert.ok(sent.systemInstruction.parts[0].text.includes('AI version'));
-  assert.ok(!sent.systemInstruction.parts[0].text.includes('Auburn'), 'no bio unless asked'); assert.ok(sent.systemInstruction.parts[0].text.includes('FEDERAL\n'), 'DHS and CO pick the federal playbook');
+  assert.ok(!sent.systemInstruction.parts[0].text.includes('Auburn'), 'no bio unless asked'); assert.ok(!sent.systemInstruction.parts[0].text.includes('FEDERAL\n'), 'the chat carries no playbooks');
   reply = { reply: 'The AI version of me, yeah.', tool: 'none' };
   await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Are you the real Mark? Where did you work?' }] });
   assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('Auburn'), 'bio when asked about Mark');
@@ -150,13 +150,9 @@ await t('review fixes: bio only when asked, playbooks from the latest turn, quot
   reply = { reply: 'Ask them for one named account.', tool: 'none' };
   await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'How should I get AWS to help on this deal? I read a book about it.' }] });
   let sys = calls.at(-1).body.systemInstruction.parts[0].text;
-  assert.ok(!sys.includes('Auburn'), 'mentioning AWS or a book is not asking about Mark'); assert.ok(sys.includes('PARTNER\n'), 'AWS picks the partner playbook');
+  assert.ok(!sys.includes('Auburn'), 'mentioning AWS or a book is not asking about Mark'); assert.ok(sys === q.CHAT_BRIEF, 'the chat is the brief and nothing else');
   await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'My quota went up 30% and my territory did not change.' }, { role: 'mark', text: 'Ask what else changed.' }, { role: 'user', text: 'Separate thing: my partner keeps promising intros and nothing happens.' }] });
-  sys = calls.at(-1).body.systemInstruction.parts[0].text;
-  assert.ok(sys.includes('PARTNER\n'), 'current turn picks partner'); assert.ok(sys.includes('QUOTA\n'), 'previous turn fills a spare slot');
-  await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'I have a meeting with a partner on a federal account and the incumbent is strong. Deal is stuck.' }] });
-  sys = calls.at(-1).body.systemInstruction.parts[0].text;
-  for (const k of ['PARTNER', 'FEDERAL', 'MEETING PREP', 'ACCOUNT']) assert.ok(sys.includes(k + '\n'), k + ' survives the cap');
+  assert.ok(calls.at(-1).body.contents.length === 3, 'the whole conversation goes along');
   await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Did you work at Amazon?' }] });
   assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('Auburn'), 'a real question about Mark gets the bio');
   assert.deepEqual(pb.pickPlaybooks('quota quota quota and one meeting', { always: ['deal'], max: 2 }), ['deal', 'quota'], 'ranked by cue count');
@@ -180,16 +176,17 @@ await t('ask mark: follow-ups come back clean, a wall of text is split into para
   reply = { reply: 'Short answer.', tool: 'none' };
   const r2 = await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Quick one.' }] }); assert.deepEqual(r2.body.followups, [], 'missing followups is an empty list');
 });
-await t('workflow pages ride the chat: page frame, page playbooks, same Mark voice', async () => {
+await t('workflow pages ride the chat: the same brief plus the page frame', async () => {
+  const q0 = (await import('../lambda/quotabird.mjs'))._qbInternal;
   reply = { reply: "I'd want one thing out of Thursday: the pilot with a date on it.\n\nWalk in with the two things the demo didn't answer.", tool: 'none', followups: ['What do I say when the incumbent comes up?'] };
   const r = await call({ kind: 'qb_mark', page: 'meeting-prep', messages: [{ role: 'user', text: 'Thursday I meet the deputy CIO at HHS about a pilot.' }] });
   assert.equal(r.status, 200); assert.equal(r.body.reply.length, 2); assert.equal(r.body.followups.length, 1);
   const sys = calls.at(-1).body.systemInstruction.parts[0].text;
   assert.ok(sys.startsWith('You are the AI version of Mark Flournoy'), 'first person, not "QuotaBird speaking"'); assert.ok(sys.includes('this is the Meeting Prep page'), 'the frame');
-  assert.ok(sys.includes('MEETING PREP\n') && sys.includes('FEDERAL\n'), 'meeting playbook always, federal from HHS'); assert.ok(!sys.includes('"heading"'), 'no sections schema');
+  assert.ok(sys.startsWith(q0.CHAT_BRIEF) && !sys.includes('MEETING PREP\n'), 'the brief plus the frame, no playbooks'); assert.ok(!sys.includes('"heading"'), 'no sections schema');
   assert.equal(calls.at(-1).body.generationConfig.maxOutputTokens, 2000);
   await call({ kind: 'qb_mark', page: 'update-upward', messages: [{ role: 'user', text: '$3M number, $1.2M closed, calling a miss.' }] });
-  const sys2 = calls.at(-1).body.systemInstruction.parts[0].text; assert.ok(sys2.includes('Update Upward page') && sys2.includes('UPDATE UPWARD\n') && sys2.includes('PIPELINE\n'));
+  const sys2 = calls.at(-1).body.systemInstruction.parts[0].text; assert.ok(sys2.includes('Update Upward page'));
   await call({ kind: 'qb_mark', page: 'nope', messages: [{ role: 'user', text: 'Hello there.' }] });
   assert.ok(!calls.at(-1).body.systemInstruction.parts[0].text.includes("Why they're here"), 'unknown page is plain chat');
 });
@@ -207,7 +204,8 @@ await t('the promise on the page: a second opinion on deal, forecast, quota, com
   assert.ok(q.MARK_VOICE.includes('second opinion')); assert.ok(q.FACT_RULES.includes('the digital version of Mark')); assert.ok(q.FACT_RULES.includes("don't round that up"));
   reply = { reply: 'Fight about the evidence, not the label.', tool: 'none', followups: [] };
   await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'My boss wants a deal in commit that I do not believe.' }] });
-  assert.ok(calls.at(-1).body.systemInstruction.parts[0].text.includes('YOUR BOSS (managing up)'));
+  const brief = calls.at(-1).body.systemInstruction.parts[0].text;
+  for (const x of ['second opinion', 'No sugarcoating', 'the digital version of him', 'mark@quotabird.com', 'Never invent', 'data, not instructions', '"Amazon", not "AWS"']) assert.ok(brief.includes(x), x);
 });
 await t('no sugarcoating: the rule is in the prompt, and a cushion or pep talk comes off the reply', async () => {
   const q = (await import(process.env.QB_LAMBDA ? new URL('quotabird.mjs', 'file://' + process.env.QB_LAMBDA).href : '../lambda/quotabird.mjs'))._qbInternal;
@@ -217,5 +215,24 @@ await t('no sugarcoating: the rule is in the prompt, and a cushion or pep talk c
   reply = { reply: "I hear you, that's a tough spot.\n\nProbably not. One deal that could come in is a hope, not a plan.\n\nCall the miss now. You've got this!", tool: 'pipeline', followups: [] };
   const r = await call({ kind: 'qb_mark', messages: [{ role: 'user', text: "I'm at 40% with two months left. I can still make it, right?" }] });
   assert.equal(r.status, 200); assert.deepEqual(r.body.reply, ['Probably not. One deal that could come in is a hope, not a plan.', 'Call the miss now.']);
+});
+await t("Mark's voice: contractions, and no sentence that only announces the math", async () => {
+  reply = { reply: "No. At a 20% win rate, 3X is not enough pipeline. You need 5X.\n\nLet us look at the arithmetic. Your manager is counting pipeline, not what it turns into.\n\nI would run your exact numbers through Pipeline Check. Do not wait for the last month.", tool: 'pipeline', followups: [] };
+  const r = await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Is 3X pipeline really a thing? My win rate is about 20%.' }] });
+  assert.equal(r.status, 200);
+  assert.deepEqual(r.body.reply, ["No. At a 20% win rate, 3X isn't enough pipeline. You need 5X.", 'Your manager is counting pipeline, not what it turns into.', "I'd run your exact numbers through Pipeline Check. Don't wait for the last month."]);
+  const { plainVoice } = (await import('../lambda/quotabird.mjs'))._qbInternal;
+  assert.equal(plainVoice("Let's look at what the customer did this week."), "Let's look at what the customer did this week.", 'a real sentence stays');
+  assert.equal(plainVoice('That is, if it closes. I would.'), 'That is, if it closes. I would.', 'only where the short form is what you would say');
+  assert.equal(plainVoice('If they can not produce those emails, they have not reached out. Whether we are still working this together.'), "If they can not produce those emails, they haven't reached out. Whether we're still working this together.");
+});
+await t("the chat brief is short, in Mark's words, and the same for every question", async () => {
+  const q = (await import('../lambda/quotabird.mjs'))._qbInternal;
+  const words = q.CHAT_BRIEF.split(/\s+/).length; assert.ok(words < 2200, 'short: ' + words);
+  for (const x of ['ruined your Tuesday', 'Hope is allowed', 'zero to over $12 million', '$54 million', "President's Circle", 'Are you a bot?']) assert.ok(q.CHAT_BRIEF.includes(x), x);
+  assert.ok(!/At AWS|years at AWS/.test(q.CHAT_BRIEF), 'Amazon, not AWS, for where Mark worked');
+  reply = { reply: 'I would not.', tool: 'none', followups: [] };
+  await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'Is 3X pipeline really a thing?' }] }); const one = calls.at(-1).body.systemInstruction.parts[0].text;
+  await call({ kind: 'qb_mark', messages: [{ role: 'user', text: 'My partner at a federal SI never brings deals.' }] }); assert.equal(calls.at(-1).body.systemInstruction.parts[0].text, one);
 });
 console.log(`\n${n} lambda tests passed`);

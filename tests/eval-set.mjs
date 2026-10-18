@@ -1,4 +1,4 @@
-// The QuotaBird evaluation set: eighteen realistic situations run through the real Lambda code against the
+// The QuotaBird evaluation set: twenty realistic situations run through the real Lambda code against the
 // real Gemini API, so a before/after or a model comparison uses the same questions every time.
 //
 //   GEMINI_API_KEY=... node tests/eval-set.mjs                          # the model in GEMINI_MODEL
@@ -18,6 +18,8 @@ process.env.QB_RATE_LIMIT_PER_MINUTE = "1000"; process.env.QB_RATE_LIMIT_PER_HOU
 const { handler } = await import(process.env.QB_LAMBDA || "../lambda/index.mjs");
 
 export const CASES = [
+  ["is 3X a thing (home chip)", "qb_mark", { messages: [{ role: "user", text: "Is 3X pipeline really a thing? My manager says I'm fine because I'm at 3X. My number is $4M, I've closed $1M, and I have $9M of qualified pipeline for the rest of the year. My win rate on qualified deals is about 20%." }] }],
+  ["3X on a consumption number", "qb_mark", { messages: [{ role: "user", text: "Does 3X pipeline even apply on a cloud consumption number? My growth target is $6M this year and most of my pipeline is migrations that won't go live until the second half." }] }],
   ["quota pushback", "qb_mark", { messages: [{ role: "user", text: "My VP says I need 3X pipeline but my win rate is 18%. Am I being unreasonable pushing back?" }] }],
   ["thin pipeline", "qb_mark", { messages: [{ role: "user", text: "It's April. My number is $4M, I've closed $600K, and I've got about $3M of qualified pipeline. I win maybe one in four. My manager says I'm fine because I'm over 2X on what's left. Am I fine?" }] }],
   ["one huge deal carrying the quarter", "qb_mark", { messages: [{ role: "user", text: "One deal is 70% of my Q4 commit. It's a $1.8M Army cloud migration through a prime. The PM loves it, the prime says it's in their plan, and the money is supposedly FY27. Should I keep it in commit?" }] }],

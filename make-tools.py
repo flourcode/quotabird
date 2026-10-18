@@ -3,7 +3,7 @@
 Run from the web root after editing copy below. Deal Check and Pipeline Check are hand-written."""
 import json, os, re
 
-BUILD = '2026-11-18.1100'
+BUILD = '2026-11-18.1200'
 TOOLS = [   # the one map: the menu, /tools/, the home page and the 404 shelf all come from this list, in these four groups
     ('Your number', '/quota/', 'Quota Check', 'The day the number lands'),
     ('Your number', '/quota-case/', 'Quota Case', 'When you need to push back, or a new territory'),
@@ -3094,6 +3094,11 @@ open('404.html', 'w', encoding='utf-8').write(_nf)
 # Every page gets the same header and the same About section, from one source.
 MARK_SRC = open('partials/mark.html').read()
 MADEBY_SRC = open('partials/made-by.html').read()
+MADEBY_HOME = MADEBY_SRC.replace(" Most of it's free. If the problem's messier than a little tool can handle, we can talk it through.</p>",
+    "</p>\n      <p>Prefer the version with a pulse? Talk to me for twenty minutes. It's free, and if I don't think you need my help I'll say so.</p>").replace(
+    '<a class="btn btn-primary" href="/work-with-mark/">Work with Mark</a><a href="/about/">About Mark</a>',
+    '<a class="btn btn-primary" href="https://calendly.com/markflournoy/chat-with-mark?utm_source=quotabird&amp;utm_medium=home&amp;utm_content=real_mark" target="_blank" rel="noopener">Talk to Mark</a><a href="/about/">About Mark</a>')
+assert MADEBY_HOME.count('calendly') == 1 and 'version with a pulse' in MADEBY_HOME, 'home Made-by band'
 KITCARD_SRC = open('partials/kit-card.html').read()
 LEADERCARD_SRC = open('partials/leader-card.html').read()
 LEADERCARD_PAGES = {'notes/index.html'}
@@ -3135,8 +3140,8 @@ def chrome(path):
     if path != '404.html':
         # the full story lives on the About page; every other page gets the short "Made by Mark" card
         src = MARK_SRC if path == 'about/index.html' else MADEBY_SRC
-        if 'band-real' in s and src is MADEBY_SRC:   # the home page's booking card is right above; one filled booking button is enough
-            src = src.replace('<a class="btn btn-primary" href="/work-with-mark/">Work with Mark</a>', '<a href="/work-with-mark/">Work with Mark</a>')
+        if path == 'index.html':   # the home page's one booking button: the real Mark, in the Made-by band
+            src = MADEBY_HOME
         mark = src.replace('{ROOT}', root_of(path)).replace('{UTM}', utm_of(path))
         if path in KITCARD_PAGES | SELLERCARD_PAGES:   # only pages that get a card injected; /kits/ is made of cards
             s = re.sub(r'\s*<section class="band kit-band[^"]*"[^>]*>.*?</section>', '', s, flags=re.S)   # never let cards accumulate on hand-written pages

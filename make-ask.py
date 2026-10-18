@@ -241,7 +241,6 @@ def _chat(placeholder, examples, tryone='', note='AI can be wrong. <a href="/pri
     </form>
     <div class="ask-examples" id="askExamples" role="group" aria-label="Examples"><span class="ask-ex-h">{tryone}</span>
 {ex}    </div>
-    <p class="startnote ask-note-quiet">{note}</p>
     <div class="card mark-card real-mark">
       <h3>Prefer the version with a pulse?</h3>
       <p>Talk to the real Mark for twenty minutes. Free, and if I don't think you need my help I'll say so.</p>
@@ -338,11 +337,11 @@ _BY = {c['slug']: c for c in _CAT + WORKFLOWS}
 def _ck(slug):
     c = _BY[slug]; return f'        <a class="ck" href="/{slug}/"><span class="cq">{html_mod.escape(c["question"])}</span><span class="cb"><span>{html_mod.escape(c["name"])}</span>{_ARROW}</span></a>'
 _home = open('index.html', encoding='utf-8').read()
-_home = _home.replace('__CHAT__', _chat("What's going on?", [
-      ('Is 3X pipeline really a thing?', "Is 3X pipeline really a thing? My manager says I'm fine because I'm at 3X. My number is $4M, I've closed $1M, and I have $9M of qualified pipeline for the rest of the year. My win rate on qualified deals is about 20%."),
+_home = _home.replace('__CHAT__', re.sub(r'\n    <div class="card mark-card real-mark">.*?</div>$', '', _chat("What's going on?", [   # the home page's real Mark is in the Made-by band
+      ("I'm at 3X pipeline. Am I safe?", "I'm at 3X pipeline. Am I safe? My manager says I'm fine because I'm at 3X. My number is $4M, I've closed $1M, and I have $9M of qualified pipeline for the rest of the year. My win rate on qualified deals is about 20%."),
       ("My champion says it's closing. I don't believe them.", "My champion says it's closing this quarter. Procurement hasn't engaged and I don't believe them. What do I do?"),
-      ('Is this quota ridiculous?', "My quota went up 30% and my territory didn't change. Is this quota ridiculous, and how do I push back without whining?"),
-      ("My partner isn't doing anything.", "My partner keeps saying they'll introduce me to the account team and nothing happens. We've been partners for eight months.")]).replace('    <div class="card mark-card real-mark">', '    <div class="card mark-card real-mark" hidden>'))   # the home page's real-Mark card sits lower, by About
+      ('My quota went up 30%. Is that crazy?', "My quota went up 30% and my territory didn't change. Is that crazy, and how do I push back without whining?"),
+      ("My partner isn't doing anything.", "My partner keeps saying they'll introduce me to the account team and nothing happens. We've been partners for eight months.")]), flags=re.S))
 # the same four groups as the menu and /tools/, two tools each (HOME_PICKS in make-tools.py)
 _home = _home.replace('__TOOLS__', '      <div class="home-jobs">\n' + ''.join(f'        <div class="home-job"><h3 class="cg-h">{g}</h3><div class="cg-grid home-grid">\n' + '\n'.join(ck(*i) for i in items) + '\n        </div></div>\n' for g, items in tool_groups(HOME_PICKS)) + '      </div>')
 _home = re.sub(r"(window\.QB_BUILD = '[^']*';)", lambda m: m.group(1) + '\nwindow.QB_ASK = { endpoint: ' + json.dumps(ASK_ENDPOINT) + ', page: "home" };', _home, count=1)
