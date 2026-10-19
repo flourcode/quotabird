@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-18.1300** (Lambda 3.1.2) This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-18.1600** (Lambda 3.1.2) This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -315,6 +315,14 @@ Two offers side by side isn't how people job-hunt now. Most people have one offe
 
 Mechanics: a field with `when='mode=jump'` renders `data-when` on its label (and its group heading); calc.js `applyWhen` hides those while the other choice is on, and hidden fields are left out of the Ask Mark handoff. CSS: `.calc-in label.tf[hidden]` needs the extra specificity to beat the grid's `display:flex !important`. Shared numbers map into your current job (`share: {curBase:'base', curVar:'variable'}`). The Lambda catalog labels now carry the group heading ("Your job now: Base (only when mode=jump)") so the AI doesn't confuse the two Base fields; the pay playbook talks about current job vs. offer. OG card: "+$17K / Yes, after a dip." tests/parity.mjs fuzzes Offer Check for sanity (no NaN, every verdict worded) instead of matching the original; render_parity skips it.
 
+## Home hero: "Ask the hard questions before your boss does." (build 2026-11-18.1500)
+
+Home page H1 (home.src.html) is now "Ask the hard questions before your boss does." The line next to Mark's photo is Mark's own (build 2026-11-18.1600): "Deal going sideways? Pipeline looking thin? Quota, comp, partners? Tell the digital version of me what's going on. It'll tell you what I'd do." /ask-mark/ keeps "Ask me anything about sales." The page title and meta description are unchanged. Rollback: tag `before-hero`.
+
+## Home share card: "Manage up before you get managed." (build 2026-11-18.1400)
+
+The card everyone sees when quotabird.com is shared (card.jpg, `ASKCARDS['home']` in make-card.py) now matches Mark's Q4 LinkedIn post. Headline "Manage up before you get managed.", under it "Preflight the hard conversations before your pipeline goes on the big screen. Free." The chat: "My manager wants to know what I can pull forward." / "Tell him what's real first. Pulling in a deal the customer isn't ready for just moves the slip to next quarter." The home page's og/twitter title, description and image alt match. Picked over a Q4-only version ("Half your Q4 pipeline is Q1 deals") because this card is up all year. After uploading, run quotabird.com through LinkedIn's Post Inspector so LinkedIn drops its cached card. Rollback: tag `before-og-card`.
+
 ## Mobile pass (build 2026-11-18.1300)
 
 No Lambda change. Rollback: tag `before-mobile-pass`, or upload `quotabird-site-2026-11-18.1200.zip`.
@@ -382,7 +390,7 @@ Mark flagged an answer that read "Let us look at the arithmetic" and "I would ru
 
 ## "Is 3X pipeline really a thing?" (Nov 18, Lambda 2.1.1)
 
-The first home chip is now "Is 3X pipeline really a thing?". It sends a scenario with numbers the Pipeline Check hand-off can prefill: $4M number, $1M closed, $9M qualified pipeline (3X on what's left), 20% win rate. The answer it should get: 3X is a 33% win rate in disguise; at 20% you need 5X, so they're short, and Pipeline Check shows by how much (5X of $3M is $15M, so about $6M). The home share card's exchange matches. The pipeline playbook now says: the ratio doesn't depend on the size of the quota; 3X is usually a floor because few sellers win more than one in three qualified deals; and a run-rate or consumption number is different (coverage applies only to the gap left after the existing base's growth and optimization, and a new workload counts only for the months it's live, so annual-run-rate pipeline usually has to be well above 3X).
+The first home chip is now "Is 3X pipeline really a thing?". It sends a scenario with numbers the Pipeline Check hand-off can prefill: $4M number, $1M closed, $9M qualified pipeline (3X on what's left), 20% win rate. The answer it should get: 3X is a 33% win rate in disguise; at 20% you need 5X, so they're short, and Pipeline Check shows by how much (5X of $3M is $15M, so about $6M). The home share card showed this exchange until build 2026-11-18.1400. The pipeline playbook now says: the ratio doesn't depend on the size of the quota; 3X is usually a floor because few sellers win more than one in three qualified deals; and a run-rate or consumption number is different (coverage applies only to the gap left after the existing base's growth and optimization, and a new workload counts only for the months it's live, so annual-run-rate pipeline usually has to be well above 3X).
 
 ## UX pass: shorter home, answer-first tool pages, one map (Nov 18)
 

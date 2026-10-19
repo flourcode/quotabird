@@ -113,11 +113,11 @@ arg = sys.argv[1] if len(sys.argv) > 1 else 'home'
 # page looks after the first answer. The exchange is real Mark voice, picked for the person who's had the week.
 ASKCARDS = {
   'home': dict(out='card.jpg', wordmark='USEFUL TOOLS FOR PEOPLE WHO CARRY A NUMBER',
-    headline='Got a sales\nproblem?\nAsk Mark.',
-    dek="Twenty years of federal sales in a chatbot. He'll tell you what he thinks. Free.",
+    headline='Manage up\nbefore you get\nmanaged.',
+    dek="Preflight the hard conversations before your pipeline goes on the big screen. Free.",
     url='quotabird.com',
-    you='Is 3X pipeline really a thing?',
-    mark="Only if you win one deal in three. Win one in five and you need 5X. 3X is a win rate in disguise."),
+    you='My manager wants to know what I can pull forward.',
+    mark="Tell him what's real first. Pulling in a deal the customer isn't ready for just moves the slip to next quarter."),
   'home-b': dict(out='card-home-b.jpg', wordmark='USEFUL TOOLS FOR PEOPLE WHO CARRY A NUMBER',
     headline='Got a sales\nproblem?\nAsk Mark.',
     dek="Twenty years of federal sales in a chatbot. He'll tell you what he thinks. Free.",
