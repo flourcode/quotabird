@@ -114,7 +114,7 @@ arg = sys.argv[1] if len(sys.argv) > 1 else 'home'
 ASKCARDS = {
   'home': dict(out='card.jpg', wordmark='USEFUL TOOLS FOR PEOPLE WHO CARRY A NUMBER',
     headline='Manage up\nbefore you get\nmanaged.',
-    dek="Preflight the hard conversations before your pipeline goes on the big screen. Free.",
+    dek="Preflight your hard conversations: the forecast call, a slipped deal, your quota pushback.",
     url='quotabird.com',
     you='My manager wants to know what I can pull forward.',
     mark="Tell him what's real first. Pulling in a deal the customer isn't ready for just moves the slip to next quarter."),
@@ -182,9 +182,12 @@ if arg in ASKCARDS:
         f = font(900, s)
     else: f, lines, s = fit(d, A['headline'], 900, 76, LW, 3, 44)
     for l in lines: d.text((M - 3, y), l, font=f, fill=INK); y += int(s * (0.98 if len(lines) > 2 else 1.02))
-    df = font(500, 26); ty = y + 18; dek = wrap(d, A['dek'], df, LW)[:3]
-    while ty + len(dek) * 34 > H - M - 44 and len(dek) > 1: dek = dek[:-1]   # never over the URL
-    for tl in dek: d.text((M, ty), tl, font=df, fill=MUT); ty += 34
+    ty = y + 18
+    for ds in (26, 24, 22):   # step the type down before ever cutting a line, so the whole sentence shows
+        df = font(500, ds); lh = round(ds * 1.3); dek = wrap(d, A['dek'], df, LW)[:3]
+        if ty + len(dek) * lh <= H - M - 44: break
+    while ty + len(dek) * lh > H - M - 44 and len(dek) > 1: dek = dek[:-1]   # never over the URL
+    for tl in dek: d.text((M, ty), tl, font=df, fill=MUT); ty += lh
     d.text((M, H - M - 28), A['url'], font=font(700, 28), fill=INK)
     chat_card(im, d, (W - M - 470, M + 20, W - M, H - M - 20), A['you'], A['mark'])
     save(im, A['out']); sys.exit(0)

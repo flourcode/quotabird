@@ -1,6 +1,6 @@
 # QuotaBird — handoff
 
-**Current build: 2026-11-18.1600** (Lambda 3.1.2) This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
+**Current build: 2026-11-18.1700** (Lambda 3.1.2) This file describes the site as it is today. Work from it. Everything here is current; there is no archive. Where a decision was tried and dropped, it's listed under "Already decided" so nobody proposes it again.
 
 ## What QuotaBird is
 
@@ -317,11 +317,11 @@ Mechanics: a field with `when='mode=jump'` renders `data-when` on its label (and
 
 ## Home hero: "Ask the hard questions before your boss does." (build 2026-11-18.1500)
 
-Home page H1 (home.src.html) is now "Ask the hard questions before your boss does." The line next to Mark's photo is Mark's own (build 2026-11-18.1600): "Deal going sideways? Pipeline looking thin? Quota, comp, partners? Tell the digital version of me what's going on. It'll tell you what I'd do." /ask-mark/ keeps "Ask me anything about sales." The page title and meta description are unchanged. Rollback: tag `before-hero`.
+Home page H1 (home.src.html) is now "Ask the hard questions before your boss does." The line next to Mark's photo is Mark's own (build 2026-11-18.1600): "Deal going sideways? Pipeline looking thin? Quota, comp, partners? Tell the digital version of me what's going on. It'll tell you what I'd do." /ask-mark/ keeps "Ask me anything about sales." Since build 2026-11-18.1700 the page title matches the H1 ("QuotaBird: Ask the Hard Questions Before Your Boss Does") and the meta description no longer promises a "blunt" answer. Rollback: tag `before-hero`.
 
 ## Home share card: "Manage up before you get managed." (build 2026-11-18.1400)
 
-The card everyone sees when quotabird.com is shared (card.jpg, `ASKCARDS['home']` in make-card.py) now matches Mark's Q4 LinkedIn post. Headline "Manage up before you get managed.", under it "Preflight the hard conversations before your pipeline goes on the big screen. Free." The chat: "My manager wants to know what I can pull forward." / "Tell him what's real first. Pulling in a deal the customer isn't ready for just moves the slip to next quarter." The home page's og/twitter title, description and image alt match. Picked over a Q4-only version ("Half your Q4 pipeline is Q1 deals") because this card is up all year. After uploading, run quotabird.com through LinkedIn's Post Inspector so LinkedIn drops its cached card. Rollback: tag `before-og-card`.
+The card everyone sees when quotabird.com is shared (card.jpg, `ASKCARDS['home']` in make-card.py) now matches Mark's Q4 LinkedIn post. Headline "Manage up before you get managed.", under it "Preflight your hard conversations: the forecast call, a slipped deal, your quota pushback." (build 2026-11-18.1700; the earlier "before your pipeline goes on the big screen" made three "before" lines in a row with the hero) The chat: "My manager wants to know what I can pull forward." / "Tell him what's real first. Pulling in a deal the customer isn't ready for just moves the slip to next quarter." The home page's og/twitter title, description and image alt match. Picked over a Q4-only version ("Half your Q4 pipeline is Q1 deals") because this card is up all year. After uploading, run quotabird.com through LinkedIn's Post Inspector so LinkedIn drops its cached card. Rollback: tag `before-og-card`.
 
 ## Mobile pass (build 2026-11-18.1300)
 
